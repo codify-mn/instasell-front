@@ -21,8 +21,7 @@ const activeTabIndex = ref(0)
 const deletedVariantIds = ref<number[]>([])
 
 useSeoMeta({
-    title: () =>
-        product.value ? `${product.value.name} - Comment Boost` : 'Бүтээгдэхүүн - Comment Boost'
+    title: () => (product.value ? `${product.value.name} - Instasell` : 'Бүтээгдэхүүн - Instasell')
 })
 
 const schema = z.object({

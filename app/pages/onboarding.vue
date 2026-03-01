@@ -7,7 +7,7 @@ definePageMeta({
 })
 
 useSeoMeta({
-    title: 'Дэлгүүр үүсгэх - Comment Boost'
+    title: 'Дэлгүүр үүсгэх - Instasell'
 })
 
 const config = useRuntimeConfig()

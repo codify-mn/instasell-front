@@ -3,7 +3,7 @@ import type { TableColumn } from '@nuxt/ui'
 import type { CustomerWithStats } from '~/composables/useCustomers'
 
 useSeoMeta({
-    title: 'Хэрэглэгчид - Comment Boost'
+    title: 'Хэрэглэгчид - Instasell'
 })
 
 const { listCustomers } = useCustomers()

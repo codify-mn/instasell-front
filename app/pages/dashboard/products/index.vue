@@ -3,7 +3,7 @@ import type { TableColumn } from '@nuxt/ui'
 import type { Product, ImportResult } from '~/composables/useProducts'
 
 useSeoMeta({
-    title: 'Бүтээгдэхүүн - Comment Boost'
+    title: 'Бүтээгдэхүүн - Instasell'
 })
 
 const { fetchProducts, deleteProduct, updateProduct, fetchCategories } = useProducts()

@@ -3,7 +3,7 @@ import type { TableColumn } from '@nuxt/ui'
 import type { Order, OrderStatus } from '~/composables/useOrders'
 
 useSeoMeta({
-    title: 'Захиалга - Comment Boost'
+    title: 'Захиалга - Instasell'
 })
 
 const { fetchOrders, updateOrderStatus, cancelOrder, getStatusLabel, getStatusColor, formatPrice } =

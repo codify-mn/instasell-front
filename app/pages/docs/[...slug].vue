@@ -19,7 +19,7 @@ provide<Ref<ContentNavigationItem[]>>('navigation', navigation as Ref<ContentNav
 
 useSeoMeta({
     title: () => (page.value?.title ? `${page.value.title} - Docs` : 'Documentation'),
-    description: () => page.value?.description || 'Comment Boost documentation'
+    description: () => page.value?.description || 'Instasell documentation'
 })
 </script>
 

@@ -6,7 +6,7 @@ import type { CartItem, Customer, PaymentMethod } from '~/composables/useOrders'
 import { useDebounceFn } from '@vueuse/core'
 
 useSeoMeta({
-    title: 'Захиалга нэмэх - Comment Boost'
+    title: 'Захиалга нэмэх - Instasell'
 })
 
 const { createOrder, formatPrice, searchCustomerByPhone } = useOrders()

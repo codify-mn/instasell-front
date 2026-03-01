@@ -22,9 +22,7 @@ const order = ref<Order | null>(null)
 
 useSeoMeta({
     title: () =>
-        order.value
-            ? `Захиалга #${order.value.order_number} - Comment Boost`
-            : 'Захиалга - Comment Boost'
+        order.value ? `Захиалга #${order.value.order_number} - Instasell` : 'Захиалга - Instasell'
 })
 
 const loadOrder = async () => {

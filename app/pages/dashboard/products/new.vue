@@ -4,7 +4,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import type { VariantData } from '~/components/products/ProductVariantForm.vue'
 
 useSeoMeta({
-    title: 'Бараа нэмэх - Comment Boost'
+    title: 'Бараа нэмэх - Instasell'
 })
 
 const { createProduct } = useProducts()

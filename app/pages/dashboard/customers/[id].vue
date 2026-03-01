@@ -2,7 +2,7 @@
 import type { Customer, Order } from '~/composables/useOrders'
 
 useSeoMeta({
-    title: 'Хэрэглэгчийн мэдээлэл - Comment Boost'
+    title: 'Хэрэглэгчийн мэдээлэл - Instasell'
 })
 
 const route = useRoute()
