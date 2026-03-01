@@ -27,10 +27,10 @@ const gradientId = `cb-grad-${Math.random().toString(36).slice(2, 8)}`
                 class="font-light mx-0.5"
                 :class="variant === 'light' ? 'text-white/60' : 'text-primary-400'"
                 >/</span
-            >Comment<span
+            >Insta<span
                 :class="variant === 'light' ? 'text-white' : 'text-gradient'"
                 class="font-extrabold"
-                >Boost</span
+                >Sell</span
             >
         </span>
     </NuxtLink>
