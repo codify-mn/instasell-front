@@ -25,7 +25,16 @@ const addedProducts = useState('addedProducts', () => liveProducts)
 
 // WebSocket for real-time comments and stats
 const liveSaleId = computed(() => live.value?.id)
-const { comments, stats, connected } = useLiveWebSocket(liveSaleId)
+const { comments, stats, activeProductId, connected } = useLiveWebSocket(liveSaleId)
+
+// Initialize activeProductId from live data
+watch(live, (l) => {
+    if (l?.active_product_id && !activeProductId.value) {
+        activeProductId.value = l.active_product_id
+    }
+}, { immediate: true })
+
+provide('activeProductId', activeProductId)
 
 const handleProductSelect = (product: Product) => {
     const imageUrl = product.variants?.[0]?.images?.[0] || null
@@ -245,8 +254,11 @@ const mobileTab = ref('camera')
                         </div>
                     </div>
 
-                    <!-- Stats + Controls -->
+                    <!-- Destinations + Stats + Controls -->
                     <div class="px-3 md:px-0 space-y-2">
+                        <div class="bg-white dark:bg-gray-900 px-3 md:px-4 py-3 rounded-lg shadow-sm">
+                            <DestinationList />
+                        </div>
                         <LiveStats :is-streaming="webrtc.isStreaming.value" :stats="stats" />
                         <div
                             class="flex items-center justify-between bg-white dark:bg-gray-900 px-3 md:px-4 py-2 md:py-3 rounded-lg shadow-sm"

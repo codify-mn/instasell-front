@@ -47,6 +47,14 @@ const links = [
             }
         },
         {
+            label: 'Хэрэглэгчид',
+            icon: 'i-lucide-users',
+            to: '/dashboard/customers',
+            onSelect: () => {
+                open.value = false
+            }
+        },
+        {
             label: 'Тохиргоо',
             to: '/dashboard/settings',
             icon: 'i-lucide-settings',

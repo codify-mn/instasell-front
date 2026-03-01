@@ -1,5 +1,4 @@
 import type { Product, ProductVariant } from './useProducts'
-import type { OrderStats } from './useDashboardData'
 import type { ShopData } from './useShopSettings'
 
 // Order status matches backend orderman.OrderStatus
@@ -56,6 +55,16 @@ export interface OrderItem {
     updated_at: string
 }
 
+export interface OrderQPayData {
+    invoice_id: string
+    invoice_url: string
+    qr_text: string
+    qr_image: string
+    deep_links: QPayDeepLink[]
+    created_at?: string
+    paid_at?: string
+}
+
 export interface Order {
     id: number
     shop_id: number
@@ -69,7 +78,9 @@ export interface Order {
     total_amount: number
     currency: string
     payment_method: PaymentMethod
+    payment_status?: string
     metadata: OrderMetadata
+    qpay?: OrderQPayData
     items: OrderItem[]
     checkout_token?: string
     expires_at?: string
@@ -118,10 +129,6 @@ export interface CreateOrderInput {
     payment_method: PaymentMethod
     metadata?: OrderMetadata
 }
-
-// OrderStats is already defined in useDashboardData.ts
-// Re-export for consistency
-export type { OrderStats } from './useDashboardData'
 
 // Cart item used in order creation UI
 export interface CartItem {
@@ -214,11 +221,25 @@ export function useOrders() {
         return response.products || []
     }
 
-    const completePublicCheckout = async (token: string, data: any): Promise<Order> => {
-        return await $fetch<Order>(`${apiUrl}/api/checkout/${token}/complete`, {
-            method: 'POST',
-            body: data
-        })
+    const completePublicCheckout = async (
+        token: string,
+        data: any
+    ): Promise<{ order: Order; qpay?: OrderQPayData }> => {
+        return await $fetch<{ order: Order; qpay?: OrderQPayData }>(
+            `${apiUrl}/api/checkout/${token}/complete`,
+            {
+                method: 'POST',
+                body: data
+            }
+        )
+    }
+
+    const checkPaymentStatus = async (
+        token: string
+    ): Promise<{ status: string; payment_status: string; qpay?: OrderQPayData }> => {
+        return await $fetch<{ status: string; payment_status: string; qpay?: OrderQPayData }>(
+            `${apiUrl}/api/checkout/${token}/payment-status`
+        )
     }
 
     // Helper functions for display
@@ -277,6 +298,7 @@ export function useOrders() {
         searchCustomerByPhone,
         fetchPublicOrder,
         fetchUpsellProducts,
-        completePublicCheckout
+        completePublicCheckout,
+        checkPaymentStatus
     }
 }

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { LiveSale } from '~/types'
+import type { Product } from '~/composables/useProducts'
 
 const config = useRuntimeConfig()
 const toast = useToast()
+const { fetchProducts } = useProducts()
 
 const {
     data: lives,
@@ -16,15 +18,48 @@ const isLiveModalOpen = ref(false)
 const isLoading = ref(false)
 const liveForm = reactive({
     title: '',
-    description: ''
+    description: '',
+    product_ids: [] as number[]
 })
+
+// Product selector state
+const productSearch = ref('')
+const productSearchDebounced = refDebounced(productSearch, 300)
+const availableProducts = ref<Product[]>([])
+const loadingProducts = ref(false)
+
+const loadAvailableProducts = async () => {
+    loadingProducts.value = true
+    try {
+        const res = await fetchProducts({ keyword: productSearchDebounced.value, size: 20 })
+        availableProducts.value = res.products
+    } catch {
+        availableProducts.value = []
+    } finally {
+        loadingProducts.value = false
+    }
+}
+
+watch(productSearchDebounced, () => loadAvailableProducts())
+watch(isLiveModalOpen, (open) => {
+    if (open) loadAvailableProducts()
+})
+
+const toggleProduct = (id: number) => {
+    const idx = liveForm.product_ids.indexOf(id)
+    if (idx >= 0) {
+        liveForm.product_ids.splice(idx, 1)
+    } else {
+        liveForm.product_ids.push(id)
+    }
+}
 
 const createLive = async () => {
     try {
         if (!liveForm.title) {
             toast.add({
-                title: 'Error',
-                description: 'Title is required',
+                title: 'Алдаа',
+                description: 'Гарчиг оруулна уу',
                 color: 'error'
             })
             return
@@ -32,18 +67,18 @@ const createLive = async () => {
 
         isLoading.value = true
 
-        const { id } = await $fetch<LiveSale>(`${config.public.apiUrl}/api/live-sales`, {
+        const result = await $fetch<LiveSale>(`${config.public.apiUrl}/api/live-sales`, {
             method: 'POST',
             body: liveForm,
             credentials: 'include'
         })
 
-        navigateTo(`/dashboard/live/${id}`)
+        navigateTo(`/dashboard/live/${result.id}`)
     } catch (error) {
         console.error('Failed to create live:', error)
         toast.add({
-            title: 'Error',
-            description: 'Failed to create live',
+            title: 'Алдаа',
+            description: 'Live үүсгэхэд алдаа гарлаа',
             color: 'error'
         })
     } finally {
@@ -229,16 +264,54 @@ const formatDate = (dateStr: string) => {
 
                 <template #body>
                     <div class="space-y-4">
-                        <UFormField label="Title" required>
-                            <UInput v-model="liveForm.title" placeholder="Enter stream title..." />
+                        <UFormField label="Гарчиг" required>
+                            <UInput v-model="liveForm.title" placeholder="Live-ийн гарчиг..." />
                         </UFormField>
-                        <UFormField label="Description">
+                        <UFormField label="Тайлбар">
                             <UTextarea
                                 v-model="liveForm.description"
-                                placeholder="Enter stream description..."
+                                placeholder="Тайлбар..."
                                 autoresize
                                 class="w-full"
                             />
+                        </UFormField>
+                        <UFormField label="Бараанууд">
+                            <UInput
+                                v-model="productSearch"
+                                icon="i-heroicons-magnifying-glass"
+                                placeholder="Бараа хайх..."
+                                size="sm"
+                                class="mb-2"
+                            />
+                            <div class="max-h-48 overflow-y-auto space-y-1 border border-gray-200 dark:border-gray-700 rounded-lg p-2">
+                                <div v-if="loadingProducts" class="flex justify-center p-4">
+                                    <UIcon name="i-lucide-loader" class="animate-spin text-gray-400" />
+                                </div>
+                                <template v-else>
+                                    <div
+                                        v-for="product in availableProducts"
+                                        :key="product.id"
+                                        class="flex items-center gap-2 p-1.5 rounded-md cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                        :class="liveForm.product_ids.includes(product.id) ? 'bg-primary-50 dark:bg-primary-900/20' : ''"
+                                        @click="toggleProduct(product.id)"
+                                    >
+                                        <UCheckbox :model-value="liveForm.product_ids.includes(product.id)" @click.stop="toggleProduct(product.id)" />
+                                        <img
+                                            v-if="product.variants?.[0]?.images?.length"
+                                            :src="product.variants[0].images[0]"
+                                            class="w-8 h-8 rounded object-cover shrink-0"
+                                        />
+                                        <div v-else class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 shrink-0" />
+                                        <span class="text-sm truncate flex-1">{{ product.name }}</span>
+                                    </div>
+                                    <p v-if="availableProducts.length === 0" class="text-xs text-gray-400 text-center py-2">
+                                        Бараа олдсонгүй
+                                    </p>
+                                </template>
+                            </div>
+                            <p v-if="liveForm.product_ids.length" class="text-xs text-gray-500 mt-1">
+                                {{ liveForm.product_ids.length }} бараа сонгогдсон
+                            </p>
                         </UFormField>
                     </div>
                 </template>

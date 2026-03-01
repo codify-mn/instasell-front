@@ -106,12 +106,26 @@ export const useDashboardData = () => {
         }
     }
 
+    const revenueChart = ref<{ label: string; value: number }[]>([])
+
+    const fetchRevenueChart = async (days: number = 7) => {
+        try {
+            const data = await $fetch<{ label: string; value: number }[]>(
+                `${config.public.apiUrl}/api/dashboard/revenue-chart?days=${days}`,
+                { credentials: 'include' }
+            )
+            revenueChart.value = data || []
+        } catch (err: any) {
+            console.error('Failed to fetch revenue chart:', err)
+        }
+    }
+
     const fetchAll = async () => {
         isLoading.value = true
         error.value = null
 
         try {
-            await Promise.all([fetchOrderStats(), fetchProductStats()])
+            await Promise.all([fetchOrderStats(), fetchProductStats(), fetchRevenueChart()])
         } catch (err: any) {
             error.value = 'Failed to load dashboard data'
         } finally {
@@ -123,12 +137,14 @@ export const useDashboardData = () => {
         orderStats,
         productStats,
         customerStats,
+        revenueChart,
         isLoading,
         error,
         lives,
         fetchAll,
         fetchOrderStats,
         fetchProductStats,
+        fetchRevenueChart,
         fetchLives
     }
 }

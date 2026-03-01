@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { orderStats, productStats, isLoading, fetchAll } = useDashboardData()
+const { orderStats, productStats, revenueChart, isLoading, fetchAll } = useDashboardData()
 const { resetTour } = useTour()
 
 const shop = useShop()
@@ -139,7 +139,7 @@ onMounted(() => {
                         subtitle="Энэ сар шинээр 0"
                         icon="i-lucide-users"
                         color="warning"
-                        to="/dashboard/orders"
+                        to="/dashboard/customers"
                     />
                 </div>
 
@@ -164,7 +164,7 @@ onMounted(() => {
                 </div>
 
                 <!-- Revenue Chart (optional, can show below) -->
-                <DashboardRevenueChart :total-revenue="totalRevenue" />
+                <DashboardRevenueChart :total-revenue="totalRevenue" :data="revenueChart" />
             </div>
         </UDashboardPanel>
     </div>

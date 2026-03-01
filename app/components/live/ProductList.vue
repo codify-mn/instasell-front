@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const addedProducts = useState<LiveSaleProduct[]>('addedProducts')
+const activeProductId = inject<Ref<number | null>>('activeProductId', ref(null))
 const onProductSelect = inject<(product: Product) => void>('onProductSelect')
 
 const search = ref('')
@@ -121,7 +122,7 @@ const handleAdd = async (product: Product) => {
             method: 'POST',
             body: {
                 product_id: product.id,
-                keyword: 'dogshittest'
+                keyword: product.variants?.[0]?.keyword || product.search_keywords || ''
             },
             credentials: 'include'
         })
@@ -149,16 +150,28 @@ const handleAdd = async (product: Product) => {
     }
 }
 
-const handleSelect = (product: Product) => {
+const handleSelect = async (product: Product) => {
+    // Update canvas overlay with product info
+    onProductSelect?.(product)
+
+    // Call API to set active product
+    try {
+        await $fetch(`${config.public.apiUrl}/api/live-sales/${route.params.liveID}/active-product`, {
+            method: 'PATCH',
+            body: { product_id: product.id },
+            credentials: 'include'
+        })
+        activeProductId.value = product.id
+    } catch {
+        // Non-critical — overlay still works even if API fails
+    }
+
     toast.add({
-        title: 'Product Selected',
-        description: `Selected ${product.name} for live stream`,
+        title: 'Бараа сонгогдлоо',
+        description: `${product.name} live дээр харагдаж байна`,
         icon: 'i-heroicons-check-circle',
         color: 'success'
     })
-
-    // Update canvas overlay with product info
-    onProductSelect?.(product)
 }
 
 const resetQuickCreateForm = () => {
@@ -271,6 +284,7 @@ const handleQuickCreate = async () => {
                     v-for="product in filteredProducts"
                     :key="product.id"
                     :product="product"
+                    :is-presenting="activeProductId === product.id"
                     @add="handleAdd"
                     @select="handleSelect"
                 />

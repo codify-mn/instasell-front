@@ -67,8 +67,6 @@ export const useWebRTC = () => {
         try {
             window.addEventListener('beforeunload', closeDialogHandler)
 
-            if (!live.stream_url) throw new Error('No RTMP URL returned')
-
             // Get webcam stream
             streamStatus.value = StreamStatus.ACCESSING_CAMERA
             localStream = await navigator.mediaDevices.getUserMedia({
@@ -137,22 +135,6 @@ export const useWebRTC = () => {
                 })
             )
 
-            // Tell backend to start RTMP forwarding from SRS to Facebook
-            const forwardResponse = await fetch(
-                `${config.public.apiUrl}/api/live-sales/${live.id}/broadcast/start-forward`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include'
-                }
-            )
-
-            if (!forwardResponse.ok) {
-                throw new Error(
-                    'Failed to start RTMP forwarding: ' + (await forwardResponse.text())
-                )
-            }
-
             isStreaming.value = true
             streamStatus.value = StreamStatus.LIVE
             toast.add({
@@ -176,21 +158,6 @@ export const useWebRTC = () => {
         window.removeEventListener('beforeunload', closeDialogHandler)
 
         streamStatus.value = StreamStatus.STOPPING
-
-        // Stop RTMP forwarding on backend
-        if (currentLiveId) {
-            try {
-                await fetch(
-                    `${config.public.apiUrl}/api/live-sales/${currentLiveId}/broadcast/stop-forward`,
-                    {
-                        method: 'POST',
-                        credentials: 'include'
-                    }
-                )
-            } catch (e) {
-                console.error('Failed to stop forward:', e)
-            }
-        }
 
         if (pc) {
             pc.close()

@@ -14,7 +14,7 @@ export interface LiveStatsData {
 }
 
 interface WSMessage {
-    type: 'initial' | 'comment' | 'stats' | 'ping'
+    type: 'initial' | 'comment' | 'stats' | 'active_product' | 'ping'
     data: any
 }
 
@@ -22,6 +22,7 @@ export function useLiveWebSocket(liveSaleId: Ref<number | undefined>) {
     const config = useRuntimeConfig()
     const comments = ref<LiveComment[]>([])
     const stats = ref<LiveStatsData>({ viewers: 0, orders: 0, revenue: 0, comments: 0 })
+    const activeProductId = ref<number | null>(null)
     const connected = ref(false)
 
     let ws: WebSocket | null = null
@@ -59,12 +60,18 @@ export function useLiveWebSocket(liveSaleId: Ref<number | undefined>) {
                         if (msg.data.stats) {
                             stats.value = msg.data.stats
                         }
+                        if (msg.data.active_product_id !== undefined) {
+                            activeProductId.value = msg.data.active_product_id
+                        }
                         break
                     case 'comment':
                         comments.value = [msg.data, ...comments.value]
                         break
                     case 'stats':
                         stats.value = msg.data
+                        break
+                    case 'active_product':
+                        activeProductId.value = msg.data.product_id ?? null
                         break
                     case 'ping':
                         ws?.send(JSON.stringify({ type: 'pong' }))
@@ -127,5 +134,5 @@ export function useLiveWebSocket(liveSaleId: Ref<number | undefined>) {
         disconnect()
     })
 
-    return { comments, stats, connected }
+    return { comments, stats, activeProductId, connected }
 }

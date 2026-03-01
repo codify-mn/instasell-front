@@ -4,6 +4,7 @@ import type { LiveSale, LiveSaleProduct } from '~/types'
 
 const props = defineProps<{
     product: Product
+    isPresenting?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -52,7 +53,8 @@ const isAdded = computed(() => {
 
 <template>
     <div
-        class="group relative flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-sm"
+        class="group relative flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 cursor-pointer border hover:shadow-sm"
+        :class="isPresenting ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-sm' : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700'"
     >
         <div
             class="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700"
@@ -67,9 +69,15 @@ const isAdded = computed(() => {
         </div>
 
         <div class="flex-1 min-w-0">
-            <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                {{ product.name }}
-            </h4>
+            <div class="flex items-center gap-1.5">
+                <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                    {{ product.name }}
+                </h4>
+                <UBadge v-if="isPresenting" color="primary" size="xs" class="shrink-0">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-white mr-1 animate-pulse" />
+                    Live
+                </UBadge>
+            </div>
             <p class="text-xs text-gray-500 dark:text-gray-400">
                 {{ formattedPrice }}
             </p>

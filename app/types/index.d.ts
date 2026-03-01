@@ -77,8 +77,24 @@ export interface LiveSale {
     updated_at: string
     picture: string
     view_url: string
+    active_product_id: number | null
+    active_product: LiveSaleProduct | null
     comments: LiveSaleComment[]
     products: LiveSaleProduct[]
+    destinations: LiveSaleDestination[]
+}
+
+export interface LiveSaleDestination {
+    id: number
+    live_sale_id: number
+    platform: string
+    name: string
+    rtmp_url: string
+    server_url: string
+    stream_key: string
+    status: string
+    shop_id: number
+    created_at: string
 }
 
 export interface LiveSaleProduct {

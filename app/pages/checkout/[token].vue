@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { Order, PaymentMethod } from '~/composables/useOrders'
+import type { Order, PaymentMethod, OrderQPayData } from '~/composables/useOrders'
 import type { Product, ProductVariant } from '~/composables/useProducts'
 
 definePageMeta({
@@ -9,13 +9,25 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { fetchPublicOrder, completePublicCheckout, fetchUpsellProducts, formatPrice } = useOrders()
+const {
+    fetchPublicOrder,
+    completePublicCheckout,
+    fetchUpsellProducts,
+    checkPaymentStatus,
+    formatPrice
+} = useOrders()
 
 const token = route.params.token as string
 const order = ref<Order | null>(null)
 const loading = ref(true)
 const submitting = ref(false)
 const completed = ref(false)
+
+// Payment state
+const showPayment = ref(false)
+const qpayData = ref<OrderQPayData | null>(null)
+const isPaid = ref(false)
+const paymentPollInterval = ref<ReturnType<typeof setInterval>>()
 
 // Mobile order summary toggle
 const showMobileItems = ref(false)
@@ -145,6 +157,32 @@ onMounted(async () => {
     }
 })
 
+const startPaymentPolling = () => {
+    paymentPollInterval.value = setInterval(async () => {
+        try {
+            const status = await checkPaymentStatus(token)
+            if (status.payment_status === 'paid') {
+                isPaid.value = true
+                if (paymentPollInterval.value) clearInterval(paymentPollInterval.value)
+                // Show success after a brief delay
+                setTimeout(() => {
+                    showPayment.value = false
+                    completed.value = true
+                }, 2000)
+            }
+            if (status.qpay) {
+                qpayData.value = status.qpay
+            }
+        } catch {
+            // Silently retry
+        }
+    }, 3000)
+}
+
+onUnmounted(() => {
+    if (paymentPollInterval.value) clearInterval(paymentPollInterval.value)
+})
+
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     submitting.value = true
     try {
@@ -158,8 +196,17 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             }))
         }
 
-        await completePublicCheckout(token, submitData)
-        completed.value = true
+        const result = await completePublicCheckout(token, submitData)
+
+        // If QPay data returned, show payment UI
+        if (result.qpay) {
+            qpayData.value = result.qpay
+            order.value = result.order
+            showPayment.value = true
+            startPaymentPolling()
+        } else {
+            completed.value = true
+        }
     } catch (err) {
         console.error('Failed to complete checkout:', err)
     } finally {
@@ -189,6 +236,22 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             <p class="text-gray-500 text-center max-w-sm">
                 Линкийн хугацаа дууссан эсвэл буруу байж магадгүй. Дэлгүүрээс шинэ линк авна уу.
             </p>
+        </div>
+
+        <!-- Payment -->
+        <div v-else-if="showPayment && qpayData" class="flex items-center justify-center min-h-screen px-4">
+            <div class="max-w-md w-full">
+                <div
+                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-6 sm:p-8"
+                >
+                    <CheckoutPayment
+                        :qpay-data="qpayData"
+                        :order-number="order?.order_number || ''"
+                        :total-amount="order?.total_amount || 0"
+                        :is-paid="isPaid"
+                    />
+                </div>
+            </div>
         </div>
 
         <!-- Success -->
