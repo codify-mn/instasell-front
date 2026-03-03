@@ -89,6 +89,10 @@ function getPlanFeatures(plan: Plan): { label: string; included: boolean }[] {
         {
             label: 'API хандалт',
             included: plan.features.api_access
+        },
+        {
+            label: 'Автомат хариулагч',
+            included: plan.features.automation
         }
     ]
 }

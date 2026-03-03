@@ -9,16 +9,24 @@ const props = withDefaults(defineProps<Props>(), {
     data: () => []
 })
 
+const dayNames = ['Ня', 'Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя']
+
 // Generate last 7 days labels in Mongolian
 const last7Days = computed(() => {
     const days = []
-    const dayNames = ['Ня', 'Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя']
     for (let i = 6; i >= 0; i--) {
         const date = new Date()
         date.setDate(date.getDate() - i)
+        // Use YYYY-MM-DD for stable comparison
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const dateStr = `${year}-${month}-${day}`
+        
         days.push({
             label: dayNames[date.getDay()],
-            date: date.toISOString().split('T')[0]
+            date: dateStr,
+            value: 0
         })
     }
     return days
@@ -26,12 +34,23 @@ const last7Days = computed(() => {
 
 // Use provided data or generate placeholder
 const chartData = computed(() => {
+    const defaultDays = last7Days.value.map((day) => ({ ...day }))
+
     if (props.data && props.data.length > 0) {
-        return props.data
+        // Map backend data to our last7Days buckets
+        props.data.forEach((item) => {
+            if (!item) return
+            const index = defaultDays.findIndex((d) => d.date === item.label)
+            if (index !== -1) {
+                defaultDays[index].value = item.value || 0
+            }
+        })
+        return defaultDays
     }
+
     // Placeholder data when no real data
-    return last7Days.value.map((day) => ({
-        label: day.label,
+    return defaultDays.map((day) => ({
+        ...day,
         value: Math.floor(Math.random() * 50000) + 10000
     }))
 })

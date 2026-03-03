@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as z from 'zod'
-import type { FormSubmitEvent } from '@nuxt/ui'
+import type { FormSubmitEvent, FormError } from '@nuxt/ui'
 import { useShopSettings } from '~/composables/useShopSettings'
 import { useQPay } from '~/composables/useQPay'
 
@@ -17,7 +17,13 @@ const shopSchema = z.object({
     picture: z.string().optional()
 })
 
+const passwordSchema = z.object({
+    current: z.string().min(8, 'Хамгийн багадаа 8 тэмдэгт байх ёстой'),
+    new: z.string().min(8, 'Хамгийн багадаа 8 тэмдэгт байх ёстой')
+})
+
 type ShopSchema = z.output<typeof shopSchema>
+type PasswordSchema = z.output<typeof passwordSchema>
 
 type DeliveryType = 'none' | 'fixed' | 'free_over' | 'custom' | 'all_free'
 
@@ -38,13 +44,10 @@ const state = reactive({
     max_featured_products: 6
 })
 
-const deliveryTypes = [
-    { label: 'Хүргэлтгүй', value: 'none' },
-    { label: 'Хүргэлттэй (Үнэ тогтмол)', value: 'fixed' },
-    { label: 'Тодорхой үнийн дүнгээс дээш үнэгүй', value: 'free_over' },
-    { label: 'Хүргэлттэй (Үнэ тусдаа өөрсдөө тооцож авна)', value: 'custom' },
-    { label: 'Бүх хүргэлт үнэгүй', value: 'all_free' }
-]
+const password = reactive<Partial<PasswordSchema>>({
+    current: undefined,
+    new: undefined
+})
 
 const cancelTimeOptions = [
     { label: '1 цаг', value: 1 },
@@ -72,11 +75,7 @@ function togglePaymentMethod(value: string) {
     }
 }
 
-const showDeliveryFee = computed(
-    () => state.delivery_type === 'fixed' || state.delivery_type === 'free_over'
-)
-const showFreeDeliveryOver = computed(() => state.delivery_type === 'free_over')
-
+// Removed unused computed properties showDeliveryFee and showFreeDeliveryOver
 onMounted(async () => {
     await Promise.all([fetchShop(), fetchQPayStatus()])
     if (shop.value) {
@@ -102,8 +101,26 @@ function onQPayRegisterSuccess() {
     fetchQPayStatus()
 }
 
+const validatePassword = (state: Partial<PasswordSchema>): FormError[] => {
+    const errors: FormError[] = []
+    if (state.current && state.new && state.current === state.new) {
+        errors.push({ name: 'new', message: 'Нууц үг өөр байх ёстой' })
+    }
+    return errors
+}
+
 async function onSubmit(_event: FormSubmitEvent<ShopSchema>) {
     await saveSettings()
+}
+
+async function onPasswordSubmit(_event: FormSubmitEvent<PasswordSchema>) {
+    // Password update logic would go here
+    console.log('Update password', password)
+}
+
+function onDeleteAccount() {
+    // Account deletion logic
+    console.log('Delete account requested')
 }
 
 async function saveSettings() {
@@ -214,7 +231,7 @@ function onFileClick() {
                             class="hidden"
                             accept=".jpg, .jpeg, .png, .gif"
                             @change="onFileChange"
-                        />
+                        >
                     </div>
                 </UFormField>
             </UPageCard>
@@ -412,6 +429,67 @@ function onFileClick() {
                 >
                     <UInput v-model="state.comment_prefix" autocomplete="off" placeholder="#" />
                 </UFormField>
+            </UPageCard>
+
+            <!-- Section 5: Security -->
+            <UPageCard
+                title="Нууц үг"
+                description="Шинэ нууц үг тохируулахын өмнө одоогийн нууц үгээ баталгаажуулна уу."
+                variant="naked"
+                class="mb-4"
+            />
+
+            <UPageCard variant="subtle" class="mb-8">
+                <UForm
+                    :schema="passwordSchema"
+                    :state="password"
+                    :validate="validatePassword"
+                    class="flex flex-col gap-4 max-w-xs"
+                    @submit="onPasswordSubmit"
+                >
+                    <UFormField name="current" label="Одоогийн нууц үг">
+                        <UInput
+                            v-model="password.current"
+                            type="password"
+                            placeholder="Одоогийн нууц үг"
+                            class="w-full"
+                        />
+                    </UFormField>
+
+                    <UFormField name="new" label="Шинэ нууц үг">
+                        <UInput
+                            v-model="password.new"
+                            type="password"
+                            placeholder="Шинэ нууц үг"
+                            class="w-full"
+                        />
+                    </UFormField>
+
+                    <UButton label="Нууц үг шинэчлэх" class="w-fit" type="submit" color="neutral" />
+                </UForm>
+            </UPageCard>
+
+            <!-- Section 6: Account Management -->
+            <UPageCard
+                title="Бүртгэл"
+                description="Бүртгэлтэй холбоотой тохиргоо."
+                variant="naked"
+                class="mb-4"
+            />
+
+            <UPageCard
+                variant="subtle"
+                description="Манай үйлчилгээг цаашид ашиглахгүй бол бүртгэлээ устгах боломжтой. Энэ үйлдлийг буцаах боломжгүй бөгөөд бүх мэдээлэл бүрмөсөн устгагдах болно."
+                class="bg-gradient-to-tl from-error/10 from-5% to-transparent"
+            >
+                <template #footer>
+                    <UButton
+                        label="Бүртгэл устгах"
+                        color="error"
+                        variant="subtle"
+                        @click="onDeleteAccount"
+                    />
+                </template>
             </UPageCard>
         </UForm>
 

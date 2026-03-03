@@ -11,6 +11,7 @@ export interface PlanFeatures {
     custom_branding: boolean
     priority_support: boolean
     api_access: boolean
+    automation: boolean
 }
 
 export interface Plan {

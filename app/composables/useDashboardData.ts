@@ -38,7 +38,7 @@ export interface Shop {
 export interface OrderStats {
     total_orders: number
     pending_orders: number
-    completed_orders: number
+    delivered_orders: number
     cancelled_orders: number
     total_revenue: number
     average_order_value: number

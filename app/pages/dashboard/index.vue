@@ -21,7 +21,8 @@ const shopUrl = computed(() => {
 const userName = computed(() => shop.value?.name?.split(' ')[0] || 'Хэрэглэгч')
 
 // Stats computed
-const thisMonthOrders = computed(() => orderStats.value?.pending_orders || 0)
+const pendingOrders = computed(() => orderStats.value?.pending_orders || 0)
+const deliveredOrders = computed(() => orderStats.value?.delivered_orders || 0)
 const totalOrders = computed(() => orderStats.value?.total_orders || 0)
 const totalRevenue = computed(() => orderStats.value?.total_revenue || 0)
 const totalProducts = computed(() => productStats.value?.total || 0)
@@ -110,10 +111,18 @@ onMounted(() => {
                 <!-- Stats Row -->
                 <div data-tour-stats class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <DashboardStatCard
-                        label="Энэ сарын захиалга"
-                        :value="thisMonthOrders"
+                        label="Хүлээгдэж буй"
+                        :value="pendingOrders"
                         :subtitle="`Нийт ${totalOrders} захиалга`"
                         icon="i-lucide-shopping-cart"
+                        color="warning"
+                        to="/dashboard/orders"
+                    />
+                    <DashboardStatCard
+                        label="Хүргэгдсэн"
+                        :value="deliveredOrders"
+                        subtitle="Амжилттай хүргэгдсэн"
+                        icon="i-lucide-truck"
                         color="info"
                         to="/dashboard/orders"
                     />
@@ -132,14 +141,6 @@ onMounted(() => {
                         icon="i-lucide-package"
                         color="primary"
                         to="/dashboard/products"
-                    />
-                    <DashboardStatCard
-                        label="Нийт хэрэглэгч"
-                        :value="totalCustomers"
-                        subtitle="Энэ сар шинээр 0"
-                        icon="i-lucide-users"
-                        color="warning"
-                        to="/dashboard/customers"
                     />
                 </div>
 

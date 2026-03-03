@@ -14,16 +14,6 @@ const links = [
             icon: 'i-lucide-plug',
             to: '/dashboard/settings/integrations'
         },
-        {
-            label: 'Мэдэгдэл',
-            icon: 'i-lucide-bell',
-            to: '/dashboard/settings/notifications'
-        },
-        {
-            label: 'Нууцлал',
-            icon: 'i-lucide-shield',
-            to: '/dashboard/settings/security'
-        }
     ]
 ] satisfies NavigationMenuItem[][]
 </script>

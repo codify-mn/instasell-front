@@ -7,7 +7,7 @@ const links = [
     [
         {
             label: 'Нүүр',
-            icon: 'i-lucide-house',
+            icon: 'i-lucide-layout-grid',
             to: '/dashboard',
             onSelect: () => {
                 open.value = false
@@ -21,11 +21,13 @@ const links = [
             onSelect: () => {
                 open.value = false
             }
-        },
+        }
+    ],
+    [
         {
-            label: 'Автоматжуулалт',
-            icon: 'i-lucide-wand-sparkles',
-            to: '/dashboard/automation',
+            label: 'Захиалга',
+            icon: 'i-lucide-shopping-bag',
+            to: '/dashboard/orders',
             onSelect: () => {
                 open.value = false
             }
@@ -39,21 +41,15 @@ const links = [
             }
         },
         {
-            label: 'Захиалга',
-            icon: 'i-lucide-shopping-cart',
-            to: '/dashboard/orders',
-            onSelect: () => {
-                open.value = false
-            }
-        },
-        {
             label: 'Хэрэглэгчид',
             icon: 'i-lucide-users',
             to: '/dashboard/customers',
             onSelect: () => {
                 open.value = false
             }
-        },
+        }
+    ],
+    [
         {
             label: 'Тохиргоо',
             to: '/dashboard/settings',
@@ -75,33 +71,19 @@ const links = [
                     onSelect: () => {
                         open.value = false
                     }
-                },
-                {
-                    label: 'Мэдэгдэл',
-                    to: '/dashboard/settings/notifications',
-                    onSelect: () => {
-                        open.value = false
-                    }
-                },
-                {
-                    label: 'Нууцлал',
-                    to: '/dashboard/settings/security',
-                    onSelect: () => {
-                        open.value = false
-                    }
                 }
             ]
         },
         {
             label: 'Үйлчилгээний эрх',
             to: '/dashboard/billing',
+            icon: 'i-lucide-credit-card',
             defaultOpen: false,
             type: 'trigger',
             children: [
                 {
                     label: 'Идэвхтэй багц',
                     to: '/dashboard/billing',
-                    icon: 'i-lucide-credit-card',
                     exact: true,
                     onSelect: () => {
                         open.value = false
@@ -162,7 +144,7 @@ const groups = computed(() => [
 
                 <UNavigationMenu
                     :collapsed="collapsed"
-                    :items="links[0]"
+                    :items="links"
                     orientation="vertical"
                     tooltip
                     popover
