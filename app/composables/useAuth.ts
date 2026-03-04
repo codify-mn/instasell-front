@@ -94,7 +94,7 @@ const _useAuth = () => {
                 user.value = data.user
                 return true
             }
-            return false
+            return false    
         } catch (error: any) {
             console.log('[loginWithEmail] error.data:', error.data)
             if (error.data?.requires_verification && error.data?.email) {
