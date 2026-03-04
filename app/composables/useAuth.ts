@@ -96,7 +96,10 @@ const _useAuth = () => {
             }
             return false
         } catch (error: any) {
-            if (error.data?.error) {
+            console.log('[loginWithEmail] error.data:', error.data)
+            if (error.data?.requires_verification && error.data?.email) {
+                pendingVerificationEmail.value = error.data.email
+            } else if (error.data?.error) {
                 authError.value = error.data.error
             } else {
                 authError.value = 'Login failed. Please try again.'

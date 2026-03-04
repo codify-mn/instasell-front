@@ -749,6 +749,6 @@ onMounted(() => {
         <ProductBulkImportModal v-model:open="bulkImportModalOpen" @success="onImportSuccess" />
 
         <!-- Post to Facebook Modal -->
-        <!-- <ProductPostModal v-model:open="postModalOpen" :product-id="postModalProductId" /> -->
+        <ProductPostModal v-model:open="postModalOpen" :product-id="postModalProductId" />
     </div>
 </template>
