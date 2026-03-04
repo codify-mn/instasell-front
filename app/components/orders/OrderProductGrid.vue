@@ -61,7 +61,7 @@ watch(searchKeyword, () => {
 })
 
 const getProductImage = (product: Product): string | null => {
-    return product.variants?.[0]?.images?.[0] || null
+    return product.images?.[0] || null
 }
 
 const getProductPrice = (product: Product): number => {
@@ -147,7 +147,7 @@ onMounted(() => {
                         :src="getProductImage(product)!"
                         :alt="product.name"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
+                    >
                     <div v-else class="w-full h-full flex items-center justify-center">
                         <UIcon
                             name="i-lucide-package"

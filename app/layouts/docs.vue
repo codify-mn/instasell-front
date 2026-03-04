@@ -61,7 +61,7 @@ watch(
                                 placeholder="Хайх... (⌘K)"
                                 class="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border-0 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/30 focus:bg-white dark:focus:bg-gray-900 transition-all"
                                 @focus="isSearchOpen = true"
-                            />
+                            >
                         </div>
                     </div>
 

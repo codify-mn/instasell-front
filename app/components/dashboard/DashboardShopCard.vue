@@ -37,7 +37,7 @@ defineProps<Props>()
                     :src="logoUrl"
                     :alt="shopName"
                     class="w-10 h-10 object-contain rounded-lg"
-                />
+                >
                 <UIcon v-else name="i-lucide-store" class="w-7 h-7 text-primary-600" />
             </div>
 

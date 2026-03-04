@@ -121,7 +121,7 @@ const handleAdd = async (product: Product) => {
             method: 'POST',
             body: {
                 product_id: product.id,
-                keyword: product.variants?.[0]?.keyword || product.search_keywords || ''
+                keyword: product.keyword || product.search_keywords || ''
             },
             credentials: 'include'
         })
@@ -202,9 +202,7 @@ const handleQuickCreate = async () => {
             variants: [
                 {
                     name: 'Default',
-                    keyword: quickCreateForm.keyword,
-                    stock_quantity: quickCreateForm.stock_quantity,
-                    is_main: true
+                    stock_quantity: quickCreateForm.stock_quantity
                 }
             ]
         }

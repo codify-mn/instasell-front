@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import type { VariantData } from '~/components/products/ProductVariantForm.vue'
 
 useSeoMeta({
     title: 'Бараа нэмэх - Instasell'
@@ -13,8 +12,6 @@ const router = useRouter()
 
 const loading = ref(false)
 const images = ref<string[]>([])
-const variants = ref<VariantData[]>([])
-const activeTabIndex = ref(0)
 
 const schema = z.object({
     name: z.string().min(1, 'Нэр оруулна уу'),
@@ -22,7 +19,8 @@ const schema = z.object({
     price: z.number().min(0, 'Үнэ 0-ээс бага байж болохгүй'),
     status: z.string().default('active'),
     track_inventory: z.boolean().default(true),
-    has_variants: z.boolean().default(false),
+    keyword: z.string().min(1, 'Түлхүүр үг оруулна уу'),
+    stock_quantity: z.number().min(0).default(0),
 
     // Quantity-based discount
     bulk_discount_enabled: z.boolean().default(false),
@@ -47,7 +45,8 @@ const state = reactive<Schema>({
     price: 0,
     status: 'active',
     track_inventory: true,
-    has_variants: false,
+    keyword: '',
+    stock_quantity: 0,
     bulk_discount_enabled: false,
     bulk_discount_quantity: 3,
     bulk_discount_price: null,
@@ -76,6 +75,35 @@ watch(
     }
 )
 
+const keywordDirty = ref(false)
+
+const options = ref<{ name: string; stock: number }[]>([])
+
+const addOption = () => {
+    options.value.push({ name: '', stock: 0 })
+}
+
+const removeOption = (index: number) => {
+    options.value.splice(index, 1)
+}
+
+const generateKeyword = (name: string) => {
+    return name
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\u0400-\u04FF-]/g, '')
+        .slice(0, 50)
+}
+
+watch(
+    () => state.name,
+    (newName) => {
+        if (!keywordDirty.value) {
+            state.keyword = generateKeyword(newName)
+        }
+    }
+)
+
 // Computed: Check if timed sale will activate immediately (no dates set)
 const timedSaleActivatesImmediately = computed(() => {
     return state.timed_sale_enabled && !state.timed_sale_start && !state.timed_sale_end
@@ -97,69 +125,6 @@ const bulkDiscountPercent = computed(() => {
     return 0
 })
 
-// Variant management
-const createEmptyVariant = (): VariantData => ({
-    name: '',
-    keyword: '',
-    sku: '',
-    barcode: null,
-    stock_quantity: 0,
-    low_stock_alert: 10,
-    is_active: true,
-    images: []
-})
-
-const addVariant = () => {
-    variants.value.push(createEmptyVariant())
-    state.has_variants = true
-    activeTabIndex.value = variants.value.length - 1
-}
-
-const removeVariant = (index: number) => {
-    if (variants.value.length <= 1) {
-        toast.add({
-            title: 'Анхааруулга',
-            description: 'Бараа дор хаяж нэг төрөлтэй байх ёстой',
-            color: 'warning'
-        })
-        return
-    }
-
-    if (activeTabIndex.value === index) {
-        if (index > 0) {
-            activeTabIndex.value = index - 1
-        } else if (variants.value.length > 1) {
-            activeTabIndex.value = 0
-        }
-    } else if (activeTabIndex.value > index) {
-        activeTabIndex.value--
-    }
-
-    variants.value.splice(index, 1)
-}
-
-const duplicateVariant = (index: number) => {
-    const original = variants.value[index]
-    const copy = JSON.parse(JSON.stringify(original))
-    delete copy.id
-    if (copy.sku) copy.sku = `${copy.sku}-COPY`
-    if (copy.barcode) copy.barcode = `${copy.barcode}-COPY`
-
-    variants.value.splice(index + 1, 0, copy)
-    activeTabIndex.value = index + 1
-}
-
-const handleVariantUpdate = (index: number, data: VariantData) => {
-    variants.value[index] = data
-}
-
-const currentVariant = computed(() => {
-    if (variants.value.length > 0 && activeTabIndex.value < variants.value.length) {
-        return variants.value[activeTabIndex.value]
-    }
-    return null
-})
-
 const statusOptions = [
     { label: 'Идэвхтэй', value: 'active' },
     { label: 'Ноорог', value: 'draft' },
@@ -167,12 +132,12 @@ const statusOptions = [
 ]
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-    if (state.has_variants && variants.value.length > 0) {
-        const invalidVariants = variants.value.filter((v) => !v.name || !v.keyword)
-        if (invalidVariants.length > 0) {
+    if (options.value.length > 0) {
+        const emptyOption = options.value.find(o => !o.name.trim())
+        if (emptyOption) {
             toast.add({
                 title: 'Алдаа',
-                description: 'Бүх төрлийн нэр болон Түлхүүр үг оруулна уу',
+                description: 'Бүх сонголтын нэрийг оруулна уу',
                 color: 'error'
             })
             return
@@ -182,15 +147,24 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     loading.value = true
 
     try {
+        const { keyword, stock_quantity, ...productData } = event.data
         const product = await createProduct({
-            ...event.data,
+            ...productData,
+            has_variants: options.value.length > 0,
+            keyword,
+            stock_quantity: options.value.length > 0 ? 0 : stock_quantity,
             images: images.value,
-            variants: variants.value,
-            timed_sale_start: event.data.timed_sale_start
-                ? new Date(event.data.timed_sale_start).toISOString()
+            variants: options.value.length > 0
+                ? options.value.map(o => ({
+                    name: o.name.trim(),
+                    stock_quantity: o.stock
+                }))
+                : [],
+            timed_sale_start: productData.timed_sale_start
+                ? new Date(productData.timed_sale_start).toISOString()
                 : null,
-            timed_sale_end: event.data.timed_sale_end
-                ? new Date(event.data.timed_sale_end).toISOString()
+            timed_sale_end: productData.timed_sale_end
+                ? new Date(productData.timed_sale_end).toISOString()
                 : null
         })
 
@@ -211,10 +185,6 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         loading.value = false
     }
 }
-
-onMounted(() => {
-    addVariant()
-})
 </script>
 
 <template>
@@ -290,6 +260,81 @@ onMounted(() => {
                                                     </template>
                                                 </UInput>
                                             </UFormField>
+
+                                            <!-- Keyword (always visible) -->
+                                            <UFormField label="Түлхүүр үг" name="keyword" required>
+                                                <UInput
+                                                    v-model="state.keyword"
+                                                    placeholder="бараа-нэр"
+                                                    size="lg"
+                                                    @update:model-value="keywordDirty = true"
+                                                >
+                                                    <template #trailing>
+                                                        <UTooltip text="Комментоос энэ үгийг ашиглан барааг таньдаг">
+                                                            <UIcon name="i-lucide-wand-sparkles" class="w-4 h-4 text-primary-400" />
+                                                        </UTooltip>
+                                                    </template>
+                                                </UInput>
+                                            </UFormField>
+
+                                            <!-- Stock (shown only when no options) -->
+                                            <UFormField v-if="options.length === 0" label="Үлдэгдэл" name="stock_quantity">
+                                                <UInput
+                                                    v-model.number="state.stock_quantity"
+                                                    type="number"
+                                                    placeholder="0"
+                                                    size="lg"
+                                                >
+                                                    <template #trailing>
+                                                        <span class="text-gray-400 text-sm">ш</span>
+                                                    </template>
+                                                </UInput>
+                                            </UFormField>
+
+                                            <!-- Options list (shown when options exist) -->
+                                            <div v-if="options.length > 0" class="space-y-2">
+                                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Сонголтууд</p>
+                                                <div
+                                                    v-for="(option, index) in options"
+                                                    :key="index"
+                                                    class="flex items-center gap-2"
+                                                >
+                                                    <UInput
+                                                        v-model="option.name"
+                                                        placeholder="S / M / L / XL"
+                                                        class="flex-1"
+                                                        :ui="{ base: !option.name.trim() ? 'ring-red-500' : '' }"
+                                                    />
+                                                    <UInput
+                                                        v-model.number="option.stock"
+                                                        type="number"
+                                                        placeholder="0"
+                                                        class="w-24"
+                                                    >
+                                                        <template #trailing>
+                                                            <span class="text-gray-400 text-sm">ш</span>
+                                                        </template>
+                                                    </UInput>
+                                                    <UButton
+                                                        icon="i-lucide-x"
+                                                        color="neutral"
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        @click="removeOption(index)"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <!-- Add option button (always visible) -->
+                                            <UButton
+                                                icon="i-lucide-plus"
+                                                color="neutral"
+                                                variant="ghost"
+                                                size="sm"
+                                                @click="addOption"
+                                            >
+                                                Сонголт нэмэх
+                                            </UButton>
 
                                             <!-- Sale Options Row -->
                                             <div class="grid grid-cols-2 gap-3">
@@ -598,84 +643,14 @@ onMounted(() => {
                                     </div>
                                 </ProductFormCard>
 
-                                <!-- Variants Section -->
-                                <ProductFormCard title="Барааны төрлүүд">
-                                    <div v-if="variants.length > 0">
-                                        <!-- Chrome-style Tabs -->
-                                        <div class="chrome-tabs">
-                                            <div
-                                                class="flex items-end gap-0.5 px-2 pt-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg overflow-x-auto"
-                                            >
-                                                <div
-                                                    v-for="(variant, index) in variants"
-                                                    :key="`tab-${index}`"
-                                                    class="chrome-tab group"
-                                                    :class="
-                                                        activeTabIndex === index ? 'active' : ''
-                                                    "
-                                                    @click="activeTabIndex = index"
-                                                >
-                                                    <div class="tab-content">
-                                                        <UIcon
-                                                            name="i-lucide-layers"
-                                                            class="w-3.5 h-3.5 flex-shrink-0"
-                                                            :class="
-                                                                activeTabIndex === index
-                                                                    ? 'text-primary-600 dark:text-primary-400'
-                                                                    : 'text-gray-400'
-                                                            "
-                                                        />
-                                                        <span class="tab-title">
-                                                            {{
-                                                                variant.name || `Төрөл ${index + 1}`
-                                                            }}
-                                                        </span>
-                                                        <button
-                                                            v-if="variants.length > 1"
-                                                            type="button"
-                                                            class="tab-close"
-                                                            @click.stop="removeVariant(index)"
-                                                        >
-                                                            <UIcon
-                                                                name="i-lucide-x"
-                                                                class="w-3 h-3"
-                                                            />
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Add Tab Button -->
-                                                <button
-                                                    type="button"
-                                                    class="flex items-center justify-center w-7 h-7 mb-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors"
-                                                    @click="addVariant"
-                                                >
-                                                    <UIcon name="i-lucide-plus" class="w-4 h-4" />
-                                                </button>
-                                            </div>
-
-                                            <!-- Tab Content -->
-                                            <div class="tab-panel">
-                                                <ProductVariantForm
-                                                    v-if="currentVariant"
-                                                    :model-value="currentVariant"
-                                                    :index="activeTabIndex"
-                                                    :product-name="state.name"
-                                                    :can-remove="variants.length > 0"
-                                                    @update:model-value="
-                                                        handleVariantUpdate(activeTabIndex, $event)
-                                                    "
-                                                    @remove="removeVariant(activeTabIndex)"
-                                                    @duplicate="duplicateVariant(activeTabIndex)"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ProductFormCard>
                             </div>
 
                             <!-- Right Column - Sidebar -->
                             <div class="space-y-6">
+                                <ProductFormCard title="Зураг">
+                                    <ProductImageUpload v-model="images" />
+                                </ProductFormCard>
+
                                 <ProductFormCard title="Барааны төлөв" required>
                                     <USelect
                                         v-model="state.status"
@@ -714,127 +689,3 @@ onMounted(() => {
         </UDashboardPanel>
     </div>
 </template>
-
-<style scoped>
-/* Chrome-style Tabs */
-.chrome-tabs {
-    --tab-height: 36px;
-    --tab-radius: 8px;
-}
-
-.chrome-tab {
-    position: relative;
-    height: var(--tab-height);
-    min-width: 100px;
-    max-width: 180px;
-    padding: 0 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: flex-end;
-}
-
-.chrome-tab .tab-content {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: 100%;
-    height: calc(var(--tab-height) - 4px);
-    padding: 0 12px;
-    background: linear-gradient(to bottom, #e5e7eb 0%, #d1d5db 100%);
-    border-radius: var(--tab-radius) var(--tab-radius) 0 0;
-    transition: all 0.15s ease;
-}
-
-:root.dark .chrome-tab .tab-content {
-    background: linear-gradient(to bottom, #374151 0%, #1f2937 100%);
-}
-
-.chrome-tab:hover .tab-content {
-    background: linear-gradient(to bottom, #f3f4f6 0%, #e5e7eb 100%);
-}
-
-:root.dark .chrome-tab:hover .tab-content {
-    background: linear-gradient(to bottom, #4b5563 0%, #374151 100%);
-}
-
-.chrome-tab.active .tab-content {
-    background: white;
-    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.08);
-}
-
-:root.dark .chrome-tab.active .tab-content {
-    background: #111827;
-}
-
-.chrome-tab .tab-title {
-    flex: 1;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #4b5563;
-}
-
-:root.dark .chrome-tab .tab-title {
-    color: #9ca3af;
-}
-
-.chrome-tab.active .tab-title {
-    color: #111827;
-}
-
-:root.dark .chrome-tab.active .tab-title {
-    color: #f3f4f6;
-}
-
-.chrome-tab .tab-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    opacity: 0;
-    transition: all 0.15s ease;
-    color: #6b7280;
-    flex-shrink: 0;
-}
-
-.chrome-tab:hover .tab-close,
-.chrome-tab.active .tab-close {
-    opacity: 0.7;
-}
-
-.chrome-tab .tab-close:hover {
-    opacity: 1;
-    background: #e5e7eb;
-}
-
-:root.dark .chrome-tab .tab-close:hover {
-    background: #374151;
-}
-
-.tab-panel {
-    background: white;
-    border-radius: 0 var(--tab-radius) var(--tab-radius) var(--tab-radius);
-    padding: 16px;
-    border: 1px solid #e5e7eb;
-    border-top: none;
-}
-
-:root.dark .tab-panel {
-    background: #111827;
-    border-color: #374151;
-}
-
-/* Hide scrollbar */
-.chrome-tabs .flex {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.chrome-tabs .flex::-webkit-scrollbar {
-    display: none;
-}
-</style>

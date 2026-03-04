@@ -51,14 +51,6 @@ const links = [
     ],
     [
         {
-            label: 'Тохиргоо',
-            to: '/dashboard/settings',
-            icon: 'i-lucide-settings',
-            onSelect: () => {
-                open.value = false
-            }
-        },
-        {
             label: 'Үйлчилгээний эрх',
             to: '/dashboard/billing',
             icon: 'i-lucide-credit-card',
@@ -88,6 +80,14 @@ const links = [
                     }
                 }
             ]
+        },
+        {
+            label: 'Тохиргоо',
+            to: '/dashboard/settings',
+            icon: 'i-lucide-settings',
+            onSelect: () => {
+                open.value = false
+            }
         }
     ]
 ] satisfies NavigationMenuItem[][]

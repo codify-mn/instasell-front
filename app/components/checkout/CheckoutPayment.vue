@@ -95,7 +95,7 @@ watch(
                         :src="'data:image/png;base64,' + qpayData.qr_image"
                         alt="QPay QR Code"
                         class="w-48 h-48"
-                    />
+                    >
                 </div>
             </div>
 
@@ -117,7 +117,7 @@ watch(
                             :src="link.logo"
                             :alt="link.name"
                             class="w-8 h-8 rounded-lg object-contain"
-                        />
+                        >
                         <span class="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
                             {{ link.name }}
                         </span>

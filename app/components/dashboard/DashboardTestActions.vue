@@ -44,7 +44,7 @@ const createTestOrder = async () => {
         const product = products[0]
         if (!product) return
 
-        const variant = product.variants?.[0] || { id: 0, name: 'Default', sku: 'TEST' }
+        const variant = product.variants?.[0] || { id: 0, name: 'Default' }
 
         const orderData = {
             customer_name: 'Туршилтын Хэрэглэгч',
@@ -53,7 +53,7 @@ const createTestOrder = async () => {
                 {
                     product_id: product.id,
                     variant_id: variant.id,
-                    sku: variant.sku || 'TEST',
+                    sku: product.keyword || 'TEST',
                     name: product.name,
                     options: variant.name || '',
                     price: product.price,

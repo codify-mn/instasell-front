@@ -37,7 +37,7 @@ watch(live, (l) => {
 provide('activeProductId', activeProductId)
 
 const handleProductSelect = (product: Product) => {
-    const imageUrl = product.variants?.[0]?.images?.[0] || null
+    const imageUrl = product.images?.[0] || null
     webrtc.canvasStream.updateProduct({
         name: product.name,
         price: product.price,

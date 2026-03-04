@@ -297,10 +297,10 @@ const formatDate = (dateStr: string) => {
                                     >
                                         <UCheckbox :model-value="liveForm.product_ids.includes(product.id)" @click.stop="toggleProduct(product.id)" />
                                         <img
-                                            v-if="product.variants?.[0]?.images?.length"
-                                            :src="product.variants[0].images[0]"
+                                            v-if="product.images?.length"
+                                            :src="product.images[0]"
                                             class="w-8 h-8 rounded object-cover shrink-0"
-                                        />
+                                        >
                                         <div v-else class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 shrink-0" />
                                         <span class="text-sm truncate flex-1">{{ product.name }}</span>
                                     </div>

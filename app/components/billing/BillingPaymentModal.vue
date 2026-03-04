@@ -95,7 +95,7 @@ function handleCheckPayment() {
                                 :src="qrImageSrc"
                                 alt="QPay QR Code"
                                 class="w-48 h-48"
-                            />
+                            >
                             <div
                                 v-else
                                 class="w-48 h-48 flex items-center justify-center bg-gray-100 rounded"
@@ -126,7 +126,7 @@ function handleCheckPayment() {
                                     :src="link.logo"
                                     :alt="link.name"
                                     class="w-10 h-10 rounded-lg object-cover"
-                                />
+                                >
                                 <span class="text-[10px] text-gray-500 text-center line-clamp-1">{{
                                     link.name
                                 }}</span>

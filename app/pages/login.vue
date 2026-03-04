@@ -137,7 +137,7 @@ const features = [
                 <div class="max-w-lg">
                     <h1 class="text-4xl xl:text-5xl font-bold mb-6 leading-tight">
                         Live худалдааг
-                        <br />
+                        <br >
                         автоматжуулаарай
                     </h1>
                     <p class="text-lg text-white/80 mb-10">

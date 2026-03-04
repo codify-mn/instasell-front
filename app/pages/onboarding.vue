@@ -381,7 +381,7 @@ async function onSubmit() {
                                             type="radio"
                                             :value="page"
                                             class="sr-only"
-                                        />
+                                        >
                                         <div
                                             class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                                             :class="
@@ -394,7 +394,7 @@ async function onSubmit() {
                                                 :src="page.profile_picture"
                                                 alt=""
                                                 class="w-full h-full object-cover"
-                                            />
+                                            >
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p

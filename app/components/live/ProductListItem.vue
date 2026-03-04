@@ -60,11 +60,11 @@ const isAdded = computed(() => {
             class="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700"
         >
             <img
-                v-if="product.variants?.[0]?.images?.length"
-                :src="product.variants[0].images[0]"
+                v-if="product.images?.length"
+                :src="product.images[0]"
                 :alt="product.name"
                 class="w-full h-full object-cover"
-            />
+            >
             <ImagePlaceholder v-else :width="48" :height="48" class="h-full w-full" />
         </div>
 

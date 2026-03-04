@@ -126,7 +126,7 @@ const addImageUrl = () => {
                 :key="index"
                 class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 group ring-1 ring-gray-200 dark:ring-gray-700"
             >
-                <img :src="img" class="w-full h-full object-cover" alt="" />
+                <img :src="img" class="w-full h-full object-cover" alt="" >
                 <div
                     class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                 >
@@ -210,7 +210,7 @@ const addImageUrl = () => {
                 multiple
                 class="hidden"
                 @change="handleFileSelect"
-            />
+            >
 
             <div v-if="uploading" class="flex flex-col items-center">
                 <UIcon

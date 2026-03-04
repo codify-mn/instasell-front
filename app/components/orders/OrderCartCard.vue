@@ -39,7 +39,7 @@ const total = computed(() => {
 })
 
 const getVariantImage = (item: CartItem): string | null => {
-    return item.variant.images?.[0] || item.product.variants?.[0]?.images?.[0] || null
+    return item.product.images?.[0] || null
 }
 
 const incrementQuantity = (index: number) => {
@@ -92,7 +92,7 @@ const decrementQuantity = (index: number) => {
                         :src="getVariantImage(item)!"
                         :alt="item.product.name"
                         class="w-full h-full object-cover"
-                    />
+                    >
                     <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-gray-400" />
                 </div>
 

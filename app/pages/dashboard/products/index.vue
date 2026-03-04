@@ -113,7 +113,10 @@ const loadCategories = async () => {
 }
 
 const getStock = (product: Product): number => {
-    return product.variants?.reduce((sum, v) => sum + v.stock_quantity, 0) || 0
+    if (product.has_variants && product.variants?.length) {
+        return product.variants.reduce((sum, v) => sum + v.stock_quantity, 0)
+    }
+    return product.stock_quantity ?? 0
 }
 
 const getStockLabel = (product: Product): string => {
@@ -524,11 +527,11 @@ onMounted(() => {
                             class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden shrink-0"
                         >
                             <img
-                                v-if="row.original.variants?.[0]?.images?.length"
-                                :src="row.original.variants[0].images[0]"
+                                v-if="row.original.images?.length"
+                                :src="row.original.images[0]"
                                 :alt="row.original.name"
                                 class="w-full h-full object-cover"
-                            />
+                            >
                             <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-gray-400" />
                         </div>
                         <span class="font-medium text-gray-900 dark:text-white">

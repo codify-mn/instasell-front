@@ -105,7 +105,7 @@ function addUpsellItem(product: Product) {
         return
     }
 
-    const variant = product.variants?.find((v) => v.is_active) || undefined
+    const variant = product.variants?.find((v) => v.stock_quantity > 0) || undefined
 
     upsellCart.value.push({
         product,
@@ -607,11 +607,11 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                         class="w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 overflow-hidden shrink-0"
                                     >
                                         <img
-                                            v-if="product.variants?.[0]?.images?.[0]"
-                                            :src="product.variants[0].images[0]"
+                                            v-if="product.images?.[0]"
+                                            :src="product.images[0]"
                                             :alt="product.name"
                                             class="w-full h-full object-cover"
-                                        />
+                                        >
                                         <div
                                             v-else
                                             class="w-full h-full flex items-center justify-center"

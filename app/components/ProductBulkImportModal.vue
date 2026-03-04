@@ -260,7 +260,7 @@ watch(isOpen, (newVal) => {
                                 accept=".xlsx,.xls"
                                 class="hidden"
                                 @change="handleFileSelect"
-                            />
+                            >
 
                             <div v-if="file" class="flex flex-col items-center gap-2">
                                 <UIcon

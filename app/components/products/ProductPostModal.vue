@@ -553,7 +553,7 @@ watch(
                             :value="bgColor"
                             class="w-8 h-8 rounded cursor-pointer border-0"
                             @input="onColorChange(($event.target as HTMLInputElement).value)"
-                        />
+                        >
                     </div>
                 </div>
 
@@ -569,7 +569,7 @@ watch(
                             alt="Preview"
                             class="w-full h-full object-contain"
                             crossorigin="use-credentials"
-                        />
+                        >
                     </div>
                 </div>
                 <div

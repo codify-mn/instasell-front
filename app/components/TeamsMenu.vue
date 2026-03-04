@@ -16,7 +16,7 @@ const shop = useShop()
                 :src="shop.picture"
                 :alt="shop?.name"
                 class="w-full h-full rounded-xl object-cover"
-            />
+            >
             <UIcon v-else name="i-lucide-store" class="w-4.5 h-4.5 text-white" />
         </div>
 

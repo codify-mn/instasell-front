@@ -305,7 +305,7 @@ async function submit() {
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                     ]"
                 >
-                    <input v-model="merchantType" type="radio" value="person" class="sr-only" />
+                    <input v-model="merchantType" type="radio" value="person" class="sr-only" >
                     <UIcon
                         name="i-lucide-user"
                         class="w-5 h-5"
@@ -328,7 +328,7 @@ async function submit() {
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                     ]"
                 >
-                    <input v-model="merchantType" type="radio" value="company" class="sr-only" />
+                    <input v-model="merchantType" type="radio" value="company" class="sr-only" >
                     <UIcon
                         name="i-lucide-building-2"
                         class="w-5 h-5"

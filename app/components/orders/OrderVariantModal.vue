@@ -93,8 +93,8 @@ const handleClose = () => {
     quantities.value = {}
 }
 
-const getVariantImage = (variant: ProductVariant): string | null => {
-    return variant.images?.[0] || null
+const getVariantImage = (_variant: ProductVariant): string | null => {
+    return props.product?.images?.[0] || null
 }
 
 const getEffectivePrice = (): number => {
@@ -153,7 +153,7 @@ const isOutOfStock = (variant: ProductVariant): boolean => {
                                 :src="getVariantImage(variant)!"
                                 :alt="variant.name"
                                 class="w-full h-full object-cover"
-                            />
+                            >
                             <UIcon v-else name="i-lucide-package" class="w-6 h-6 text-gray-400" />
                         </div>
 
@@ -214,7 +214,7 @@ const isOutOfStock = (variant: ProductVariant): boolean => {
                                         Number(($event.target as HTMLInputElement).value)
                                     )
                                 "
-                            />
+                            >
                             <UButton
                                 icon="i-lucide-plus"
                                 color="neutral"

@@ -161,7 +161,7 @@ onMounted(() => {
                             class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 fade-in-up fade-in-up-delay-1"
                         >
                             <span class="text-gray-900 dark:text-white">Цаг хэмнэ.</span>
-                            <br />
+                            <br >
                             <span class="text-gradient">Орлого нэмэгдүүл.</span>
                         </h1>
 
@@ -642,7 +642,7 @@ onMounted(() => {
                                 :src="testimonial.avatar"
                                 :alt="testimonial.author"
                                 class="w-12 h-12 rounded-full bg-gray-100"
-                            />
+                            >
                             <div>
                                 <div class="font-semibold text-gray-900 dark:text-white">
                                     {{ testimonial.author }}
@@ -693,7 +693,7 @@ onMounted(() => {
                         </h2>
                         <p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
                             14 хоногийн үнэгүй туршилт. Карт шаардлагагүй.
-                            <br />
+                            <br >
                             5 минутад бүртгүүлж, шууд эхлээрэй.
                         </p>
 

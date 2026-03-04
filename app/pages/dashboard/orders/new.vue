@@ -184,7 +184,7 @@ const buildOrderItems = () => {
     return cartItems.value.map((item) => ({
         product_id: item.product.id,
         variant_id: item.variant.id,
-        sku: item.variant.sku || item.variant.keyword || '',
+        sku: item.product.keyword || '',
         name: item.product.name,
         options: item.variant.name,
         price:

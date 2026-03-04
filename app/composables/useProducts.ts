@@ -7,6 +7,9 @@ export interface Product {
     tags: string[]
     track_inventory: boolean
     has_variants: boolean
+    keyword: string
+    stock_quantity: number
+    images: string[]
     search_keywords: string
     variants: ProductVariant[]
     created_at: string
@@ -34,16 +37,8 @@ export interface ProductVariant {
     id: number
     product_id: number
     shop_id: number
-    keyword: string // Required for comment identification
-    sku?: string // Optional
-    barcode: string | null
     name: string
-    options: Record<string, string>
     stock_quantity: number
-    low_stock_alert: number
-    is_active: boolean
-    is_main: boolean // Marks the main variant for listing
-    images: string[]
 }
 
 export interface ProductsResponse {
@@ -72,6 +67,8 @@ export interface CreateProductInput {
     track_inventory?: boolean
     has_variants?: boolean
     status?: string
+    keyword?: string
+    stock_quantity?: number
     variants?: CreateVariantInput[]
 
     // Quantity-based discount
@@ -87,24 +84,13 @@ export interface CreateProductInput {
 }
 
 export interface CreateVariantInput {
-    id?: number // Required for updates
     name: string
-    keyword: string
-    sku?: string // Optional
-    barcode?: string | null
-    options?: Record<string, string>
     stock_quantity: number
-    low_stock_alert?: number
-    is_main?: boolean // Marks the main variant
 }
 
 export interface UpdateVariantInput {
     name?: string
-    keyword?: string
-    sku?: string
-    barcode?: string | null
     stock_quantity?: number
-    low_stock_alert?: number
 }
 
 export interface ImportError {
