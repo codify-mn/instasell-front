@@ -156,12 +156,7 @@ watch(
                         :navigation="navigation"
                         highlight
                         :ui="{
-                            wrapper: 'space-y-6',
-                            list: 'space-y-1',
-                            label: 'text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3',
-                            link: 'flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors',
-                            linkActive:
-                                'bg-primary-50 dark:bg-primary-950/50 text-primary-600 dark:text-primary-400 font-medium'
+                            link: 'flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors'
                         }"
                     />
                 </nav>
@@ -213,9 +208,7 @@ watch(
                     </h3>
                     <UContentToc
                         :ui="{
-                            wrapper: 'space-y-2',
-                            link: 'block text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors py-1',
-                            linkActive: 'text-primary-500 font-medium'
+                            link: 'block text-sm text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors py-1'
                         }"
                     />
                 </div>

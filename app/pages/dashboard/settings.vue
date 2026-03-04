@@ -1,21 +1,4 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
-
-const links = [
-    [
-        {
-            label: 'Дэлгүүр',
-            icon: 'i-lucide-store',
-            to: '/dashboard/settings',
-            exact: true
-        },
-        {
-            label: 'Холболт',
-            icon: 'i-lucide-plug',
-            to: '/dashboard/settings/integrations'
-        },
-    ]
-] satisfies NavigationMenuItem[][]
 </script>
 
 <template>
@@ -27,11 +10,6 @@ const links = [
                         <UDashboardSidebarCollapse />
                     </template>
                 </UDashboardNavbar>
-
-                <UDashboardToolbar>
-                    <!-- NOTE: The `-mx-1` class is used to align with the `DashboardSidebarCollapse` button here. -->
-                    <UNavigationMenu :items="links" highlight class="-mx-1 flex-1" />
-                </UDashboardToolbar>
             </template>
 
             <template #body>

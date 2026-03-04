@@ -42,7 +42,7 @@ const chartData = computed(() => {
             if (!item) return
             const index = defaultDays.findIndex((d) => d.date === item.label)
             if (index !== -1) {
-                defaultDays[index].value = item.value || 0
+                defaultDays[index]!.value = item.value || 0
             }
         })
         return defaultDays

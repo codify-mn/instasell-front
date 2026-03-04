@@ -140,7 +140,6 @@ async function handleNext() {
 
 async function nextStep() {
     // Step 1: Facebook connection validation
-    console.log('currentStep.value', currentStep.value)
     if (currentStep.value === 1) {
         if (!selectedPage.value) {
             toast.add({

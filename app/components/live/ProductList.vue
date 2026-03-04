@@ -116,7 +116,6 @@ onMounted(() => {
 })
 
 const handleAdd = async (product: Product) => {
-    console.log('Added product on live:', product)
     try {
         await $fetch(`${config.public.apiUrl}/api/live-sales/${route.params.liveID}/products`, {
             method: 'POST',

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { orderStats, productStats, revenueChart, isLoading, fetchAll } = useDashboardData()
+const { orderStats, productStats, customerStats, revenueChart, isLoading, fetchAll } = useDashboardData()
+const isDev = import.meta.dev
 const { resetTour } = useTour()
 
 const shop = useShop()
@@ -26,7 +27,7 @@ const deliveredOrders = computed(() => orderStats.value?.delivered_orders || 0)
 const totalOrders = computed(() => orderStats.value?.total_orders || 0)
 const totalRevenue = computed(() => orderStats.value?.total_revenue || 0)
 const totalProducts = computed(() => productStats.value?.total || 0)
-const totalCustomers = computed(() => 0) // TODO: Add customer stats endpoint
+const totalCustomers = computed(() => customerStats.value?.total || 0)
 
 // Required actions
 const requiredActions = computed(() => {
@@ -104,7 +105,7 @@ onMounted(() => {
                             label="Заавар"
                             @click="replayTour"
                         />
-                        <DashboardTestActions />
+                        <ClientOnly><DashboardTestActions v-if="isDev" /></ClientOnly>
                     </div>
                 </div>
 

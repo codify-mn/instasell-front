@@ -5,10 +5,38 @@ import { useShopSettings } from '~/composables/useShopSettings'
 import { useQPay } from '~/composables/useQPay'
 
 const { shop, isLoading, isSaving, fetchShop, updateShop } = useShopSettings()
+const shopData = useShop()
 const { status: qpayStatus, isLoading: qpayLoading, fetchStatus: fetchQPayStatus } = useQPay()
 
 const fileRef = ref<HTMLInputElement>()
 const config = useRuntimeConfig()
+const toast = useToast()
+const { user, fetchUser } = useAuth()
+
+// Integrations
+const isDisconnecting = ref(false)
+const isConnecting = ref(false)
+
+const disconnectFacebook = async () => {
+    isDisconnecting.value = true
+    try {
+        await $fetch(`${config.public.apiUrl}/api/connect/facebook`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        toast.add({ title: 'Амжилттай', description: 'Facebook салгагдлаа' })
+        await fetchUser()
+    } catch (e) {
+        toast.add({ title: 'Алдаа', description: 'Facebook салгахад алдаа гарлаа', color: 'error' })
+    } finally {
+        isDisconnecting.value = false
+    }
+}
+
+const connectFacebook = async () => {
+    isConnecting.value = true
+    await navigateTo(`${config.public.apiUrl}/api/connect/facebook`, { external: true })
+}
 const showQPayRegisterModal = ref(false)
 
 const shopSchema = z.object({
@@ -114,13 +142,42 @@ async function onSubmit(_event: FormSubmitEvent<ShopSchema>) {
 }
 
 async function onPasswordSubmit(_event: FormSubmitEvent<PasswordSchema>) {
-    // Password update logic would go here
-    console.log('Update password', password)
+    try {
+        await $fetch(`${config.public.apiUrl}/api/me/password`, {
+            method: 'PUT',
+            credentials: 'include',
+            body: {
+                current_password: password.current,
+                new_password: password.new
+            }
+        })
+        toast.add({ title: 'Амжилттай', description: 'Нууц үг амжилттай солигдлоо' })
+        password.current = undefined
+        password.new = undefined
+    } catch (err: any) {
+        toast.add({
+            title: 'Алдаа',
+            description: err.data?.error || 'Нууц үг солиход алдаа гарлаа',
+            color: 'error'
+        })
+    }
 }
 
-function onDeleteAccount() {
-    // Account deletion logic
-    console.log('Delete account requested')
+async function onDeleteAccount() {
+    try {
+        await $fetch(`${config.public.apiUrl}/api/me`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        toast.add({ title: 'Амжилттай', description: 'Таны бүртгэл устгагдлаа' })
+        await navigateTo('/login')
+    } catch (err: any) {
+        toast.add({
+            title: 'Алдаа',
+            description: err.data?.error || 'Бүртгэл устгахад алдаа гарлаа',
+            color: 'error'
+        })
+    }
 }
 
 async function saveSettings() {
@@ -310,7 +367,7 @@ function onFileClick() {
             </UPageCard>
 
             <!-- Section 2: Delivery Settings -->
-            <Delivery
+            <DeliveryOptions
                 v-model:delivery_type="state.delivery_type"
                 v-model:delivery_fee="state.delivery_fee"
                 v-model:free_delivery_over="state.free_delivery_over"
@@ -429,6 +486,67 @@ function onFileClick() {
                 >
                     <UInput v-model="state.comment_prefix" autocomplete="off" placeholder="#" />
                 </UFormField>
+            </UPageCard>
+
+            <!-- Section: Integrations -->
+            <UPageCard
+                title="Холболт"
+                description="Гадаад үйлчилгээтэй холбох тохиргоо."
+                variant="naked"
+                class="mb-4"
+            />
+
+            <UPageCard variant="subtle" class="mb-8">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center"
+                        >
+                            <UIcon
+                                name="i-simple-icons-facebook"
+                                class="w-6 h-6 text-blue-600 dark:text-blue-400"
+                            />
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 dark:text-white">Facebook</h4>
+                            <p v-if="user?.is_facebook_connected" class="text-sm text-gray-500">
+                                Холбогдсон:
+                                <span class="font-medium text-gray-900 dark:text-white">{{
+                                    shopData?.facebook_page?.page_name
+                                }}</span>
+                            </p>
+                            <p v-else class="text-sm text-gray-500">
+                                Facebook хуудасаа холбож захиалга болон бараагаа удирдаарай.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <UButton
+                            v-if="user?.is_facebook_connected"
+                            icon="i-heroicons-arrow-path"
+                            label="Дахин холбох"
+                            color="neutral"
+                            variant="subtle"
+                            :loading="isConnecting"
+                            @click="connectFacebook"
+                        />
+                        <UButton
+                            v-if="user?.is_facebook_connected"
+                            label="Салгах"
+                            color="error"
+                            variant="subtle"
+                            :loading="isDisconnecting"
+                            @click="disconnectFacebook"
+                        />
+                        <UButton
+                            v-else
+                            icon="i-simple-icons-facebook"
+                            label="Facebook холбох"
+                            :loading="isConnecting"
+                            @click="connectFacebook"
+                        />
+                    </div>
+                </div>
             </UPageCard>
 
             <!-- Section 5: Security -->

@@ -33,10 +33,10 @@ const items = computed(() => [
 ])
 
 const price = computed(() => {
-    if (props.product.variants[0]?.sale_price) {
-        return props.product.variants[0].sale_price
+    if (props.product.sale_price) {
+        return props.product.sale_price
     }
-    return props.product.variants[0]?.price ?? 0
+    return props.product.price ?? 0
 })
 
 const formattedPrice = computed(() => {

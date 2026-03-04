@@ -92,6 +92,21 @@ export const useDashboardData = () => {
         }
     }
 
+    const fetchCustomerStats = async () => {
+        try {
+            const data = await $fetch<{ customers: any[]; total: number }>(
+                `${config.public.apiUrl}/api/customers?size=1`,
+                { credentials: 'include' }
+            )
+            customerStats.value = {
+                total: data.total || 0,
+                this_month: 0
+            }
+        } catch (err: any) {
+            console.error('Failed to fetch customer stats:', err)
+        }
+    }
+
     const fetchLives = async () => {
         try {
             const data = await $fetch<{ lives: any[]; total: number }>(
@@ -125,7 +140,7 @@ export const useDashboardData = () => {
         error.value = null
 
         try {
-            await Promise.all([fetchOrderStats(), fetchProductStats(), fetchRevenueChart()])
+            await Promise.all([fetchOrderStats(), fetchProductStats(), fetchRevenueChart(), fetchCustomerStats()])
         } catch (err: any) {
             error.value = 'Failed to load dashboard data'
         } finally {
@@ -144,6 +159,7 @@ export const useDashboardData = () => {
         fetchAll,
         fetchOrderStats,
         fetchProductStats,
+        fetchCustomerStats,
         fetchRevenueChart,
         fetchLives
     }

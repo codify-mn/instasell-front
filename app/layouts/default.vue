@@ -54,25 +54,9 @@ const links = [
             label: 'Тохиргоо',
             to: '/dashboard/settings',
             icon: 'i-lucide-settings',
-            defaultOpen: false,
-            type: 'trigger',
-            children: [
-                {
-                    label: 'Дэлгүүр',
-                    to: '/dashboard/settings',
-                    exact: true,
-                    onSelect: () => {
-                        open.value = false
-                    }
-                },
-                {
-                    label: 'Холболт',
-                    to: '/dashboard/settings/integrations',
-                    onSelect: () => {
-                        open.value = false
-                    }
-                }
-            ]
+            onSelect: () => {
+                open.value = false
+            }
         },
         {
             label: 'Үйлчилгээний эрх',

@@ -12,7 +12,11 @@ export default defineNuxtConfig({
     ssr: false,
 
     devtools: {
-        enabled: true
+        enabled: process.env.NODE_ENV !== 'production'
+    },
+
+    ogImage: {
+        enabled: false
     },
 
     components: [
