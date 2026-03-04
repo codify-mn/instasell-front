@@ -2,13 +2,20 @@ import { createSharedComposable } from '@vueuse/core'
 import type { QPayBankAccount } from './useQPay'
 
 export interface ShopSettings {
-    auto_reply: boolean
-    reply_message: string
-    comment_prefix: string
+    // Automation
+    automation_enabled: boolean
+    trigger_keywords: string[]
+    like_comments: boolean
+    auto_comment_enabled: boolean
+    auto_comment_text: string
+    private_reply_enabled: boolean
+    private_reply_message: string
+    // Delivery
     delivery_type: string
     delivery_fee: number
     delivery_note: string
     free_delivery_over: number
+    // Order
     max_quantity_per_item: number
     unpaid_order_cancel_hours: number
     payment_methods?: string[]

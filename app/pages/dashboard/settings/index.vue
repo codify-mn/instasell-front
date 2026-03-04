@@ -63,14 +63,39 @@ const state = reactive({
     delivery_fee: 0,
     free_delivery_over: 0,
     delivery_note: '',
-    auto_reply: false,
-    reply_message: '',
-    comment_prefix: '',
+    // Automation
+    automation_enabled: true,
+    trigger_keywords: [] as string[],
+    like_comments: false,
+    auto_comment_enabled: false,
+    auto_comment_text: '',
+    private_reply_enabled: false,
+    private_reply_message: '',
     max_quantity_per_item: 10,
     unpaid_order_cancel_hours: 24,
     payment_methods: [] as string[],
     max_featured_products: 6
 })
+
+// Trigger keywords input helpers
+const keywordInput = ref('')
+function addKeyword() {
+    const kw = keywordInput.value.trim()
+    if (kw && !state.trigger_keywords.includes(kw)) {
+        state.trigger_keywords.push(kw)
+    }
+    keywordInput.value = ''
+}
+function removeKeyword(kw: string) {
+    const idx = state.trigger_keywords.indexOf(kw)
+    if (idx !== -1) state.trigger_keywords.splice(idx, 1)
+}
+function onKeywordKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+        e.preventDefault()
+        addKeyword()
+    }
+}
 
 const password = reactive<Partial<PasswordSchema>>({
     current: undefined,
@@ -114,9 +139,13 @@ onMounted(async () => {
         state.delivery_fee = shop.value.settings?.delivery_fee || 0
         state.free_delivery_over = shop.value.settings?.free_delivery_over || 0
         state.delivery_note = shop.value.settings?.delivery_note || ''
-        state.auto_reply = shop.value.settings?.auto_reply || false
-        state.reply_message = shop.value.settings?.reply_message || ''
-        state.comment_prefix = shop.value.settings?.comment_prefix || ''
+        state.automation_enabled = shop.value.settings?.automation_enabled ?? true
+        state.trigger_keywords = shop.value.settings?.trigger_keywords || ['buy', 'invoice', 'авах', 'захиалах', 'авъя']
+        state.like_comments = shop.value.settings?.like_comments || false
+        state.auto_comment_enabled = shop.value.settings?.auto_comment_enabled || false
+        state.auto_comment_text = shop.value.settings?.auto_comment_text || ''
+        state.private_reply_enabled = shop.value.settings?.private_reply_enabled || false
+        state.private_reply_message = shop.value.settings?.private_reply_message || ''
         state.max_quantity_per_item = shop.value.settings?.max_quantity_per_item || 10
         state.unpaid_order_cancel_hours = shop.value.settings?.unpaid_order_cancel_hours || 24
         state.payment_methods = shop.value.settings?.payment_methods || []
@@ -186,13 +215,17 @@ async function saveSettings() {
         phone_number: state.phone_number,
         picture: state.picture,
         settings: {
+            automation_enabled: state.automation_enabled,
+            trigger_keywords: state.trigger_keywords,
+            like_comments: state.like_comments,
+            auto_comment_enabled: state.auto_comment_enabled,
+            auto_comment_text: state.auto_comment_text,
+            private_reply_enabled: state.private_reply_enabled,
+            private_reply_message: state.private_reply_message,
             delivery_type: state.delivery_type,
             delivery_fee: state.delivery_fee,
             free_delivery_over: state.free_delivery_over,
             delivery_note: state.delivery_note,
-            auto_reply: state.auto_reply,
-            reply_message: state.reply_message,
-            comment_prefix: state.comment_prefix,
             max_quantity_per_item: state.max_quantity_per_item,
             unpaid_order_cancel_hours: state.unpaid_order_cancel_hours,
             payment_methods: state.payment_methods,
@@ -444,48 +477,139 @@ function onFileClick() {
                 </UFormField>
             </UPageCard>
 
-            <!-- Section: Auto Reply Settings -->
+            <!-- Section: Automation Settings -->
             <UPageCard
-                title="Автомат хариулт"
-                description="Facebook мессенжерийн автомат хариултын тохиргоо."
+                title="Автоматжуулалт"
+                description="Facebook комментоос захиалга үүсгэх, хариулт илгээх тохиргоо."
                 variant="naked"
                 class="mb-4"
             />
 
             <UPageCard variant="subtle" class="mb-8">
+                <!-- Enable automation toggle -->
                 <UFormField
-                    name="auto_reply"
-                    label="Идэвхжүүлэх"
-                    description="Мессенжер хариултыг автоматаар илгээх."
+                    name="automation_enabled"
+                    label="Автоматжуулалт идэвхжүүлэх"
+                    description="Facebook Live болон нийтлэлийн комментоос захиалга автоматаар үүсгэнэ."
                     class="flex items-center justify-between gap-2"
                 >
-                    <USwitch v-model="state.auto_reply" />
+                    <USwitch v-model="state.automation_enabled" />
                 </UFormField>
+
                 <USeparator />
+
+                <!-- Trigger keywords -->
                 <UFormField
-                    name="reply_message"
-                    label="Хариултын мессеж"
-                    description="Автоматаар илгээх мессеж."
-                    class="flex max-sm:flex-col justify-between items-start gap-4"
-                    :ui="{ container: 'w-full' }"
-                >
-                    <UTextarea
-                        v-model="state.reply_message"
-                        :rows="3"
-                        autoresize
-                        class="w-full"
-                        placeholder="Сайн байна уу! Таны захиалга хүлээн авлаа."
-                    />
-                </UFormField>
-                <USeparator />
-                <UFormField
-                    name="comment_prefix"
-                    label="Коммент prefix"
-                    description="Захиалга авах комментын эхний тэмдэгт (жишээ: #, !, +)."
+                    name="trigger_keywords"
+                    label="Trigger түлхүүр үгс"
+                    description="Эдгээр үгсийг агуулсан коммент захиалга болно."
                     class="flex max-sm:flex-col justify-between items-start gap-4"
                 >
-                    <UInput v-model="state.comment_prefix" autocomplete="off" placeholder="#" />
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="flex flex-wrap gap-2">
+                            <UBadge
+                                v-for="kw in state.trigger_keywords"
+                                :key="kw"
+                                variant="soft"
+                                color="primary"
+                                class="flex items-center gap-1 cursor-pointer"
+                                @click="removeKeyword(kw)"
+                            >
+                                {{ kw }}
+                                <UIcon name="i-lucide-x" class="w-3 h-3" />
+                            </UBadge>
+                        </div>
+                        <div class="flex gap-2">
+                            <UInput
+                                v-model="keywordInput"
+                                placeholder="авах, buy, захиалах..."
+                                class="flex-1"
+                                @keydown="onKeywordKeydown"
+                            />
+                            <UButton
+                                icon="i-lucide-plus"
+                                color="neutral"
+                                variant="subtle"
+                                @click="addKeyword"
+                            />
+                        </div>
+                        <p class="text-xs text-muted">Нэмэх товчийг дарна уу. Badge дээр дарвал устгана.</p>
+                    </div>
                 </UFormField>
+
+                <USeparator />
+
+                <!-- Like comments toggle -->
+                <UFormField
+                    name="like_comments"
+                    label="Коммент like дарах"
+                    description="Захиалга илрүүлсэн комментод автоматаар like дарна."
+                    class="flex items-center justify-between gap-2"
+                >
+                    <USwitch v-model="state.like_comments" />
+                </UFormField>
+
+                <USeparator />
+
+                <!-- Auto comment reply -->
+                <UFormField
+                    name="auto_comment_enabled"
+                    label="Комментод нийтэд хариулах"
+                    description="Захиалга илрүүлсэн комментод нийтэд харагдах хариулт илгээнэ."
+                    class="flex items-center justify-between gap-2"
+                >
+                    <USwitch v-model="state.auto_comment_enabled" />
+                </UFormField>
+
+                <template v-if="state.auto_comment_enabled">
+                    <USeparator />
+                    <UFormField
+                        name="auto_comment_text"
+                        label="Нийтийн хариултын текст"
+                        description="Комментод нийтэд харагдах хариулт."
+                        class="flex max-sm:flex-col justify-between items-start gap-4"
+                        :ui="{ container: 'w-full' }"
+                    >
+                        <UTextarea
+                            v-model="state.auto_comment_text"
+                            :rows="2"
+                            autoresize
+                            class="w-full"
+                            placeholder="Баярлалаа! Мессежээр захиалгын мэдээллийг илгээлэе."
+                        />
+                    </UFormField>
+                </template>
+
+                <USeparator />
+
+                <!-- Private reply -->
+                <UFormField
+                    name="private_reply_enabled"
+                    label="Хувийн мессеж илгээх"
+                    description="Захиалга үүссэний дараа хэрэглэгчид хувийн мессеж илгээнэ."
+                    class="flex items-center justify-between gap-2"
+                >
+                    <USwitch v-model="state.private_reply_enabled" />
+                </UFormField>
+
+                <template v-if="state.private_reply_enabled">
+                    <USeparator />
+                    <UFormField
+                        name="private_reply_message"
+                        label="Хувийн мессежийн загвар"
+                        description="Загварт {checkout_link}, {order_number} ашиглаж болно."
+                        class="flex max-sm:flex-col justify-between items-start gap-4"
+                        :ui="{ container: 'w-full' }"
+                    >
+                        <UTextarea
+                            v-model="state.private_reply_message"
+                            :rows="3"
+                            autoresize
+                            class="w-full"
+                            placeholder="Захиалга #{order_number} бүртгэгдлээ! Төлбөр: {checkout_link}"
+                        />
+                    </UFormField>
+                </template>
             </UPageCard>
 
             <!-- Section: Integrations -->
