@@ -27,7 +27,12 @@ export function useProductPost() {
     const config = useRuntimeConfig()
     const apiUrl = config.public.apiUrl
 
-    const getPreviewImageUrl = (productId: number, template: string, bgColor: string, background?: string): string => {
+    const getPreviewImageUrl = (
+        productId: number,
+        template: string,
+        bgColor: string,
+        background?: string
+    ): string => {
         const encodedColor = encodeURIComponent(bgColor)
         let url = `${apiUrl}/api/products/${productId}/generate-image?template=${template}&bg_color=${encodedColor}`
         if (background) {
@@ -36,7 +41,11 @@ export function useProductPost() {
         return url
     }
 
-    const generateCaption = async (productId: number, customPrompt?: string, purpose?: string): Promise<string> => {
+    const generateCaption = async (
+        productId: number,
+        customPrompt?: string,
+        purpose?: string
+    ): Promise<string> => {
         const body: Record<string, string> = {}
         if (customPrompt) {
             body.custom_prompt = customPrompt
@@ -45,7 +54,7 @@ export function useProductPost() {
             body.purpose = purpose
         }
 
-        const response = await $fetch<GenerateCaptionResponse>(
+        const response = await $fetch<string>(
             `${apiUrl}/api/products/${productId}/generate-description`,
             {
                 method: 'POST',
@@ -53,7 +62,7 @@ export function useProductPost() {
                 body
             }
         )
-        return response.caption
+        return response
     }
 
     const generateCaptionStream = async (
@@ -70,15 +79,12 @@ export function useProductPost() {
             body.purpose = purpose
         }
 
-        const response = await fetch(
-            `${apiUrl}/api/products/${productId}/stream-description`,
-            {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            }
-        )
+        const response = await fetch(`${apiUrl}/api/products/${productId}/stream-description`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
 
         if (!response.ok) {
             throw new Error(`Stream request failed: ${response.status}`)
@@ -128,7 +134,11 @@ export function useProductPost() {
         }
     }
 
-    const generateAIImage = async (productId: number, purpose?: string, background?: string): Promise<string> => {
+    const generateAIImage = async (
+        productId: number,
+        purpose?: string,
+        background?: string
+    ): Promise<string> => {
         const body: Record<string, string> = {}
         if (purpose) {
             body.purpose = purpose
