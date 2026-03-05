@@ -147,7 +147,7 @@ const loadProduct = async () => {
         const variantList = product.value.variants || []
         if (variantList.length > 0) {
             // Variants mode
-            options.value = variantList.map(v => ({
+            options.value = variantList.map((v) => ({
                 name: v.name,
                 stock: v.stock_quantity
             }))
@@ -169,7 +169,7 @@ const loadProduct = async () => {
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
     if (options.value.length > 0) {
-        const emptyOption = options.value.find(o => !o.name.trim())
+        const emptyOption = options.value.find((o) => !o.name.trim())
         if (emptyOption) {
             toast.add({
                 title: 'Алдаа',
@@ -189,12 +189,13 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             keyword,
             stock_quantity: options.value.length > 0 ? 0 : stock_quantity,
             images: images.value,
-            variants: options.value.length > 0
-                ? options.value.map(o => ({
-                    name: o.name.trim(),
-                    stock_quantity: o.stock
-                }))
-                : [],
+            variants:
+                options.value.length > 0
+                    ? options.value.map((o) => ({
+                          name: o.name.trim(),
+                          stock_quantity: o.stock
+                      }))
+                    : [],
             timed_sale_start: productData.timed_sale_start
                 ? new Date(productData.timed_sale_start).toISOString()
                 : null,
@@ -295,6 +296,28 @@ onMounted(async () => {
                         </div>
                     </template>
                 </UDashboardNavbar>
+
+                <UDashboardToolbar>
+                    <UNavigationMenu
+                        :items="[
+                            [
+                                {
+                                    label: 'Тойм',
+                                    icon: 'i-lucide-activity',
+                                    to: `/dashboard/products/${productId}`,
+                                    exact: true
+                                },
+                                {
+                                    label: 'Засах',
+                                    icon: 'i-lucide-pen-line',
+                                    to: `/dashboard/products/${productId}/edit`
+                                }
+                            ]
+                        ]"
+                        highlight
+                        class="-mx-1 flex-1"
+                    />
+                </UDashboardToolbar>
             </template>
 
             <template #body>
@@ -344,15 +367,24 @@ onMounted(async () => {
                                                     @update:model-value="keywordDirty = true"
                                                 >
                                                     <template #trailing>
-                                                        <UTooltip text="Комментоос энэ үгийг ашиглан барааг таньдаг">
-                                                            <UIcon name="i-lucide-wand-sparkles" class="w-4 h-4 text-primary-400" />
+                                                        <UTooltip
+                                                            text="Комментоос энэ үгийг ашиглан барааг таньдаг"
+                                                        >
+                                                            <UIcon
+                                                                name="i-lucide-wand-sparkles"
+                                                                class="w-4 h-4 text-primary-400"
+                                                            />
                                                         </UTooltip>
                                                     </template>
                                                 </UInput>
                                             </UFormField>
 
                                             <!-- Stock (shown only when no options) -->
-                                            <UFormField v-if="options.length === 0" label="Үлдэгдэл" name="stock_quantity">
+                                            <UFormField
+                                                v-if="options.length === 0"
+                                                label="Үлдэгдэл"
+                                                name="stock_quantity"
+                                            >
                                                 <UInput
                                                     v-model.number="state.stock_quantity"
                                                     type="number"
@@ -367,7 +399,11 @@ onMounted(async () => {
 
                                             <!-- Options list (shown when options exist) -->
                                             <div v-if="options.length > 0" class="space-y-2">
-                                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Сонголтууд</p>
+                                                <p
+                                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                                >
+                                                    Сонголтууд
+                                                </p>
                                                 <div
                                                     v-for="(option, index) in options"
                                                     :key="index"
@@ -377,7 +413,11 @@ onMounted(async () => {
                                                         v-model="option.name"
                                                         placeholder="S / M / L / XL"
                                                         class="flex-1"
-                                                        :ui="{ base: !option.name.trim() ? 'ring-red-500' : '' }"
+                                                        :ui="{
+                                                            base: !option.name.trim()
+                                                                ? 'ring-red-500'
+                                                                : ''
+                                                        }"
                                                     />
                                                     <UInput
                                                         v-model.number="option.stock"
@@ -386,7 +426,9 @@ onMounted(async () => {
                                                         class="w-24"
                                                     >
                                                         <template #trailing>
-                                                            <span class="text-gray-400 text-sm">ш</span>
+                                                            <span class="text-gray-400 text-sm"
+                                                                >ш</span
+                                                            >
                                                         </template>
                                                     </UInput>
                                                     <UButton
@@ -716,7 +758,6 @@ onMounted(async () => {
                                         </div>
                                     </div>
                                 </ProductFormCard>
-
                             </div>
 
                             <div class="space-y-6">
@@ -783,4 +824,3 @@ onMounted(async () => {
         </UDashboardPanel>
     </div>
 </template>
-

@@ -18,8 +18,7 @@ const isOpen = computed({
 const { fetchProducts } = useProducts()
 const { getPreviewImageUrl, generateCaptionStream, generateAIImage, postToFacebook } =
     useProductPost()
-const { backgrounds, addBackground, fetchShop } = useShopBackgrounds()
-const { uploadSingle } = useUpload()
+const { backgrounds, addBackground, fetchShop, shop } = useShopBackgrounds()
 const toast = useToast()
 
 const products = ref<Product[]>([])
@@ -116,7 +115,7 @@ const finalCaption = computed(() => {
     let text = caption.value.trim()
     if (!text) return ''
     if (watchComments.value && selectedProduct.value) {
-        const sku = selectedProduct.value.sku
+        const sku = selectedProduct.value.search_keywords
         if (commentMode.value === 'keywords' && sku) {
             text += `\n\n📝 Сагсанд нэмэхийн тулд "${sku}" гэж коммент бичнэ үү.`
         } else {
@@ -620,7 +619,7 @@ watch(
                             <div v-if="watchComments" class="pl-3">
                                 <label
                                     class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2"
-                                    >Коммент хүлээн авах горим</label
+                                    >Захиалга хүлээн авах горим</label
                                 >
                                 <div class="flex gap-2">
                                     <button
@@ -648,6 +647,7 @@ watch(
                                         Зөвхөн түлхүүр үг
                                     </button>
                                 </div>
+
                                 <p
                                     v-if="commentMode === 'all'"
                                     class="text-xs text-gray-400 mt-1.5"
@@ -659,7 +659,7 @@ watch(
                                         Доорх түлхүүр үгийг коммент бичвэл сагсанд нэмнэ:
                                     </p>
                                     <div
-                                        v-if="selectedProduct?.sku"
+                                        v-if="selectedProduct?.search_keywords"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800"
                                     >
                                         <UIcon
@@ -669,7 +669,7 @@ watch(
                                         <span
                                             class="text-sm font-semibold font-mono text-primary-700 dark:text-primary-300"
                                         >
-                                            {{ selectedProduct.sku }}
+                                            {{ selectedProduct?.search_keywords }}
                                         </span>
                                     </div>
                                     <p v-else class="text-xs text-amber-500 dark:text-amber-400">
@@ -684,92 +684,200 @@ watch(
                         </div>
                     </div>
 
-                    <!-- Right: Preview -->
+                    <!-- Right: Preview (Facebook-style) -->
                     <div
-                        class="w-1/2 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900/50 flex flex-col"
+                        class="w-1/2 overflow-y-auto p-6 bg-gray-100 dark:bg-gray-950 flex flex-col items-center"
                     >
                         <label
-                            class="block text-sm font-medium mb-3 text-gray-500 dark:text-gray-400"
+                            class="block text-xs font-medium mb-3 text-gray-400 dark:text-gray-500 self-start"
                         >
-                            <UIcon name="i-lucide-eye" class="w-3.5 h-3.5 inline-block mr-1" />
-                            Урьдчилан харах
+                            <UIcon name="i-lucide-eye" class="w-3 h-3 inline-block mr-1" />
+                            Facebook нийтлэлийн урьдчилсан харагдац
                         </label>
 
-                        <div v-if="selectedProductId" class="space-y-4 flex-1">
-                            <div class="rounded-xl bg-white dark:bg-gray-800 shadow-sm p-4">
-                                <div class="flex items-center gap-2 mb-3">
+                        <div v-if="selectedProductId" class="w-full max-w-[420px]">
+                            <!-- Facebook Post Card -->
+                            <div
+                                class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+                            >
+                                <!-- Post Header -->
+                                <div class="flex items-center gap-2.5 px-4 py-3">
                                     <div
-                                        class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"
+                                        class="w-10 h-10 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0 ring-1 ring-gray-200 dark:ring-gray-700"
                                     >
+                                        <img
+                                            v-if="shop?.picture"
+                                            :src="shop.picture"
+                                            :alt="shop.name"
+                                            class="w-full h-full object-cover"
+                                        />
                                         <UIcon
+                                            v-else
                                             name="i-lucide-store"
-                                            class="w-4 h-4 text-primary-500"
+                                            class="w-5 h-5 text-blue-500"
                                         />
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-semibold leading-tight">
-                                            Таны дэлгүүр
+                                    <div class="flex-1 min-w-0">
+                                        <p
+                                            class="text-[13px] font-semibold text-gray-900 dark:text-white leading-tight truncate"
+                                        >
+                                            {{ shop?.name || 'Таны дэлгүүр' }}
                                         </p>
-                                        <p class="text-xs text-gray-400">Одоо</p>
+                                        <div
+                                            class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400"
+                                        >
+                                            <span>Яг одоо</span>
+                                            <span class="text-gray-300 dark:text-gray-600">·</span>
+                                            <UIcon name="i-lucide-globe" class="w-3 h-3" />
+                                        </div>
+                                    </div>
+                                    <UIcon name="i-lucide-ellipsis" class="w-5 h-5 text-gray-400" />
+                                </div>
+
+                                <!-- Caption -->
+                                <div class="px-4 pb-2.5">
+                                    <div
+                                        v-if="finalCaption"
+                                        class="text-[13px] text-gray-900 dark:text-gray-100 whitespace-pre-line leading-[1.35]"
+                                    >
+                                        {{
+                                            finalCaption.length > 300
+                                                ? finalCaption.slice(0, 300)
+                                                : finalCaption
+                                        }}<button
+                                            v-if="finalCaption.length > 300"
+                                            class="text-gray-500 dark:text-gray-400 hover:underline font-medium ml-0.5"
+                                        >
+                                            ... Цааш унших
+                                        </button>
+                                    </div>
+                                    <div
+                                        v-else
+                                        class="text-[13px] text-gray-300 dark:text-gray-700 italic"
+                                    >
+                                        Тайлбар бичих эсвэл AI-р үүсгэх...
                                     </div>
                                 </div>
-                                <div
-                                    v-if="finalCaption"
-                                    class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line leading-relaxed"
-                                >
-                                    {{ finalCaption }}
+
+                                <!-- Image -->
+                                <div class="relative bg-gray-50 dark:bg-gray-800/50">
+                                    <!-- Template mode image -->
+                                    <img
+                                        v-if="imageMode === 'template' && previewUrl"
+                                        :key="previewKey"
+                                        :src="previewUrl"
+                                        alt="Preview"
+                                        class="w-full aspect-square object-contain"
+                                        crossorigin="use-credentials"
+                                    />
+                                    <!-- AI mode image -->
+                                    <img
+                                        v-else-if="imageMode === 'ai' && aiImageUrl"
+                                        :src="aiImageUrl"
+                                        alt="AI Generated"
+                                        class="w-full aspect-square object-contain"
+                                    />
+                                    <!-- AI loading -->
+                                    <div
+                                        v-else-if="imageMode === 'ai' && loadingAIImage"
+                                        class="w-full aspect-square flex flex-col items-center justify-center gap-3"
+                                    >
+                                        <UIcon
+                                            name="i-lucide-loader-2"
+                                            class="w-8 h-8 animate-spin text-primary-500"
+                                        />
+                                        <p class="text-sm text-gray-400">
+                                            AI зураг үүсгэж байна...
+                                        </p>
+                                    </div>
+                                    <!-- AI empty -->
+                                    <div
+                                        v-else-if="imageMode === 'ai'"
+                                        class="w-full aspect-square flex flex-col items-center justify-center gap-2"
+                                    >
+                                        <UIcon
+                                            name="i-lucide-image"
+                                            class="w-10 h-10 text-gray-200 dark:text-gray-700"
+                                        />
+                                        <p class="text-xs text-gray-400">AI зураг үүсгэнэ үү</p>
+                                    </div>
                                 </div>
-                                <div v-else class="text-sm text-gray-300 dark:text-gray-600 italic">
-                                    Тайлбар бичих эсвэл AI-р үүсгэх...
+
+                                <!-- Engagement stats row -->
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-xs text-gray-500 dark:text-gray-400"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <div class="flex -space-x-0.5">
+                                            <div
+                                                class="w-[18px] h-[18px] rounded-full bg-blue-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
+                                            >
+                                                <UIcon
+                                                    name="i-lucide-thumbs-up"
+                                                    class="w-2.5 h-2.5 text-white"
+                                                />
+                                            </div>
+                                            <div
+                                                class="w-[18px] h-[18px] rounded-full bg-red-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
+                                            >
+                                                <UIcon
+                                                    name="i-lucide-heart"
+                                                    class="w-2.5 h-2.5 text-white"
+                                                />
+                                            </div>
+                                        </div>
+                                        <span class="ml-0.5">128</span>
+                                    </div>
+                                    <div class="flex gap-2.5">
+                                        <span>24 сэтгэгдэл</span>
+                                        <span>8 хуваалцсан</span>
+                                    </div>
+                                </div>
+
+                                <!-- Divider -->
+                                <div class="mx-4 border-t border-gray-200 dark:border-gray-800" />
+
+                                <!-- Action buttons -->
+                                <div class="grid grid-cols-3 px-2 py-1">
+                                    <button
+                                        class="flex items-center justify-center gap-1.5 py-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                    >
+                                        <UIcon
+                                            name="i-lucide-thumbs-up"
+                                            class="w-[18px] h-[18px]"
+                                        />
+                                        <span class="text-[13px] font-medium">Like</span>
+                                    </button>
+                                    <button
+                                        class="flex items-center justify-center gap-1.5 py-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                    >
+                                        <UIcon
+                                            name="i-lucide-message-circle"
+                                            class="w-[18px] h-[18px]"
+                                        />
+                                        <span class="text-[13px] font-medium">Comment</span>
+                                    </button>
+                                    <button
+                                        class="flex items-center justify-center gap-1.5 py-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                    >
+                                        <UIcon name="i-lucide-share" class="w-[18px] h-[18px]" />
+                                        <span class="text-[13px] font-medium">Share</span>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Image Preview -->
+                            <!-- Watch comments indicator -->
                             <div
-                                v-if="imageMode === 'template'"
-                                class="relative w-full aspect-square rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
+                                v-if="watchComments"
+                                class="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50"
                             >
-                                <img
-                                    :key="previewKey"
-                                    :src="previewUrl"
-                                    alt="Preview"
-                                    class="w-full h-full object-contain"
-                                    crossorigin="use-credentials"
+                                <UIcon
+                                    name="i-lucide-bot"
+                                    class="w-4 h-4 text-green-600 dark:text-green-400 shrink-0"
                                 />
-                            </div>
-
-                            <div
-                                v-else
-                                class="relative w-full aspect-square rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm"
-                            >
-                                <img
-                                    v-if="aiImageUrl"
-                                    :src="aiImageUrl"
-                                    alt="AI Generated"
-                                    class="w-full h-full object-contain"
-                                />
-                                <div
-                                    v-else-if="loadingAIImage"
-                                    class="flex flex-col items-center justify-center h-full gap-3"
-                                >
-                                    <UIcon
-                                        name="i-lucide-loader-2"
-                                        class="w-8 h-8 animate-spin text-primary-500"
-                                    />
-                                    <p class="text-sm text-gray-500">
-                                        AI зураг үүсгэж байна... (15-30 сек)
-                                    </p>
-                                </div>
-                                <div
-                                    v-else
-                                    class="flex flex-col items-center justify-center h-full gap-3"
-                                >
-                                    <UIcon
-                                        name="i-lucide-image"
-                                        class="w-12 h-12 text-gray-200 dark:text-gray-700"
-                                    />
-                                    <p class="text-sm text-gray-400">AI зураг үүсгэнэ үү</p>
-                                </div>
+                                <p class="text-xs text-green-700 dark:text-green-300">
+                                    Автомат захиалга идэвхтэй — комментод захиалга үүснэ
+                                </p>
                             </div>
                         </div>
 

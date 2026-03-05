@@ -46,6 +46,7 @@ export function useShopBackgrounds() {
         backgrounds,
         addBackground,
         removeBackground,
-        fetchShop
+        fetchShop,
+        shop
     }
 }
