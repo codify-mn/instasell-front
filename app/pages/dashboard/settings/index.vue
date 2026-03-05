@@ -7,8 +7,11 @@ import { useQPay } from '~/composables/useQPay'
 const { shop, isLoading, isSaving, fetchShop, updateShop } = useShopSettings()
 const shopData = useShop()
 const { status: qpayStatus, isLoading: qpayLoading, fetchStatus: fetchQPayStatus } = useQPay()
+const { backgrounds, addBackground, removeBackground } = useShopBackgrounds()
 
 const fileRef = ref<HTMLInputElement>()
+const bgFileRef = ref<HTMLInputElement>()
+const uploadingBg = ref(false)
 const config = useRuntimeConfig()
 const toast = useToast()
 const { user, fetchUser } = useAuth()
@@ -259,6 +262,23 @@ function onFileChange(e: Event) {
 function onFileClick() {
     fileRef.value?.click()
 }
+
+function onBgFileClick() {
+    bgFileRef.value?.click()
+}
+
+async function onBgFileChange(e: Event) {
+    const input = e.target as HTMLInputElement
+    if (!input.files?.length) return
+
+    uploadingBg.value = true
+    try {
+        await addBackground(input.files[0]!)
+    } finally {
+        uploadingBg.value = false
+        input.value = ''
+    }
+}
 </script>
 
 <template>
@@ -325,6 +345,58 @@ function onFileClick() {
                     </div>
                 </UFormField>
             </UPageCard>
+            <!-- Section: Background Images -->
+            <UPageCard
+                title="Дэвсгэр зургууд"
+                description="Бараа нийтлэхэд ашиглах дэвсгэр зургууд. Хамгийн ихдээ 10 ширхэг."
+                variant="naked"
+                class="mb-4"
+            />
+
+            <UPageCard variant="subtle" class="mb-8">
+                <div class="flex flex-wrap gap-3">
+                    <div
+                        v-for="bg in backgrounds"
+                        :key="bg"
+                        class="relative group w-24 h-24 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                    >
+                        <img :src="bg" class="w-full h-full object-cover" alt="Background" />
+                        <button
+                            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                            @click="removeBackground(bg)"
+                        >
+                            <UIcon name="i-lucide-trash-2" class="w-5 h-5 text-white" />
+                        </button>
+                    </div>
+                    <button
+                        v-if="backgrounds.length < 10"
+                        class="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary-400 transition-colors"
+                        :disabled="uploadingBg"
+                        @click="onBgFileClick"
+                    >
+                        <UIcon
+                            v-if="uploadingBg"
+                            name="i-lucide-loader-2"
+                            class="w-5 h-5 animate-spin text-gray-400"
+                        />
+                        <template v-else>
+                            <UIcon name="i-lucide-plus" class="w-5 h-5 text-gray-400" />
+                            <span class="text-xs text-gray-400">Нэмэх</span>
+                        </template>
+                    </button>
+                    <input
+                        ref="bgFileRef"
+                        type="file"
+                        class="hidden"
+                        accept=".jpg,.jpeg,.png,.webp"
+                        @change="onBgFileChange"
+                    />
+                </div>
+                <p v-if="backgrounds.length === 0" class="text-sm text-gray-400 mt-2">
+                    Дэвсгэр зураг нэмээгүй байна.
+                </p>
+            </UPageCard>
+
             <UPageCard
                 title="QPay тохиргоо"
                 description="QPay-ээр төлбөр хүлээн авах тохиргоо."

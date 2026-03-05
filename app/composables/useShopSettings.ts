@@ -21,6 +21,7 @@ export interface ShopSettings {
     payment_methods?: string[]
     upsell_product_ids?: number[]
     max_featured_products?: number
+    backgrounds?: string[]
 }
 
 export interface ShopQPayData {
