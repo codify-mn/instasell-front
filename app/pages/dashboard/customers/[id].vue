@@ -7,7 +7,7 @@ useSeoMeta({
 
 const route = useRoute()
 const router = useRouter()
-const { getCustomer, getCustomerOrders } = useCustomers()
+const { getCustomer, getCustomerOrders, deleteCustomer } = useCustomers()
 const { formatPrice, getStatusLabel, getStatusColor } = useOrders()
 const toast = useToast()
 
@@ -20,6 +20,8 @@ const ordersTotal = ref(0)
 const ordersPage = ref(1)
 const loading = ref(true)
 const loadingOrders = ref(false)
+const showDeleteModal = ref(false)
+const deleting = ref(false)
 
 const loadCustomer = async () => {
     loading.value = true
@@ -64,6 +66,24 @@ const formatDate = (dateStr: string): string => {
     })
 }
 
+const confirmDelete = async () => {
+    deleting.value = true
+    try {
+        await deleteCustomer(customerId)
+        toast.add({ title: 'Хэрэглэгч устгагдлаа', color: 'success' })
+        router.push('/dashboard/customers')
+    } catch (err: any) {
+        toast.add({
+            title: 'Алдаа',
+            description: err.data?.message || 'Устгахад алдаа гарлаа',
+            color: 'error'
+        })
+    } finally {
+        deleting.value = false
+        showDeleteModal.value = false
+    }
+}
+
 onMounted(async () => {
     await loadCustomer()
     loadOrders()
@@ -71,6 +91,7 @@ onMounted(async () => {
 </script>
 
 <template>
+    <div>
     <div class="w-full h-full overflow-y-auto">
         <UDashboardPanel id="customer-detail">
             <UDashboardNavbar>
@@ -86,6 +107,16 @@ onMounted(async () => {
                         <UIcon name="i-lucide-user" class="w-5 h-5" />
                         <span>{{ customer?.name || 'Хэрэглэгч' }}</span>
                     </div>
+                </template>
+                <template #right>
+                    <UButton
+                        v-if="customer"
+                        icon="i-lucide-trash-2"
+                        color="error"
+                        variant="ghost"
+                        size="sm"
+                        @click="showDeleteModal = true"
+                    />
                 </template>
             </UDashboardNavbar>
 
@@ -224,5 +255,29 @@ onMounted(async () => {
                 </div>
             </div>
         </UDashboardPanel>
+    </div>
+
+    <UModal v-model:open="showDeleteModal">
+        <template #content>
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                        <UIcon name="i-lucide-trash-2" class="w-5 h-5 text-red-600 dark:text-red-400" />
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Хэрэглэгч устгах</h3>
+                        <p class="text-sm text-gray-500">Энэ үйлдлийг буцаах боломжгүй</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    <span class="font-medium text-gray-900 dark:text-white">{{ customer?.name }}</span> хэрэглэгчийг устгах уу?
+                </p>
+                <div class="flex justify-end gap-3">
+                    <UButton variant="ghost" color="neutral" @click="showDeleteModal = false">Болих</UButton>
+                    <UButton color="error" :loading="deleting" @click="confirmDelete">Устгах</UButton>
+                </div>
+            </div>
+        </template>
+    </UModal>
     </div>
 </template>

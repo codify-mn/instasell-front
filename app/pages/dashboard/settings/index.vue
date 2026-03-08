@@ -129,7 +129,12 @@ function togglePaymentMethod(value: string) {
 }
 
 // Removed unused computed properties showDeliveryFee and showFreeDeliveryOver
+const route = useRoute()
+
 onMounted(async () => {
+    if (route.query.callback_status === 'connected') {
+        toast.add({ title: 'Амжилттай', description: 'Facebook амжилттай холбогдлоо' })
+    }
     await Promise.all([fetchShop(), fetchQPayStatus()])
     if (shop.value) {
         state.name = shop.value.name || ''

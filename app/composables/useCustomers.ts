@@ -67,9 +67,17 @@ export function useCustomers() {
         )
     }
 
+    const deleteCustomer = async (id: number): Promise<void> => {
+        await $fetch(`${apiUrl}/api/customers/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+    }
+
     return {
         listCustomers,
         getCustomer,
-        getCustomerOrders
+        getCustomerOrders,
+        deleteCustomer
     }
 }
