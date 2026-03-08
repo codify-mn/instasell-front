@@ -5,8 +5,6 @@ defineProps<{
     hideText?: boolean
     variant?: 'default' | 'light'
 }>()
-
-const gradientId = `cb-grad-${Math.random().toString(36).slice(2, 8)}`
 </script>
 
 <template>
