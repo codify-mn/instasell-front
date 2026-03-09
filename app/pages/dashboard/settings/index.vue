@@ -3,6 +3,7 @@ import * as z from 'zod'
 import type { FormSubmitEvent, FormError } from '@nuxt/ui'
 import { useShopSettings } from '~/composables/useShopSettings'
 import { useQPay } from '~/composables/useQPay'
+import { useShopBackgrounds } from '~/composables/useShopBackgrounds'
 
 const { shop, isLoading, isSaving, fetchShop, updateShop } = useShopSettings()
 const shopData = useShop()

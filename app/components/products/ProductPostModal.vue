@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Product } from '~/composables/useProducts'
-
+import { useShopBackgrounds } from '~/composables/useShopBackgrounds'
 const props = defineProps<{
     open: boolean
     productId?: number
@@ -361,10 +361,10 @@ watch(
                                     {{ prepopulatedProduct?.name ?? `Бараа #${productId}` }}
                                 </span>
                                 <span
-                                    v-if="prepopulatedProduct?.sku"
+                                    v-if="prepopulatedProduct?.search_keywords"
                                     class="ml-auto text-xs font-mono text-gray-400"
                                 >
-                                    {{ prepopulatedProduct.sku }}
+                                    {{ prepopulatedProduct.search_keywords }}
                                 </span>
                             </div>
                         </div>
