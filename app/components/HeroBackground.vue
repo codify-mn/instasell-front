@@ -13,7 +13,7 @@
         <div
             class="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[600px] rounded-full blur-3xl float-slow pulse-glow"
             style="
-                background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+                background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
             "
         />
         <div
