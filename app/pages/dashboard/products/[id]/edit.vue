@@ -214,7 +214,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             description: 'Бүтээгдэхүүн шинэчлэгдлээ',
             color: 'success'
         })
-        await loadProduct()
+        router.push(`/dashboard/products/${productId.value}`)
     } catch (err: any) {
         toast.add({
             title: 'Алдаа',
@@ -275,7 +275,7 @@ onMounted(async () => {
                 <UDashboardNavbar>
                     <template #leading>
                         <UButton
-                            to="/dashboard/products"
+                            :to="`/dashboard/products/${productId}`"
                             icon="i-lucide-arrow-left"
                             color="neutral"
                             variant="ghost"
@@ -317,27 +317,6 @@ onMounted(async () => {
                     </template>
                 </UDashboardNavbar>
 
-                <UDashboardToolbar>
-                    <UNavigationMenu
-                        :items="[
-                            [
-                                {
-                                    label: 'Тойм',
-                                    icon: 'i-lucide-activity',
-                                    to: `/dashboard/products/${productId}`,
-                                    exact: true
-                                },
-                                {
-                                    label: 'Засах',
-                                    icon: 'i-lucide-pen-line',
-                                    to: `/dashboard/products/${productId}/edit`
-                                }
-                            ]
-                        ]"
-                        highlight
-                        class="-mx-1 flex-1"
-                    />
-                </UDashboardToolbar>
             </template>
 
             <template #body>

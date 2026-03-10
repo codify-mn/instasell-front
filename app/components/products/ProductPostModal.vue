@@ -379,27 +379,6 @@ watch(
                             />
                         </div>
 
-                        <!-- Purpose -->
-                        <div>
-                            <label class="block text-sm font-medium mb-1.5">Зорилго</label>
-                            <div class="flex gap-2">
-                                <button
-                                    v-for="p in purposes"
-                                    :key="p.value"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer border"
-                                    :class="
-                                        purpose === p.value
-                                            ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                            : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
-                                    "
-                                    @click="onPurposeChange(p.value)"
-                                >
-                                    <UIcon :name="p.icon" class="w-3.5 h-3.5" />
-                                    {{ p.label }}
-                                </button>
-                            </div>
-                        </div>
-
                         <!-- Image Mode -->
                         <div>
                             <label class="block text-sm font-medium mb-1.5">Зургийн горим</label>
@@ -441,6 +420,27 @@ watch(
                                         <span class="text-sm font-medium block">AI зураг</span>
                                         <span class="text-xs text-gray-400">Pro plan</span>
                                     </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Purpose -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5">Зорилго</label>
+                            <div class="flex gap-2">
+                                <button
+                                    v-for="p in purposes"
+                                    :key="p.value"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer border"
+                                    :class="
+                                        purpose === p.value
+                                            ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
+                                            : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                                    "
+                                    @click="onPurposeChange(p.value)"
+                                >
+                                    <UIcon :name="p.icon" class="w-3.5 h-3.5" />
+                                    {{ p.label }}
                                 </button>
                             </div>
                         </div>
