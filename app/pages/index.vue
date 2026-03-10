@@ -11,97 +11,88 @@ useSeoMeta({
 
 const features = [
     {
-        title: 'Цаг хэмнэ',
+        title: 'Автомат захиалга',
         description:
-            'Захиалга автоматаар боловсруулж, өдөрт 3+ цаг хэмнээрэй. Гараар бичих шаардлагагүй.',
+            'Live коммент дээрх захиалгыг AI автоматаар уншиж, алдаагүй бүртгэнэ. Гараар бичих шаардлагагүй.',
+        icon: 'i-lucide-bot',
+        stat: '0 алдаа'
+    },
+    {
+        title: 'Цаг хэмнэнэ',
+        description:
+            'Захиалга боловсруулах, мессеж илгээх, тооцоо хийх бүгд автомат. Өдөрт 3+ цаг хэмнээрэй.',
         icon: 'i-lucide-clock',
-        color: 'from-primary-500 to-orange-500',
         stat: '3+ цаг/өдөр'
     },
     {
-        title: 'Борлуулалт нэмэгдэнэ',
+        title: 'Борлуулалт өснө',
         description:
-            'Коммент захиалгыг алдахгүй. Бүх захиалгыг автомат хүлээн авч, орлогоо 40% нэмэгдүүл.',
+            'Хурдан хариу = илүү их захиалга. Бүх коммент захиалгыг алдахгүй хүлээн авна.',
         icon: 'i-lucide-trending-up',
-        color: 'from-green-500 to-emerald-500',
         stat: '+40% орлого'
     },
     {
-        title: 'Илүү их хөрвүүлэлт',
-        description: 'Хурдан хариу үйлдэл = илүү их борлуулалт. Захиалгын хөрвүүлэлт 2x нэмэгдэнэ.',
-        icon: 'i-lucide-target',
-        color: 'from-violet-500 to-purple-500',
-        stat: '2x хөрвүүлэлт'
-    },
-    {
-        title: 'Бүгдийг нэг дороос',
-        description: 'Захиалга, бараа, харилцагч, тайлан - бүгд нэг систем дотор.',
+        title: 'Нэг систем',
+        description: 'Бараа, захиалга, харилцагч, төлбөр, тайлан — бүгд нэг дашбоард дотор.',
         icon: 'i-lucide-layout-dashboard',
-        color: 'from-blue-500 to-cyan-500',
-        stat: '1 платформ'
+        stat: 'Бүгд нэг дор'
     }
 ]
 
 const stats = [
-    { value: '3+ цаг', label: 'Өдөр бүр хэмнэнэ', icon: 'i-lucide-clock' },
-    { value: '+40%', label: 'Орлого нэмэгдэнэ', icon: 'i-lucide-trending-up' },
-    { value: '0', label: 'Алдагдсан захиалга', icon: 'i-lucide-check-circle' },
-    { value: '< 1с', label: 'Захиалга боловсруулалт', icon: 'i-lucide-zap' }
+    { value: '3+', unit: 'цаг', label: 'Өдөр бүр хэмнэнэ' },
+    { value: '40', unit: '%', label: 'Орлого нэмэгдэнэ' },
+    { value: '0', unit: '', label: 'Алдагдсан захиалга' },
+    { value: '<1', unit: 'сек', label: 'Захиалга боловсруулалт' }
 ]
 
 const steps = [
     {
         step: '01',
         title: 'Бүртгүүлэх',
-        description: '2 минутад үнэгүй бүртгүүлж, дэлгүүрээ нээгээрэй.',
-        icon: 'i-lucide-user-plus',
-        benefit: 'Карт шаардлагагүй'
+        description: 'Үнэгүй бүртгүүлж, дэлгүүрээ 2 минутад нээгээрэй.',
+        icon: 'i-lucide-user-plus'
     },
     {
         step: '02',
         title: 'Бараа нэмэх',
-        description: 'Барааны мэдээлэл, зураг, үнээ оруулж, каталог бүрдүүлээрэй.',
-        icon: 'i-lucide-package-plus',
-        benefit: 'Excel-ээс импорт хийх боломжтой'
+        description: 'Барааны мэдээлэл оруулж каталог бүрдүүлээрэй. Excel импорт боломжтой.',
+        icon: 'i-lucide-package-plus'
     },
     {
         step: '03',
-        title: 'Борлуулж эхлэх',
+        title: 'Live эхлэх',
         description: 'Facebook холбоод Live эхлүүлээрэй. Захиалга автомат ирнэ.',
-        icon: 'i-lucide-play-circle',
-        benefit: 'Шууд орлого олж эхлэх'
+        icon: 'i-lucide-radio'
     }
 ]
 
 const testimonials = [
     {
-        quote: 'Өмнө нь захиалга бүртгэхэд л 4 цаг зарцуулдаг байсан. Одоо бүгд автомат болсон, би зөвхөн хүргэлтэнд анхаарна.',
+        quote: 'Өмнө нь захиалга бүртгэхэд л 4 цаг зарцуулдаг байсан. Одоо бүгд автомат болсон.',
         author: 'Б. Сарангэрэл',
-        role: 'Гоо сайхны дэлгүүр эзэмшигч',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah',
-        metric: 'Өдөрт 4 цаг хэмнэнэ'
+        role: 'Гоо сайхны дэлгүүр',
+        metric: '4 цаг хэмнэнэ'
     },
     {
         quote: 'Live үед захиалга алдаж байсан асуудал арилсан. Борлуулалт 50%-иар өссөн.',
         author: 'Д. Болормаа',
-        role: 'Хувцасны брэнд эзэмшигч',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=bold',
+        role: 'Хувцасны брэнд',
         metric: '+50% борлуулалт'
     },
     {
         quote: 'Excel, Messenger хооронд гүйхээ больсон. Бүх захиалга нэг дороос харагдана.',
         author: 'Э. Мөнхбат',
-        role: 'Электроникийн худалдаачин',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=mike',
-        metric: '100% автоматжуулсан'
+        role: 'Электроникийн худалдаа',
+        metric: '100% автомат'
     }
 ]
 
 const painPoints = [
     { problem: 'Коммент захиалга алддаг', solution: 'Бүх коммент автомат уншина' },
     { problem: 'Гараар бичиж амжихгүй', solution: 'Захиалга автомат бүртгэнэ' },
-    { problem: 'Алдаа гаргадаг', solution: '0 алдаатай систем' },
-    { problem: 'Бүртгэлд цаг алдана', solution: '3+ цаг хэмнэнэ' }
+    { problem: 'Алдаа гаргадаг', solution: '0 алдаатай автомат систем' },
+    { problem: 'Бүртгэлд цаг алдана', solution: 'Өдөрт 3+ цаг хэмнэнэ' }
 ]
 
 // Intersection observer for animations
@@ -144,37 +135,38 @@ onMounted(() => {
             <HeroBackground />
 
             <UContainer class="max-w-7xl py-20 lg:py-32 relative z-10">
-                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     <!-- Left: Copy -->
                     <div class="text-center lg:text-left">
-                        <!-- Live badge -->
                         <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 mb-6 fade-in-up"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 mb-8 fade-in-up"
                         >
-                            <UIcon name="i-lucide-trending-up" class="w-4 h-4 text-green-500" />
-                            <span class="text-sm font-medium text-green-600 dark:text-green-400"
-                                >Орлогоо 40% нэмэгдүүл</span
-                            >
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                            </span>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Live худалдааны #1 платформ</span>
                         </div>
 
                         <h1
-                            class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 fade-in-up fade-in-up-delay-1"
+                            class="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] mb-6 fade-in-up fade-in-up-delay-1"
                         >
-                            <span class="text-gray-900 dark:text-white">Цаг хэмнэ.</span>
-                            <br >
-                            <span class="text-gradient">Орлого нэмэгдүүл.</span>
+                            <span class="text-gray-900 dark:text-white">Facebook Live</span>
+                            <br>
+                            <span class="text-gray-900 dark:text-white">захиалгыг </span>
+                            <span class="text-gradient">автоматжуул</span>
                         </h1>
 
                         <p
-                            class="text-lg lg:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-xl mx-auto lg:mx-0 fade-in-up fade-in-up-delay-2"
+                            class="text-lg text-gray-500 dark:text-gray-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed fade-in-up fade-in-up-delay-2"
                         >
-                            Live коммент захиалгыг автоматаар хүлээн авч, өдөрт
-                            <strong class="text-gray-900 dark:text-white">3+ цаг хэмнээрэй</strong>.
-                            Алдагдсан захиалга байхгүй = илүү их орлого.
+                            Коммент дээрх захиалгыг автоматаар хүлээн авч, өдөрт
+                            <strong class="text-gray-900 dark:text-white font-semibold">3+ цаг хэмнээрэй</strong>.
+                            Ганц ч захиалга алдахгүй.
                         </p>
 
                         <div
-                            class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start fade-in-up fade-in-up-delay-3"
+                            class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start fade-in-up fade-in-up-delay-3"
                         >
                             <UButton
                                 to="/login?mode=register"
@@ -182,157 +174,113 @@ onMounted(() => {
                                 class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300 btn-shine"
                             >
                                 <span>Үнэгүй эхлэх</span>
-                                <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-2" />
+                                <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-1" />
                             </UButton>
                             <UButton
                                 to="#demo"
                                 size="xl"
                                 color="neutral"
-                                variant="outline"
+                                variant="ghost"
                                 class="group"
                             >
                                 <UIcon
                                     name="i-lucide-play"
-                                    class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                                    class="w-5 h-5 mr-1.5 group-hover:scale-110 transition-transform"
                                 />
                                 <span>Демо үзэх</span>
                             </UButton>
                         </div>
 
-                        <!-- Trust badges -->
+                        <!-- Trust signals -->
                         <div
-                            class="flex flex-wrap gap-4 justify-center lg:justify-start mt-10 fade-in-up fade-in-up-delay-4"
+                            class="flex flex-wrap gap-6 justify-center lg:justify-start mt-10 text-sm text-gray-400 fade-in-up fade-in-up-delay-4"
                         >
-                            <div class="trust-badge">
-                                <UIcon
-                                    name="i-lucide-shield-check"
-                                    class="w-4 h-4 text-green-500"
-                                />
-                                <span>Аюулгүй төлбөр</span>
+                            <div class="flex items-center gap-1.5">
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <span>Үнэгүй туршилт</span>
                             </div>
-                            <div class="trust-badge">
-                                <UIcon name="i-lucide-clock" class="w-4 h-4 text-primary-500" />
-                                <span>30 хоног үнэгүй</span>
-                            </div>
-                            <div class="trust-badge">
-                                <UIcon
-                                    name="i-lucide-credit-card"
-                                    class="w-4 h-4 text-violet-500"
-                                />
+                            <div class="flex items-center gap-1.5">
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
                                 <span>Карт шаардлагагүй</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <span>5 минутад бэлэн</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Product mockup -->
-                    <div class="relative fade-in-up fade-in-up-delay-2">
+                    <div class="relative fade-in-up fade-in-up-delay-2 hidden lg:block">
                         <div class="relative">
-                            <!-- Glow effect behind mockup -->
+                            <!-- Glow effect -->
                             <div
-                                class="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-blue-500/20 to-indigo-500/20 blur-3xl rounded-3xl"
+                                class="absolute -inset-4 bg-gradient-to-r from-primary-500/20 via-blue-500/15 to-indigo-500/20 blur-3xl rounded-3xl"
                             />
 
-                            <!-- Dashboard mockup card -->
-                            <div class="relative glass-card rounded-2xl p-2 shadow-2xl">
-                                <div class="bg-gray-900 rounded-xl overflow-hidden">
+                            <!-- Dashboard mockup -->
+                            <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
+                                <div class="bg-gray-900">
                                     <!-- Browser chrome -->
-                                    <div
-                                        class="flex items-center gap-2 px-4 py-3 bg-gray-800 border-b border-gray-700"
-                                    >
+                                    <div class="flex items-center gap-2 px-4 py-3 bg-gray-800/80 border-b border-gray-700/50">
                                         <div class="flex gap-1.5">
-                                            <div class="w-3 h-3 rounded-full bg-red-500" />
-                                            <div class="w-3 h-3 rounded-full bg-yellow-500" />
-                                            <div class="w-3 h-3 rounded-full bg-green-500" />
+                                            <div class="w-3 h-3 rounded-full bg-red-500/80" />
+                                            <div class="w-3 h-3 rounded-full bg-yellow-500/80" />
+                                            <div class="w-3 h-3 rounded-full bg-green-500/80" />
                                         </div>
-                                        <div class="flex-1 mx-4">
-                                            <div
-                                                class="bg-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-400 text-center"
-                                            >
-                                                codify.mn
+                                        <div class="flex-1 mx-8">
+                                            <div class="bg-gray-700/60 rounded-lg px-3 py-1.5 text-xs text-gray-400 text-center max-w-xs mx-auto">
+                                                instasell.codify.mn/dashboard
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Dashboard preview -->
-                                    <div class="p-4 space-y-4">
+                                    <!-- Dashboard content -->
+                                    <div class="p-5 space-y-4">
                                         <!-- Stats row -->
                                         <div class="grid grid-cols-3 gap-3">
-                                            <div class="bg-gray-800 rounded-lg p-3">
-                                                <div class="text-xs text-gray-500 mb-1">
-                                                    Өнөөдөр
-                                                </div>
-                                                <div class="text-lg font-bold text-white">
-                                                    ₮2.4M
-                                                </div>
-                                                <div class="text-xs text-green-400">+12%</div>
+                                            <div class="bg-gray-800/60 rounded-xl p-3.5">
+                                                <div class="text-[11px] text-gray-500 mb-1">Өнөөдөр</div>
+                                                <div class="text-xl font-bold text-white">₮2.4M</div>
+                                                <div class="text-xs text-green-400 mt-0.5">+12%</div>
                                             </div>
-                                            <div class="bg-gray-800 rounded-lg p-3">
-                                                <div class="text-xs text-gray-500 mb-1">
-                                                    Захиалга
-                                                </div>
-                                                <div class="text-lg font-bold text-white">156</div>
-                                                <div class="text-xs text-green-400">+8%</div>
+                                            <div class="bg-gray-800/60 rounded-xl p-3.5">
+                                                <div class="text-[11px] text-gray-500 mb-1">Захиалга</div>
+                                                <div class="text-xl font-bold text-white">156</div>
+                                                <div class="text-xs text-green-400 mt-0.5">+8%</div>
                                             </div>
-                                            <div class="bg-gray-800 rounded-lg p-3">
-                                                <div class="text-xs text-gray-500 mb-1">
-                                                    Live үзэгч
-                                                </div>
-                                                <div
-                                                    class="text-lg font-bold text-primary-400 live-indicator pl-4"
-                                                >
-                                                    847
-                                                </div>
+                                            <div class="bg-gray-800/60 rounded-xl p-3.5">
+                                                <div class="text-[11px] text-gray-500 mb-1">Live үзэгч</div>
+                                                <div class="text-xl font-bold text-primary-400 live-indicator pl-4 mt-0.5">847</div>
                                             </div>
                                         </div>
 
-                                        <!-- Orders list preview -->
-                                        <div class="bg-gray-800 rounded-lg p-3">
+                                        <!-- Orders list -->
+                                        <div class="bg-gray-800/60 rounded-xl p-4">
                                             <div class="flex items-center justify-between mb-3">
-                                                <span class="text-sm font-medium text-white"
-                                                    >Сүүлийн захиалгууд</span
-                                                >
-                                                <span class="text-xs text-primary-400"
-                                                    >Бүгдийг харах</span
-                                                >
+                                                <span class="text-sm font-medium text-white">Сүүлийн захиалгууд</span>
+                                                <span class="text-xs text-primary-400">Бүгдийг харах</span>
                                             </div>
-                                            <div class="space-y-2">
-                                                <div
-                                                    class="flex items-center justify-between py-2 border-b border-gray-700"
-                                                >
-                                                    <div class="flex items-center gap-2">
-                                                        <div
-                                                            class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600"
-                                                        />
+                                            <div class="space-y-2.5">
+                                                <div class="flex items-center justify-between py-2 border-b border-gray-700/50">
+                                                    <div class="flex items-center gap-2.5">
+                                                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-[10px] font-bold text-white">БД</div>
                                                         <div>
-                                                            <div class="text-sm text-white">
-                                                                Болормаа Д.
-                                                            </div>
-                                                            <div class="text-xs text-gray-500">
-                                                                2 бараа
-                                                            </div>
+                                                            <div class="text-sm text-white">Болормаа Д.</div>
+                                                            <div class="text-[11px] text-gray-500">2 бараа · Live коммент</div>
                                                         </div>
                                                     </div>
-                                                    <div class="text-sm font-medium text-white">
-                                                        ₮45,000
-                                                    </div>
+                                                    <div class="text-sm font-semibold text-white">₮45,000</div>
                                                 </div>
                                                 <div class="flex items-center justify-between py-2">
-                                                    <div class="flex items-center gap-2">
-                                                        <div
-                                                            class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-500"
-                                                        />
+                                                    <div class="flex items-center gap-2.5">
+                                                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-[10px] font-bold text-white">БЭ</div>
                                                         <div>
-                                                            <div class="text-sm text-white">
-                                                                Батболд Э.
-                                                            </div>
-                                                            <div class="text-xs text-gray-500">
-                                                                1 бараа
-                                                            </div>
+                                                            <div class="text-sm text-white">Батболд Э.</div>
+                                                            <div class="text-[11px] text-gray-500">1 бараа · Live коммент</div>
                                                         </div>
                                                     </div>
-                                                    <div class="text-sm font-medium text-white">
-                                                        ₮28,000
-                                                    </div>
+                                                    <div class="text-sm font-semibold text-white">₮28,000</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -340,40 +288,24 @@ onMounted(() => {
                                 </div>
                             </div>
 
-                            <!-- Floating notification cards -->
-                            <div class="absolute -right-4 top-20 float-delay-1 hidden lg:block">
-                                <div
-                                    class="glass-card rounded-xl p-3 shadow-lg flex items-center gap-3 max-w-[200px]"
-                                >
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center"
-                                    >
-                                        <UIcon
-                                            name="i-lucide-check"
-                                            class="w-5 h-5 text-green-500"
-                                        />
+                            <!-- Floating cards -->
+                            <div class="absolute -right-6 top-16 float-delay-1">
+                                <div class="glass-card rounded-xl px-4 py-3 shadow-lg flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
+                                        <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
                                     </div>
                                     <div>
-                                        <div
-                                            class="text-sm font-medium text-gray-900 dark:text-white"
-                                        >
-                                            Шинэ захиалга!
-                                        </div>
-                                        <div class="text-xs text-gray-500">₮45,000 - Болормаа</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Шинэ захиалга!</div>
+                                        <div class="text-xs text-gray-500">₮45,000 · Болормаа</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="absolute -left-4 bottom-20 float hidden lg:block">
-                                <div class="glass-card rounded-xl p-3 shadow-lg">
-                                    <div class="flex items-center gap-2">
-                                        <div
-                                            class="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center"
-                                        >
-                                            <UIcon
-                                                name="i-lucide-trending-up"
-                                                class="w-4 h-4 text-primary-500"
-                                            />
+                            <div class="absolute -left-6 bottom-24 float">
+                                <div class="glass-card rounded-xl px-4 py-3 shadow-lg">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+                                            <UIcon name="i-lucide-trending-up" class="w-4 h-4 text-primary-500" />
                                         </div>
                                         <div>
                                             <div class="text-xs text-gray-500">Өнөөдрийн өсөлт</div>
@@ -388,34 +320,25 @@ onMounted(() => {
             </UContainer>
         </section>
 
-        <!-- Stats Section - Business Impact -->
+        <!-- Stats bar -->
         <section
             ref="statsRef"
-            class="py-16 bg-gradient-to-r from-gray-900 to-gray-800 dark:from-gray-900 dark:to-gray-950"
+            class="relative py-16 bg-gray-900 dark:bg-gray-950"
         >
-            <UContainer class="max-w-7xl">
-                <div class="text-center mb-10">
-                    <p class="text-gray-400 text-sm uppercase tracking-wider font-medium">
-                        Бодит үр дүн
-                    </p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
+            <UContainer class="max-w-5xl">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                     <div
                         v-for="(stat, index) in stats"
                         :key="stat.label"
-                        class="text-center p-6 rounded-2xl bg-white/5 border border-white/10"
+                        class="text-center"
                         :class="{
                             'fade-in-up': statsVisible,
                             [`fade-in-up-delay-${index + 1}`]: statsVisible
                         }"
                     >
-                        <div
-                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500/20 to-primary-600/20 flex items-center justify-center mx-auto mb-4"
-                        >
-                            <UIcon :name="stat.icon" class="w-6 h-6 text-primary-400" />
-                        </div>
-                        <div class="text-3xl md:text-4xl font-extrabold text-white mb-2">
-                            {{ stat.value }}
+                        <div class="text-4xl md:text-5xl font-extrabold text-white mb-1">
+                            {{ stat.value }}<span class="text-primary-400 text-2xl md:text-3xl">{{ stat.unit }}</span>
                         </div>
                         <div class="text-sm text-gray-400">
                             {{ stat.label }}
@@ -425,101 +348,78 @@ onMounted(() => {
             </UContainer>
         </section>
 
-        <!-- Pain Points Section -->
-        <section class="py-20 bg-gray-50 dark:bg-gray-900/30">
-            <UContainer class="max-w-7xl">
+        <!-- Pain Points -->
+        <section class="py-20 lg:py-24">
+            <UContainer class="max-w-5xl">
                 <div class="text-center mb-12">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                         Танил асуудлууд уу?
                     </h2>
+                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+                        Live худалдаачдын тулгардаг нийтлэг асуудлуудыг бид шийдсэн
+                    </p>
                 </div>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid sm:grid-cols-2 gap-4">
                     <div
                         v-for="pain in painPoints"
                         :key="pain.problem"
-                        class="relative p-5 rounded-xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800"
+                        class="p-5 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800/50"
                     >
-                        <div class="flex items-start gap-3">
-                            <div class="flex-shrink-0">
-                                <div
-                                    class="w-6 h-6 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center"
-                                >
-                                    <UIcon name="i-lucide-x" class="w-3 h-3 text-red-500" />
-                                </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                                <UIcon name="i-lucide-x" class="w-3.5 h-3.5 text-red-500" />
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500 line-through mb-2">
-                                    {{ pain.problem }}
-                                </p>
-                                <div class="flex items-center gap-2">
-                                    <div
-                                        class="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
-                                    >
-                                        <UIcon
-                                            name="i-lucide-check"
-                                            class="w-3 h-3 text-green-500"
-                                        />
-                                    </div>
-                                    <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                        {{ pain.solution }}
-                                    </p>
-                                </div>
+                            <p class="text-sm text-gray-400 line-through">{{ pain.problem }}</p>
+                        </div>
+                        <div class="w-px h-3 bg-gray-200 dark:bg-gray-700 ml-3.5" />
+                        <div class="flex items-center gap-3">
+                            <div class="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                                <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-green-500" />
                             </div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ pain.solution }}</p>
                         </div>
                     </div>
                 </div>
             </UContainer>
         </section>
 
-        <!-- Features Section - Business Benefits -->
-        <section id="features" ref="featuresRef" class="py-24">
+        <!-- Features -->
+        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
             <UContainer class="max-w-7xl">
-                <div class="text-center mb-16">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 mb-6"
-                    >
-                        <UIcon name="i-lucide-rocket" class="w-4 h-4 text-primary-500" />
-                        <span class="text-sm font-medium text-primary-600 dark:text-primary-400"
-                            >Бизнесийн давуу тал</span
-                        >
-                    </div>
+                <div class="text-center mb-14">
+                    <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Боломжууд</p>
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                         Яагаад Instasell?
                     </h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
                         Цаг хэмнэж, орлогоо нэмэгдүүлэх бодит шийдэл
                     </p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div
                         v-for="(feature, index) in features"
                         :key="feature.title"
-                        class="group relative p-6 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 card-hover"
+                        class="group relative p-6 rounded-2xl bg-white dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-primary-500/10"
                         :class="{
                             'fade-in-up': featuresVisible,
                             [`fade-in-up-delay-${index + 1}`]: featuresVisible
                         }"
                     >
-                        <!-- Stat badge -->
-                        <div class="absolute -top-3 right-4">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg"
+                        <div class="flex items-center justify-between mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center transition-colors duration-300 group-hover:bg-primary-500/15"
                             >
+                                <UIcon :name="feature.icon" class="w-6 h-6 text-primary-500" />
+                            </div>
+                            <span class="text-xs font-bold text-primary-500 bg-primary-500/10 px-2.5 py-1 rounded-full">
                                 {{ feature.stat }}
                             </span>
                         </div>
-
-                        <div
-                            class="w-14 h-14 rounded-2xl mb-4 flex items-center justify-center bg-gradient-to-br transition-transform duration-300 group-hover:scale-110"
-                            :class="feature.color"
-                        >
-                            <UIcon :name="feature.icon" class="w-7 h-7 text-white" />
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-2">
                             {{ feature.title }}
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                             {{ feature.description }}
                         </p>
                     </div>
@@ -527,184 +427,185 @@ onMounted(() => {
             </UContainer>
         </section>
 
-        <!-- How It Works Section -->
-        <section ref="stepsRef" class="py-24 bg-gray-50 dark:bg-gray-900/50">
-            <UContainer class="max-w-7xl">
-                <div class="text-center mb-16">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 mb-6"
-                    >
-                        <UIcon name="i-lucide-zap" class="w-4 h-4 text-violet-500" />
-                        <span class="text-sm font-medium text-violet-600 dark:text-violet-400"
-                            >Хурдан эхлэх</span
+        <!-- Multi-stream -->
+        <section class="py-20 lg:py-24">
+            <UContainer class="max-w-6xl">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <!-- Left: Illustration -->
+                    <div class="flex justify-center">
+                        <img
+                            src="/streaming.svg"
+                            alt="Олон платформд нэгэн зэрэг дамжуулах"
+                            class="w-full max-w-lg"
                         >
                     </div>
+
+                    <!-- Right: Copy -->
+                    <div>
+                        <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Мульти стриминг</p>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                            Нэг дороос бүх платформд Live хийгээрэй
+                        </h2>
+                        <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
+                            Instasell-ээс Facebook, Instagram зэрэг олон платформд нэгэн зэрэг шууд дамжуулалт хийх боломжтой. Илүү олон үзэгчид хүрч, борлуулалтаа нэмэгдүүлээрэй.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <UIcon name="i-lucide-radio" class="w-4 h-4 text-primary-500" />
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Нэг товчоор бүгдэд Live</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Facebook, Instagram-д нэгэн зэрэг дамжуулна</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <UIcon name="i-lucide-layers" class="w-4 h-4 text-primary-500" />
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Бараа мэдээлэл overlay</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Live дээр барааны нэр, үнэ автомат харагдана</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <UIcon name="i-lucide-message-square" class="w-4 h-4 text-primary-500" />
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Коммент автомат уншина</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Бүх платформын коммент захиалгыг нэг дороос удирдана</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </UContainer>
+        </section>
+
+        <!-- How It Works -->
+        <section ref="stepsRef" class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
+            <UContainer class="max-w-4xl">
+                <div class="text-center mb-14">
+                    <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Хэрхэн ажилладаг</p>
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        5 минутад бэлэн болно
+                        3 алхамаар эхлээрэй
                     </h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                        Техникийн мэдлэг шаардлагагүй. Бүртгүүлээд шууд эхлээрэй.
+                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+                        Техникийн мэдлэг шаардлагагүй. 5 минутад бэлэн болно.
                     </p>
                 </div>
 
-                <div class="grid md:grid-cols-3 gap-8 relative">
-                    <!-- Connector line -->
-                    <div
-                        class="hidden md:block absolute top-16 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-primary-500 via-primary-400 to-indigo-500 opacity-30"
-                    />
-
+                <div class="space-y-6">
                     <div
                         v-for="(step, index) in steps"
                         :key="step.step"
-                        class="relative text-center"
+                        class="flex gap-6 items-start"
                         :class="{
                             'fade-in-up': stepsVisible,
                             [`fade-in-up-delay-${index + 1}`]: stepsVisible
                         }"
                     >
                         <!-- Step number -->
-                        <div class="relative inline-flex mb-6">
+                        <div class="flex flex-col items-center flex-shrink-0">
                             <div
-                                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/25"
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20"
                             >
-                                <UIcon :name="step.icon" class="w-8 h-8 text-white" />
+                                <span class="text-sm font-bold text-white">{{ step.step }}</span>
                             </div>
-                            <div
-                                class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white dark:bg-gray-900 border-2 border-primary-500 flex items-center justify-center"
-                            >
-                                <span class="text-xs font-bold text-primary-500">{{
-                                    step.step
-                                }}</span>
-                            </div>
+                            <div v-if="index < steps.length - 1" class="w-px h-8 bg-gray-200 dark:bg-gray-700 mt-2" />
                         </div>
 
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                            {{ step.title }}
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400 max-w-xs mx-auto mb-3">
-                            {{ step.description }}
-                        </p>
-                        <!-- Benefit tag -->
-                        <span
-                            class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                        >
-                            <UIcon name="i-lucide-check" class="w-3 h-3" />
-                            {{ step.benefit }}
-                        </span>
+                        <!-- Content -->
+                        <div class="pb-2 pt-1">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                                {{ step.title }}
+                            </h3>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                                {{ step.description }}
+                            </p>
+                        </div>
                     </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <UButton
+                        to="/login?mode=register"
+                        size="xl"
+                        class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                    >
+                        <span>Одоо эхлэх</span>
+                        <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-1" />
+                    </UButton>
                 </div>
             </UContainer>
         </section>
 
-        <!-- Testimonials Section -->
-        <section class="py-24">
+        <!-- Testimonials -->
+        <section class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
             <UContainer class="max-w-7xl">
-                <div class="text-center mb-16">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6"
-                    >
-                        <UIcon name="i-lucide-users" class="w-4 h-4 text-indigo-500" />
-                        <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400"
-                            >Амжилтын түүхүүд</span
-                        >
-                    </div>
+                <div class="text-center mb-14">
+                    <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Сэтгэгдэл</p>
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                        Бодит үр дүн гаргасан худалдаачид
+                        Худалдаачдын туршлага
                     </h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400">
-                        Тэд яаж цаг хэмнэж, орлогоо нэмэгдүүлсэн бэ?
-                    </p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6">
                     <div
                         v-for="testimonial in testimonials"
                         :key="testimonial.author"
-                        class="p-6 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 card-hover"
+                        class="p-6 rounded-2xl bg-white dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800"
                     >
-                        <!-- Metric highlight -->
-                        <div class="mb-4">
-                            <span
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold bg-gradient-to-r from-primary-500/10 to-indigo-500/10 text-primary-600 dark:text-primary-400 border border-primary-500/20"
-                            >
-                                <UIcon name="i-lucide-trending-up" class="w-4 h-4" />
-                                {{ testimonial.metric }}
-                            </span>
+                        <div class="flex items-center gap-1 mb-4">
+                            <UIcon v-for="n in 5" :key="n" name="i-lucide-star" class="w-4 h-4 text-amber-400 fill-amber-400" />
                         </div>
 
-                        <div class="testimonial-card">
-                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                                "{{ testimonial.quote }}"
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <img
-                                :src="testimonial.avatar"
-                                :alt="testimonial.author"
-                                class="w-12 h-12 rounded-full bg-gray-100"
-                            >
+                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-sm">
+                            "{{ testimonial.quote }}"
+                        </p>
+
+                        <div class="flex items-center justify-between">
                             <div>
-                                <div class="font-semibold text-gray-900 dark:text-white">
+                                <div class="font-semibold text-sm text-gray-900 dark:text-white">
                                     {{ testimonial.author }}
                                 </div>
-                                <div class="text-sm text-gray-500">
+                                <div class="text-xs text-gray-500">
                                     {{ testimonial.role }}
                                 </div>
                             </div>
+                            <span class="text-xs font-semibold text-primary-500 bg-primary-500/10 px-2.5 py-1 rounded-full">
+                                {{ testimonial.metric }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </UContainer>
         </section>
 
-        <!-- CTA Section -->
-        <section class="py-24">
-            <UContainer class="max-w-7xl">
+        <!-- CTA -->
+        <section class="py-20 lg:py-24">
+            <UContainer class="max-w-4xl">
                 <div class="relative rounded-3xl overflow-hidden">
-                    <!-- Animated gradient background -->
-                    <div class="absolute inset-0 bg-gradient-animated opacity-90" />
+                    <div class="absolute inset-0 bg-gradient-animated" />
 
-                    <!-- Content -->
-                    <div class="relative px-8 py-16 md:px-16 md:py-24 text-center">
-                        <!-- Value props -->
-                        <div class="flex flex-wrap justify-center gap-4 mb-8">
-                            <div
-                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur text-white text-sm"
-                            >
-                                <UIcon name="i-lucide-clock" class="w-4 h-4" />
-                                <span>3+ цаг хэмнэ</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur text-white text-sm"
-                            >
-                                <UIcon name="i-lucide-trending-up" class="w-4 h-4" />
-                                <span>+40% орлого</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur text-white text-sm"
-                            >
-                                <UIcon name="i-lucide-shield-check" class="w-4 h-4" />
-                                <span>0 алдагдсан захиалга</span>
-                            </div>
-                        </div>
-
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-                            Цаг хэмнэж, орлогоо нэмэгдүүлэхэд бэлэн үү?
+                    <div class="relative px-8 py-16 md:px-16 md:py-20 text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                            Борлуулалтаа автоматжуулахад бэлэн үү?
                         </h2>
-                        <p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                            14 хоногийн үнэгүй туршилт. Карт шаардлагагүй.
-                            <br >
-                            5 минутад бүртгүүлж, шууд эхлээрэй.
+                        <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto">
+                            Үнэгүй туршилт. Карт шаардлагагүй. 5 минутад бэлэн.
                         </p>
 
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
                             <UButton
                                 to="/login?mode=register"
                                 size="xl"
                                 class="bg-white text-gray-900 hover:bg-gray-100 border-0 shadow-xl font-semibold"
                             >
                                 <span>Үнэгүй эхлэх</span>
-                                <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-2" />
+                                <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-1" />
                             </UButton>
                             <UButton
                                 to="/pricing"
@@ -715,21 +616,6 @@ onMounted(() => {
                                 Үнийн мэдээлэл
                             </UButton>
                         </div>
-
-                        <p class="text-white/60 text-sm mt-6">
-                            Хүссэн үедээ цуцлах боломжтой. Төлбөрийн үүрэг байхгүй.
-                        </p>
-
-                        <!-- Floating shapes -->
-                        <div
-                            class="absolute top-10 left-10 w-20 h-20 rounded-full bg-white/10 float"
-                        />
-                        <div
-                            class="absolute bottom-10 right-10 w-16 h-16 rounded-2xl bg-white/10 float-delay-1 rotate-12"
-                        />
-                        <div
-                            class="absolute top-1/2 right-20 w-12 h-12 rounded-xl bg-white/10 float-delay-2 -rotate-6"
-                        />
                     </div>
                 </div>
             </UContainer>
