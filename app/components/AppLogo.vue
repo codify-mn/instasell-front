@@ -12,7 +12,7 @@ const colorMode = useColorMode()
 <template>
     <NuxtLink to="/" class="flex items-center group" :class="$props.class">
         <img
-            :src="variant === 'light' || colorMode.value === 'dark' ? '/logo-white.svg' : '/logo.svg'"
+            :src="variant === 'light' || colorMode.value === 'dark' ? '/instasell_ondark.svg' : '/instasell.svg'"
             alt="InstaSell"
             :class="{
                 'w-32 p-4': size === 'sm',

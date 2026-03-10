@@ -108,10 +108,10 @@ const groups = computed(() => [
             v-model:open="open"
             collapsible
             resizable
-            class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border-r border-gray-200/50 dark:border-gray-800/50"
+            class="!bg-[#102A32] border-r border-[#1e3a46]"
             :ui="{
                 header: 'mt-1',
-                footer: 'lg:border-t lg:border-gray-200/50 dark:lg:border-gray-800/50'
+                footer: 'lg:border-t lg:border-[#1e3a46]'
             }"
         >
             <template #header="{ collapsed }">
@@ -123,7 +123,7 @@ const groups = computed(() => [
                     label="Хайх..."
                     placeholder="Хайх..."
                     :collapsed="collapsed"
-                    class="bg-gray-50/50 dark:bg-gray-800/30 dark:ring-gray-700/40 backdrop-blur-sm"
+                    class="bg-white/10 ring-white/10 text-white/70 hover:bg-white/15"
                 />
 
                 <UNavigationMenu

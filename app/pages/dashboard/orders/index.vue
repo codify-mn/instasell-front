@@ -303,11 +303,11 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-800">
+        <div class="px-6 py-5 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Захиалга</h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <h1 class="text-2xl font-semibold text-[#102A32] dark:text-white">Захиалга</h1>
+                    <p class="mt-1 text-sm text-[#5A7178] dark:text-gray-400">
                         Захиалгуудын нийт жагсаалт
                     </p>
                 </div>
@@ -366,7 +366,7 @@ onMounted(() => {
         </Transition>
 
         <!-- Filters -->
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="px-6 py-4 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
             <div class="flex items-center justify-between gap-4">
                 <UInput
                     v-model="filter.keyword"
@@ -382,19 +382,12 @@ onMounted(() => {
         </div>
 
         <!-- Table -->
-        <div class="flex-1 overflow-auto">
+        <div class="flex-1 overflow-auto bg-white dark:bg-gray-900">
             <UTable
                 :data="orders"
                 :columns="columns"
                 :loading="loading"
                 class="w-full"
-                :ui="{
-                    thead: 'bg-gray-50 dark:bg-gray-900/50',
-                    th: 'text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
-                    td: 'px-4 py-3',
-                    tbody: 'divide-y divide-gray-100 dark:divide-gray-800',
-                    tr: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                }"
             >
                 <template #select-header>
                     <UCheckbox
@@ -415,7 +408,7 @@ onMounted(() => {
 
                 <template #order_number-cell="{ row }">
                     <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <span class="font-medium text-primary-600 dark:text-primary-400">
+                        <span class="font-semibold text-[#102A32] dark:text-white hover:text-primary-600 transition-colors">
                             #{{ row.original.order_number }}
                         </span>
                     </div>
@@ -494,9 +487,9 @@ onMounted(() => {
         <!-- Pagination -->
         <div
             v-if="total > 0"
-            class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between"
+            class="px-6 py-4 border-t border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between"
         >
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <p class="text-sm text-[#5A7178] dark:text-gray-400">
                 {{ startItem }}-с {{ endItem }} хүртэл. Нийт: {{ total }}
             </p>
             <div class="flex items-center gap-2">

@@ -345,11 +345,13 @@ onMounted(async () => {
                     <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-primary" />
                 </div>
 
-                <div v-else-if="product" class="bg-gray-50 dark:bg-gray-950/60 min-h-full p-6 overflow-y-auto">
+                <div v-else-if="product" class="bg-gray-50 dark:bg-gray-950/60 min-h-full p-4 lg:p-6 overflow-y-auto">
                     <UForm id="product-form" :schema="schema" :state="state" @submit="onSubmit">
-                        <div class="space-y-5 max-w-7xl mx-auto">
+                        <div class="flex flex-col lg:flex-row gap-5 max-w-7xl mx-auto lg:items-start">
 
-                            <!-- TOP CARD: Images | Info | Price+Status -->
+                            <!-- Left: Image + Info + Variants + Discounts -->
+                            <div class="flex-1 min-w-0 space-y-5">
+
                             <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
                                 <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr_220px] gap-6">
 
@@ -384,22 +386,13 @@ onMounted(async () => {
                                             </UInput>
                                         </UFormField>
 
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <UFormField label="Ангилал">
-                                                <UInput
-                                                    v-model="state.category"
-                                                    placeholder="Эмэгтэй хувцас, Гэр ахуй..."
-                                                    size="lg"
-                                                />
-                                            </UFormField>
-                                            <UFormField label="Төлөв" required>
-                                                <USelect
-                                                    v-model="state.status"
-                                                    :items="statusOptions"
-                                                    size="lg"
-                                                />
-                                            </UFormField>
-                                        </div>
+                                        <UFormField label="Ангилал">
+                                            <UInput
+                                                v-model="state.category"
+                                                placeholder="Эмэгтэй хувцас, Гэр ахуй..."
+                                                size="lg"
+                                            />
+                                        </UFormField>
                                     </div>
 
                                     <!-- Column 3: Price Display + Status Indicator -->
@@ -418,33 +411,32 @@ onMounted(async () => {
                                             <p class="text-xs text-sky-400 dark:text-sky-500 mt-2">Монгол төгрөг</p>
                                         </div>
 
-                                        <div
-                                            class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border transition-colors"
-                                            :class="{
-                                                'bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900/60': state.status === 'active',
-                                                'bg-gray-50 border-gray-200 dark:bg-gray-800/40 dark:border-gray-700': state.status === 'draft',
-                                                'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-900/60': state.status === 'out_of_stock'
-                                            }"
-                                        >
-                                            <span :class="['w-2.5 h-2.5 rounded-full flex-shrink-0', statusDotColor]" />
-                                            <span
-                                                class="text-sm font-medium"
-                                                :class="{
-                                                    'text-emerald-700 dark:text-emerald-300': state.status === 'active',
-                                                    'text-gray-600 dark:text-gray-400': state.status === 'draft',
-                                                    'text-red-700 dark:text-red-300': state.status === 'out_of_stock'
-                                                }"
-                                            >{{ statusLabel }}</span>
+                                        <div>
+                                            <p class="text-xs font-semibold text-sky-500 dark:text-sky-400 uppercase tracking-wider mb-2">Төлөв</p>
+                                            <UDropdownMenu :items="statusOptions.map(o => ({ label: o.label, onSelect: () => { state.status = o.value } }))">
+                                                <div
+                                                    class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer transition-colors select-none"
+                                                    :class="{
+                                                        'bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900/60': state.status === 'active',
+                                                        'bg-gray-50 border-gray-200 dark:bg-gray-800/40 dark:border-gray-700': state.status === 'draft',
+                                                        'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-900/60': state.status === 'out_of_stock'
+                                                    }"
+                                                >
+                                                    <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
+                                                    <span class="text-sm font-medium" :class="{
+                                                        'text-emerald-700 dark:text-emerald-300': state.status === 'active',
+                                                        'text-gray-600 dark:text-gray-400': state.status === 'draft',
+                                                        'text-red-700 dark:text-red-300': state.status === 'out_of_stock'
+                                                    }">{{ statusLabel }}</span>
+                                                    <UIcon name="i-lucide-chevrons-up-down" class="w-3 h-3 opacity-40 ml-0.5" />
+                                                </div>
+                                            </UDropdownMenu>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- BOTTOM: 2-col grid -->
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-
-                                <!-- Left (2/3): Variants + Discounts -->
-                                <div class="lg:col-span-2 space-y-5">
+                                <!-- Variants + Discounts -->
+                                <div class="space-y-5">
 
                                     <!-- Variants Card -->
                                     <ProductFormCard>
@@ -573,22 +565,10 @@ onMounted(async () => {
                                     </ProductFormCard>
                                 </div>
 
-                                <!-- Right (1/3): Settings + Customer Preview -->
-                                <div class="space-y-5">
+                            </div>
 
-                                    <!-- Settings Card -->
-                                    <ProductFormCard title="Тохиргоо">
-                                        <ProductSettingToggle
-                                            v-model="state.track_inventory"
-                                            label="Үлдэгдэл автоматаар тооцох"
-                                            description="Захиалга хийгдсэн үед тухайн барааны үлдэгдэлээс хасна."
-                                        />
-                                        <ProductSettingToggle
-                                            v-model="state.is_featured"
-                                            label="Checkout-д санал болгох"
-                                            description="Checkout хуудас дээр харилцагчид санал болгох бараа."
-                                        />
-                                    </ProductFormCard>
+                            <!-- Right sidebar: Preview + Settings -->
+                            <div class="w-full lg:w-72 lg:shrink-0 space-y-5">
 
                                     <!-- Customer View Preview Card -->
                                     <ProductFormCard>
@@ -635,13 +615,26 @@ onMounted(async () => {
                                                 </div>
 
                                                 <div class="w-full py-2 rounded-lg bg-primary-500 text-white text-sm font-semibold text-center mt-1">
-                                                    Захиалах
+                                                    Сагсанд нэмэх
                                                 </div>
                                             </div>
                                         </div>
                                     </ProductFormCard>
+
+                                    <!-- Settings Card -->
+                                    <ProductFormCard title="Тохиргоо">
+                                        <ProductSettingToggle
+                                            v-model="state.track_inventory"
+                                            label="Үлдэгдэл автоматаар тооцох"
+                                            description="Захиалга хийгдсэн үед тухайн барааны үлдэгдэлээс хасна."
+                                        />
+                                        <ProductSettingToggle
+                                            v-model="state.is_featured"
+                                            label="Checkout-д санал болгох"
+                                            description="Checkout хуудас дээр харилцагчид санал болгох бараа."
+                                        />
+                                    </ProductFormCard>
                                 </div>
-                            </div>
                         </div>
                     </UForm>
                 </div>

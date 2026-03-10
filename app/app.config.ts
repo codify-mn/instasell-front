@@ -8,14 +8,13 @@ export default defineAppConfig({
             slots: {
                 root: 'w-full',
                 base: [
-                    'rounded-xl',
-                    'bg-white/50 dark:bg-gray-800/50',
-                    'border border-gray-200/60 dark:border-gray-700/40',
-                    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'rounded-lg',
+                    'bg-[#F4F7F5] dark:bg-gray-800/50',
+                    'border border-[#E1E8E5] dark:border-gray-700/40',
+                    'placeholder:text-[#5A7178] dark:placeholder:text-gray-500',
                     'focus:bg-white dark:focus:bg-gray-800',
                     'focus:border-primary-500 dark:focus:border-primary-400',
                     'focus:ring-2 focus:ring-primary-500/20',
-                    'backdrop-blur-sm',
                     'transition-all duration-200'
                 ]
             }
@@ -23,13 +22,12 @@ export default defineAppConfig({
         select: {
             slots: {
                 base: [
-                    'rounded-xl',
-                    'bg-white/50 dark:bg-gray-800/50',
-                    'border border-gray-200/60 dark:border-gray-700/40',
+                    'rounded-lg',
+                    'bg-[#F4F7F5] dark:bg-gray-800/50',
+                    'border border-[#E1E8E5] dark:border-gray-700/40',
                     'focus:bg-white dark:focus:bg-gray-800',
                     'focus:border-primary-500 dark:focus:border-primary-400',
                     'focus:ring-2 focus:ring-primary-500/20',
-                    'backdrop-blur-sm',
                     'transition-all duration-200'
                 ]
             }
@@ -37,14 +35,13 @@ export default defineAppConfig({
         textarea: {
             slots: {
                 base: [
-                    'rounded-xl',
-                    'bg-white/50 dark:bg-gray-800/50',
-                    'border border-gray-200/60 dark:border-gray-700/40',
-                    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+                    'rounded-lg',
+                    'bg-[#F4F7F5] dark:bg-gray-800/50',
+                    'border border-[#E1E8E5] dark:border-gray-700/40',
+                    'placeholder:text-[#5A7178] dark:placeholder:text-gray-500',
                     'focus:bg-white dark:focus:bg-gray-800',
                     'focus:border-primary-500 dark:focus:border-primary-400',
                     'focus:ring-2 focus:ring-primary-500/20',
-                    'backdrop-blur-sm',
                     'transition-all duration-200'
                 ]
             }
@@ -52,17 +49,16 @@ export default defineAppConfig({
         card: {
             slots: {
                 root: [
-                    'rounded-2xl',
-                    'bg-white/60 dark:bg-gray-900/60',
-                    'backdrop-blur-xl',
-                    'border border-white/20 dark:border-gray-700/30',
-                    'shadow-sm shadow-gray-200/50 dark:shadow-gray-950/50',
-                    'hover:shadow-md hover:shadow-gray-200/60 dark:hover:shadow-gray-950/60',
-                    'transition-all duration-300'
+                    'rounded-xl',
+                    'bg-white dark:bg-gray-900',
+                    'border border-[#E1E8E5] dark:border-gray-800',
+                    'shadow-sm',
+                    'transition-shadow duration-200',
+                    'hover:shadow-md'
                 ],
-                header: 'px-6 py-5 border-b border-gray-100/80 dark:border-gray-800/60',
+                header: 'px-6 py-4 border-b border-[#E1E8E5] dark:border-gray-800',
                 body: 'px-6 py-5',
-                footer: 'px-6 py-5 border-t border-gray-100/80 dark:border-gray-800/60'
+                footer: 'px-6 py-4 border-t border-[#E1E8E5] dark:border-gray-800'
             }
         },
         button: {
@@ -70,12 +66,21 @@ export default defineAppConfig({
                 color: 'primary'
             },
             slots: {
-                base: ['font-semibold', 'transition-all duration-200', 'active:scale-[0.98]']
+                base: ['font-semibold', 'rounded-lg', 'transition-all duration-200', 'active:scale-[0.98]']
             }
         },
         badge: {
             slots: {
-                base: ['font-medium', 'rounded-full']
+                base: ['font-medium', 'rounded-md']
+            }
+        },
+        table: {
+            slots: {
+                thead: 'bg-[#F4F7F5] dark:bg-gray-900/50',
+                th: 'px-4 py-3 text-xs font-semibold text-[#5A7178] dark:text-gray-400 uppercase tracking-wide',
+                tbody: 'divide-y divide-[#E1E8E5] dark:divide-gray-800',
+                td: 'px-4 py-3.5 text-sm',
+                tr: 'hover:bg-[#F4F7F5]/60 dark:hover:bg-gray-800/40 transition-colors'
             }
         }
     }
