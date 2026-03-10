@@ -17,9 +17,17 @@ const bulkImportModalOpen = ref(false)
 const postModalOpen = ref(false)
 const postModalProductId = ref<number | undefined>(undefined)
 
+// Bulk post to Facebook modal
+const bulkPostModalOpen = ref(false)
+
 const openPostModal = (product: Product) => {
     postModalProductId.value = product.id
     postModalOpen.value = true
+}
+
+const openBulkPostModal = () => {
+    if (selectedRows.value.length === 0) return
+    bulkPostModalOpen.value = true
 }
 
 const loading = ref(true)
@@ -429,6 +437,15 @@ onMounted(() => {
                 <div class="flex items-center gap-2">
                     <UButton
                         size="sm"
+                        color="primary"
+                        variant="soft"
+                        icon="i-lucide-share-2"
+                        @click="openBulkPostModal"
+                    >
+                        Facebook-д нийтлэх
+                    </UButton>
+                    <UButton
+                        size="sm"
                         color="neutral"
                         variant="outline"
                         icon="i-lucide-check-circle"
@@ -498,7 +515,7 @@ onMounted(() => {
                     th: 'text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
                     td: 'px-4 py-3',
                     tbody: 'divide-y divide-gray-100 dark:divide-gray-800',
-                    tr: 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    tr: 'group hover:bg-gray-50 dark:hover:bg-gray-800/50'
                 }"
             >
                 <template #select-header>
@@ -531,7 +548,7 @@ onMounted(() => {
                                 :src="row.original.images[0]"
                                 :alt="row.original.name"
                                 class="w-full h-full object-cover"
-                            >
+                            />
                             <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-gray-400" />
                         </div>
                         <span class="font-medium text-gray-900 dark:text-white">
@@ -605,14 +622,30 @@ onMounted(() => {
 
                 <template #actions-cell="{ row }">
                     <div class="flex items-center justify-end gap-1" @click.stop>
-                        <UButton
-                            icon="i-lucide-share-2"
-                            color="neutral"
-                            variant="ghost"
-                            size="md"
-                            title="Facebook-д нийтлэх"
-                            @click.stop="openPostModal(row.original)"
-                        />
+                        <div
+                            class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            <UButton
+                                label="Нийтлэх"
+                                icon="i-lucide-share-2"
+                                color="neutral"
+                                variant="subtle"
+                                size="md"
+                                title="Facebook-д нийтлэх"
+                                @click.stop="openPostModal(row.original)"
+                            />
+                            <UButton
+                                label="Засах"
+                                icon="i-lucide-pencil"
+                                color="neutral"
+                                variant="ghost"
+                                size="md"
+                                title="Засах"
+                                @click.stop="
+                                    router.push(`/dashboard/products/${row.original.id}/edit`)
+                                "
+                            />
+                        </div>
                         <UDropdownMenu :items="getActionItems(row.original)">
                             <UButton
                                 icon="i-lucide-more-horizontal"
@@ -753,5 +786,12 @@ onMounted(() => {
 
         <!-- Post to Facebook Modal -->
         <ProductPostModal v-model:open="postModalOpen" :product-id="postModalProductId" />
+
+        <!-- Bulk Post to Facebook Modal -->
+        <ProductBulkPostModal
+            v-model:open="bulkPostModalOpen"
+            :products="selectedRows"
+            @success="loadProducts"
+        />
     </div>
 </template>

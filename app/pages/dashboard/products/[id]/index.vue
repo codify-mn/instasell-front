@@ -272,27 +272,6 @@ onMounted(async () => {
                     </template>
                 </UDashboardNavbar>
 
-                <UDashboardToolbar>
-                    <UNavigationMenu
-                        :items="[
-                            [
-                                {
-                                    label: 'Тойм',
-                                    icon: 'i-lucide-activity',
-                                    to: `/dashboard/products/${productId}`,
-                                    exact: true
-                                },
-                                {
-                                    label: 'Засах',
-                                    icon: 'i-lucide-pen-line',
-                                    to: `/dashboard/products/${productId}/edit`
-                                }
-                            ]
-                        ]"
-                        highlight
-                        class="-mx-1 flex-1"
-                    />
-                </UDashboardToolbar>
             </template>
 
             <template #body>
