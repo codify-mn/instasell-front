@@ -74,9 +74,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                 <!-- Success state -->
                 <div v-if="isSubmitted" class="text-center space-y-6">
                     <div
-                        class="w-16 h-16 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto"
+                        class="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mx-auto"
                     >
-                        <UIcon name="i-lucide-mail-check" class="w-8 h-8 text-green-500" />
+                        <UIcon name="i-lucide-mail-check" class="w-8 h-8 text-primary-500" />
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">

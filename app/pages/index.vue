@@ -142,8 +142,8 @@ onMounted(() => {
                             class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 mb-8 fade-in-up"
                         >
                             <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500" />
                             </span>
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Live худалдааны #1 платформ</span>
                         </div>
@@ -196,15 +196,15 @@ onMounted(() => {
                             class="flex flex-wrap gap-6 justify-center lg:justify-start mt-10 text-sm text-gray-400 fade-in-up fade-in-up-delay-4"
                         >
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>Үнэгүй туршилт</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>Карт шаардлагагүй</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>5 минутад бэлэн</span>
                             </div>
                         </div>
@@ -226,7 +226,7 @@ onMounted(() => {
                                         <div class="flex gap-1.5">
                                             <div class="w-3 h-3 rounded-full bg-red-500/80" />
                                             <div class="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                            <div class="w-3 h-3 rounded-full bg-green-500/80" />
+                                            <div class="w-3 h-3 rounded-full bg-primary-500/80" />
                                         </div>
                                         <div class="flex-1 mx-8">
                                             <div class="bg-gray-700/60 rounded-lg px-3 py-1.5 text-xs text-gray-400 text-center max-w-xs mx-auto">
@@ -242,12 +242,12 @@ onMounted(() => {
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Өнөөдөр</div>
                                                 <div class="text-xl font-bold text-white">₮2.4M</div>
-                                                <div class="text-xs text-green-400 mt-0.5">+12%</div>
+                                                <div class="text-xs text-primary-400 mt-0.5">+12%</div>
                                             </div>
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Захиалга</div>
                                                 <div class="text-xl font-bold text-white">156</div>
-                                                <div class="text-xs text-green-400 mt-0.5">+8%</div>
+                                                <div class="text-xs text-primary-400 mt-0.5">+8%</div>
                                             </div>
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Live үзэгч</div>
@@ -291,8 +291,8 @@ onMounted(() => {
                             <!-- Floating cards -->
                             <div class="absolute -right-6 top-16 float-delay-1">
                                 <div class="glass-card rounded-xl px-4 py-3 shadow-lg flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-                                        <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                    <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+                                        <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                     </div>
                                     <div>
                                         <div class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Шинэ захиалга!</div>
@@ -309,7 +309,7 @@ onMounted(() => {
                                         </div>
                                         <div>
                                             <div class="text-xs text-gray-500">Өнөөдрийн өсөлт</div>
-                                            <div class="text-lg font-bold text-green-500">+24%</div>
+                                            <div class="text-lg font-bold text-primary-500">+24%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -373,8 +373,8 @@ onMounted(() => {
                         </div>
                         <div class="w-px h-3 bg-gray-200 dark:bg-gray-700 ml-3.5" />
                         <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                                <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-green-500" />
+                            <div class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+                                <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500" />
                             </div>
                             <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ pain.solution }}</p>
                         </div>

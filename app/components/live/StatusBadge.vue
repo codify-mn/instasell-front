@@ -35,7 +35,7 @@ const statusLabel = (status: string) => {
         />
         <span
             v-if="props.status === 'live_now'"
-            class="inline-block w-1.5 h-1.5 rounded-full bg-green-600 mr-1 animate-pulse"
+            class="inline-block w-1.5 h-1.5 rounded-full bg-primary-600 mr-1 animate-pulse"
         />
         {{ statusLabel(props.status) }}
     </UBadge>

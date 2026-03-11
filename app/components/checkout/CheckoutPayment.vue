@@ -61,9 +61,9 @@ watch(
         <!-- Payment Success -->
         <div v-if="isPaid" class="text-center py-6">
             <div
-                class="w-20 h-20 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center mx-auto mb-4"
+                class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-950/30 flex items-center justify-center mx-auto mb-4"
             >
-                <UIcon name="i-lucide-check" class="w-10 h-10 text-green-500" />
+                <UIcon name="i-lucide-check" class="w-10 h-10 text-primary-500" />
             </div>
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Төлбөр баталгаажлаа!

@@ -150,7 +150,7 @@ const decrementQuantity = (index: number) => {
                 </div>
                 <div v-if="discount > 0" class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Хөнгөлөлт</span>
-                    <span class="text-green-600">-{{ formatPrice(discount) }}</span>
+                    <span class="text-primary-600">-{{ formatPrice(discount) }}</span>
                 </div>
                 <div v-if="shippingFee > 0" class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Хүргэлт</span>

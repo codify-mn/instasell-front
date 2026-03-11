@@ -869,13 +869,13 @@ watch(
                             <!-- Watch comments indicator -->
                             <div
                                 v-if="watchComments"
-                                class="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50"
+                                class="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-900/50"
                             >
                                 <UIcon
                                     name="i-lucide-bot"
-                                    class="w-4 h-4 text-green-600 dark:text-green-400 shrink-0"
+                                    class="w-4 h-4 text-primary-600 dark:text-primary-400 shrink-0"
                                 />
-                                <p class="text-xs text-green-700 dark:text-green-300">
+                                <p class="text-xs text-primary-700 dark:text-primary-300">
                                     Автомат захиалга идэвхтэй — комментод захиалга үүснэ
                                 </p>
                             </div>

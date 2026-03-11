@@ -1,86 +1,88 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import 'tailwindcss' theme(static);
 @import '@nuxt/ui';
 
 @theme static {
-    --font-sans: 'Poppins', sans-serif;
+    --font-sans: 'Inter', sans-serif;
 
-    /* Brand Green Primary (#27D85E base) */
-    --color-primary-50: #f0fdf5;
-    --color-primary-100: #dcfce8;
-    --color-primary-200: #b9f5cd;
-    --color-primary-300: #7eedb0;
-    --color-primary-400: #4de086;
-    --color-primary-500: #27d85e; /* Base */
-    --color-primary-600: #1ab84e;
-    --color-primary-700: #14903f;
-    --color-primary-800: #116e33;
-    --color-primary-900: #0e5a2b;
-    --color-primary-950: #073318;
+    /* Shopify-inspired Deep Green Primary */
+    --color-primary-50: #F0FDF4;
+    --color-primary-100: #DCFCE7;
+    --color-primary-200: #BBF7D0;
+    --color-primary-300: #86EFAC;
+    --color-primary-400: #4ADE80;
+    --color-primary-500: #008060; /* Base — Shopify green */
+    --color-primary-600: #006E52;
+    --color-primary-700: #005C45;
+    --color-primary-800: #004A38;
+    --color-primary-900: #003929;
+    --color-primary-950: #00271D;
 
-    /* Deep Charcoal secondary tones */
-    --color-secondary-50: #f0f4f5;
-    --color-secondary-100: #d9e4e7;
-    --color-secondary-200: #b0c7ce;
-    --color-secondary-300: #7aa3ae;
-    --color-secondary-400: #5a7178;
-    --color-secondary-500: #3d5a62;
-    --color-secondary-600: #2a434a;
-    --color-secondary-700: #1e333a;
-    --color-secondary-800: #142830;
-    --color-secondary-900: #102a32; /* Base */
-    --color-secondary-950: #081820;
+    /* Neutral Slate tones (Shopify Polaris) */
+    --color-secondary-50: #F7F7F8;
+    --color-secondary-100: #F1F1F1;
+    --color-secondary-200: #E3E3E3;
+    --color-secondary-300: #C9CCCF;
+    --color-secondary-400: #8C9196;
+    --color-secondary-500: #6D7175;
+    --color-secondary-600: #5C5F62;
+    --color-secondary-700: #44474A;
+    --color-secondary-800: #303030;
+    --color-secondary-900: #1A1A1A;
+    --color-secondary-950: #0D0D0D;
 }
 
 /* ── Brand tokens ── */
 :root {
     /* Backgrounds */
-    --app-bg: #ffffff;
+    --app-bg: #F7F7F8;
     --content-bg: #ffffff;
-    --surface-secondary: #F4F7F5;
-    --sidebar-bg: #102a32;
+    --surface-secondary: #F1F1F1;
+    --sidebar-bg: #1A1A1A;
 
     /* Brand */
-    --brand-green: #27d85e;
-    --brand-charcoal: #102a32;
-    --brand-border: #E1E8E5;
-    --brand-muted: #5A7178;
+    --brand-accent: #008060;
+    --brand-dark: #1A1A1A;
+    --brand-border: #E3E3E3;
+    --brand-muted: #6D7175;
 
     /* Gradients */
-    --gradient-start: #27d85e;
-    --gradient-mid: #1ab84e;
-    --gradient-end: #14903f;
+    --gradient-start: #008060;
+    --gradient-mid: #006E52;
+    --gradient-end: #005C45;
 
-    /* Glass (light — minimal) */
-    --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(225, 232, 229, 0.8);
-    --glass-shadow: rgba(39, 216, 94, 0.06);
+    /* Surface (clean — no glass) */
+    --glass-bg: rgba(255, 255, 255, 0.98);
+    --glass-border: rgba(227, 227, 227, 0.8);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
 }
 
 /* Dark mode */
 .dark {
-    --app-bg: #102a32;
-    --content-bg: #142e38;
-    --surface-secondary: #1a3a46;
-    --sidebar-bg: #081820;
-    --brand-border: #2a4a56;
-    --brand-muted: #7aa3ae;
-    --gradient-start: #4de086;
-    --gradient-mid: #27d85e;
-    --gradient-end: #1ab84e;
-    --glass-bg: rgba(16, 42, 50, 0.85);
-    --glass-border: rgba(39, 216, 94, 0.12);
+    --app-bg: #1A1A1A;
+    --content-bg: #202020;
+    --surface-secondary: #2A2A2A;
+    --sidebar-bg: #0D0D0D;
+    --brand-border: #333333;
+    --brand-muted: #8C9196;
+    --gradient-start: #008060;
+    --gradient-mid: #009E73;
+    --gradient-end: #00B386;
+    --glass-bg: rgba(26, 26, 26, 0.95);
+    --glass-border: rgba(51, 51, 51, 0.8);
     --glass-shadow: rgba(0, 0, 0, 0.3);
 }
 
 /* Base styles */
 body {
-    @apply bg-[var(--app-bg)] text-[var(--brand-charcoal)] dark:text-gray-100;
+    @apply bg-[var(--app-bg)] text-[var(--brand-dark)] dark:text-gray-100;
     font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3 {
-    @apply font-semibold text-[var(--brand-charcoal)] dark:text-white;
+    @apply font-semibold text-[var(--brand-dark)] dark:text-white;
 }
 
 /* Dashboard content area */
@@ -90,7 +92,7 @@ h1, h2, h3 {
 
 /* Sidebar always dark */
 #default[data-slot='sidebar'] {
-    @apply !bg-[var(--sidebar-bg)] !border-gray-800;
+    @apply !bg-[var(--sidebar-bg)] !border-[#333333];
 }
 
 #default[data-slot='sidebar'] * {
@@ -104,8 +106,8 @@ h1, h2, h3 {
 
 /* Better scrollbars */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -245,35 +247,35 @@ h1, h2, h3 {
 .card-hover:hover {
     @apply -translate-y-1;
     box-shadow:
-        0 20px 40px -15px rgba(39, 216, 94, 0.15),
-        0 10px 20px -10px rgba(39, 216, 94, 0.08);
+        0 20px 40px -15px rgba(0, 0, 0, 0.08),
+        0 10px 20px -10px rgba(0, 0, 0, 0.04);
 }
 
 .dark .card-hover:hover {
     box-shadow:
-        0 20px 40px -15px rgba(77, 224, 134, 0.2),
-        0 10px 20px -10px rgba(39, 216, 94, 0.15);
+        0 20px 40px -15px rgba(0, 0, 0, 0.3),
+        0 10px 20px -10px rgba(0, 0, 0, 0.2);
 }
 
-/* Clean card (light mode default) */
+/* Clean card */
 .glass-card {
-    @apply bg-white dark:bg-gray-900;
-    @apply border border-[#E1E8E5] dark:border-gray-800;
+    @apply bg-white dark:bg-[#202020];
+    @apply border border-[#E3E3E3] dark:border-[#333333];
     @apply shadow-sm;
 }
 
 /* Elevated card */
 .glass-card-elevated {
-    @apply bg-white dark:bg-gray-900;
-    @apply border border-[#E1E8E5] dark:border-gray-800;
-    box-shadow: 0 2px 8px rgba(16, 42, 50, 0.06), 0 1px 2px rgba(16, 42, 50, 0.04);
+    @apply bg-white dark:bg-[#202020];
+    @apply border border-[#E3E3E3] dark:border-[#333333];
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card-elevated:hover {
-    box-shadow: 0 4px 16px rgba(16, 42, 50, 0.1), 0 2px 4px rgba(16, 42, 50, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
-/* Glass sidebar nav active indicator */
+/* Sidebar nav active indicator */
 .glass-nav-active {
     @apply relative;
 }
@@ -281,7 +283,7 @@ h1, h2, h3 {
 .glass-nav-active::before {
     content: '';
     @apply absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full;
-    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    background: var(--brand-accent);
 }
 
 /* Button shine effect */
@@ -292,7 +294,7 @@ h1, h2, h3 {
 .btn-shine::after {
     content: '';
     @apply absolute inset-0 -translate-x-full;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     animation: shine 3s infinite;
 }
 
@@ -306,10 +308,10 @@ h1, h2, h3 {
     }
 }
 
-/* Icon container with gradient border */
+/* Icon container */
 .icon-container {
     @apply relative p-4 rounded-2xl;
-    background: linear-gradient(135deg, rgba(39, 216, 94, 0.1), rgba(26, 184, 78, 0.08));
+    background: rgba(0, 128, 96, 0.06);
 }
 
 .icon-container::before {
@@ -325,7 +327,7 @@ h1, h2, h3 {
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    opacity: 0.5;
+    opacity: 0.3;
 }
 
 /* Step connector line */
@@ -352,7 +354,7 @@ h1, h2, h3 {
 /* Pricing card popular highlight */
 .pricing-popular {
     @apply relative;
-    background: linear-gradient(135deg, rgba(39, 216, 94, 0.06), rgba(16, 42, 50, 0.04));
+    background: rgba(0, 128, 96, 0.03);
 }
 
 .pricing-popular::before {
@@ -388,7 +390,7 @@ h1, h2, h3 {
 .docs-nav-active::before {
     content: '';
     @apply absolute left-0 top-0 bottom-0 w-0.5 rounded-full;
-    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    background: var(--brand-accent);
 }
 
 /* Smooth page transitions */
@@ -450,7 +452,7 @@ h1, h2, h3 {
 
 /* Gradient border button */
 .btn-gradient-border {
-    @apply relative bg-white dark:bg-gray-900;
+    @apply relative bg-white dark:bg-[#202020];
 }
 
 .btn-gradient-border::before {
@@ -479,5 +481,3 @@ h1, h2, h3 {
     @apply text-gray-200 dark:text-gray-800;
     line-height: 1;
 }
-
-/* 1. The "Pro-Studio" Palette (Dark Mode)Most streaming platforms (OBS, Twitch, Restream) use dark themes because they reduce eye strain during long broadcasts and make colorful video feeds pop.Primary (Action): Electric Purple (#8A3FFC) or Vivid Blue (#0062FF). These colors feel "techy" and modern.Background: Deep Charcoal (#161616). Avoid pure black; charcoal looks more premium.Accent (Live Status): Signal Red (#FF0000). Essential for that "ON AIR" feeling.Text: Off-White (#F4F4F4) for high readability.2. The "E-commerce Trust" Palette (Light Mode)If your platform is more focused on the selling aspect (like Shopify or Amazon Live), a cleaner, lighter look builds trust and feels more "business-like."Primary (Brand): Deep Teal (#008080) or Indigo (#3F51B5). These suggest stability and security for handling payments.Background: Cool Gray (#F8F9FA). Feels airy and professional.Success Color: Emerald Green (#2ECC71). Use this for "Sale Confirmed" or "Stream Connected" notifications.Warning/Action: Bright Orange (#FD7E14). Great for "Limited Stock" alerts to create urgency.3. Psychologically Mapping Your ColorsWhen choosing, think about what you want the user to feel when they log in to your "DIY Restream" tool:ColorPsychological TriggerUse Case in Your AppVibrant BlueTrust & Technology"Connect Account" buttons, active stream indicators.Deep PurpleCreativity & LuxuryBranding, "Pro" features, or creator-tier tools.Bright RedUrgency & ExcitementThe "Go Live" button or "Hot Item" overlays.Slate GrayNeutralitySidebar backgrounds, inactive icons.4. Accessibility Tip (Contrast is King)Since you are handling overlays, you must ensure your color choices don't get "lost" when placed on top of a video.The "Border" Rule: Always give your overlay text a thin black outline or a semi-transparent dark background (glassmorphism).The "Safe Zone" Rule: Use high-contrast colors (White text on a Dark Blue background) for buttons to ensure users can navigate quickly during the "chaos" of a live sale. */

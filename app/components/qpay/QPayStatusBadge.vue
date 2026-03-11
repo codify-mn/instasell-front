@@ -11,13 +11,13 @@ defineProps<{
             class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full"
             :class="
                 isRegistered
-                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
                     : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
             "
         >
             <span
                 class="w-1.5 h-1.5 rounded-full"
-                :class="isRegistered ? 'bg-green-500' : 'bg-amber-500'"
+                :class="isRegistered ? 'bg-primary-500' : 'bg-amber-500'"
             />
             {{ isRegistered ? 'Бүртгэлтэй' : 'Бүртгэлгүй' }}
         </span>

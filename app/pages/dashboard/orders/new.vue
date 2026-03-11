@@ -362,7 +362,7 @@ const copyCheckoutLink = () => {
                                                 <template v-if="foundCustomer" #trailing>
                                                     <UIcon
                                                         name="i-lucide-check-circle-2"
-                                                        class="text-green-500"
+                                                        class="text-primary-500"
                                                     />
                                                 </template>
                                             </UInput>
@@ -372,7 +372,7 @@ const copyCheckoutLink = () => {
                                     <!-- Found Customer Card -->
                                     <div
                                         v-if="foundCustomer && !showCustomerForm"
-                                        class="border-t border-gray-100 dark:border-gray-800 bg-green-50/50 dark:bg-green-950/20 px-4 py-3"
+                                        class="border-t border-gray-100 dark:border-gray-800 bg-primary-50/50 dark:bg-primary-950/20 px-4 py-3"
                                     >
                                         <div class="flex items-start justify-between gap-2">
                                             <div class="min-w-0">
@@ -598,11 +598,11 @@ const copyCheckoutLink = () => {
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
+                                            class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"
                                         >
                                             <UIcon
                                                 name="i-lucide-link-2"
-                                                class="w-5 h-5 text-green-600 dark:text-green-400"
+                                                class="w-5 h-5 text-primary-600 dark:text-primary-400"
                                             />
                                         </div>
                                         <div>

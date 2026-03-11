@@ -299,7 +299,7 @@ onMounted(async () => {
                                                 class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
                                                 :class="
                                                     index < currentStepIndex
-                                                        ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                                                        ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
                                                         : index === currentStepIndex
                                                           ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 ring-2 ring-primary-500/30'
                                                           : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
@@ -334,7 +334,7 @@ onMounted(async () => {
                                             class="flex-1 h-0.5 mx-2 mt-[-1.25rem] rounded-full transition-all"
                                             :class="
                                                 index < currentStepIndex
-                                                    ? 'bg-green-400 dark:bg-green-500'
+                                                    ? 'bg-primary-400 dark:bg-primary-500'
                                                     : 'bg-gray-200 dark:bg-gray-700'
                                             "
                                         />
@@ -406,18 +406,18 @@ onMounted(async () => {
                                 class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden"
                             >
                                 <div
-                                    class="border-l-4 border-green-500 p-4 flex items-center gap-3"
+                                    class="border-l-4 border-primary-500 p-4 flex items-center gap-3"
                                 >
                                     <div
-                                        class="w-9 h-9 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
+                                        class="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"
                                     >
                                         <UIcon
                                             name="i-lucide-check"
-                                            class="w-5 h-5 text-green-600 dark:text-green-400"
+                                            class="w-5 h-5 text-primary-600 dark:text-primary-400"
                                         />
                                     </div>
                                     <div>
-                                        <p class="font-medium text-green-700 dark:text-green-400">
+                                        <p class="font-medium text-primary-700 dark:text-primary-400">
                                             Захиалга амжилттай хүргэгдсэн
                                         </p>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -506,7 +506,7 @@ onMounted(async () => {
                                         <span class="text-gray-500 dark:text-gray-400"
                                             >Хөнгөлөлт</span
                                         >
-                                        <span class="text-green-600"
+                                        <span class="text-primary-600"
                                             >-{{ formatPrice(order.discount) }}</span
                                         >
                                     </div>

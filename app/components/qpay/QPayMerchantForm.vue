@@ -393,7 +393,7 @@ async function submit() {
                         (item.value === 'bank' && isBankComplete)
                     "
                     name="i-lucide-check-circle-2"
-                    class="w-4 h-4 text-green-500"
+                    class="w-4 h-4 text-primary-500"
                 />
             </template>
 

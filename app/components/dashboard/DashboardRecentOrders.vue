@@ -100,7 +100,7 @@ onMounted(() => {
                     :class="{
                         'bg-amber-100/80 dark:bg-amber-900/20 text-amber-500':
                             order.status === 'pending',
-                        'bg-green-100/80 dark:bg-green-900/20 text-green-500':
+                        'bg-primary-100/80 dark:bg-primary-900/20 text-primary-500':
                             order.status === 'paid' || order.status === 'delivered',
                         'bg-blue-100/80 dark:bg-blue-900/20 text-blue-500':
                             order.status === 'shipped',

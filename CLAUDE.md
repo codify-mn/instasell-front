@@ -104,12 +104,12 @@ All UI text is in **Mongolian (Cyrillic)**. Currency is Mongolian Tugrik (₮) f
 
 ### Styling
 
-- **Glassmorphism theme:** Frosted glass cards with `backdrop-blur`, semi-transparent backgrounds
-- **Primary color:** Sky Blue (#0EA5E9)
-- **Dark mode:** Deep Charcoal (#141A22), fully supported
-- **Font:** Gilroy (Light to ExtraBold), loaded via `main.css`
+- **Shopify Polaris-inspired theme:** Clean surfaces, professional cards, minimal shadows
+- **Primary color:** Deep Green (#008060) — Shopify-inspired, sophisticated
+- **Dark mode:** Near-black (#1A1A1A), fully supported
+- **Font:** Inter (300–800), loaded via Google Fonts in `main.css`
 - **Page/layout transitions** configured in `nuxt.config.ts`
-- Glass utilities in `main.css`: `.glass-card`, `.glass-card-elevated`, `.glass-nav-active`
+- Card utilities in `main.css`: `.glass-card`, `.glass-card-elevated`, `.glass-nav-active`
 
 ### Content
 

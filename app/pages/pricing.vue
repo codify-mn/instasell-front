@@ -277,7 +277,7 @@ const trustPoints = [
                         >
                             Жилээр
                             <span
-                                class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
+                                class="bg-gradient-to-r from-primary-500 to-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
                             >
                                 -20%
                             </span>
@@ -291,7 +291,7 @@ const trustPoints = [
                             :key="point.label"
                             class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
                         >
-                            <UIcon :name="point.icon" class="w-5 h-5 text-green-500" />
+                            <UIcon :name="point.icon" class="w-5 h-5 text-primary-500" />
                             <span>{{ point.label }}</span>
                         </div>
                     </div>
@@ -344,7 +344,7 @@ const trustPoints = [
                         <!-- Current Plan Badge -->
                         <div v-if="isCurrentPlan(plan)" class="absolute -top-4 right-4">
                             <span
-                                class="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                                class="inline-flex items-center gap-1.5 bg-primary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
                             >
                                 <UIcon name="i-lucide-check" class="w-3.5 h-3.5" />
                                 Одоогийн
@@ -392,7 +392,7 @@ const trustPoints = [
                                             ₮{{ formatPrice(plan.monthly_price * 12) }}/жил
                                         </span>
                                         <span
-                                            class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full"
+                                            class="text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/30 px-2 py-0.5 rounded-full"
                                         >
                                             -{{ getYearlyDiscount(plan) }}%
                                         </span>
@@ -416,7 +416,7 @@ const trustPoints = [
                                         class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                                         :class="
                                             feature.included
-                                                ? 'bg-green-100 dark:bg-green-900/30'
+                                                ? 'bg-primary-100 dark:bg-primary-900/30'
                                                 : 'bg-gray-100 dark:bg-gray-800'
                                         "
                                     >
@@ -429,7 +429,7 @@ const trustPoints = [
                                             class="w-3 h-3"
                                             :class="
                                                 feature.included
-                                                    ? 'text-green-600 dark:text-green-400'
+                                                    ? 'text-primary-600 dark:text-primary-400'
                                                     : 'text-gray-400 dark:text-gray-600'
                                             "
                                         />
