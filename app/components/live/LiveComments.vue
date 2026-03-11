@@ -27,7 +27,7 @@ function getInitial(name: string): string {
 }
 
 const avatarColors = [
-    'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500',
+    'bg-blue-500', 'bg-primary-500', 'bg-purple-500', 'bg-pink-500',
     'bg-amber-500', 'bg-cyan-500', 'bg-rose-500', 'bg-indigo-500'
 ]
 

@@ -53,7 +53,7 @@ const statusLabel = computed(() => {
 })
 
 const daysColor = computed(() => {
-    if (daysRemaining.value > 7) return 'bg-green-500'
+    if (daysRemaining.value > 7) return 'bg-primary-500'
     if (daysRemaining.value > 3) return 'bg-amber-500'
     return 'bg-red-500'
 })

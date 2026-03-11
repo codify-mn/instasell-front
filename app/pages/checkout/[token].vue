@@ -261,9 +261,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                     class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 p-8 sm:p-10"
                 >
                     <div
-                        class="w-20 h-20 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center mx-auto mb-6"
+                        class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-950/30 flex items-center justify-center mx-auto mb-6"
                     >
-                        <UIcon name="i-lucide-check" class="w-10 h-10 text-green-500" />
+                        <UIcon name="i-lucide-check" class="w-10 h-10 text-primary-500" />
                     </div>
                     <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
                         Баярлалаа!
@@ -773,7 +773,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     </div>
                                     <div
                                         v-if="order.discount > 0"
-                                        class="flex justify-between text-sm text-green-600"
+                                        class="flex justify-between text-sm text-primary-600"
                                     >
                                         <span>Хөнгөлөлт</span>
                                         <span>-{{ formatPrice(order.discount) }}</span>

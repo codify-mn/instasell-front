@@ -139,7 +139,7 @@ function handleCheckPayment() {
                         class="flex items-center justify-between p-3 rounded-lg"
                         :class="
                             invoice.status === 'paid'
-                                ? 'bg-green-50 dark:bg-green-900/20'
+                                ? 'bg-primary-50 dark:bg-primary-900/20'
                                 : 'bg-amber-50 dark:bg-amber-900/20'
                         "
                     >
@@ -152,14 +152,14 @@ function handleCheckPayment() {
                                 "
                                 class="w-4 h-4"
                                 :class="
-                                    invoice.status === 'paid' ? 'text-green-600' : 'text-amber-600'
+                                    invoice.status === 'paid' ? 'text-primary-600' : 'text-amber-600'
                                 "
                             />
                             <span
                                 class="text-sm"
                                 :class="
                                     invoice.status === 'paid'
-                                        ? 'text-green-700 dark:text-green-400'
+                                        ? 'text-primary-700 dark:text-primary-400'
                                         : 'text-amber-700 dark:text-amber-400'
                                 "
                             >

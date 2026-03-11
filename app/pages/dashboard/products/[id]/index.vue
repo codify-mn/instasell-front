@@ -520,7 +520,7 @@ onMounted(async () => {
                                     <!-- Watch badge overlay -->
                                     <div
                                         v-if="post.watch_comments"
-                                        class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-green-500/90 text-white rounded-full text-[10px] font-medium backdrop-blur-sm"
+                                        class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-primary-500/90 text-white rounded-full text-[10px] font-medium backdrop-blur-sm"
                                     >
                                         <UIcon name="i-lucide-eye" class="w-3 h-3" />
                                         Автомат

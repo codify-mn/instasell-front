@@ -389,7 +389,7 @@ watch(isOpen, (val) => {
                             <!-- Watch Comments -->
                             <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                                 <div class="flex items-center gap-2">
-                                    <UIcon name="i-lucide-eye" class="w-4 h-4 text-green-500" />
+                                    <UIcon name="i-lucide-eye" class="w-4 h-4 text-primary-500" />
                                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Коммент хянах
                                     </span>
@@ -468,7 +468,7 @@ watch(isOpen, (val) => {
                                                 <UIcon
                                                     v-if="captions[product.id]?.trim()"
                                                     name="i-lucide-check-circle"
-                                                    class="w-4 h-4 text-green-500"
+                                                    class="w-4 h-4 text-primary-500"
                                                 />
                                                 <UIcon
                                                     v-else

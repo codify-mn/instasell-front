@@ -17,7 +17,7 @@ const colorClasses = {
     primary:
         'bg-primary-50/60 dark:bg-primary-900/10 hover:bg-primary-50 dark:hover:bg-primary-900/20 group-hover:shadow-primary-200/50 dark:group-hover:shadow-primary-900/30',
     success:
-        'bg-green-50/60 dark:bg-green-900/10 hover:bg-green-50 dark:hover:bg-green-900/20 group-hover:shadow-green-200/50 dark:group-hover:shadow-green-900/30',
+        'bg-primary-50/60 dark:bg-primary-900/10 hover:bg-primary-50 dark:hover:bg-primary-900/20 group-hover:shadow-green-200/50 dark:group-hover:shadow-primary-900/30',
     warning:
         'bg-amber-50/60 dark:bg-amber-900/10 hover:bg-amber-50 dark:hover:bg-amber-900/20 group-hover:shadow-amber-200/50 dark:group-hover:shadow-amber-900/30',
     error: 'bg-red-50/60 dark:bg-red-900/10 hover:bg-red-50 dark:hover:bg-red-900/20 group-hover:shadow-red-200/50 dark:group-hover:shadow-red-900/30',
@@ -27,7 +27,7 @@ const colorClasses = {
 
 const iconClasses = {
     primary: 'text-primary-500 bg-primary-100/80 dark:bg-primary-800/30',
-    success: 'text-green-500 bg-green-100/80 dark:bg-green-800/30',
+    success: 'text-primary-500 bg-primary-100/80 dark:bg-primary-800/30',
     warning: 'text-amber-500 bg-amber-100/80 dark:bg-amber-800/30',
     error: 'text-red-500 bg-red-100/80 dark:bg-red-800/30',
     info: 'text-blue-500 bg-blue-100/80 dark:bg-blue-800/30',
@@ -73,7 +73,7 @@ const iconClasses = {
                         class="text-xs font-bold mb-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md"
                         :class="
                             trend > 0
-                                ? 'text-green-600 bg-green-100 dark:bg-green-900/30'
+                                ? 'text-primary-600 bg-primary-100 dark:bg-primary-900/30'
                                 : 'text-red-600 bg-red-100 dark:bg-red-900/30'
                         "
                     >
@@ -128,7 +128,7 @@ const iconClasses = {
                         class="text-xs font-bold mb-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md"
                         :class="
                             trend > 0
-                                ? 'text-green-600 bg-green-100 dark:bg-green-900/30'
+                                ? 'text-primary-600 bg-primary-100 dark:bg-primary-900/30'
                                 : 'text-red-600 bg-red-100 dark:bg-red-900/30'
                         "
                     >

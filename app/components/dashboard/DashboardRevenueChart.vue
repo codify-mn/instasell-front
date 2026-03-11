@@ -80,9 +80,9 @@ const formatCompact = (value: number): string => {
                     </p>
                 </div>
                 <div
-                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center"
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/20 flex items-center justify-center"
                 >
-                    <UIcon name="i-lucide-trending-up" class="w-5 h-5 text-green-500" />
+                    <UIcon name="i-lucide-trending-up" class="w-5 h-5 text-primary-500" />
                 </div>
             </div>
 

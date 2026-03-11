@@ -303,11 +303,11 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-6 py-5 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="px-6 py-5 border-b border-[#E3E3E3] dark:border-gray-800 bg-white dark:bg-gray-900">
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-2xl font-semibold text-[#102A32] dark:text-white">Захиалга</h1>
-                    <p class="mt-1 text-sm text-[#5A7178] dark:text-gray-400">
+                    <h1 class="text-2xl font-semibold text-[#1A1A1A] dark:text-white">Захиалга</h1>
+                    <p class="mt-1 text-sm text-[#6D7175] dark:text-gray-400">
                         Захиалгуудын нийт жагсаалт
                     </p>
                 </div>
@@ -366,7 +366,7 @@ onMounted(() => {
         </Transition>
 
         <!-- Filters -->
-        <div class="px-6 py-4 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="px-6 py-4 border-b border-[#E3E3E3] dark:border-gray-800 bg-white dark:bg-gray-900">
             <div class="flex items-center justify-between gap-4">
                 <UInput
                     v-model="filter.keyword"
@@ -408,7 +408,7 @@ onMounted(() => {
 
                 <template #order_number-cell="{ row }">
                     <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <span class="font-semibold text-[#102A32] dark:text-white hover:text-primary-600 transition-colors">
+                        <span class="font-semibold text-[#1A1A1A] dark:text-white hover:text-primary-600 transition-colors">
                             #{{ row.original.order_number }}
                         </span>
                     </div>
@@ -487,9 +487,9 @@ onMounted(() => {
         <!-- Pagination -->
         <div
             v-if="total > 0"
-            class="px-6 py-4 border-t border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between"
+            class="px-6 py-4 border-t border-[#E3E3E3] dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between"
         >
-            <p class="text-sm text-[#5A7178] dark:text-gray-400">
+            <p class="text-sm text-[#6D7175] dark:text-gray-400">
                 {{ startItem }}-с {{ endItem }} хүртэл. Нийт: {{ total }}
             </p>
             <div class="flex items-center gap-2">

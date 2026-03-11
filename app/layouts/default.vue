@@ -108,10 +108,10 @@ const groups = computed(() => [
             v-model:open="open"
             collapsible
             resizable
-            class="!bg-[#102A32] border-r border-[#1e3a46]"
+            class="!bg-[#1A1A1A] border-r border-[#333333]"
             :ui="{
                 header: 'mt-1',
-                footer: 'lg:border-t lg:border-[#1e3a46]'
+                footer: 'lg:border-t lg:border-[#333333]'
             }"
         >
             <template #header="{ collapsed }">

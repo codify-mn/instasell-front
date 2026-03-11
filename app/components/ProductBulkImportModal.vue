@@ -265,7 +265,7 @@ watch(isOpen, (newVal) => {
                             <div v-if="file" class="flex flex-col items-center gap-2">
                                 <UIcon
                                     name="i-lucide-file-spreadsheet"
-                                    class="w-10 h-10 text-green-500"
+                                    class="w-10 h-10 text-primary-500"
                                 />
                                 <span class="font-medium text-gray-900 dark:text-white">{{
                                     file.name
@@ -309,7 +309,7 @@ watch(isOpen, (newVal) => {
                         class="rounded-lg p-4 border"
                         :class="
                             importResult.success
-                                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                                ? 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800'
                                 : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
                         "
                     >
@@ -320,7 +320,7 @@ watch(isOpen, (newVal) => {
                                         ? 'i-lucide-check-circle'
                                         : 'i-lucide-alert-circle'
                                 "
-                                :class="importResult.success ? 'text-green-600' : 'text-red-600'"
+                                :class="importResult.success ? 'text-primary-600' : 'text-red-600'"
                                 class="w-5 h-5 shrink-0 mt-0.5"
                             />
                             <div class="flex-1">
@@ -328,7 +328,7 @@ watch(isOpen, (newVal) => {
                                     class="font-medium"
                                     :class="
                                         importResult.success
-                                            ? 'text-green-800 dark:text-green-200'
+                                            ? 'text-primary-800 dark:text-primary-200'
                                             : 'text-red-800 dark:text-red-200'
                                     "
                                 >
@@ -338,7 +338,7 @@ watch(isOpen, (newVal) => {
                                     class="mt-2 text-sm space-y-1"
                                     :class="
                                         importResult.success
-                                            ? 'text-green-700 dark:text-green-300'
+                                            ? 'text-primary-700 dark:text-primary-300'
                                             : 'text-red-700 dark:text-red-300'
                                     "
                                 >
