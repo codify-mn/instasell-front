@@ -151,13 +151,16 @@ onMounted(async () => {
                                     <UIcon name="i-lucide-mail" class="w-4 h-4" />
                                     {{ customer.email }}
                                 </div>
-                                <div
+                                <a
                                     v-if="customer.facebook_id"
-                                    class="flex items-center gap-2 text-gray-500"
+                                    :href="`https://facebook.com/${customer.facebook_id}`"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center gap-2 text-blue-500 hover:text-blue-600 transition-colors"
                                 >
                                     <UIcon name="i-lucide-facebook" class="w-4 h-4" />
-                                    Facebook холбогдсон
-                                </div>
+                                    Facebook профайл үзэх
+                                </a>
                                 <div
                                     v-if="customer.city"
                                     class="flex items-center gap-2 text-gray-500"

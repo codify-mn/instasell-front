@@ -5,8 +5,15 @@ import type {
     QPayLocation
 } from '~/composables/useQPay'
 
-defineProps<{
+const props = defineProps<{
     inline?: boolean // For embedding in onboarding
+    defaultBankAccount?: {
+        bank_name: string
+        bank_code: string
+        account_number: string
+        account_name: string
+        note: string
+    }
 }>()
 
 const emit = defineEmits<{
@@ -116,6 +123,17 @@ onMounted(async () => {
     }
     if (user.value?.last_name) {
         personLastName.value = user.value.last_name
+    }
+
+    // Pre-fill bank account from defaultBankAccount prop
+    if (props.defaultBankAccount?.account_number && !bankAccountNumber.value) {
+        bankAccountNumber.value = props.defaultBankAccount.account_number
+    }
+    if (props.defaultBankAccount?.account_name && !bankAccountName.value) {
+        bankAccountName.value = props.defaultBankAccount.account_name
+    }
+    if (props.defaultBankAccount?.bank_code && !bankCode.value) {
+        bankCode.value = props.defaultBankAccount.bank_code
     }
 
     // Load cities

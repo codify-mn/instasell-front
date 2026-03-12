@@ -77,7 +77,8 @@ watch(
 
 const keywordDirty = ref(false)
 
-const options = ref<{ name: string; stock: number }[]>([])
+const options = ref<{ id: number; name: string; stock: number }[]>([])
+let nextOptionId = 0
 
 const quickVariants = [
     { label: 'Хэмжээ', items: ['XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL'] },
@@ -86,7 +87,7 @@ const quickVariants = [
 ]
 
 const addOption = (name = '') => {
-    options.value.push({ name, stock: 0 })
+    options.value.push({ id: nextOptionId++, name, stock: 0 })
 }
 
 const removeOption = (index: number) => {
@@ -110,12 +111,10 @@ watch(
     }
 )
 
-// Computed: Check if timed sale will activate immediately (no dates set)
 const timedSaleActivatesImmediately = computed(() => {
     return state.timed_sale_enabled && !state.timed_sale_start && !state.timed_sale_end
 })
 
-// Computed: Calculate discount percent for timed sale
 const timedSaleDiscountPercent = computed(() => {
     if (state.timed_sale_price && state.price && state.price > 0) {
         return Math.round(((state.price - state.timed_sale_price) / state.price) * 100)
@@ -123,7 +122,6 @@ const timedSaleDiscountPercent = computed(() => {
     return 0
 })
 
-// Computed: Calculate discount percent for bulk
 const bulkDiscountPercent = computed(() => {
     if (state.bulk_discount_price && state.price && state.price > 0) {
         return Math.round(((state.price - state.bulk_discount_price) / state.price) * 100)
@@ -136,6 +134,10 @@ const statusOptions = [
     { label: 'Ноорог', value: 'draft' },
     { label: 'Дууссан', value: 'out_of_stock' }
 ]
+
+const statusMenuItems = computed(() =>
+    statusOptions.map(o => ({ label: o.label, onSelect: () => { state.status = o.value } }))
+)
 
 const statusDotColor = computed(() => {
     const map: Record<string, string> = {
@@ -223,7 +225,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
                             <div>
                                 <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Бараа нэмэх
+                                    Шинэ бараа
                                 </h1>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
                                     {{ statusLabel }}
@@ -240,14 +242,14 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             icon="i-lucide-check"
                             :loading="loading"
                         >
-                            Бараа нэмэх
+                            Хадгалах
                         </UButton>
                     </template>
                 </UDashboardNavbar>
             </template>
 
             <template #body>
-                <div class="bg-gray-50 dark:bg-gray-950/60 min-h-full p-4 lg:p-6 overflow-y-auto">
+                <div class=" min-h-full p-4 lg:p-6">
                     <UForm id="product-form" :schema="schema" :state="state" @submit="onSubmit">
                         <div class="flex flex-col lg:flex-row gap-5 max-w-7xl mx-auto lg:items-start">
 
@@ -255,12 +257,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             <div class="flex-1 min-w-0 space-y-5">
 
                                 <!-- Image + Product Info Card -->
-                                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
-                                    <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr_220px] gap-6">
+                                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+                                    <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
 
                                         <!-- Column 1: Image Gallery -->
                                         <div>
-                                            <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Зураг</p>
+                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Зураг</h3>
                                             <ProductImageUpload v-model="images" />
                                         </div>
 
@@ -287,6 +289,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                                         </UTooltip>
                                                     </template>
                                                 </UInput>
+                                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1.5">
+                                                    Хэрэглэгч энэ үгийг комментлоход захиалга автоматаар үүснэ
+                                                </p>
                                             </UFormField>
 
                                             <UFormField label="Ангилал">
@@ -296,44 +301,39 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                                     size="lg"
                                                 />
                                             </UFormField>
-                                        </div>
 
-                                        <!-- Column 3: Price + Status -->
-                                        <div class="flex flex-col gap-3">
-                                            <div class="flex-1 bg-gradient-to-br from-sky-50 to-indigo-50 dark:from-sky-950/40 dark:to-indigo-950/40 rounded-xl border border-sky-100 dark:border-sky-900/50 p-4">
-                                                <p class="text-xs font-semibold text-sky-500 dark:text-sky-400 uppercase tracking-wider mb-3">Үндсэн үнэ</p>
-                                                <div class="flex items-baseline gap-1">
-                                                    <span class="text-2xl font-light text-sky-400 dark:text-sky-500">₮</span>
-                                                    <input
+                                            <!-- Price + Status inline -->
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <UFormField label="Үндсэн үнэ" name="price" required>
+                                                    <UInput
                                                         v-model.number="state.price"
                                                         type="number"
                                                         placeholder="0"
-                                                        class="text-4xl font-bold text-gray-900 dark:text-white bg-transparent outline-none w-full border-b-2 border-sky-200 dark:border-sky-800 focus:border-sky-500 transition-colors pb-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                                    />
-                                                </div>
-                                                <p class="text-xs text-sky-400 dark:text-sky-500 mt-2">Монгол төгрөг</p>
-                                            </div>
-
-                                            <div>
-                                                <p class="text-xs font-semibold text-sky-500 dark:text-sky-400 uppercase tracking-wider mb-2">Төлөв</p>
-                                                <UDropdownMenu :items="statusOptions.map(o => ({ label: o.label, onSelect: () => { state.status = o.value } }))">
-                                                    <div
-                                                        class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer transition-colors select-none"
-                                                        :class="{
-                                                            'bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900/60': state.status === 'active',
-                                                            'bg-gray-50 border-gray-200 dark:bg-gray-800/40 dark:border-gray-700': state.status === 'draft',
-                                                            'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-900/60': state.status === 'out_of_stock'
-                                                        }"
+                                                        size="lg"
                                                     >
-                                                        <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
-                                                        <span class="text-sm font-medium" :class="{
-                                                            'text-emerald-700 dark:text-emerald-300': state.status === 'active',
-                                                            'text-gray-600 dark:text-gray-400': state.status === 'draft',
-                                                            'text-red-700 dark:text-red-300': state.status === 'out_of_stock'
-                                                        }">{{ statusLabel }}</span>
-                                                        <UIcon name="i-lucide-chevrons-up-down" class="w-3 h-3 opacity-40 ml-0.5" />
-                                                    </div>
-                                                </UDropdownMenu>
+                                                        <template #leading>
+                                                            <span class="text-gray-400 font-medium">₮</span>
+                                                        </template>
+                                                    </UInput>
+                                                </UFormField>
+
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Төлөв</p>
+                                                    <UDropdownMenu :items="statusMenuItems">
+                                                        <div
+                                                            class="flex items-center gap-2 px-3 py-2 h-10 rounded-lg border cursor-pointer transition-colors select-none text-sm"
+                                                            :class="{
+                                                                'bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-300': state.status === 'active',
+                                                                'bg-gray-50 border-gray-200 dark:bg-gray-800/40 dark:border-gray-700 text-gray-600 dark:text-gray-400': state.status === 'draft',
+                                                                'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-900/60 text-red-700 dark:text-red-300': state.status === 'out_of_stock'
+                                                            }"
+                                                        >
+                                                            <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
+                                                            <span class="font-medium flex-1">{{ statusLabel }}</span>
+                                                            <UIcon name="i-lucide-chevrons-up-down" class="w-3 h-3 opacity-40" />
+                                                        </div>
+                                                    </UDropdownMenu>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -341,30 +341,37 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
                                 <!-- Variants Card -->
                                 <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
-                                    <div class="flex items-center gap-2 mb-4">
-                                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Хэмжээ / Сонголтууд</h3>
-                                        <UTooltip text="Барааны хэмжээ, өнгө эсвэл бусад ялгааг нэм. Сонголт нэмсэн үед тус бүрд үлдэгдэл тохируулна." :popper="{ placement: 'top' }">
-                                            <UIcon name="i-lucide-help-circle" class="w-3.5 h-3.5 text-gray-400 cursor-help" />
-                                        </UTooltip>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Хэмжээ / Сонголтууд</h3>
+                                            <UTooltip text="Барааны хэмжээ, өнгө эсвэл бусад ялгааг нэм. Сонголт нэмсэн үед тус бүрд үлдэгдэл тохируулна." :popper="{ placement: 'top' }">
+                                                <UIcon name="i-lucide-help-circle" class="w-3.5 h-3.5 text-gray-400 cursor-help" />
+                                            </UTooltip>
+                                        </div>
+                                        <UButton icon="i-lucide-plus" color="primary" variant="soft" size="xs" @click="addOption()">
+                                            Сонголт нэмэх
+                                        </UButton>
                                     </div>
 
+                                    <!-- No variants: show stock field -->
                                     <UFormField v-if="options.length === 0" label="Үлдэгдэл" name="stock_quantity" class="mb-4">
                                         <UInput v-model.number="state.stock_quantity" type="number" placeholder="0" size="lg">
                                             <template #trailing><span class="text-gray-400 text-sm">ш</span></template>
                                         </UInput>
                                     </UFormField>
 
+                                    <!-- Variant rows -->
                                     <div v-if="options.length > 0" class="mb-4">
                                         <table class="w-full text-sm">
                                             <thead>
                                                 <tr class="border-b border-gray-100 dark:border-gray-800">
                                                     <th class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-4">Нэр / Хэмжээ</th>
                                                     <th class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-4 w-28">Үлдэгдэл</th>
-                                                    <th class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 w-8" />
+                                                    <th class="w-8" />
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-50 dark:divide-gray-800/50">
-                                                <tr v-for="(option, index) in options" :key="index" class="group">
+                                                <tr v-for="(option, index) in options" :key="option.id">
                                                     <td class="py-2 pr-4">
                                                         <UInput
                                                             v-model="option.name"
@@ -386,9 +393,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                         </table>
                                     </div>
 
-                                    <div class="space-y-1.5 mb-4">
+                                    <!-- Quick add chips -->
+                                    <div class="space-y-1.5">
                                         <div v-for="group in quickVariants" :key="group.label" class="flex flex-wrap items-center gap-1.5">
-                                            <span class="text-xs text-gray-400 dark:text-gray-500 w-24 shrink-0">{{ group.label }}:</span>
+                                            <span class="text-xs text-gray-400 dark:text-gray-500 shrink-0 min-w-[5rem]">{{ group.label }}:</span>
                                             <button
                                                 v-for="item in group.items"
                                                 :key="item"
@@ -398,67 +406,80 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                             >{{ item }}</button>
                                         </div>
                                     </div>
-
-                                    <UButton icon="i-lucide-plus" color="primary" variant="soft" size="sm" @click="addOption()">
-                                        Шинэ сонголт нэмэх
-                                    </UButton>
                                 </div>
 
                                 <!-- Discounts Card -->
                                 <ProductFormCard title="Хямдрал ба урамшуулал">
                                     <div class="grid grid-cols-2 gap-3 mb-4">
+                                        <!-- Timed sale toggle -->
                                         <div
                                             class="p-3 rounded-lg border-2 transition-all cursor-pointer"
-                                            :class="state.timed_sale_enabled ? 'border-rose-500 bg-rose-50 dark:bg-rose-950/30' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'"
+                                            :class="state.timed_sale_enabled ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'"
                                             @click="state.timed_sale_enabled = !state.timed_sale_enabled"
                                         >
-                                            <div class="flex items-center justify-between gap-2">
+                                            <div class="flex items-start justify-between gap-2">
                                                 <div class="flex items-center gap-2">
-                                                    <UIcon name="i-lucide-tag" class="w-4 h-4" :class="state.timed_sale_enabled ? 'text-rose-600' : 'text-gray-400'" />
-                                                    <span class="text-sm font-medium" :class="state.timed_sale_enabled ? 'text-rose-700 dark:text-rose-300' : 'text-gray-700 dark:text-gray-300'">Хямдрал</span>
+                                                    <UIcon name="i-lucide-tag" class="w-4 h-4 mt-0.5" :class="state.timed_sale_enabled ? 'text-primary-600' : 'text-gray-400'" />
+                                                    <div>
+                                                        <span class="text-sm font-medium block" :class="state.timed_sale_enabled ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'">Хямдрал</span>
+                                                        <span v-if="state.timed_sale_enabled && state.timed_sale_price" class="text-xs text-primary-500 font-medium">
+                                                            {{ state.timed_sale_price.toLocaleString() }}₮ · -{{ timedSaleDiscountPercent }}%
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <USwitch :model-value="state.timed_sale_enabled" size="xs" @click.stop @update:model-value="state.timed_sale_enabled = $event" />
                                             </div>
                                         </div>
+
+                                        <!-- Bulk discount toggle -->
                                         <div
                                             class="p-3 rounded-lg border-2 transition-all cursor-pointer"
                                             :class="state.bulk_discount_enabled ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'"
                                             @click="state.bulk_discount_enabled = !state.bulk_discount_enabled"
                                         >
-                                            <div class="flex items-center justify-between gap-2">
+                                            <div class="flex items-start justify-between gap-2">
                                                 <div class="flex items-center gap-2">
-                                                    <UIcon name="i-lucide-boxes" class="w-4 h-4" :class="state.bulk_discount_enabled ? 'text-primary-600' : 'text-gray-400'" />
-                                                    <span class="text-sm font-medium" :class="state.bulk_discount_enabled ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'">Олноор авахад</span>
+                                                    <UIcon name="i-lucide-boxes" class="w-4 h-4 mt-0.5" :class="state.bulk_discount_enabled ? 'text-primary-600' : 'text-gray-400'" />
+                                                    <div>
+                                                        <span class="text-sm font-medium block" :class="state.bulk_discount_enabled ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'">Олноор авахад</span>
+                                                        <span v-if="state.bulk_discount_enabled && state.bulk_discount_price" class="text-xs text-primary-500 font-medium">
+                                                            {{ state.bulk_discount_quantity }}+ ш · -{{ bulkDiscountPercent }}%
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <USwitch :model-value="state.bulk_discount_enabled" size="xs" @click.stop @update:model-value="state.bulk_discount_enabled = $event" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-if="state.timed_sale_enabled" class="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-lg border border-rose-200 dark:border-rose-900/50 space-y-3 mb-3">
-                                        <div v-if="timedSaleActivatesImmediately" class="flex items-center gap-2 px-3 py-2 bg-emerald-100 dark:bg-emerald-900/40 rounded-md">
-                                            <UIcon name="i-lucide-zap" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                                            <span class="text-xs font-medium text-emerald-700 dark:text-emerald-300">Хугацаа оруулаагүй бол шууд идэвхжинэ</span>
+
+                                    <!-- Timed sale config -->
+                                    <div v-if="state.timed_sale_enabled" class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 space-y-3 mb-3">
+                                        <div v-if="timedSaleActivatesImmediately" class="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-900/30 rounded-md border border-amber-200 dark:border-amber-800/50">
+                                            <UIcon name="i-lucide-zap" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                                            <span class="text-xs font-medium text-amber-700 dark:text-amber-300">Хугацаа тохируулаагүй тул шууд идэвхжинэ</span>
                                         </div>
                                         <div class="grid grid-cols-3 gap-3">
                                             <UFormField label="Хямдралын үнэ" required>
                                                 <UInput v-model.number="state.timed_sale_price" type="number" placeholder="0" size="sm">
-                                                    <template #leading><span class="text-rose-500">₮</span></template>
+                                                    <template #leading><span class="text-gray-400">₮</span></template>
                                                 </UInput>
                                             </UFormField>
                                             <UFormField label="Эхлэх"><UInput v-model="state.timed_sale_start" type="datetime-local" size="sm" /></UFormField>
                                             <UFormField label="Дуусах"><UInput v-model="state.timed_sale_end" type="datetime-local" size="sm" /></UFormField>
                                         </div>
                                     </div>
-                                    <div v-if="state.bulk_discount_enabled" class="p-4 bg-primary-50 dark:bg-primary-950/20 rounded-lg border border-primary-200 dark:border-primary-900/50">
+
+                                    <!-- Bulk config -->
+                                    <div v-if="state.bulk_discount_enabled" class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
                                         <div class="grid grid-cols-2 gap-3">
                                             <UFormField label="Дор хаяж (ширхэг)">
                                                 <UInput v-model.number="state.bulk_discount_quantity" type="number" placeholder="3" size="sm">
-                                                    <template #trailing><span class="text-primary-500 text-xs">ш</span></template>
+                                                    <template #trailing><span class="text-gray-400 text-xs">ш</span></template>
                                                 </UInput>
                                             </UFormField>
                                             <UFormField label="Нэгж үнэ">
                                                 <UInput v-model.number="state.bulk_discount_price" type="number" placeholder="0" size="sm">
-                                                    <template #leading><span class="text-primary-500">₮</span></template>
+                                                    <template #leading><span class="text-gray-400">₮</span></template>
                                                 </UInput>
                                             </UFormField>
                                         </div>
@@ -467,7 +488,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             </div>
 
                             <!-- Right sidebar: Preview + Settings -->
-                            <div class="w-full lg:w-72 lg:shrink-0 space-y-5">
+                            <div class="w-full lg:w-72 lg:shrink-0 space-y-5 lg:sticky lg:top-6">
 
                                 <!-- Live Preview Card -->
                                 <ProductFormCard>
@@ -532,6 +553,19 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     />
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Bottom Save Button -->
+                        <div class="flex justify-end pt-2 max-w-7xl mx-auto">
+                            <UButton
+                                type="submit"
+                                color="primary"
+                                icon="i-lucide-check"
+                                size="lg"
+                                :loading="loading"
+                            >
+                                Хадгалах
+                            </UButton>
                         </div>
                     </UForm>
                 </div>

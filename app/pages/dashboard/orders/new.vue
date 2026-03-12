@@ -113,6 +113,15 @@ watch(
 
 // Product/Cart handlers
 const handleProductSelect = (product: Product) => {
+    if (!product.variants?.length) {
+        const existing = cartItems.value.findIndex((ci) => ci.product.id === product.id && !ci.variant)
+        if (existing >= 0) {
+            cartItems.value[existing]!.quantity += 1
+        } else {
+            cartItems.value.push({ product, quantity: 1 })
+        }
+        return
+    }
     selectedProduct.value = product
     variantModalOpen.value = true
 }
@@ -122,7 +131,7 @@ const handleVariantSelect = (items: { variant: ProductVariant; quantity: number 
 
     for (const item of items) {
         const existingIndex = cartItems.value.findIndex(
-            (ci) => ci.product.id === selectedProduct.value!.id && ci.variant.id === item.variant.id
+            (ci) => ci.product.id === selectedProduct.value!.id && ci.variant?.id === item.variant.id
         )
 
         if (existingIndex >= 0) {
@@ -183,10 +192,10 @@ const customerSummary = computed(() => {
 const buildOrderItems = () => {
     return cartItems.value.map((item) => ({
         product_id: item.product.id,
-        variant_id: item.variant.id,
+        variant_id: item.variant?.id,
         sku: item.product.keyword || '',
         name: item.product.name,
-        options: item.variant.name,
+        options: item.variant?.name ?? '',
         price:
             item.product.timed_sale_enabled && item.product.timed_sale_price
                 ? item.product.timed_sale_price
@@ -277,45 +286,43 @@ const copyCheckoutLink = () => {
     <div class="w-full h-full flex flex-col overflow-hidden">
         <UDashboardPanel id="new-order">
             <template #header>
-                <UDashboardNavbar>
+                <UDashboardNavbar class="border-b border-gray-200 dark:border-gray-800">
                     <template #leading>
-                        <UButton
-                            to="/dashboard/orders"
-                            icon="i-lucide-arrow-left"
-                            color="neutral"
-                            variant="ghost"
-                        />
+                        <div class="flex items-center gap-3">
+                            <UButton
+                                to="/dashboard/orders"
+                                icon="i-lucide-arrow-left"
+                                color="neutral"
+                                variant="ghost"
+                                size="sm"
+                            />
+                            <div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Захиалга</p>
+                                <h1 class="text-sm font-semibold text-gray-900 dark:text-white leading-tight">Шинэ захиалга</h1>
+                            </div>
+                        </div>
                     </template>
-
-                    <template #title>
-                        <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Захиалга нэмэх
-                        </h1>
-                    </template>
-
                     <template #right>
                         <div class="flex items-center gap-2">
                             <UButton
-                                variant="outline"
+                                variant="ghost"
                                 color="neutral"
-                                icon="i-lucide-link"
                                 size="sm"
                                 :loading="checkoutLoading"
                                 :disabled="cartItems.length === 0"
                                 @click="generateCheckoutLink"
                             >
-                                <span class="hidden sm:inline">Checkout линк</span>
+                                Checkout линк
                             </UButton>
                             <UButton
                                 type="submit"
                                 form="order-form"
                                 color="primary"
-                                icon="i-lucide-check"
                                 size="sm"
                                 :loading="loading"
                                 :disabled="!canSubmit"
                             >
-                                <span class="hidden sm:inline">Захиалга үүсгэх</span>
+                                Захиалга үүсгэх
                             </UButton>
                         </div>
                     </template>
@@ -325,235 +332,136 @@ const copyCheckoutLink = () => {
             <template #body>
                 <UForm id="order-form" :schema="schema" :state="state" @submit="onSubmit">
                     <div class="flex flex-col lg:flex-row h-full">
-                        <!-- Left: Product Grid (scrollable) -->
-                        <div class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+                        <!-- Left: Products -->
+                        <div class="flex-1 overflow-y-auto p-5 lg:p-7 space-y-2">
+                            <div class="flex items-center justify-between mb-1">
+                                <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Бараа</h2>
+                                <span v-if="cartItems.length" class="text-xs text-primary font-medium">{{ cartItems.length }} нэмэгдсэн</span>
+                            </div>
                             <OrderProductGrid @select="handleProductSelect" />
                         </div>
 
-                        <!-- Right: Sidebar (scrollable independently) -->
-                        <div
-                            class="w-full lg:w-[400px] xl:w-[440px] lg:border-l border-gray-200 dark:border-gray-800 overflow-y-auto bg-gray-50/50 dark:bg-gray-950/50"
-                        >
-                            <div class="p-4 lg:p-5 space-y-4">
-                                <!-- Customer Lookup -->
-                                <div
-                                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden"
-                                >
-                                    <!-- Phone Input -->
-                                    <div class="p-4">
-                                        <div class="flex items-center gap-2 mb-3">
-                                            <UIcon
-                                                name="i-lucide-user-search"
-                                                class="w-4 h-4 text-primary"
-                                            />
-                                            <span
-                                                class="text-sm font-medium text-gray-900 dark:text-white"
-                                                >Харилцагч</span
-                                            >
+                        <!-- Right: Sidebar -->
+                        <div class="w-full lg:w-[380px] xl:w-[400px] shrink-0 lg:border-l border-gray-200 dark:border-gray-800 overflow-y-auto">
+                            <div class="divide-y divide-gray-200 dark:divide-gray-800">
+
+                                <!-- Customer -->
+                                <div class="p-5">
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Харилцагч</h2>
+                                    <UFormField name="customer_phone">
+                                        <UInput
+                                            v-model="state.customer_phone"
+                                            placeholder="Утасны дугаар..."
+                                            icon="i-lucide-phone"
+                                            :loading="phoneSearching"
+                                        >
+                                            <template v-if="foundCustomer" #trailing>
+                                                <UIcon name="i-lucide-check-circle-2" class="text-green-500 w-4 h-4" />
+                                            </template>
+                                        </UInput>
+                                    </UFormField>
+
+                                    <!-- Found customer -->
+                                    <div v-if="foundCustomer && !showCustomerForm" class="mt-3 flex items-start justify-between gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900">
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ foundCustomer.name }}</p>
+                                            <p class="text-xs text-gray-500 mt-0.5 truncate">{{ customerSummary }}</p>
                                         </div>
-                                        <UFormField name="customer_phone">
-                                            <UInput
-                                                v-model="state.customer_phone"
-                                                placeholder="Утасны дугаар оруулна уу..."
-                                                size="lg"
-                                                icon="i-lucide-phone"
-                                                :loading="phoneSearching"
-                                            >
-                                                <template v-if="foundCustomer" #trailing>
-                                                    <UIcon
-                                                        name="i-lucide-check-circle-2"
-                                                        class="text-green-500"
-                                                    />
-                                                </template>
-                                            </UInput>
-                                        </UFormField>
+                                        <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="showCustomerForm = true" />
                                     </div>
 
-                                    <!-- Found Customer Card -->
+                                    <!-- New / edit form -->
                                     <div
-                                        v-if="foundCustomer && !showCustomerForm"
-                                        class="border-t border-gray-100 dark:border-gray-800 bg-green-50/50 dark:bg-green-950/20 px-4 py-3"
-                                    >
-                                        <div class="flex items-start justify-between gap-2">
-                                            <div class="min-w-0">
-                                                <p
-                                                    class="font-medium text-gray-900 dark:text-white text-sm"
-                                                >
-                                                    {{ foundCustomer.name }}
-                                                </p>
-                                                <p class="text-xs text-gray-500 mt-0.5 truncate">
-                                                    {{ customerSummary }}
-                                                </p>
-                                                <p
-                                                    v-if="foundCustomer.address"
-                                                    class="text-xs text-gray-400 mt-0.5 truncate"
-                                                >
-                                                    {{ foundCustomer.address }}
-                                                </p>
-                                            </div>
-                                            <UButton
-                                                icon="i-lucide-pencil"
-                                                color="neutral"
-                                                variant="ghost"
-                                                size="xs"
-                                                @click="showCustomerForm = true"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <!-- Customer Form (shown for new customer or editing) -->
-                                    <div
-                                        v-if="
-                                            showCustomerForm ||
-                                            (!foundCustomer &&
-                                                state.customer_phone.length >= 8 &&
-                                                !phoneSearching)
-                                        "
-                                        class="border-t border-gray-100 dark:border-gray-800 p-4 space-y-3"
+                                        v-if="showCustomerForm || (!foundCustomer && state.customer_phone.length >= 8 && !phoneSearching)"
+                                        class="mt-4 space-y-3"
                                     >
                                         <div class="flex items-center justify-between">
-                                            <span
-                                                class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                            >
-                                                {{
-                                                    foundCustomer
-                                                        ? 'Мэдээлэл засах'
-                                                        : 'Шинэ харилцагч'
-                                                }}
-                                            </span>
-                                            <UButton
-                                                v-if="foundCustomer"
-                                                size="xs"
-                                                color="neutral"
-                                                variant="ghost"
-                                                @click="showCustomerForm = false"
-                                            >
-                                                Хаах
-                                            </UButton>
+                                            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {{ foundCustomer ? 'Мэдээлэл засах' : 'Шинэ харилцагч' }}
+                                            </p>
+                                            <UButton v-if="foundCustomer" size="xs" color="neutral" variant="ghost" @click="showCustomerForm = false">Хаах</UButton>
                                         </div>
 
                                         <UFormField label="Нэр" name="customer_name" required>
-                                            <UInput
-                                                v-model="state.customer_name"
-                                                placeholder="Нэр"
-                                            />
+                                            <UInput v-model="state.customer_name" placeholder="Нэр" />
                                         </UFormField>
 
-                                        <div class="grid grid-cols-2 gap-3">
+                                        <div class="grid grid-cols-2 gap-2">
                                             <UFormField label="Хот/Аймаг" name="customer_city">
-                                                <UInput
-                                                    v-model="state.customer_city"
-                                                    placeholder="УБ"
-                                                />
+                                                <UInput v-model="state.customer_city" placeholder="УБ" />
                                             </UFormField>
                                             <UFormField label="Дүүрэг" name="customer_district">
-                                                <UInput
-                                                    v-model="state.customer_district"
-                                                    placeholder="БЗД"
-                                                />
+                                                <UInput v-model="state.customer_district" placeholder="БЗД" />
                                             </UFormField>
                                         </div>
 
                                         <UFormField label="Хаяг" name="customer_address">
-                                            <UInput
-                                                v-model="state.customer_address"
-                                                placeholder="Дэлгэрэнгүй хаяг"
-                                            />
+                                            <UInput v-model="state.customer_address" placeholder="Дэлгэрэнгүй хаяг" />
                                         </UFormField>
 
-                                        <div class="grid grid-cols-2 gap-3">
+                                        <div class="grid grid-cols-2 gap-2">
                                             <UFormField label="Байр/Тоот" name="customer_apartment">
-                                                <UInput
-                                                    v-model="state.customer_apartment"
-                                                    placeholder="45 тоот"
-                                                />
+                                                <UInput v-model="state.customer_apartment" placeholder="45 тоот" />
                                             </UFormField>
                                             <UFormField label="Имэйл" name="customer_email">
-                                                <UInput
-                                                    v-model="state.customer_email"
-                                                    type="email"
-                                                    placeholder="Имэйл"
-                                                />
+                                                <UInput v-model="state.customer_email" type="email" placeholder="Имэйл" />
                                             </UFormField>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Cart -->
-                                <OrderCartCard
-                                    :items="cartItems"
-                                    :shipping-fee="shippingFee"
-                                    :discount="discount"
-                                    @remove="removeCartItem"
-                                    @update-quantity="updateCartItemQuantity"
-                                />
+                                <div class="p-5">
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Захиалга</h2>
+                                    <OrderCartCard
+                                        :items="cartItems"
+                                        :shipping-fee="shippingFee"
+                                        :discount="discount"
+                                        @remove="removeCartItem"
+                                        @update-quantity="updateCartItemQuantity"
+                                    />
+                                </div>
 
-                                <!-- Shipping & Discount (compact) -->
-                                <div
-                                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4"
-                                >
+                                <!-- Shipping & Discount -->
+                                <div class="p-5">
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Нэмэлт</h2>
                                     <div class="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block"
-                                                >Хүргэлт</label
-                                            >
-                                            <UInput
-                                                v-model.number="shippingFee"
-                                                type="number"
-                                                min="0"
-                                                placeholder="0"
-                                            >
-                                                <template #trailing>
-                                                    <span class="text-gray-400 text-xs">₮</span>
-                                                </template>
+                                        <UFormField label="Хүргэлтийн төлбөр">
+                                            <UInput v-model.number="shippingFee" type="number" min="0" placeholder="0">
+                                                <template #trailing><span class="text-gray-400 text-xs">₮</span></template>
                                             </UInput>
-                                        </div>
-                                        <div>
-                                            <label class="text-xs text-gray-500 mb-1 block"
-                                                >Хөнгөлөлт</label
-                                            >
-                                            <UInput
-                                                v-model.number="discount"
-                                                type="number"
-                                                min="0"
-                                                placeholder="0"
-                                            >
-                                                <template #trailing>
-                                                    <span class="text-gray-400 text-xs">₮</span>
-                                                </template>
+                                        </UFormField>
+                                        <UFormField label="Хөнгөлөлт">
+                                            <UInput v-model.number="discount" type="number" min="0" placeholder="0">
+                                                <template #trailing><span class="text-gray-400 text-xs">₮</span></template>
                                             </UInput>
-                                        </div>
+                                        </UFormField>
                                     </div>
                                 </div>
 
-                                <!-- Payment Method (compact radio cards) -->
-                                <div
-                                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4"
-                                >
-                                    <label class="text-xs text-gray-500 mb-2 block"
-                                        >Төлбөрийн арга</label
-                                    >
+                                <!-- Payment Method -->
+                                <div class="p-5">
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Төлбөрийн арга</h2>
                                     <div class="grid grid-cols-2 gap-2">
                                         <button
                                             v-for="option in paymentMethodOptions"
                                             :key="option.value"
                                             type="button"
-                                            class="flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all"
-                                            :class="
-                                                state.payment_method === option.value
-                                                    ? 'border-primary bg-primary/5 text-primary dark:border-primary dark:bg-primary/10'
-                                                    : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
-                                            "
+                                            class="flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm transition-all"
+                                            :class="state.payment_method === option.value
+                                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400 font-medium'
+                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'"
                                             @click="state.payment_method = option.value"
                                         >
-                                            <UIcon :name="option.icon" class="w-4 h-4" />
+                                            <UIcon :name="option.icon" class="w-4 h-4 shrink-0" />
                                             {{ option.label }}
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Action Buttons (mobile) -->
-                                <div class="lg:hidden space-y-2 pb-4">
+                                <!-- Submit (sidebar bottom) -->
+                                <div class="p-5 space-y-2">
                                     <UButton
                                         type="submit"
                                         form="order-form"
@@ -561,23 +469,23 @@ const copyCheckoutLink = () => {
                                         :loading="loading"
                                         :disabled="!canSubmit"
                                         block
-                                        size="lg"
                                     >
-                                        Захиалга үүсгэх · {{ formatPrice(total) }}
+                                        Захиалга үүсгэх
+                                        <span v-if="total > 0" class="opacity-70 ml-1">· {{ formatPrice(total) }}</span>
                                     </UButton>
                                     <UButton
-                                        variant="outline"
+                                        variant="ghost"
                                         color="neutral"
                                         icon="i-lucide-link"
                                         :loading="checkoutLoading"
                                         :disabled="cartItems.length === 0"
                                         block
-                                        size="lg"
                                         @click="generateCheckoutLink"
                                     >
                                         Checkout линк үүсгэх
                                     </UButton>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -597,64 +505,27 @@ const copyCheckoutLink = () => {
                             <template #header>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
-                                        >
-                                            <UIcon
-                                                name="i-lucide-link-2"
-                                                class="w-5 h-5 text-green-600 dark:text-green-400"
-                                            />
+                                        <div class="w-9 h-9 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                            <UIcon name="i-lucide-link-2" class="w-4 h-4 text-green-600 dark:text-green-400" />
                                         </div>
                                         <div>
-                                            <h3 class="text-base font-semibold">
-                                                Линк бэлэн боллоо
-                                            </h3>
-                                            <p class="text-xs text-gray-500">
-                                                Хэрэглэгч рүү илгээнэ үү
-                                            </p>
+                                            <h3 class="text-sm font-semibold">Линк бэлэн боллоо</h3>
+                                            <p class="text-xs text-gray-500">Хэрэглэгч рүү илгээнэ үү</p>
                                         </div>
                                     </div>
-                                    <UButton
-                                        color="neutral"
-                                        variant="ghost"
-                                        icon="i-lucide-x"
-                                        @click="checkoutModalOpen = false"
-                                    />
+                                    <UButton color="neutral" variant="ghost" icon="i-lucide-x" size="sm" @click="checkoutModalOpen = false" />
                                 </div>
                             </template>
 
-                            <div
-                                class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
-                            >
-                                <span class="text-sm truncate flex-1 font-mono">{{
-                                    checkoutLink
-                                }}</span>
-                                <UButton
-                                    color="primary"
-                                    variant="soft"
-                                    icon="i-lucide-copy"
-                                    size="sm"
-                                    @click="copyCheckoutLink"
-                                >
-                                    Хуулах
-                                </UButton>
+                            <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                                <span class="text-sm truncate flex-1 font-mono text-gray-700 dark:text-gray-300">{{ checkoutLink }}</span>
+                                <UButton color="primary" variant="soft" icon="i-lucide-copy" size="sm" @click="copyCheckoutLink">Хуулах</UButton>
                             </div>
 
                             <template #footer>
-                                <div class="flex justify-end gap-3">
-                                    <UButton
-                                        color="neutral"
-                                        variant="ghost"
-                                        @click="checkoutModalOpen = false"
-                                    >
-                                        Хаах
-                                    </UButton>
-                                    <UButton
-                                        color="primary"
-                                        @click="router.push('/dashboard/orders')"
-                                    >
-                                        Захиалгын жагсаалт
-                                    </UButton>
+                                <div class="flex justify-end gap-2">
+                                    <UButton color="neutral" variant="ghost" @click="checkoutModalOpen = false">Хаах</UButton>
+                                    <UButton color="primary" @click="router.push('/dashboard/orders')">Захиалгын жагсаалт</UButton>
                                 </div>
                             </template>
                         </UCard>

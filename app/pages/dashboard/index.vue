@@ -33,12 +33,21 @@ const totalCustomers = computed(() => customerStats.value?.total || 0)
 const requiredActions = computed(() => {
     const actions = []
 
+    if (!shop.value?.settings?.bank_account?.account_number) {
+        actions.push({
+            title: 'Банкны данс нэмэх',
+            description: 'Банкны шилжүүлгээр төлбөр хүлээн авахын тулд дансаа оруулна уу.',
+            icon: 'i-lucide-building-2',
+            to: '/dashboard/settings#bank-account'
+        })
+    }
+
     if (!shop.value?.qpay.is_registered) {
         actions.push({
             title: 'QPay-д бүртгүүлэх',
             description: 'QPay-д бүртгүүлж, шууд төлбөр хүлээн авах боломжтой болно.',
             icon: 'i-lucide-qr-code',
-            to: '/dashboard/settings'
+            to: '/dashboard/settings#qpay'
         })
     }
 
@@ -47,7 +56,7 @@ const requiredActions = computed(() => {
             title: 'Холбоо барих мэдээлэл',
             description: 'Утасны дугаараа оруулна уу',
             icon: 'i-lucide-phone',
-            to: '/dashboard/settings'
+            to: '/dashboard/settings#phone'
         })
     }
 

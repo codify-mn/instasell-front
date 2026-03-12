@@ -79,17 +79,23 @@ const getOriginalPrice = (product: Product): number | null => {
 }
 
 const getTotalStock = (product: Product): number => {
-    return product.variants?.reduce((sum, v) => sum + v.stock_quantity, 0) || 0
+    if (!product.has_variants || !product.variants?.length) {
+        return product.stock_quantity
+    }
+    return product.variants.reduce((sum, v) => sum + v.stock_quantity, 0)
 }
 
 const isOutOfStock = (product: Product): boolean => {
     return getTotalStock(product) <= 0
 }
 
+const clickedId = ref<number | null>(null)
+
 const handleSelect = (product: Product) => {
-    if (!isOutOfStock(product)) {
-        emit('select', product)
-    }
+    if (isOutOfStock(product)) return
+    clickedId.value = product.id
+    setTimeout(() => { clickedId.value = null }, 500)
+    emit('select', product)
 }
 
 onMounted(() => {
@@ -134,10 +140,14 @@ onMounted(() => {
             <div
                 v-for="product in products"
                 :key="product.id"
-                class="group cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-sm"
-                :class="{
-                    'opacity-50 cursor-not-allowed': isOutOfStock(product)
-                }"
+                class="group cursor-pointer rounded-lg border overflow-hidden transition-all duration-150"
+                :class="[
+                    isOutOfStock(product)
+                        ? 'opacity-50 cursor-not-allowed border-gray-200 dark:border-gray-700'
+                        : clickedId === product.id
+                            ? 'scale-95 border-primary-400 dark:border-primary-500 shadow-md'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-sm'
+                ]"
                 @click="handleSelect(product)"
             >
                 <!-- Product Image -->
@@ -154,6 +164,18 @@ onMounted(() => {
                             class="w-10 h-10 text-gray-300 dark:text-gray-600"
                         />
                     </div>
+
+                    <!-- Added feedback -->
+                    <Transition name="flash">
+                        <div
+                            v-if="clickedId === product.id"
+                            class="absolute inset-0 bg-primary-500/30 flex items-center justify-center"
+                        >
+                            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center shadow-lg">
+                                <UIcon name="i-lucide-plus" class="w-4 h-4 text-white" />
+                            </div>
+                        </div>
+                    </Transition>
 
                     <!-- Out of Stock Badge -->
                     <div
@@ -203,3 +225,9 @@ onMounted(() => {
         </div>
     </div>
 </template>
+
+<style scoped>
+.flash-enter-active { transition: opacity 0.1s ease; }
+.flash-leave-active { transition: opacity 0.3s ease; }
+.flash-enter-from, .flash-leave-to { opacity: 0; }
+</style>

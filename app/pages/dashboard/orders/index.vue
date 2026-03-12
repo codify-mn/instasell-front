@@ -31,7 +31,8 @@ const statusOptions = [
     { label: 'Төлөгдсөн', value: 'paid' },
     { label: 'Илгээгдсэн', value: 'shipped' },
     { label: 'Хүргэгдсэн', value: 'delivered' },
-    { label: 'Цуцлагдсан', value: 'cancelled' }
+    { label: 'Цуцлагдсан', value: 'cancelled' },
+    { label: 'Буцаагдсан', value: 'refunded' }
 ]
 
 const columns: TableColumn<Order>[] = [
@@ -259,6 +260,13 @@ const getActionItems = (order: Order) => {
             label: 'Хүргэсэн',
             icon: 'i-lucide-package-check',
             onSelect: () => handleStatusChange(order, 'delivered')
+        })
+    }
+    if (['paid', 'shipped', 'delivered'].includes(order.status)) {
+        statusActions.push({
+            label: 'Буцаагдсан',
+            icon: 'i-lucide-rotate-ccw',
+            onSelect: () => handleStatusChange(order, 'refunded')
         })
     }
 

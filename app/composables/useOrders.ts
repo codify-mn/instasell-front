@@ -78,7 +78,6 @@ export interface Order {
     total_amount: number
     currency: string
     payment_method: PaymentMethod
-    payment_status?: string
     metadata: OrderMetadata
     qpay?: OrderQPayData
     items: OrderItem[]
@@ -133,7 +132,7 @@ export interface CreateOrderInput {
 // Cart item used in order creation UI
 export interface CartItem {
     product: Product
-    variant: ProductVariant
+    variant?: ProductVariant
     quantity: number
 }
 
@@ -236,8 +235,8 @@ export function useOrders() {
 
     const checkPaymentStatus = async (
         token: string
-    ): Promise<{ status: string; payment_status: string; qpay?: OrderQPayData }> => {
-        return await $fetch<{ status: string; payment_status: string; qpay?: OrderQPayData }>(
+    ): Promise<{ status: OrderStatus; qpay?: OrderQPayData }> => {
+        return await $fetch<{ status: OrderStatus; qpay?: OrderQPayData }>(
             `${apiUrl}/api/checkout/${token}/payment-status`
         )
     }
@@ -249,10 +248,10 @@ export function useOrders() {
 
     const getStatusLabel = (status: OrderStatus): string => {
         const labels: Record<OrderStatus, string> = {
-            pending: 'Хүлээгдэж буй',
-            paid: 'Төлөгдсөн',
-            shipped: 'Илгээгдсэн',
-            delivered: 'Хүргэгдсэн',
+            pending: 'Хүлээгдэж байна',
+            paid: 'Төлсөн',
+            shipped: 'Илгээсэн',
+            delivered: 'Хүргэсэн',
             cancelled: 'Цуцлагдсан',
             refunded: 'Буцаагдсан'
         }

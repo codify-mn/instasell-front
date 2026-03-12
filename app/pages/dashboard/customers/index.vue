@@ -130,15 +130,18 @@ onMounted(() => {
                         </template>
 
                         <template #facebook_id-cell="{ row }">
-                            <UBadge
+                            <a
                                 v-if="row.original.facebook_id"
-                                color="info"
-                                variant="subtle"
-                                size="xs"
+                                :href="`https://facebook.com/${row.original.facebook_id}`"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                @click.stop
                             >
-                                <UIcon name="i-lucide-facebook" class="w-3 h-3 mr-1" />
-                                Холбогдсон
-                            </UBadge>
+                                <UBadge color="info" variant="subtle" size="xs" class="cursor-pointer hover:opacity-80 transition-opacity">
+                                    <UIcon name="i-lucide-facebook" class="w-3 h-3 mr-1" />
+                                    Профайл
+                                </UBadge>
+                            </a>
                             <span v-else class="text-xs text-gray-400">-</span>
                         </template>
 

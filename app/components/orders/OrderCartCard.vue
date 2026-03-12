@@ -44,7 +44,7 @@ const getVariantImage = (item: CartItem): string | null => {
 
 const incrementQuantity = (index: number) => {
     const item = props.items[index]
-    if (item && item.quantity < item.variant.stock_quantity) {
+    if (item && item.quantity < (item.variant?.stock_quantity ?? Infinity)) {
         emit('updateQuantity', index, item.quantity + 1)
     }
 }
@@ -76,11 +76,12 @@ const decrementQuantity = (index: number) => {
             <p class="text-sm text-gray-500 dark:text-gray-400">Бараа сонгоогүй байна</p>
         </div>
 
-        <!-- Cart Items -->
-        <div v-else class="space-y-3">
+        <!-- Cart Items + Summary -->
+        <template v-else>
+        <TransitionGroup name="cart-item" tag="div" class="space-y-3">
             <div
                 v-for="(item, index) in items"
-                :key="`${item.product.id}-${item.variant.id}`"
+                :key="`${item.product.id}-${item.variant?.id ?? 'no-variant'}`"
                 class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50"
             >
                 <!-- Item Image -->
@@ -102,7 +103,7 @@ const decrementQuantity = (index: number) => {
                         {{ item.product.name }}
                     </p>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                        {{ item.variant.name }}
+                        {{ item.variant?.name }}
                     </p>
                     <div class="flex items-center justify-between mt-2">
                         <div class="flex items-center gap-1">
@@ -122,7 +123,7 @@ const decrementQuantity = (index: number) => {
                                 color="neutral"
                                 variant="ghost"
                                 size="xs"
-                                :disabled="item.quantity >= item.variant.stock_quantity"
+                                :disabled="item.quantity >= (item.variant?.stock_quantity ?? Infinity)"
                                 @click="incrementQuantity(index)"
                             />
                         </div>
@@ -141,8 +142,9 @@ const decrementQuantity = (index: number) => {
                     @click="emit('remove', index)"
                 />
             </div>
+        </TransitionGroup>
 
-            <!-- Price Summary -->
+        <!-- Price Summary -->
             <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Дүн</span>
@@ -167,6 +169,26 @@ const decrementQuantity = (index: number) => {
                     }}</span>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
+
+<style scoped>
+.cart-item-enter-active {
+    transition: all 0.25s ease;
+}
+.cart-item-leave-active {
+    transition: all 0.2s ease;
+}
+.cart-item-enter-from {
+    opacity: 0;
+    transform: translateX(-12px);
+}
+.cart-item-leave-to {
+    opacity: 0;
+    transform: translateX(12px);
+}
+.cart-item-move {
+    transition: transform 0.25s ease;
+}
+</style>

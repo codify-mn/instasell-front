@@ -13,12 +13,15 @@ const {
     checkInvoicePayment
 } = useSubscription()
 const { isAuthenticated: authCheck } = useAuth()
+const { shop, updateShop } = useShopSettings()
 const toast = useToast()
 const router = useRouter()
 
 const isYearly = ref(false)
 const startingTrial = ref<string | null>(null)
 const showPaymentModal = ref(false)
+const savingFeatured = ref(false)
+const maxFeaturedProducts = ref(6)
 
 onMounted(async () => {
     await fetchPlans()
@@ -26,6 +29,25 @@ onMounted(async () => {
         await fetchSubscription()
     }
 })
+
+watch(shop, (val) => {
+    if (val) maxFeaturedProducts.value = val.settings?.max_featured_products ?? 6
+}, { immediate: true })
+
+async function saveFeaturedProducts() {
+    if (!shop.value) return
+    savingFeatured.value = true
+    try {
+        await updateShop({ settings: { ...shop.value.settings, max_featured_products: maxFeaturedProducts.value } })
+        toast.add({ title: 'Хадгалагдлаа', color: 'success' })
+    }
+    catch (err: any) {
+        toast.add({ title: 'Алдаа', description: err?.data?.message, color: 'error' })
+    }
+    finally {
+        savingFeatured.value = false
+    }
+}
 
 function formatPrice(price: number): string {
     return price.toLocaleString()
@@ -489,6 +511,35 @@ const trustPoints = [
                                 </div>
                             </div>
                         </div>
+                    </UContainer>
+                </section>
+
+                <!-- Checkout Settings -->
+                <section class="pb-12">
+                    <UContainer class="max-w-2xl">
+                        <UPageCard variant="subtle">
+                            <UFormField
+                                name="max_featured_products"
+                                label="Checkout санал болгох барааны тоо"
+                                description="Checkout хуудас дээр хэдэн санал болгох бараа харагдахыг тохируулна. Бараа тус бүр дээр одоор тэмдэглэнэ."
+                                class="flex max-sm:flex-col justify-between items-start gap-4"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <UInput
+                                        v-model.number="maxFeaturedProducts"
+                                        type="number"
+                                        min="1"
+                                        max="20"
+                                        class="w-24"
+                                    />
+                                    <UButton
+                                        label="Хадгалах"
+                                        :loading="savingFeatured"
+                                        @click="saveFeaturedProducts"
+                                    />
+                                </div>
+                            </UFormField>
+                        </UPageCard>
                     </UContainer>
                 </section>
 

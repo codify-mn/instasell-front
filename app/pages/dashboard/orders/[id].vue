@@ -686,6 +686,18 @@ onMounted(async () => {
                                         </span>
                                     </div>
 
+                                    <!-- Facebook -->
+                                    <a
+                                        v-if="order.customer?.facebook_id"
+                                        :href="`https://facebook.com/${order.customer.facebook_id}`"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="flex items-center gap-2 text-blue-500 hover:text-blue-600 transition-colors"
+                                    >
+                                        <UIcon name="i-lucide-facebook" class="w-4 h-4" />
+                                        <span class="text-sm">Facebook профайл</span>
+                                    </a>
+
                                     <!-- Address block -->
                                     <div
                                         v-if="

@@ -161,7 +161,7 @@ const startPaymentPolling = () => {
     paymentPollInterval.value = setInterval(async () => {
         try {
             const status = await checkPaymentStatus(token)
-            if (status.payment_status === 'paid') {
+            if (status.status === 'paid') {
                 isPaid.value = true
                 if (paymentPollInterval.value) clearInterval(paymentPollInterval.value)
                 // Show success after a brief delay

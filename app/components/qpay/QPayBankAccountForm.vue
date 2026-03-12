@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { QPayBankAccount } from '~/composables/useQPay'
+import { MONGOLIAN_BANKS } from '~/utils/banks'
 
 const props = defineProps<{
     modelValue: QPayBankAccount[]
@@ -9,17 +10,7 @@ const emit = defineEmits<{
     'update:modelValue': [value: QPayBankAccount[]]
 }>()
 
-const banks = [
-    { label: 'Хаан банк', value: '040000' },
-    { label: 'Голомт банк', value: '150000' },
-    { label: 'Худалдаа хөгжлийн банк', value: '340000' },
-    { label: 'Төрийн банк', value: '100000' },
-    { label: 'Хас банк', value: '320000' },
-    { label: 'Богд банк', value: '380000' },
-    { label: 'Капитрон банк', value: '900000' },
-    { label: 'Чингис хаан банк', value: '330000' },
-    { label: 'М банк', value: '210000' }
-]
+const banks = MONGOLIAN_BANKS
 
 const accounts = computed({
     get: () => props.modelValue,

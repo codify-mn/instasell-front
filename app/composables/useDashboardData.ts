@@ -21,6 +21,7 @@ export interface Shop {
         bank_name: string
         bank_account_number: string
         bank_account_name: string
+        bank_account?: { bank_name: string; bank_code: string; account_number: string; account_name: string; note: string }
     }
     qpay: {
         is_registered: boolean

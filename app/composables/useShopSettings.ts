@@ -1,6 +1,14 @@
 import { createSharedComposable } from '@vueuse/core'
 import type { QPayBankAccount } from './useQPay'
 
+export interface ShopBankAccount {
+    bank_name: string
+    bank_code: string
+    account_number: string
+    account_name: string
+    note: string
+}
+
 export interface ShopSettings {
     // Automation
     automation_enabled: boolean
@@ -22,6 +30,7 @@ export interface ShopSettings {
     upsell_product_ids?: number[]
     max_featured_products?: number
     backgrounds?: string[]
+    bank_account?: ShopBankAccount
 }
 
 export interface ShopQPayData {

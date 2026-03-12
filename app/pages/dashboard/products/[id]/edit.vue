@@ -615,6 +615,19 @@ onMounted(async () => {
                                     </ProductFormCard>
                                 </div>
                         </div>
+
+                        <!-- Bottom Save Button -->
+                        <div class="flex justify-end pt-2 max-w-7xl mx-auto">
+                            <UButton
+                                type="submit"
+                                color="primary"
+                                icon="i-lucide-check"
+                                size="lg"
+                                :loading="saving"
+                            >
+                                Хадгалах
+                            </UButton>
+                        </div>
                     </UForm>
                 </div>
 
