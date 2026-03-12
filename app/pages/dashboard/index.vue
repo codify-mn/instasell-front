@@ -62,7 +62,7 @@ onMounted(() => {
 <template>
     <div class="w-full h-full overflow-y-auto">
         <UDashboardPanel id="home" class="px-4 pb-6 overflow-y-auto">
-            <UDashboardNavbar>
+            <UDashboardNavbar class="border-b border-[#e2e8f0] dark:border-[#334155]">
                 <template #title>
                     <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-home" class="w-5 h-5" />

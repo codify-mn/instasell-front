@@ -21,11 +21,11 @@ const paddingClasses = {
 
 <template>
     <div
-        class="bg-white/60 dark:bg-gray-900/60 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-sm shadow-gray-200/50 dark:shadow-gray-950/50"
+        class="bg-white dark:bg-[#1e293b] rounded-[10px] border border-[#e2e8f0] dark:border-[#334155]"
+        style="box-shadow: var(--shadow-card)"
         :class="[
             paddingClasses[padding],
-            hover &&
-                'hover:shadow-md hover:shadow-gray-200/60 dark:hover:shadow-gray-950/60 hover:border-white/30 dark:hover:border-gray-700/40 transition-all duration-300',
+            hover && 'hover:shadow-md dark:hover:border-[#475569] transition-all duration-300',
             clickable && 'cursor-pointer'
         ]"
     >

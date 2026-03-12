@@ -34,9 +34,9 @@ const today = computed(() => {
     <div data-tour-greeting class="flex items-center justify-between">
         <div class="flex items-center gap-4">
             <div
-                class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary-500/20"
+                class="w-12 h-12 rounded-2xl bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/20 dark:border-green-800/40 flex items-center justify-center flex-shrink-0"
             >
-                <UIcon :name="greetingIcon" class="w-6 h-6 text-white" />
+                <UIcon :name="greetingIcon" class="w-6 h-6 text-[#16a34a]" />
             </div>
 
             <div>

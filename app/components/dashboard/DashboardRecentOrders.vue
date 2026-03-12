@@ -53,12 +53,12 @@ onMounted(() => {
 
 <template>
     <DashboardCard padding="none">
-        <div class="p-4 border-b border-gray-100 dark:border-gray-800/50">
+        <div class="p-4 border-b border-[#e2e8f0] dark:border-[#334155]">
             <div class="flex items-center justify-between">
                 <h3 class="font-semibold text-gray-900 dark:text-white">Сүүлийн захиалга</h3>
                 <NuxtLink
                     to="/dashboard/orders"
-                    class="text-xs text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
+                    class="text-xs text-[#16a34a] hover:text-[#15803d] dark:hover:text-green-400 font-medium"
                 >
                     Бүгдийг харах
                 </NuxtLink>
@@ -87,26 +87,26 @@ onMounted(() => {
         </div>
 
         <!-- Orders List -->
-        <div v-else class="divide-y divide-gray-100 dark:divide-gray-800/50">
+        <div v-else class="divide-y divide-[#e2e8f0] dark:divide-[#334155]">
             <NuxtLink
                 v-for="order in orders"
                 :key="order.id"
                 :to="`/dashboard/orders/${order.id}`"
-                class="flex items-center gap-3 p-4 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors"
+                class="flex items-center gap-3 p-4 hover:bg-[#f8fafc] dark:hover:bg-[#1e293b] transition-colors"
             >
                 <!-- Status Icon -->
                 <div
                     class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                     :class="{
-                        'bg-amber-100/80 dark:bg-amber-900/20 text-amber-500':
+                        'bg-amber-100 dark:bg-amber-900/20 text-amber-500':
                             order.status === 'pending',
-                        'bg-green-100/80 dark:bg-green-900/20 text-green-500':
+                        'bg-green-100 dark:bg-green-900/20 text-green-500':
                             order.status === 'paid' || order.status === 'delivered',
-                        'bg-blue-100/80 dark:bg-blue-900/20 text-blue-500':
+                        'bg-blue-100 dark:bg-blue-900/20 text-blue-500':
                             order.status === 'shipped',
-                        'bg-red-100/80 dark:bg-red-900/20 text-red-500':
+                        'bg-red-100 dark:bg-red-900/20 text-red-500':
                             order.status === 'cancelled',
-                        'bg-gray-100/80 dark:bg-gray-800/50 text-gray-500':
+                        'bg-gray-100 dark:bg-gray-800 text-gray-500':
                             order.status === 'refunded'
                     }"
                 >

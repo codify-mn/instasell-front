@@ -9,7 +9,7 @@ const shop = useShop()
 <template>
     <div class="flex items-center gap-3 py-1.5 w-full" :class="collapsed ? 'justify-center' : ''">
         <div
-            class="w-9 h-9 rounded-xl bg-linear-to-br from-primary-500 to-accent-500 flex items-center justify-center shrink-0 shadow-sm"
+            class="w-9 h-9 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/20 dark:border-green-800/40 flex items-center justify-center shrink-0"
         >
             <img
                 v-if="shop?.picture"
@@ -17,7 +17,7 @@ const shop = useShop()
                 :alt="shop?.name"
                 class="w-full h-full rounded-xl object-cover"
             >
-            <UIcon v-else name="i-lucide-store" class="w-4.5 h-4.5 text-white" />
+            <UIcon v-else name="i-lucide-store" class="w-4.5 h-4.5 text-[#16a34a]" />
         </div>
 
         <div v-if="!collapsed" class="flex-1 min-w-0">

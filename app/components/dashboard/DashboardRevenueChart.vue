@@ -80,9 +80,9 @@ const formatCompact = (value: number): string => {
                     </p>
                 </div>
                 <div
-                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center"
+                    class="w-10 h-10 rounded-xl bg-[#f0fdf4] dark:bg-green-900/20 flex items-center justify-center"
                 >
-                    <UIcon name="i-lucide-trending-up" class="w-5 h-5 text-green-500" />
+                    <UIcon name="i-lucide-trending-up" class="w-5 h-5 text-[#16a34a]" />
                 </div>
             </div>
 
@@ -107,7 +107,7 @@ const formatCompact = (value: number): string => {
                         </div>
                         <!-- Bar itself -->
                         <div
-                            class="w-full rounded-t-lg bg-gradient-to-t from-primary-500 to-primary-400 dark:from-primary-600 dark:to-primary-500 transition-all duration-300 hover:from-primary-600 hover:to-primary-500"
+                            class="w-full rounded-t-lg bg-gradient-to-t from-[#16a34a] to-[#22c55e] dark:from-[#15803d] dark:to-[#16a34a] transition-all duration-300 hover:from-[#15803d] hover:to-[#16a34a]"
                             :style="{ height: `${Math.max((item.value / maxValue) * 64, 4)}px` }"
                         />
                     </div>

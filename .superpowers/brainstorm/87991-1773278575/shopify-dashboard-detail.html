@@ -1,0 +1,221 @@
+<h2>Shopify Style — Dashboard Detail</h2>
+<p class="subtitle">How should the sidebar and card style look? Pick your preference.</p>
+
+<div class="cards">
+
+  <!-- Option A1: Shopify exact — dark sidebar -->
+  <div class="card" data-choice="dark-sidebar" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f1f1f1;">
+      <div style="display: flex; height: 240px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.15); font-family: -apple-system, sans-serif;">
+        <!-- Dark Sidebar -->
+        <div style="width: 72px; background: #1a1a2e; display: flex; flex-direction: column; padding: 14px 10px; gap: 4px;">
+          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 16px; height: 16px; border-radius: 3px; border: 2px solid white;"></div>
+            </div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px; background: rgba(255,255,255,0.1);">
+            <div style="width: 100%; height: 3px; background: white; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: rgba(255,255,255,0.7); text-align: center;">Нүүр</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: rgba(255,255,255,0.4); text-align: center;">Захиалга</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: rgba(255,255,255,0.4); text-align: center;">Бараа</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: rgba(255,255,255,0.4); text-align: center;">Live</div>
+          </div>
+        </div>
+        <!-- Light Main -->
+        <div style="flex: 1; background: #f6f6f7; padding: 14px; overflow: hidden;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 700; color: #1a1a2e;">Өнөөдрийн тойм</div>
+            <div style="font-size: 8px; color: #6b7280; background: white; padding: 3px 8px; border-radius: 20px; border: 1px solid #e5e7eb;">Өнөөдөр ▾</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+            <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 7px; color: #6b7280; margin-bottom: 2px;">Нийт орлого</div>
+              <div style="font-size: 13px; font-weight: 700; color: #1a1a2e;">₮2.4M</div>
+              <div style="font-size: 7px; color: #22c55e; margin-top: 2px;">▲ +8.1%</div>
+            </div>
+            <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 7px; color: #6b7280; margin-bottom: 2px;">Захиалга</div>
+              <div style="font-size: 13px; font-weight: 700; color: #1a1a2e;">128</div>
+              <div style="font-size: 7px; color: #22c55e; margin-top: 2px;">▲ +12%</div>
+            </div>
+            <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 7px; color: #6b7280; margin-bottom: 2px;">Хүргэлт</div>
+              <div style="font-size: 13px; font-weight: 700; color: #1a1a2e;">89</div>
+              <div style="font-size: 7px; color: #6b7280; margin-top: 2px;">—</div>
+            </div>
+            <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 7px; color: #6b7280; margin-bottom: 2px;">Бараа</div>
+              <div style="font-size: 13px; font-weight: 700; color: #1a1a2e;">84</div>
+              <div style="font-size: 7px; color: #f59e0b; margin-top: 2px;">▼ -2</div>
+            </div>
+          </div>
+          <!-- Chart area -->
+          <div style="background: white; border-radius: 8px; padding: 10px; border: 1px solid #e5e7eb;">
+            <div style="font-size: 8px; font-weight: 600; color: #1a1a2e; margin-bottom: 6px;">Орлогын график</div>
+            <div style="display: flex; align-items: flex-end; gap: 4px; height: 50px;">
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 35%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 50%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 40%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 65%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 55%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 3px 3px 0 0; height: 90%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 3px 3px 0 0; height: 75%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Shopify Exact</h3>
+      <p>Dark sidebar (#1a1a2e) + light content area (#f6f6f7). Classic Shopify split. White data cards with green accent on positive trends only.</p>
+    </div>
+  </div>
+
+  <!-- Option A2: All-white, linear-inspired -->
+  <div class="card" data-choice="all-white" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f8fafc;">
+      <div style="display: flex; height: 240px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1); font-family: -apple-system, sans-serif;">
+        <!-- Light gray sidebar -->
+        <div style="width: 72px; background: white; border-right: 1px solid #f0f0f0; display: flex; flex-direction: column; padding: 14px 10px; gap: 4px;">
+          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <div style="width: 32px; height: 32px; background: #22c55e; border-radius: 8px;"></div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px; background: #f0fdf4;">
+            <div style="width: 100%; height: 3px; background: #22c55e; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: #16a34a; text-align: center; font-weight: 600;">Нүүр</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: #d1d5db; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: #9ca3af; text-align: center;">Захиалга</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: #d1d5db; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: #9ca3af; text-align: center;">Бараа</div>
+          </div>
+          <div style="padding: 6px 8px; border-radius: 6px;">
+            <div style="width: 100%; height: 3px; background: #d1d5db; border-radius: 2px; margin-bottom: 3px;"></div>
+            <div style="font-size: 7px; color: #9ca3af; text-align: center;">Live</div>
+          </div>
+        </div>
+        <!-- White Main -->
+        <div style="flex: 1; background: #f8fafc; padding: 14px; overflow: hidden;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 700; color: #0f172a;">Өнөөдрийн тойм</div>
+            <div style="font-size: 8px; color: #64748b; background: white; padding: 3px 8px; border-radius: 20px; border: 1px solid #e2e8f0;">Өнөөдөр ▾</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px;">
+            <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+              <div style="font-size: 7px; color: #64748b; margin-bottom: 2px;">Нийт орлого</div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">₮2.4M</div>
+              <div style="font-size: 7px; color: #22c55e; margin-top: 2px; font-weight: 600;">▲ +8.1%</div>
+            </div>
+            <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+              <div style="font-size: 7px; color: #64748b; margin-bottom: 2px;">Захиалга</div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">128</div>
+              <div style="font-size: 7px; color: #22c55e; margin-top: 2px; font-weight: 600;">▲ +12%</div>
+            </div>
+            <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+              <div style="font-size: 7px; color: #64748b; margin-bottom: 2px;">Хүргэлт</div>
+              <div style="font-size: 13px; font-weight: 700; color: #0f172a;">89</div>
+              <div style="font-size: 7px; color: #94a3b8; margin-top: 2px;">—</div>
+            </div>
+            <div style="background: #f0fdf4; border-radius: 10px; padding: 8px; border: 1px solid #bbf7d0;">
+              <div style="font-size: 7px; color: #64748b; margin-bottom: 2px;">Бараа</div>
+              <div style="font-size: 13px; font-weight: 700; color: #16a34a;">84</div>
+              <div style="font-size: 7px; color: #f59e0b; margin-top: 2px;">▼ -2</div>
+            </div>
+          </div>
+          <div style="background: white; border-radius: 10px; padding: 10px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size: 8px; font-weight: 600; color: #0f172a; margin-bottom: 6px;">Орлогын график</div>
+            <div style="display: flex; align-items: flex-end; gap: 4px; height: 50px;">
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 35%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 50%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 40%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 65%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 3px 3px 0 0; height: 55%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 3px 3px 0 0; height: 90%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 3px 3px 0 0; height: 75%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Clean Light (Linear/Notion)</h3>
+      <p>All-white with light gray sidebar. Very minimal. Green only for active state + positive metrics. Feels like Linear or Notion's admin panel — ultra-clean, zero noise.</p>
+    </div>
+  </div>
+
+  <!-- Option A3: White + green top bar -->
+  <div class="card" data-choice="green-topbar" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px; background: #f6f6f7;">
+      <div style="display: flex; flex-direction: column; height: 240px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12); font-family: -apple-system, sans-serif;">
+        <!-- Green Top Bar -->
+        <div style="height: 44px; background: #16a34a; display: flex; align-items: center; padding: 0 14px; gap: 16px; flex-shrink: 0;">
+          <div style="width: 24px; height: 24px; background: rgba(255,255,255,0.2); border-radius: 6px;"></div>
+          <div style="height: 3px; width: 40px; background: rgba(255,255,255,0.4); border-radius: 2px;"></div>
+          <div style="height: 3px; width: 40px; background: rgba(255,255,255,0.7); border-radius: 2px;"></div>
+          <div style="height: 3px; width: 40px; background: rgba(255,255,255,0.4); border-radius: 2px;"></div>
+          <div style="height: 3px; width: 40px; background: rgba(255,255,255,0.4); border-radius: 2px;"></div>
+          <div style="height: 3px; width: 40px; background: rgba(255,255,255,0.4); border-radius: 2px;"></div>
+        </div>
+        <!-- White content -->
+        <div style="flex: 1; background: #f6f6f7; padding: 12px; display: flex; gap: 10px;">
+          <!-- Left sidebar -->
+          <div style="width: 60px; background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb; display: flex; flex-direction: column; gap: 6px;">
+            <div style="padding: 4px 6px; background: #f0fdf4; border-radius: 4px; border-left: 2px solid #22c55e;">
+              <div style="font-size: 6px; color: #16a34a; font-weight: 600;">Нүүр</div>
+            </div>
+            <div style="padding: 4px 6px;">
+              <div style="font-size: 6px; color: #9ca3af;">Захиалга</div>
+            </div>
+            <div style="padding: 4px 6px;">
+              <div style="font-size: 6px; color: #9ca3af;">Бараа</div>
+            </div>
+            <div style="padding: 4px 6px;">
+              <div style="font-size: 6px; color: #9ca3af;">Live</div>
+            </div>
+          </div>
+          <!-- Main content -->
+          <div style="flex: 1;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px;">
+              <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+                <div style="font-size: 7px; color: #6b7280;">Нийт орлого</div>
+                <div style="font-size: 14px; font-weight: 700; color: #1a1a2e;">₮2.4M</div>
+                <div style="font-size: 7px; color: #22c55e;">▲ +8.1%</div>
+              </div>
+              <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb;">
+                <div style="font-size: 7px; color: #6b7280;">Захиалга</div>
+                <div style="font-size: 14px; font-weight: 700; color: #1a1a2e;">128</div>
+                <div style="font-size: 7px; color: #22c55e;">▲ +12%</div>
+              </div>
+            </div>
+            <div style="background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb; height: 56px; display: flex; align-items: flex-end; gap: 3px;">
+              <div style="flex: 1; background: #dcfce7; border-radius: 2px; height: 40%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 2px; height: 60%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 2px; height: 45%;"></div>
+              <div style="flex: 1; background: #dcfce7; border-radius: 2px; height: 70%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 2px; height: 90%;"></div>
+              <div style="flex: 1; background: #22c55e; border-radius: 2px; height: 80%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Green Header</h3>
+      <p>Green navigation bar at top (like older Shopify admin or Stripe). White content area below. Strong brand presence, green is unmissable but contained to the top chrome.</p>
+    </div>
+  </div>
+
+</div>

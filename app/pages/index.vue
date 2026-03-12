@@ -139,7 +139,7 @@ onMounted(() => {
                     <!-- Left: Copy -->
                     <div class="text-center lg:text-left">
                         <div
-                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-500/10 border border-primary-500/20 mb-8 fade-in-up"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/20 dark:border-green-800/40 mb-8 fade-in-up"
                         >
                             <span class="relative flex h-2 w-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -323,9 +323,8 @@ onMounted(() => {
         <!-- Stats bar -->
         <section
             ref="statsRef"
-            class="relative py-16 bg-gray-900 dark:bg-gray-950"
+            class="relative py-16 stats-section-bg"
         >
-            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
             <UContainer class="max-w-5xl">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                     <div
@@ -337,10 +336,10 @@ onMounted(() => {
                             [`fade-in-up-delay-${index + 1}`]: statsVisible
                         }"
                     >
-                        <div class="text-4xl md:text-5xl font-extrabold text-white mb-1">
-                            {{ stat.value }}<span class="text-primary-400 text-2xl md:text-3xl">{{ stat.unit }}</span>
+                        <div class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-1">
+                            {{ stat.value }}<span class="text-[#16a34a] text-2xl md:text-3xl">{{ stat.unit }}</span>
                         </div>
-                        <div class="text-sm text-gray-400">
+                        <div class="text-sm text-[#64748b] dark:text-gray-400">
                             {{ stat.label }}
                         </div>
                     </div>
@@ -384,7 +383,7 @@ onMounted(() => {
         </section>
 
         <!-- Features -->
-        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
+        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Боломжууд</p>
@@ -485,7 +484,7 @@ onMounted(() => {
         </section>
 
         <!-- How It Works -->
-        <section ref="stepsRef" class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
+        <section ref="stepsRef" class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Хэрхэн ажилладаг</p>
@@ -543,7 +542,7 @@ onMounted(() => {
         </section>
 
         <!-- Testimonials -->
-        <section class="py-20 lg:py-24 bg-gray-50/80 dark:bg-gray-900/30">
+        <section class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Сэтгэгдэл</p>
