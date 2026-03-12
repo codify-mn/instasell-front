@@ -1,3 +1,4 @@
+// app/composables/useDashboardData.ts
 import type { FacebookPage } from '~/types'
 
 export interface Shop {
@@ -55,15 +56,24 @@ export interface CustomerStats {
     this_month: number
 }
 
+export interface ConversionStats {
+    comments_processed: number
+    orders_created: number
+    orders_paid: number
+    paid_revenue: number
+    conversion_rate: number
+}
+
 export const useDashboardData = () => {
     const config = useRuntimeConfig()
 
     const orderStats = ref<OrderStats | null>(null)
     const productStats = ref<ProductStats>({ total: 0, active: 0 })
     const customerStats = ref<CustomerStats>({ total: 0, this_month: 0 })
+    const conversionStats = ref<ConversionStats | null>(null)
+    const revenueChart = ref<{ label: string; value: number }[]>([])
     const isLoading = ref(true)
     const error = ref<string | null>(null)
-    const lives = ref<any[]>([])
 
     const fetchOrderStats = async () => {
         try {
@@ -80,14 +90,9 @@ export const useDashboardData = () => {
         try {
             const data = await $fetch<{ products: any[]; total: number }>(
                 `${config.public.apiUrl}/api/products?limit=1`,
-                {
-                    credentials: 'include'
-                }
+                { credentials: 'include' }
             )
-            productStats.value = {
-                total: data.total || 0,
-                active: data.total || 0
-            }
+            productStats.value = { total: data.total || 0, active: data.total || 0 }
         } catch (err: any) {
             console.error('Failed to fetch product stats:', err)
         }
@@ -99,30 +104,23 @@ export const useDashboardData = () => {
                 `${config.public.apiUrl}/api/customers?size=1`,
                 { credentials: 'include' }
             )
-            customerStats.value = {
-                total: data.total || 0,
-                this_month: 0
-            }
+            customerStats.value = { total: data.total || 0, this_month: 0 }
         } catch (err: any) {
             console.error('Failed to fetch customer stats:', err)
         }
     }
 
-    const fetchLives = async () => {
+    const fetchConversionStats = async () => {
         try {
-            const data = await $fetch<{ lives: any[]; total: number }>(
-                `${config.public.apiUrl}/api/lives?limit=1`,
-                {
-                    credentials: 'include'
-                }
+            const data = await $fetch<ConversionStats>(
+                `${config.public.apiUrl}/api/dashboard/conversion`,
+                { credentials: 'include' }
             )
-            lives.value = data.lives
+            conversionStats.value = data
         } catch (err: any) {
-            console.error('Failed to fetch lives:', err)
+            console.error('Failed to fetch conversion stats:', err)
         }
     }
-
-    const revenueChart = ref<{ label: string; value: number }[]>([])
 
     const fetchRevenueChart = async (days: number = 7) => {
         try {
@@ -136,12 +134,17 @@ export const useDashboardData = () => {
         }
     }
 
-    const fetchAll = async () => {
+    const fetchAll = async (days: number = 7) => {
         isLoading.value = true
         error.value = null
-
         try {
-            await Promise.all([fetchOrderStats(), fetchProductStats(), fetchRevenueChart(), fetchCustomerStats()])
+            await Promise.all([
+                fetchOrderStats(),
+                fetchProductStats(),
+                fetchCustomerStats(),
+                fetchConversionStats(),
+                fetchRevenueChart(days),
+            ])
         } catch (err: any) {
             error.value = 'Failed to load dashboard data'
         } finally {
@@ -153,15 +156,15 @@ export const useDashboardData = () => {
         orderStats,
         productStats,
         customerStats,
+        conversionStats,
         revenueChart,
         isLoading,
         error,
-        lives,
         fetchAll,
         fetchOrderStats,
         fetchProductStats,
         fetchCustomerStats,
+        fetchConversionStats,
         fetchRevenueChart,
-        fetchLives
     }
 }
