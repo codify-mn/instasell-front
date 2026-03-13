@@ -111,12 +111,12 @@ const onMouseLeave = () => { tooltip.value = null }
 </script>
 
 <template>
-    <div class="rounded-xl border border-[#e3e8ee] bg-white p-6">
+    <div class="rounded-xl border border-[#e3e8ee] bg-white p-6 dark:border-[#334155] dark:bg-[#1e293b]">
         <!-- Header -->
         <div class="mb-5 flex items-start justify-between">
             <div>
-                <div class="text-[13px] font-bold text-[#1a1f36]">Орлогын чиг хандлага</div>
-                <div class="mt-0.5 text-[12px] text-[#697386]">
+                <div class="text-[13px] font-bold text-[#1a1f36] dark:text-[#e2e8f0]">Орлогын чиг хандлага</div>
+                <div class="mt-0.5 text-[12px] text-[#697386] dark:text-[#94a3b8]">
                     Нийт:
                     <strong class="text-[#059669]">{{ formatRevenue(totalRevenue) }}</strong>
                     <template v-if="averageOrderValue">
@@ -124,7 +124,7 @@ const onMouseLeave = () => { tooltip.value = null }
                     </template>
                 </div>
             </div>
-            <div class="flex items-center gap-1.5 text-[11px] text-[#697386]">
+            <div class="flex items-center gap-1.5 text-[11px] text-[#697386] dark:text-[#94a3b8]">
                 <div class="h-2 w-2 rounded-full bg-[#059669]" />
                 Орлого
             </div>
@@ -137,7 +137,7 @@ const onMouseLeave = () => { tooltip.value = null }
                 <div
                     v-for="tick in yTicks"
                     :key="tick.pct"
-                    class="absolute right-2 -translate-y-1/2 whitespace-nowrap text-[9px] text-[#c4cdd8]"
+                    class="absolute right-2 -translate-y-1/2 whitespace-nowrap text-[9px] text-[#c4cdd8] dark:text-[#475569]"
                     :style="{ top: `${tick.pct}%` }"
                 >
                     {{ formatCompact(tick.value) }}
@@ -148,7 +148,7 @@ const onMouseLeave = () => { tooltip.value = null }
             <div class="relative flex-1" style="height: 100px">
                 <!-- Grid -->
                 <div class="pointer-events-none absolute inset-0 flex flex-col justify-between">
-                    <div v-for="n in 5" :key="n" class="border-t border-dashed border-[#f0f4f8]" />
+                    <div v-for="n in 5" :key="n" class="border-t border-dashed border-[#f0f4f8] dark:border-[#1e293b]" />
                 </div>
 
                 <svg
@@ -208,7 +208,7 @@ const onMouseLeave = () => { tooltip.value = null }
             <div
                 v-for="(lbl, i) in xLabels"
                 :key="i"
-                class="flex-1 text-center text-[10px] font-medium text-[#9baacf]"
+                class="flex-1 text-center text-[10px] font-medium text-[#9baacf] dark:text-[#64748b]"
             >
                 {{ lbl }}
             </div>

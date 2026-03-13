@@ -28,7 +28,7 @@ const topBarClass = computed(() => {
 const valueClass = computed(() => {
     if (props.accent) return 'text-[#059669]'
     if (props.warn) return 'text-[#b45309]'
-    return 'text-[#1a1f36]'
+    return 'text-[#1a1f36] dark:text-[#e2e8f0]'
 })
 
 const deltaClass = computed(() => {
@@ -48,14 +48,14 @@ const deltaSymbol = computed(() => {
     <component
         :is="to ? resolveComponent('NuxtLink') : 'div'"
         :to="to"
-        class="relative block overflow-hidden rounded-xl border border-[#e3e8ee] bg-white p-5 transition-all duration-150"
-        :class="to ? 'cursor-pointer hover:border-[#c8d0da] hover:shadow-sm' : ''"
+        class="relative block overflow-hidden rounded-xl border border-[#e3e8ee] bg-white p-5 transition-all duration-150 dark:border-[#334155] dark:bg-[#1e293b]"
+        :class="to ? 'cursor-pointer hover:border-[#c8d0da] hover:shadow-sm dark:hover:border-[#475569]' : ''"
     >
         <!-- Colored top bar -->
         <div class="absolute inset-x-0 top-0 h-[3px] rounded-t-xl" :class="topBarClass" />
 
         <div class="mb-3 flex items-start justify-between">
-            <span class="text-[11px] font-bold uppercase tracking-[0.6px] text-[#697386]">
+            <span class="text-[11px] font-bold uppercase tracking-[0.6px] text-[#697386] dark:text-[#94a3b8]">
                 {{ label }}
             </span>
             <span v-if="icon" class="text-base leading-none">{{ icon }}</span>
@@ -69,7 +69,7 @@ const deltaSymbol = computed(() => {
             <span v-if="delta !== undefined" class="text-[11px] font-bold" :class="deltaClass">
                 {{ deltaSymbol }} {{ Math.abs(delta) }}%
             </span>
-            <span v-if="subtitle || deltaLabel" class="text-[11px] text-[#9baacf]">
+            <span v-if="subtitle || deltaLabel" class="text-[11px] text-[#9baacf] dark:text-[#64748b]">
                 {{ deltaLabel || subtitle }}
             </span>
         </div>

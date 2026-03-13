@@ -64,17 +64,17 @@ const shopChecks = computed(() => [
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden bg-[#f6f9fc]">
+    <div class="flex w-full h-full flex-col overflow-hidden bg-[#f6f9fc] dark:bg-[#0f172a]">
         <!-- Topbar -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[#e3e8ee] bg-white px-7">
+        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[#e3e8ee] bg-white px-7 dark:bg-[#1e293b] dark:border-[#334155]">
             <div class="flex items-center gap-3">
-                <span class="text-[16px] font-bold text-[#1a1f36]">Нүүр хуудас</span>
+                <span class="text-[16px] font-bold text-[#1a1f36] dark:text-[#e2e8f0]">Нүүр хуудас</span>
             </div>
             <div class="flex items-center gap-2.5">
                 <DashboardPeriodSelect v-model="period" />
                 <button
                     type="button"
-                    class="flex h-8 w-8 items-center justify-center rounded-lg border border-[#e3e8ee] bg-white text-[#697386] hover:text-[#1a1f36] transition-colors"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg border border-[#e3e8ee] bg-white text-[#697386] hover:text-[#1a1f36] transition-colors dark:border-[#334155] dark:bg-[#1e293b] dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]"
                     title="Заавар"
                     @click="replayTour"
                 >
@@ -91,13 +91,13 @@ const shopChecks = computed(() => [
             <!-- Loading skeleton -->
             <div v-if="isLoading" class="mx-auto max-w-7xl px-7 py-6 space-y-5">
                 <div class="grid grid-cols-4 gap-3.5">
-                    <div v-for="i in 4" :key="i" class="h-28 animate-pulse rounded-xl bg-white border border-[#e3e8ee]" />
+                    <div v-for="i in 4" :key="i" class="h-28 animate-pulse rounded-xl bg-white border border-[#e3e8ee] dark:bg-[#1e293b] dark:border-[#334155]" />
                 </div>
-                <div class="h-52 animate-pulse rounded-xl bg-white border border-[#e3e8ee]" />
+                <div class="h-52 animate-pulse rounded-xl bg-white border border-[#e3e8ee] dark:bg-[#1e293b] dark:border-[#334155]" />
                 <div class="grid grid-cols-3 gap-3.5">
-                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee]" />
-                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee]" />
-                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee]" />
+                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee] dark:bg-[#1e293b] dark:border-[#334155]" />
+                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee] dark:bg-[#1e293b] dark:border-[#334155]" />
+                    <div class="h-56 animate-pulse rounded-xl bg-white border border-[#e3e8ee] dark:bg-[#1e293b] dark:border-[#334155]" />
                 </div>
             </div>
 

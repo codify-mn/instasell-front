@@ -18,7 +18,7 @@ const options: { label: string; value: Period }[] = [
 </script>
 
 <template>
-    <div class="flex items-center gap-0.5 bg-[#f6f9fc] border border-[#e3e8ee] rounded-lg p-1">
+    <div class="flex items-center gap-0.5 bg-[#f6f9fc] border border-[#e3e8ee] rounded-lg p-1 dark:bg-[#0f172a] dark:border-[#334155]">
         <button
             v-for="opt in options"
             :key="opt.value"
@@ -26,8 +26,8 @@ const options: { label: string; value: Period }[] = [
             class="px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 focus:outline-none"
             :class="
                 modelValue === opt.value
-                    ? 'bg-white text-[#1a1f36] font-semibold shadow-sm'
-                    : 'text-[#697386] hover:text-[#1a1f36]'
+                    ? 'bg-white text-[#1a1f36] font-semibold shadow-sm dark:bg-[#334155] dark:text-[#e2e8f0]'
+                    : 'text-[#697386] hover:text-[#1a1f36] dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]'
             "
             @click="emit('update:modelValue', opt.value)"
         >

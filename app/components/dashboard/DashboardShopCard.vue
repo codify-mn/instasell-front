@@ -39,13 +39,13 @@ const daysColor = computed(() => {
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[#e3e8ee] bg-white">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[#e3e8ee] bg-white dark:border-[#334155] dark:bg-[#1e293b]">
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-[#f0f4f8] px-5 py-4">
-            <div class="text-[13px] font-bold text-[#1a1f36]">Дэлгүүр</div>
+        <div class="flex items-center justify-between border-b border-[#f0f4f8] px-5 py-4 dark:border-[#1e293b]">
+            <div class="text-[13px] font-bold text-[#1a1f36] dark:text-[#e2e8f0]">Дэлгүүр</div>
             <NuxtLink
                 to="/dashboard/settings"
-                class="flex items-center gap-1 text-[11px] font-medium text-[#697386] hover:text-[#1a1f36] transition-colors"
+                class="flex items-center gap-1 text-[11px] font-medium text-[#697386] hover:text-[#1a1f36] transition-colors dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]"
             >
                 <UIcon name="i-lucide-settings" class="h-3.5 w-3.5" />
                 Тохиргоо
@@ -56,12 +56,12 @@ const daysColor = computed(() => {
         <div class="flex flex-1 flex-col px-5 py-4 gap-3">
             <!-- Shop name -->
             <div>
-                <div class="text-[15px] font-extrabold text-[#1a1f36]">{{ props.shopName }}</div>
-                <div v-if="props.shopHandle" class="text-[11px] text-[#697386] mt-0.5">{{ props.shopHandle }}</div>
+                <div class="text-[15px] font-extrabold text-[#1a1f36] dark:text-[#e2e8f0]">{{ props.shopName }}</div>
+                <div v-if="props.shopHandle" class="text-[11px] text-[#697386] mt-0.5 dark:text-[#94a3b8]">{{ props.shopHandle }}</div>
             </div>
 
             <!-- Checklist -->
-            <div class="flex flex-col divide-y divide-[#f7fafc]">
+            <div class="flex flex-col divide-y divide-[#f7fafc] dark:divide-[#334155]">
                 <div
                     v-for="item in props.checks"
                     :key="item.label"
@@ -69,11 +69,11 @@ const daysColor = computed(() => {
                 >
                     <div
                         class="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[9px] font-bold"
-                        :class="item.ok ? 'bg-[#f0fdf4] text-[#059669]' : 'bg-[#fff8ec] text-[#b45309]'"
+                        :class="item.ok ? 'bg-[#f0fdf4] text-[#059669] dark:bg-[#064e3b]/30' : 'bg-[#fff8ec] text-[#b45309] dark:bg-[#451a03]/30'"
                     >
                         {{ item.ok ? '✓' : '!' }}
                     </div>
-                    <span class="flex-1 text-[12px] text-[#4f566b]">{{ item.label }}</span>
+                    <span class="flex-1 text-[12px] text-[#4f566b] dark:text-[#94a3b8]">{{ item.label }}</span>
                     <NuxtLink
                         v-if="!item.ok && item.action"
                         :to="item.action"
@@ -86,19 +86,19 @@ const daysColor = computed(() => {
 
             <!-- Plan pill -->
             <div class="mt-auto">
-                <div v-if="subLoading" class="h-8 w-full animate-pulse rounded-lg bg-[#f0f4f8]" />
+                <div v-if="subLoading" class="h-8 w-full animate-pulse rounded-lg bg-[#f0f4f8] dark:bg-[#0f172a]" />
                 <template v-else-if="hasSubscription && subscription">
-                    <div class="flex items-center gap-2 rounded-lg border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2">
+                    <div class="flex items-center gap-2 rounded-lg border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2 dark:border-[#064e3b] dark:bg-[#064e3b]/30">
                         <span class="text-[11px] font-bold text-[#059669]">⚡ {{ planName }}</span>
                         <template v-if="daysRemaining > 0">
                             <span class="h-1.5 w-1.5 rounded-full flex-shrink-0" :class="daysColor" />
-                            <span class="text-[11px] text-[#697386]">
+                            <span class="text-[11px] text-[#697386] dark:text-[#94a3b8]">
                                 {{ isTrialing ? 'Туршилт ·' : '' }} {{ daysRemaining }} хоног үлдсэн
                             </span>
                         </template>
                         <NuxtLink
                             to="/dashboard/billing"
-                            class="ml-auto text-[11px] font-semibold text-[#697386] hover:text-[#1a1f36] transition-colors"
+                            class="ml-auto text-[11px] font-semibold text-[#697386] hover:text-[#1a1f36] transition-colors dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]"
                         >
                             Удирдах →
                         </NuxtLink>
