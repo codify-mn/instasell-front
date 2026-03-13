@@ -311,11 +311,11 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-6 py-5 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="px-6 py-5 border-b border-[var(--border-primary)] bg-[var(--surface-card)]">
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-2xl font-semibold text-[#102A32] dark:text-white">Захиалга</h1>
-                    <p class="mt-1 text-sm text-[#5A7178] dark:text-gray-400">
+                    <h1 class="text-2xl font-semibold text-[var(--text-heading)]">Захиалга</h1>
+                    <p class="mt-1 text-sm text-[var(--text-muted)]">
                         Захиалгуудын нийт жагсаалт
                     </p>
                 </div>
@@ -374,7 +374,7 @@ onMounted(() => {
         </Transition>
 
         <!-- Filters -->
-        <div class="px-6 py-4 border-b border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="px-6 py-4 border-b border-[var(--border-primary)] bg-[var(--surface-card)]">
             <div class="flex items-center justify-between gap-4">
                 <UInput
                     v-model="filter.keyword"
@@ -390,7 +390,7 @@ onMounted(() => {
         </div>
 
         <!-- Table -->
-        <div class="flex-1 overflow-auto bg-white dark:bg-gray-900">
+        <div class="flex-1 overflow-auto bg-[var(--surface-card)]">
             <UTable
                 :data="orders"
                 :columns="columns"
@@ -416,7 +416,7 @@ onMounted(() => {
 
                 <template #order_number-cell="{ row }">
                     <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <span class="font-semibold text-[#102A32] dark:text-white hover:text-primary-600 transition-colors">
+                        <span class="font-semibold text-[var(--text-heading)] hover:text-primary-600 transition-colors">
                             #{{ row.original.order_number }}
                         </span>
                     </div>
@@ -424,10 +424,10 @@ onMounted(() => {
 
                 <template #customer-cell="{ row }">
                     <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <div class="font-medium text-gray-900 dark:text-white">
+                        <div class="font-medium text-[var(--text-heading)]">
                             {{ row.original.customer?.name || '-' }}
                         </div>
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                        <div class="text-sm text-[var(--text-muted)]">
                             {{ row.original.customer?.phone_number || '' }}
                         </div>
                     </div>
@@ -444,13 +444,13 @@ onMounted(() => {
                 </template>
 
                 <template #total_amount-cell="{ row }">
-                    <span class="font-medium text-gray-900 dark:text-white">
+                    <span class="font-medium text-[var(--text-heading)]">
                         {{ formatPrice(row.original.total_amount) }}
                     </span>
                 </template>
 
                 <template #created_at-cell="{ row }">
-                    <span class="text-gray-600 dark:text-gray-400">
+                    <span class="text-[var(--text-muted)]">
                         {{ formatDate(row.original.created_at) }}
                     </span>
                 </template>
@@ -478,10 +478,10 @@ onMounted(() => {
                                 class="w-10 h-10 text-primary-500"
                             />
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
                             Захиалга олдсонгүй
                         </h3>
-                        <p class="text-gray-500 dark:text-gray-400 max-w-sm mb-6">
+                        <p class="text-[var(--text-muted)] max-w-sm mb-6">
                             Одоогоор ямар ч захиалга байхгүй байна. Шинэ захиалга нэмж эхлээрэй.
                         </p>
                         <UButton to="/dashboard/orders/new" color="primary" icon="i-lucide-plus">
@@ -495,9 +495,9 @@ onMounted(() => {
         <!-- Pagination -->
         <div
             v-if="total > 0"
-            class="px-6 py-4 border-t border-[#E1E8E5] dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between"
+            class="px-6 py-4 border-t border-[var(--border-primary)] bg-[var(--surface-card)] flex items-center justify-between"
         >
-            <p class="text-sm text-[#5A7178] dark:text-gray-400">
+            <p class="text-sm text-[var(--text-muted)]">
                 {{ startItem }}-с {{ endItem }} хүртэл. Нийт: {{ total }}
             </p>
             <div class="flex items-center gap-2">
@@ -535,7 +535,7 @@ onMounted(() => {
                         <strong>#{{ orderToCancel?.order_number }}</strong> захиалгыг цуцлахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-gray-500 mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -570,7 +570,7 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> захиалгыг цуцлахдаа итгэлтэй
                         байна уу?
                     </p>
-                    <p class="text-sm text-gray-500 mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">

@@ -21,7 +21,7 @@ const navigation = [
 <template>
     <UHeader
         :ui="{
-            root: 'backdrop-blur-xl bg-white/90 dark:bg-gray-950/90 border-b border-[#e2e8f0]/80 dark:border-gray-800/50',
+            root: 'backdrop-blur-xl bg-white/90 dark:bg-gray-950/90 border-b border-[var(--border-primary)]',
             container: 'max-w-7xl'
         }"
     >

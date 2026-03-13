@@ -100,23 +100,23 @@ onMounted(() => {
 
             <div class="p-4 space-y-4">
                 <!-- Stats -->
-                <div class="flex items-center gap-4 text-sm text-gray-500">
+                <div class="flex items-center gap-4 text-sm text-[var(--text-muted)]">
                     <span>Нийт {{ total }} хэрэглэгч</span>
                 </div>
 
                 <!-- Table -->
                 <div
-                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden"
+                    class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
                 >
                     <UTable :data="customers" :columns="columns" :loading="loading">
                         <template #name-cell="{ row }">
                             <div class="flex items-center gap-2">
                                 <UAvatar :alt="row.original.name" size="sm" />
                                 <div>
-                                    <p class="font-medium text-gray-900 dark:text-white">
+                                    <p class="font-medium text-[var(--text-heading)]">
                                         {{ row.original.name }}
                                     </p>
-                                    <p v-if="row.original.email" class="text-xs text-gray-400">
+                                    <p v-if="row.original.email" class="text-xs text-[var(--text-placeholder)]">
                                         {{ row.original.email }}
                                     </p>
                                 </div>
@@ -124,7 +124,7 @@ onMounted(() => {
                         </template>
 
                         <template #phone_number-cell="{ row }">
-                            <span class="text-sm text-gray-600 dark:text-gray-400">
+                            <span class="text-sm text-[var(--text-muted)]">
                                 {{ row.original.phone_number || '-' }}
                             </span>
                         </template>
@@ -142,23 +142,23 @@ onMounted(() => {
                                     Профайл
                                 </UBadge>
                             </a>
-                            <span v-else class="text-xs text-gray-400">-</span>
+                            <span v-else class="text-xs text-[var(--text-placeholder)]">-</span>
                         </template>
 
                         <template #order_count-cell="{ row }">
-                            <span class="font-medium text-gray-900 dark:text-white">
+                            <span class="font-medium text-[var(--text-heading)]">
                                 {{ row.original.order_count }}
                             </span>
                         </template>
 
                         <template #total_spent-cell="{ row }">
-                            <span class="font-medium text-gray-900 dark:text-white">
+                            <span class="font-medium text-[var(--text-heading)]">
                                 {{ formatPrice(row.original.total_spent) }}
                             </span>
                         </template>
 
                         <template #last_order_at-cell="{ row }">
-                            <span class="text-sm text-gray-500">
+                            <span class="text-sm text-[var(--text-muted)]">
                                 {{ formatDate(row.original.last_order_at) }}
                             </span>
                         </template>

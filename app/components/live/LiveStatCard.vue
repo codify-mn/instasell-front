@@ -57,7 +57,7 @@ useRootClick(next)
         <div class="space-y-3">
             <div class="flex items-center justify-between">
                 <p
-                    class="text-xs truncate font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                    class="text-xs truncate font-semibold text-[var(--text-muted)] uppercase tracking-wider"
                 >
                     {{ label }}
                 </p>
@@ -71,7 +71,7 @@ useRootClick(next)
             </div>
 
             <div class="flex items-end gap-2">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                <span class="text-3xl font-bold text-[var(--text-heading)]">
                     <NumberFlow
                         v-if="typeof value === 'number'"
                         :plugins="[continuous]"
@@ -96,7 +96,7 @@ useRootClick(next)
                 </span>
             </div>
 
-            <p v-if="subtitle" class="text-sm text-gray-500 dark:text-gray-400">
+            <p v-if="subtitle" class="text-sm text-[var(--text-muted)]">
                 {{ subtitle }}
             </p>
         </div>

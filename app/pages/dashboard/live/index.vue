@@ -129,7 +129,7 @@ const formatDate = (dateStr: string) => {
                         class="block group"
                     >
                         <div
-                            class="flex items-center gap-4 p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700"
+                            class="flex items-center gap-4 p-4 bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700"
                         >
                             <div
                                 class="shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
@@ -165,7 +165,7 @@ const formatDate = (dateStr: string) => {
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-0.5">
                                     <h3
-                                        class="font-semibold text-md text-gray-900 dark:text-white truncate group-hover:text-primary-500 transition-colors"
+                                        class="font-semibold text-md text-[var(--text-heading)] truncate group-hover:text-primary-500 transition-colors"
                                     >
                                         {{ live.title || 'Untitled Live' }}
                                     </h3>
@@ -182,7 +182,7 @@ const formatDate = (dateStr: string) => {
                                         <USeparator orientation="vertical" class="h-4" />
                                     </template>
 
-                                    <span class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                    <span class="text-xs text-[var(--text-muted)] truncate">
                                         {{ formatDate(live.created_at) }}
                                     </span>
                                 </p>
@@ -190,7 +190,7 @@ const formatDate = (dateStr: string) => {
 
                             <!-- Stats -->
                             <div
-                                class="hidden sm:flex items-center gap-5 shrink-0 text-xs text-gray-500 dark:text-gray-400"
+                                class="hidden sm:flex items-center gap-5 shrink-0 text-xs text-[var(--text-muted)]"
                             >
                                 <div class="flex items-center gap-1.5">
                                     <UIcon name="i-heroicons-eye" class="text-sm" />
@@ -234,10 +234,10 @@ const formatDate = (dateStr: string) => {
                             class="text-2xl text-blue-600 dark:text-blue-400"
                         />
                     </div>
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+                    <h3 class="font-semibold text-[var(--text-heading)] mb-1">
                         Үүсгэсэн Live байхгүй байна.
                     </h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <p class="text-sm text-[var(--text-muted)] mb-4">
                         Анхны Facebook Live худалдаагаа эхлүүлж, борлуулалтаа ихэсгээрэй.
                     </p>
                     <UButton color="primary" icon="i-lucide-video" @click="isLiveModalOpen = true">
@@ -249,7 +249,7 @@ const formatDate = (dateStr: string) => {
             <UModal v-model:open="isLiveModalOpen">
                 <template #header>
                     <div class="flex-1 flex items-center justify-between">
-                        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                        <h3 class="text-base font-semibold leading-6 text-[var(--text-heading)]">
                             Create Live Sale
                         </h3>
                         <UButton
@@ -283,7 +283,7 @@ const formatDate = (dateStr: string) => {
                                 size="sm"
                                 class="mb-2"
                             />
-                            <div class="max-h-48 overflow-y-auto space-y-1 border border-gray-200 dark:border-gray-700 rounded-lg p-2">
+                            <div class="max-h-48 overflow-y-auto space-y-1 border border-[var(--border-primary)] rounded-lg p-2">
                                 <div v-if="loadingProducts" class="flex justify-center p-4">
                                     <UIcon name="i-lucide-loader" class="animate-spin text-gray-400" />
                                 </div>
@@ -301,15 +301,15 @@ const formatDate = (dateStr: string) => {
                                             :src="product.images[0]"
                                             class="w-8 h-8 rounded object-cover shrink-0"
                                         >
-                                        <div v-else class="w-8 h-8 rounded bg-gray-100 dark:bg-gray-700 shrink-0" />
+                                        <div v-else class="w-8 h-8 rounded bg-[var(--surface-inset)] shrink-0" />
                                         <span class="text-sm truncate flex-1">{{ product.name }}</span>
                                     </div>
-                                    <p v-if="availableProducts.length === 0" class="text-xs text-gray-400 text-center py-2">
+                                    <p v-if="availableProducts.length === 0" class="text-xs text-[var(--text-placeholder)] text-center py-2">
                                         Бараа олдсонгүй
                                     </p>
                                 </template>
                             </div>
-                            <p v-if="liveForm.product_ids.length" class="text-xs text-gray-500 mt-1">
+                            <p v-if="liveForm.product_ids.length" class="text-xs text-[var(--text-muted)] mt-1">
                                 {{ liveForm.product_ids.length }} бараа сонгогдсон
                             </p>
                         </UFormField>

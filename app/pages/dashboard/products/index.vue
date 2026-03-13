@@ -387,13 +387,13 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-800">
+        <div class="px-6 py-5 border-b border-[var(--border-primary)]">
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 class="text-2xl font-bold text-[var(--text-heading)]">
                         Бараа бүтээгдэхүүн
                     </h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="mt-1 text-sm text-[var(--text-muted)]">
                         Бараа бүтээгдэхүүний нийт жагсаалт
                     </p>
                 </div>
@@ -479,7 +479,7 @@ onMounted(() => {
         </Transition>
 
         <!-- Filters -->
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="px-6 py-4 border-b border-[var(--border-primary)]">
             <div class="flex items-center justify-between gap-4">
                 <UInput
                     v-model="filter.keyword"
@@ -511,10 +511,10 @@ onMounted(() => {
                 :loading="loading"
                 class="w-full"
                 :ui="{
-                    thead: 'bg-gray-50 dark:bg-gray-900/50',
-                    th: 'text-left px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
+                    thead: 'bg-[var(--surface-inset)]',
+                    th: 'text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider',
                     td: 'px-4 py-3',
-                    tbody: 'divide-y divide-gray-100 dark:divide-gray-800',
+                    tbody: 'divide-y divide-[var(--border-primary)]',
                     tr: 'group hover:bg-gray-50 dark:hover:bg-gray-800/50'
                 }"
             >
@@ -541,7 +541,7 @@ onMounted(() => {
                         @click="onRowClick(row.original)"
                     >
                         <div
-                            class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden shrink-0"
+                            class="w-10 h-10 rounded-lg bg-[var(--surface-inset)] flex items-center justify-center overflow-hidden shrink-0"
                         >
                             <img
                                 v-if="row.original.images?.length"
@@ -549,9 +549,9 @@ onMounted(() => {
                                 :alt="row.original.name"
                                 class="w-full h-full object-cover"
                             />
-                            <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-gray-400" />
+                            <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-[var(--text-placeholder)]" />
                         </div>
-                        <span class="font-medium text-gray-900 dark:text-white">
+                        <span class="font-medium text-[var(--text-heading)]">
                             {{ row.original.name }}
                         </span>
                         <button
@@ -591,7 +591,7 @@ onMounted(() => {
                 </template>
 
                 <template #base_price-cell="{ row }">
-                    <span class="text-gray-900 dark:text-white">
+                    <span class="text-[var(--text-heading)]">
                         {{
                             formatPrice(
                                 row.original.timed_sale_enabled && row.original.timed_sale_price
@@ -607,7 +607,7 @@ onMounted(() => {
                         :class="
                             getStock(row.original) <= 5
                                 ? 'text-orange-500'
-                                : 'text-gray-600 dark:text-gray-400'
+                                : 'text-[var(--text-muted)]'
                         "
                     >
                         {{ getStockLabel(row.original) }}
@@ -615,7 +615,7 @@ onMounted(() => {
                 </template>
 
                 <template #category-cell="{ row }">
-                    <span class="text-gray-600 dark:text-gray-400">
+                    <span class="text-[var(--text-muted)]">
                         {{ row.original.category || '-' }}
                     </span>
                 </template>
@@ -664,10 +664,10 @@ onMounted(() => {
                         >
                             <UIcon name="i-lucide-package" class="w-10 h-10 text-primary-500" />
                         </div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
                             Бүтээгдэхүүн олдсонгүй
                         </h3>
-                        <p class="text-gray-500 dark:text-gray-400 max-w-sm mb-6">
+                        <p class="text-[var(--text-muted)] max-w-sm mb-6">
                             Одоогоор ямар ч бүтээгдэхүүн байхгүй байна. Шинэ бүтээгдэхүүн нэмж
                             эхлээрэй.
                         </p>
@@ -682,9 +682,9 @@ onMounted(() => {
         <!-- Pagination -->
         <div
             v-if="total > 0"
-            class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between"
+            class="px-6 py-4 border-t border-[var(--border-primary)] flex items-center justify-between"
         >
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <p class="text-sm text-[var(--text-muted)]">
                 {{ startItem }}-с {{ endItem }} хүртэл. Нийт: {{ total }}
             </p>
             <div class="flex items-center gap-2">
@@ -722,7 +722,7 @@ onMounted(() => {
                         <strong>{{ productToDelete?.name }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-gray-500 mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -757,7 +757,7 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-gray-500 mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">

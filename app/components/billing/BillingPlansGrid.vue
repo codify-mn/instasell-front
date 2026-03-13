@@ -99,7 +99,7 @@ function handleSelect(plan: Plan) {
         <div v-if="loading" class="flex justify-center items-center py-20">
             <div class="flex items-center gap-3">
                 <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-primary-500" />
-                <span class="text-gray-500">Ачааллаж байна...</span>
+                <span class="text-[var(--text-muted)]">Ачааллаж байна...</span>
             </div>
         </div>
 
@@ -111,8 +111,8 @@ function handleSelect(plan: Plan) {
                 class="relative flex flex-col rounded-2xl transition-all duration-300"
                 :class="[
                     isPopularPlan(plan)
-                        ? 'pricing-popular bg-white dark:bg-gray-900 scale-[1.02] z-10 shadow-xl'
-                        : 'bg-white dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
+                        ? 'pricing-popular bg-[var(--surface-card)] scale-[1.02] z-10 shadow-xl'
+                        : 'bg-[var(--surface-card)] border border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
                     isCurrentPlan(plan)
                         ? 'ring-2 ring-green-500 ring-offset-2 dark:ring-offset-gray-950'
                         : ''
@@ -142,10 +142,10 @@ function handleSelect(plan: Plan) {
                 <div class="p-8 flex-1 flex flex-col">
                     <!-- Plan Name & Description -->
                     <div class="mb-6">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-xl font-bold text-[var(--text-heading)] mb-2">
                             {{ plan.name }}
                         </h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <p class="text-sm text-[var(--text-muted)]">
                             {{ plan.description }}
                         </p>
                     </div>
@@ -153,7 +153,7 @@ function handleSelect(plan: Plan) {
                     <!-- Price -->
                     <div class="mb-8">
                         <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-gray-900 dark:text-white">
+                            <span class="text-4xl font-extrabold text-[var(--text-heading)]">
                                 ₮{{
                                     formatPrice(
                                         isYearly
@@ -162,13 +162,13 @@ function handleSelect(plan: Plan) {
                                     )
                                 }}
                             </span>
-                            <span class="text-gray-500 dark:text-gray-400 font-medium">/сар</span>
+                            <span class="text-[var(--text-muted)] font-medium">/сар</span>
                         </div>
 
                         <!-- Yearly savings info -->
                         <div v-if="isYearly && plan.monthly_price > 0" class="mt-2 space-y-1">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm text-gray-400 line-through">
+                                <span class="text-sm text-[var(--text-placeholder)] line-through">
                                     ₮{{ formatPrice(plan.monthly_price * 12) }}/жил
                                 </span>
                                 <span
@@ -195,7 +195,7 @@ function handleSelect(plan: Plan) {
                                 :class="
                                     feature.included
                                         ? 'bg-green-100 dark:bg-green-900/30'
-                                        : 'bg-gray-100 dark:bg-gray-800'
+                                        : 'bg-[var(--surface-inset)]'
                                 "
                             >
                                 <UIcon
@@ -204,15 +204,15 @@ function handleSelect(plan: Plan) {
                                     :class="
                                         feature.included
                                             ? 'text-green-600 dark:text-green-400'
-                                            : 'text-gray-400 dark:text-gray-600'
+                                            : 'text-[var(--text-placeholder)]'
                                     "
                                 />
                             </div>
                             <span
                                 :class="
                                     feature.included
-                                        ? 'text-gray-700 dark:text-gray-300'
-                                        : 'text-gray-400 dark:text-gray-500'
+                                        ? 'text-[var(--text-muted)]'
+                                        : 'text-[var(--text-placeholder)]'
                                 "
                             >
                                 {{ feature.label }}

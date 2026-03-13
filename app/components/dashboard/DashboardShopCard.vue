@@ -32,20 +32,20 @@ const planName = computed(() => subscription.value?.plan?.name || 'Үнэгүй'
 
 const daysColor = computed(() => {
     if (!daysRemaining.value) return ''
-    if (daysRemaining.value > 7) return 'bg-[#059669]'
-    if (daysRemaining.value > 3) return 'bg-[#e47a00]'
-    return 'bg-[#dc2626]'
+    if (daysRemaining.value > 7) return 'bg-[var(--accent-green)]'
+    if (daysRemaining.value > 3) return 'bg-[var(--accent-warn)]'
+    return 'bg-[var(--accent-error)]'
 })
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[#e3e8ee] bg-white dark:border-[#334155] dark:bg-[#1e293b]">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm">
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-[#f0f4f8] px-5 py-4 dark:border-[#1e293b]">
-            <div class="text-[13px] font-bold text-[#1a1f36] dark:text-[#e2e8f0]">Дэлгүүр</div>
+        <div class="flex items-center justify-between border-b border-[var(--border-subtle)] px-5 py-4">
+            <div class="text-sm font-bold text-[var(--text-heading)]">Дэлгүүр</div>
             <NuxtLink
                 to="/dashboard/settings"
-                class="flex items-center gap-1 text-[11px] font-medium text-[#697386] hover:text-[#1a1f36] transition-colors dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]"
+                class="flex items-center gap-1 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
             >
                 <UIcon name="i-lucide-settings" class="h-3.5 w-3.5" />
                 Тохиргоо
@@ -56,12 +56,12 @@ const daysColor = computed(() => {
         <div class="flex flex-1 flex-col px-5 py-4 gap-3">
             <!-- Shop name -->
             <div>
-                <div class="text-[15px] font-extrabold text-[#1a1f36] dark:text-[#e2e8f0]">{{ props.shopName }}</div>
-                <div v-if="props.shopHandle" class="text-[11px] text-[#697386] mt-0.5 dark:text-[#94a3b8]">{{ props.shopHandle }}</div>
+                <div class="text-sm font-extrabold text-[var(--text-heading)]">{{ props.shopName }}</div>
+                <div v-if="props.shopHandle" class="text-xs text-[var(--text-muted)] mt-0.5">{{ props.shopHandle }}</div>
             </div>
 
             <!-- Checklist -->
-            <div class="flex flex-col divide-y divide-[#f7fafc] dark:divide-[#334155]">
+            <div class="flex flex-col divide-y divide-[var(--border-subtle)]">
                 <div
                     v-for="item in props.checks"
                     :key="item.label"
@@ -69,15 +69,15 @@ const daysColor = computed(() => {
                 >
                     <div
                         class="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[9px] font-bold"
-                        :class="item.ok ? 'bg-[#f0fdf4] text-[#059669] dark:bg-[#064e3b]/30' : 'bg-[#fff8ec] text-[#b45309] dark:bg-[#451a03]/30'"
+                        :class="item.ok ? 'bg-[var(--accent-green-light)] text-[var(--accent-green)]' : 'bg-[var(--accent-warn-light)] text-[var(--accent-warn-dark)]'"
                     >
                         {{ item.ok ? '✓' : '!' }}
                     </div>
-                    <span class="flex-1 text-[12px] text-[#4f566b] dark:text-[#94a3b8]">{{ item.label }}</span>
+                    <span class="flex-1 text-xs text-[var(--text-body)]">{{ item.label }}</span>
                     <NuxtLink
                         v-if="!item.ok && item.action"
                         :to="item.action"
-                        class="text-[11px] font-semibold text-[#059669] hover:text-[#047857] transition-colors"
+                        class="text-xs font-semibold text-[var(--text-body)] hover:text-[var(--text-heading)] transition-colors"
                     >
                         Нэмэх →
                     </NuxtLink>
@@ -86,19 +86,19 @@ const daysColor = computed(() => {
 
             <!-- Plan pill -->
             <div class="mt-auto">
-                <div v-if="subLoading" class="h-8 w-full animate-pulse rounded-lg bg-[#f0f4f8] dark:bg-[#0f172a]" />
+                <div v-if="subLoading" class="h-8 w-full animate-pulse rounded-lg bg-[var(--border-subtle)]" />
                 <template v-else-if="hasSubscription && subscription">
-                    <div class="flex items-center gap-2 rounded-lg border border-[#bbf7d0] bg-[#f0fdf4] px-3 py-2 dark:border-[#064e3b] dark:bg-[#064e3b]/30">
-                        <span class="text-[11px] font-bold text-[#059669]">⚡ {{ planName }}</span>
+                    <div class="flex items-center gap-2 rounded-lg border border-[var(--accent-green-border)] bg-[var(--accent-green-light)] px-3 py-2">
+                        <span class="text-xs font-bold text-[var(--accent-green)]">⚡ {{ planName }}</span>
                         <template v-if="daysRemaining > 0">
                             <span class="h-1.5 w-1.5 rounded-full flex-shrink-0" :class="daysColor" />
-                            <span class="text-[11px] text-[#697386] dark:text-[#94a3b8]">
+                            <span class="text-xs text-[var(--text-muted)]">
                                 {{ isTrialing ? 'Туршилт ·' : '' }} {{ daysRemaining }} хоног үлдсэн
                             </span>
                         </template>
                         <NuxtLink
                             to="/dashboard/billing"
-                            class="ml-auto text-[11px] font-semibold text-[#697386] hover:text-[#1a1f36] transition-colors dark:text-[#94a3b8] dark:hover:text-[#e2e8f0]"
+                            class="ml-auto text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
                         >
                             Удирдах →
                         </NuxtLink>
@@ -107,7 +107,7 @@ const daysColor = computed(() => {
                 <template v-else>
                     <NuxtLink
                         to="/pricing"
-                        class="flex items-center justify-center gap-1.5 rounded-lg border border-[#059669] px-3 py-2 text-[12px] font-bold text-[#059669] hover:bg-[#f0fdf4] transition-colors"
+                        class="flex items-center justify-center gap-1.5 rounded-lg border border-[var(--accent-green)] px-3 py-2 text-xs font-bold text-[var(--accent-green)] hover:bg-[var(--accent-green-light)] transition-colors"
                     >
                         Багц авах →
                     </NuxtLink>

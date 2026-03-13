@@ -11,19 +11,19 @@ defineProps<{
             class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full"
             :class="
                 isRegistered
-                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                    : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                    ? 'bg-[var(--accent-green-light)] text-[var(--accent-green)]'
+                    : 'bg-[var(--accent-warn-light)] text-[var(--accent-warn-dark)]'
             "
         >
             <span
                 class="w-1.5 h-1.5 rounded-full"
-                :class="isRegistered ? 'bg-green-500' : 'bg-amber-500'"
+                :class="isRegistered ? 'bg-[var(--accent-green)]' : 'bg-[var(--accent-warn)]'"
             />
             {{ isRegistered ? 'Бүртгэлтэй' : 'Бүртгэлгүй' }}
         </span>
         <span
             v-if="isRegistered && merchantType"
-            class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+            class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded bg-[var(--surface-inset)] text-[var(--text-muted)]"
         >
             {{ merchantType === 'company' ? 'Компани' : 'Хувь хүн' }}
         </span>

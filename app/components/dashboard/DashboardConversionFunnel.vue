@@ -23,9 +23,9 @@ const ordersPaidPct = computed(() => {
 })
 
 const rateClass = computed(() => {
-    if (rate.value >= 50) return 'text-[#059669]'
-    if (rate.value >= 25) return 'text-[#b45309]'
-    return 'text-[#dc2626]'
+    if (rate.value >= 50) return 'text-[var(--accent-green)]'
+    if (rate.value >= 25) return 'text-[var(--accent-warn-dark)]'
+    return 'text-[var(--accent-error)]'
 })
 
 const formatRevenue = (v: number) => {
@@ -36,10 +36,10 @@ const formatRevenue = (v: number) => {
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[#e3e8ee] bg-white dark:border-[#334155] dark:bg-[#1e293b]">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm">
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-[#f0f4f8] px-5 py-4 dark:border-[#1e293b]">
-            <div class="text-[13px] font-bold text-[#1a1f36] dark:text-[#e2e8f0]">Хувиргалтын алхмууд</div>
+        <div class="flex items-center justify-between border-b border-[var(--border-subtle)] px-5 py-4">
+            <div class="text-sm font-bold text-[var(--text-heading)]">Хувиргалтын алхмууд</div>
             <div :class="['text-2xl font-black leading-none tracking-tight', rateClass]">
                 {{ rate }}%
             </div>
@@ -47,7 +47,7 @@ const formatRevenue = (v: number) => {
 
         <!-- Body -->
         <div class="flex flex-1 flex-col px-5 py-4">
-            <div class="mb-4 text-[11px] text-[#697386] dark:text-[#94a3b8]">
+            <div class="mb-4 text-xs text-[var(--text-muted)]">
                 {{ (stats?.comments_processed ?? 0).toLocaleString() }} сэтгэгдэлээс →
                 {{ (stats?.orders_paid ?? 0).toLocaleString() }} нь төлөлт хийгдсэн
             </div>
@@ -58,15 +58,15 @@ const formatRevenue = (v: number) => {
                 <div>
                     <div class="mb-1.5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <div class="h-2 w-2 rounded-full bg-[#c4cdd8]" />
-                            <span class="text-[12px] text-[#697386] dark:text-[#94a3b8]">Боловсруулсан сэтгэгдэл</span>
+                            <div class="h-2 w-2 rounded-full bg-[var(--text-dimmed)]" />
+                            <span class="text-xs text-[var(--text-muted)]">Боловсруулсан сэтгэгдэл</span>
                         </div>
-                        <span class="text-[13px] font-semibold text-[#697386] dark:text-[#94a3b8]">
+                        <span class="text-xs font-semibold text-[var(--text-muted)]">
                             {{ (stats?.comments_processed ?? 0).toLocaleString() }}
                         </span>
                     </div>
-                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[#f0f4f8] dark:bg-[#0f172a]">
-                        <div class="h-full w-full rounded-full bg-[#e3e8ee] dark:bg-[#334155]" />
+                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[var(--border-subtle)]">
+                        <div class="h-full w-full rounded-full bg-[var(--border-primary)]" />
                     </div>
                 </div>
 
@@ -74,16 +74,16 @@ const formatRevenue = (v: number) => {
                 <div>
                     <div class="mb-1.5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <div class="h-2 w-2 rounded-full bg-[#697386]" />
-                            <span class="text-[12px] text-[#4f566b] dark:text-[#94a3b8]">Үүссэн захиалга</span>
+                            <div class="h-2 w-2 rounded-full bg-[var(--text-muted)]" />
+                            <span class="text-xs text-[var(--text-body)]">Үүссэн захиалга</span>
                         </div>
-                        <span class="text-[13px] font-semibold text-[#4f566b] dark:text-[#94a3b8]">
+                        <span class="text-xs font-semibold text-[var(--text-body)]">
                             {{ (stats?.orders_created ?? 0).toLocaleString() }}
                         </span>
                     </div>
-                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[#f0f4f8] dark:bg-[#0f172a]">
+                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[var(--border-subtle)]">
                         <div
-                            class="h-full rounded-full bg-[#697386] transition-all duration-700"
+                            class="h-full rounded-full bg-[var(--text-muted)] transition-all duration-700"
                             :style="{ width: `${ordersCreatedPct}%` }"
                         />
                     </div>
@@ -93,16 +93,16 @@ const formatRevenue = (v: number) => {
                 <div>
                     <div class="mb-1.5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <div class="h-2 w-2 rounded-full bg-[#059669]" />
-                            <span class="text-[12px] font-semibold text-[#1a1f36] dark:text-[#e2e8f0]">Төлөгдсөн захиалга</span>
+                            <div class="h-2 w-2 rounded-full bg-[var(--accent-green)]" />
+                            <span class="text-xs font-semibold text-[var(--text-heading)]">Төлөгдсөн захиалга</span>
                         </div>
-                        <span class="text-[13px] font-bold text-[#059669]">
+                        <span class="text-sm font-bold text-[var(--accent-green)]">
                             {{ (stats?.orders_paid ?? 0).toLocaleString() }}
                         </span>
                     </div>
-                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[#f0f4f8] dark:bg-[#0f172a]">
+                    <div class="h-[5px] w-full overflow-hidden rounded-full bg-[var(--border-subtle)]">
                         <div
-                            class="h-full rounded-full bg-[#059669] transition-all duration-700"
+                            class="h-full rounded-full bg-[var(--accent-green)] transition-all duration-700"
                             :style="{ width: `${ordersPaidPct}%` }"
                         />
                     </div>
@@ -110,10 +110,10 @@ const formatRevenue = (v: number) => {
             </div>
 
             <!-- Footer: Facebook revenue — GREEN value only -->
-            <div class="mt-auto border-t border-[#f0f4f8] pt-4 dark:border-[#1e293b]">
+            <div class="mt-auto border-t border-[var(--border-subtle)] pt-4">
                 <div class="flex items-center justify-between">
-                    <span class="text-[11px] text-[#697386] dark:text-[#94a3b8]">Facebook-аас орсон орлого</span>
-                    <span class="text-[14px] font-bold text-[#059669]">
+                    <span class="text-xs text-[var(--text-muted)]">Facebook-аас орсон орлого</span>
+                    <span class="text-sm font-bold text-[var(--accent-green)]">
                         {{ formatRevenue(stats?.paid_revenue ?? 0) }}
                     </span>
                 </div>

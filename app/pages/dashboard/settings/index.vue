@@ -73,14 +73,6 @@ const state = reactive({
     delivery_fee: 0,
     free_delivery_over: 0,
     delivery_note: '',
-    // Automation
-    automation_enabled: true,
-    trigger_keywords: [] as string[],
-    like_comments: false,
-    auto_comment_enabled: false,
-    auto_comment_text: '',
-    private_reply_enabled: false,
-    private_reply_message: '',
     max_quantity_per_item: 10,
     unpaid_order_cancel_hours: 24,
     payment_methods: [] as string[],
@@ -102,52 +94,7 @@ onBeforeRouteLeave(() => {
     }
 })
 
-// Trigger keywords input helpers
-const keywordInput = ref('')
-function addKeyword() {
-    const kw = keywordInput.value.trim()
-    if (kw && !state.trigger_keywords.includes(kw)) {
-        state.trigger_keywords.push(kw)
-    }
-    keywordInput.value = ''
-}
-function removeKeyword(kw: string) {
-    const idx = state.trigger_keywords.indexOf(kw)
-    if (idx !== -1) state.trigger_keywords.splice(idx, 1)
-}
-function onKeywordKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-        e.preventDefault()
-        addKeyword()
-    }
-}
 
-// Insert template variable at cursor position in a textarea
-function insertVariable(field: 'auto_comment_text' | 'private_reply_message', variable: string) {
-    const selector = field === 'auto_comment_text' ? '#auto-comment-textarea' : '#private-reply-textarea'
-    const el = document.querySelector(selector) as HTMLTextAreaElement | null
-    if (!el) {
-        state[field] = (state[field] || '') + variable
-        return
-    }
-    const start = el.selectionStart ?? state[field].length
-    const end = el.selectionEnd ?? state[field].length
-    const current = state[field] || ''
-    state[field] = current.slice(0, start) + variable + current.slice(end)
-    nextTick(() => {
-        el.focus()
-        const pos = start + variable.length
-        el.setSelectionRange(pos, pos)
-    })
-}
-
-const activeSteps = computed(() => {
-    let count = 0
-    if (state.like_comments) count++
-    if (state.auto_comment_enabled) count++
-    if (state.private_reply_enabled) count++
-    return count
-})
 
 const password = reactive<Partial<PasswordSchema>>({
     current: undefined,
@@ -195,13 +142,6 @@ onMounted(async () => {
         state.delivery_fee = shop.value.settings?.delivery_fee || 0
         state.free_delivery_over = shop.value.settings?.free_delivery_over || 0
         state.delivery_note = shop.value.settings?.delivery_note || ''
-        state.automation_enabled = shop.value.settings?.automation_enabled ?? true
-        state.trigger_keywords = shop.value.settings?.trigger_keywords || []
-        state.like_comments = shop.value.settings?.like_comments || false
-        state.auto_comment_enabled = shop.value.settings?.auto_comment_enabled || false
-        state.auto_comment_text = shop.value.settings?.auto_comment_text || ''
-        state.private_reply_enabled = shop.value.settings?.private_reply_enabled || false
-        state.private_reply_message = shop.value.settings?.private_reply_message || ''
         state.max_quantity_per_item = shop.value.settings?.max_quantity_per_item || 10
         state.unpaid_order_cancel_hours = shop.value.settings?.unpaid_order_cancel_hours || 24
         state.payment_methods = shop.value.settings?.payment_methods || []
@@ -284,13 +224,7 @@ async function saveSettings() {
         phone_number: state.phone_number,
         picture: state.picture,
         settings: {
-            automation_enabled: state.automation_enabled,
-            trigger_keywords: state.trigger_keywords,
-            like_comments: state.like_comments,
-            auto_comment_enabled: state.auto_comment_enabled,
-            auto_comment_text: state.auto_comment_text,
-            private_reply_enabled: state.private_reply_enabled,
-            private_reply_message: state.private_reply_message,
+            ...shop.value?.settings,
             delivery_type: state.delivery_type,
             delivery_fee: state.delivery_fee,
             free_delivery_over: state.free_delivery_over,
@@ -450,14 +384,14 @@ async function onBgFileChange(e: Event) {
                             />
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">Facebook</h4>
-                            <p v-if="user?.is_facebook_connected" class="text-sm text-gray-500">
+                            <h4 class="font-medium text-[var(--text-heading)]">Facebook</h4>
+                            <p v-if="user?.is_facebook_connected" class="text-sm text-[var(--text-muted)]">
                                 Холбогдсон:
-                                <span class="font-medium text-gray-900 dark:text-white">{{
+                                <span class="font-medium text-[var(--text-heading)]">{{
                                     shopData?.facebook_page?.page_name
                                 }}</span>
                             </p>
-                            <p v-else class="text-sm text-gray-500">
+                            <p v-else class="text-sm text-[var(--text-muted)]">
                                 Facebook хуудасаа холбож захиалга болон бараагаа удирдаарай.
                             </p>
                         </div>
@@ -509,7 +443,7 @@ async function onBgFileChange(e: Event) {
                             class="flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all cursor-pointer"
                             :class="state.bank_account_bank_name === bank.label
                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400'
-                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'"
+                                : 'border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-600'"
                             @click="state.bank_account_bank_name = bank.label; state.bank_account_bank_code = bank.value"
                         >
                             <img :src="bank.logo" class="w-5 h-5 rounded-sm object-contain flex-shrink-0" />
@@ -571,8 +505,8 @@ async function onBgFileChange(e: Event) {
                             />
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">QPay мерчант</h4>
-                            <p class="text-sm text-gray-500">
+                            <h4 class="font-medium text-[var(--text-heading)]">QPay мерчант</h4>
+                            <p class="text-sm text-[var(--text-muted)]">
                                 <template v-if="qpayLoading"> Ачаалж байна... </template>
                                 <template v-else-if="qpayStatus?.is_registered">
                                     Merchant ID: {{ qpayStatus.merchant_id }}
@@ -613,13 +547,13 @@ async function onBgFileChange(e: Event) {
                 <template v-if="qpayStatus?.is_registered && qpayStatus.bank_account">
                     <USeparator class="my-4" />
                     <div class="space-y-2">
-                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p class="text-sm font-medium text-[var(--text-muted)]">
                             Бүртгэлтэй данс
                         </p>
                         <div
-                            class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
+                            class="flex items-center gap-3 p-3 bg-[var(--surface-inset)] rounded-lg"
                         >
-                            <UIcon name="i-lucide-credit-card" class="w-4 h-4 text-gray-400" />
+                            <UIcon name="i-lucide-credit-card" class="w-4 h-4 text-[var(--text-placeholder)]" />
                             <span class="text-sm"
                                 >{{ qpayStatus.bank_account.account_number }} -
                                 {{ qpayStatus.bank_account.account_name }}</span
@@ -700,217 +634,6 @@ async function onBgFileChange(e: Event) {
                 </UFormField>
             </UPageCard>
 
-            <!-- Section: Automation Flow -->
-            <UPageCard
-                title="Автоматжуулалт"
-                description="Facebook комментоос захиалга үүсгэх урсгал."
-                variant="naked"
-                orientation="horizontal"
-                class="mb-4"
-            >
-                <div class="flex items-center gap-3 lg:ms-auto">
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ state.automation_enabled ? 'Идэвхтэй' : 'Идэвхгүй' }}
-                    </span>
-                    <USwitch v-model="state.automation_enabled" />
-                </div>
-            </UPageCard>
-
-            <div class="mb-8 space-y-0" :class="{ 'opacity-50 pointer-events-none': !state.automation_enabled }">
-
-                <!-- Status bar -->
-                <div class="flex items-center gap-2 px-4 py-2.5 mb-4 rounded-xl border text-sm font-medium transition-colors"
-                    :class="state.automation_enabled
-                        ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300'
-                        : 'bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500'"
-                >
-                    <span :class="['w-2 h-2 rounded-full shrink-0', state.automation_enabled ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400']" />
-                    <span v-if="state.automation_enabled">
-                        Автоматжуулалт идэвхтэй —
-                        <span class="font-semibold">{{ activeSteps }} нэмэлт үйлдэл</span> тохируулагдсан
-                    </span>
-                    <span v-else>Автоматжуулалт унтраалттай байна</span>
-                </div>
-
-                <!-- Step 1: Trigger -->
-                <div class="relative">
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
-                        <div class="flex items-start gap-4">
-                            <div class="w-9 h-9 rounded-xl bg-primary-100 dark:bg-primary-950/50 flex items-center justify-center shrink-0 mt-0.5">
-                                <UIcon name="i-lucide-message-square" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between gap-2 mb-1">
-                                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white">1. Идэвхжүүлэх үгс</h4>
-                                    <span class="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">Үргэлж идэвхтэй</span>
-                                </div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                                    Хэрэглэгч эдгээр үгсийн аль нэгийг комментлоход захиалга автоматаар үүснэ
-                                </p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <button
-                                        v-for="kw in state.trigger_keywords"
-                                        :key="kw"
-                                        type="button"
-                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300 text-xs font-medium border border-primary-200 dark:border-primary-800/50 hover:bg-primary-100 dark:hover:bg-primary-950/60 transition-colors group"
-                                        @click="removeKeyword(kw)"
-                                    >
-                                        {{ kw }}
-                                        <UIcon name="i-lucide-x" class="w-3 h-3 opacity-50 group-hover:opacity-100" />
-                                    </button>
-                                </div>
-                                <div class="flex gap-2">
-                                    <UInput
-                                        v-model="keywordInput"
-                                        placeholder="Шинэ үг нэмэх..."
-                                        size="sm"
-                                        class="flex-1 max-w-xs"
-                                        @keydown="onKeywordKeydown"
-                                    />
-                                    <UButton icon="i-lucide-plus" size="sm" color="primary" variant="soft" @click="addKeyword">Нэмэх</UButton>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Connector -->
-                    <div class="flex justify-center py-1">
-                        <div class="w-px h-5 bg-gray-200 dark:bg-gray-700" />
-                    </div>
-                </div>
-
-                <!-- Step 2: Core action (locked) -->
-                <div class="relative">
-                    <div class="bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200 dark:border-emerald-800/50 p-5">
-                        <div class="flex items-center gap-4">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
-                                <UIcon name="i-lucide-zap" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-semibold text-emerald-800 dark:text-emerald-200">⚡ Захиалга автоматаар үүснэ</h4>
-                                <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">Энэ үйлдэл үргэлж явагдана — унтраах боломжгүй</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Connector -->
-                    <div class="flex justify-center py-1">
-                        <div class="w-px h-5 bg-gray-200 dark:bg-gray-700" />
-                    </div>
-                </div>
-
-                <!-- Step 3: Follow-up actions (3 cards) -->
-                <div>
-                    <p class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3 px-1">Захиалга үүссэний дараа...</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-
-                        <!-- Like comment -->
-                        <div
-                            class="rounded-2xl border-2 p-4 transition-all"
-                            :class="state.like_comments
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/20'
-                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'"
-                        >
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                                    :class="state.like_comments ? 'bg-primary-100 dark:bg-primary-900/50' : 'bg-gray-100 dark:bg-gray-800'"
-                                >
-                                    <UIcon name="i-lucide-thumbs-up" class="w-4 h-4"
-                                        :class="state.like_comments ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400'"
-                                    />
-                                </div>
-                                <USwitch v-model="state.like_comments" size="xs" />
-                            </div>
-                            <h5 class="text-sm font-semibold mb-0.5"
-                                :class="state.like_comments ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'"
-                            >
-                                Like дарах
-                            </h5>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Комментод автоматаар like дарна</p>
-                        </div>
-
-                        <!-- Public reply -->
-                        <div
-                            class="rounded-2xl border-2 p-4 transition-all"
-                            :class="state.auto_comment_enabled
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/20'
-                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'"
-                        >
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                                    :class="state.auto_comment_enabled ? 'bg-primary-100 dark:bg-primary-900/50' : 'bg-gray-100 dark:bg-gray-800'"
-                                >
-                                    <UIcon name="i-lucide-message-circle" class="w-4 h-4"
-                                        :class="state.auto_comment_enabled ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400'"
-                                    />
-                                </div>
-                                <USwitch v-model="state.auto_comment_enabled" size="xs" />
-                            </div>
-                            <h5 class="text-sm font-semibold mb-0.5"
-                                :class="state.auto_comment_enabled ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'"
-                            >
-                                Нийтэд хариулах
-                            </h5>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Комментод нийтэд харагдах хариулт</p>
-                            <div v-if="state.auto_comment_enabled" class="mt-3 space-y-2">
-                                <UTextarea
-                                    id="auto-comment-textarea"
-                                    v-model="state.auto_comment_text"
-                                    :rows="2"
-                                    autoresize
-                                    size="sm"
-                                    class="w-full"
-                                    placeholder="Баярлалаа! Мессежээр захиалгын мэдээллийг илгээлэе."
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Private message -->
-                        <div
-                            class="rounded-2xl border-2 p-4 transition-all"
-                            :class="state.private_reply_enabled
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/20'
-                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'"
-                        >
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                                    :class="state.private_reply_enabled ? 'bg-primary-100 dark:bg-primary-900/50' : 'bg-gray-100 dark:bg-gray-800'"
-                                >
-                                    <UIcon name="i-lucide-send" class="w-4 h-4"
-                                        :class="state.private_reply_enabled ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400'"
-                                    />
-                                </div>
-                                <USwitch v-model="state.private_reply_enabled" size="xs" />
-                            </div>
-                            <h5 class="text-sm font-semibold mb-0.5"
-                                :class="state.private_reply_enabled ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'"
-                            >
-                                Хувийн мессеж
-                            </h5>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Хэрэглэгчид хувийн мессеж илгээнэ</p>
-                            <div v-if="state.private_reply_enabled" class="mt-3 space-y-2">
-                                <UTextarea
-                                    id="private-reply-textarea"
-                                    v-model="state.private_reply_message"
-                                    :rows="3"
-                                    autoresize
-                                    size="sm"
-                                    class="w-full"
-                                    placeholder="Захиалга #{order_number} бүртгэгдлээ! Төлбөр: {checkout_link}"
-                                />
-                                <div class="flex flex-wrap gap-1">
-                                    <button
-                                        v-for="v in ['{order_number}', '{checkout_link}', '{customer_name}']"
-                                        :key="v"
-                                        type="button"
-                                        class="px-2 py-0.5 text-xs rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-primary-100 dark:hover:bg-primary-900/40 hover:text-primary-700 dark:hover:text-primary-300 transition-colors font-mono cursor-pointer border border-gray-200 dark:border-gray-700"
-                                        @click="insertVariable('private_reply_message', v)"
-                                    >{{ v }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Section: Background Images -->
             <UPageCard
                 title="Дэвсгэр зургууд"
@@ -924,7 +647,7 @@ async function onBgFileChange(e: Event) {
                     <div
                         v-for="bg in backgrounds"
                         :key="bg"
-                        class="relative group w-24 h-24 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+                        class="relative group w-24 h-24 rounded-lg overflow-hidden border border-[var(--border-primary)]"
                     >
                         <img :src="bg" class="w-full h-full object-cover" alt="Background" />
                         <button
@@ -943,11 +666,11 @@ async function onBgFileChange(e: Event) {
                         <UIcon
                             v-if="uploadingBg"
                             name="i-lucide-loader-2"
-                            class="w-5 h-5 animate-spin text-gray-400"
+                            class="w-5 h-5 animate-spin text-[var(--text-placeholder)]"
                         />
                         <template v-else>
-                            <UIcon name="i-lucide-plus" class="w-5 h-5 text-gray-400" />
-                            <span class="text-xs text-gray-400">Нэмэх</span>
+                            <UIcon name="i-lucide-plus" class="w-5 h-5 text-[var(--text-placeholder)]" />
+                            <span class="text-xs text-[var(--text-placeholder)]">Нэмэх</span>
                         </template>
                     </button>
                     <input
@@ -958,7 +681,7 @@ async function onBgFileChange(e: Event) {
                         @change="onBgFileChange"
                     />
                 </div>
-                <p v-if="backgrounds.length === 0" class="text-sm text-gray-400 mt-2">
+                <p v-if="backgrounds.length === 0" class="text-sm text-[var(--text-placeholder)] mt-2">
                     Дэвсгэр зураг нэмээгүй байна.
                 </p>
             </UPageCard>
@@ -1021,8 +744,8 @@ async function onBgFileChange(e: Event) {
             >
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-1">Бүртгэл устгах</h4>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+                        <h4 class="font-medium text-[var(--text-heading)] mb-1">Бүртгэл устгах</h4>
+                        <p class="text-sm text-[var(--text-muted)] max-w-md">
                             Манай үйлчилгээг цаашид ашиглахгүй бол бүртгэлээ устгах боломжтой. Энэ үйлдлийг буцаах боломжгүй бөгөөд бүх мэдээлэл бүрмөсөн устгагдах болно.
                         </p>
                     </div>
@@ -1063,10 +786,10 @@ async function onBgFileChange(e: Event) {
                                 />
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white">
+                                <h3 class="font-semibold text-[var(--text-heading)]">
                                     QPay бүртгүүлэх
                                 </h3>
-                                <p class="text-sm text-gray-500">Мерчант мэдээллээ оруулна уу</p>
+                                <p class="text-sm text-[var(--text-muted)]">Мерчант мэдээллээ оруулна уу</p>
                             </div>
                         </div>
                     </template>
@@ -1097,11 +820,11 @@ async function onBgFileChange(e: Event) {
                             <UIcon name="i-lucide-triangle-alert" class="w-5 h-5 text-red-600 dark:text-red-400" />
                         </div>
                         <div>
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Бүртгэл устгах уу?</h3>
-                            <p class="text-sm text-gray-500">Энэ үйлдлийг буцаах боломжгүй</p>
+                            <h3 class="font-semibold text-[var(--text-heading)]">Бүртгэл устгах уу?</h3>
+                            <p class="text-sm text-[var(--text-muted)]">Энэ үйлдлийг буцаах боломжгүй</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    <p class="text-sm text-[var(--text-muted)] mb-6">
                         Бүх бараа, захиалга, хэрэглэгчийн мэдээлэл бүрмөсөн устгагдах болно. Итгэлтэй байна уу?
                     </p>
                     <div class="flex justify-end gap-3">

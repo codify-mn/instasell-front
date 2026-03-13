@@ -96,10 +96,10 @@ const groups = computed(() => [
             v-model:open="open"
             collapsible
             resizable
-            class="!bg-white dark:!bg-[#0f172a] border-r border-[#e2e8f0] dark:border-[#334155]"
+            class="!bg-[var(--surface-card)] border-r border-[var(--border-primary)]"
             :ui="{
                 header: 'mt-1',
-                footer: 'lg:border-t lg:border-[#e2e8f0] dark:lg:border-[#334155]'
+                footer: 'lg:border-t lg:border-[var(--border-primary)]'
             }"
         >
             <template #header="{ collapsed }">
@@ -111,7 +111,7 @@ const groups = computed(() => [
                     label="Хайх..."
                     placeholder="Хайх..."
                     :collapsed="collapsed"
-                    class="bg-[#f1f5f9] dark:bg-[#1e293b] ring-[#e2e8f0] dark:ring-[#334155] text-[#64748b] dark:text-[#94a3b8] hover:bg-[#e2e8f0] dark:hover:bg-[#334155]"
+                    class="bg-[var(--surface-inset)] ring-[var(--border-primary)] text-[var(--text-muted)] hover:bg-[var(--border-primary)]"
                 />
 
                 <!-- Main nav items -->
@@ -123,14 +123,14 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]' : 'p-3 text-md text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]',
-                        linkLeadingIcon: 'text-[#4f566b] dark:text-[#94a3b8]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]',
                     }"
                 />
 
                 <!-- Live section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#9baacf] dark:text-[#475569]">Шууд дамжуулалт</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Шууд дамжуулалт</span>
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
@@ -140,14 +140,14 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]' : 'p-3 text-md text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]',
-                        linkLeadingIcon: 'text-[#4f566b] dark:text-[#94a3b8]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]',
                     }"
                 />
 
                 <!-- Settings section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[#9baacf] dark:text-[#475569]">Тохиргоо</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Тохиргоо</span>
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
@@ -157,8 +157,8 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]' : 'p-3 text-md text-[#4f566b] dark:text-[#94a3b8] hover:before:bg-[#f6f9fc] dark:hover:before:bg-[#0f172a]',
-                        linkLeadingIcon: 'text-[#4f566b] dark:text-[#94a3b8]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]',
                     }"
                 />
             </template>
