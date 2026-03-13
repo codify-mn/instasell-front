@@ -1,7 +1,8 @@
+<!-- app/components/dashboard/DashboardRecentOrders.vue -->
 <script setup lang="ts">
 import type { Order } from '~/composables/useOrders'
 
-const { fetchOrders, getStatusLabel, getStatusColor, formatPrice } = useOrders()
+const { fetchOrders, formatPrice } = useOrders()
 
 const orders = ref<Order[]>([])
 const loading = ref(true)
@@ -18,142 +19,95 @@ const loadOrders = async () => {
     }
 }
 
-const timeAgo = (dateStr: string): string => {
-    const date = new Date(dateStr)
-    const now = new Date()
-    const diffMs = now.getTime() - date.getTime()
-    const diffMins = Math.floor(diffMs / 60000)
-    const diffHours = Math.floor(diffMs / 3600000)
-    const diffDays = Math.floor(diffMs / 86400000)
-
-    if (diffMins < 1) return 'Дөнгөж сая'
-    if (diffMins < 60) return `${diffMins} мин өмнө`
-    if (diffHours < 24) return `${diffHours} цаг өмнө`
-    if (diffDays < 7) return `${diffDays} өдөр өмнө`
-    return date.toLocaleDateString('mn-MN', { month: 'short', day: 'numeric' })
+const sourceLabel = (source?: string): string => {
+    if (!source) return ''
+    if (source.includes('live')) return 'FB Live'
+    if (source.includes('messenger')) return 'FB Мессеж'
+    if (source.includes('post')) return 'FB Пост'
+    return 'Гараар'
 }
 
-const statusIcons: Record<string, string> = {
-    pending: 'i-lucide-clock',
-    paid: 'i-lucide-credit-card',
-    shipped: 'i-lucide-truck',
-    delivered: 'i-lucide-package-check',
-    cancelled: 'i-lucide-x-circle',
-    refunded: 'i-lucide-undo-2'
+type BadgeStyle = { bg: string; text: string; label: string }
+
+const statusStyle = (status: string): BadgeStyle => {
+    const map: Record<string, BadgeStyle> = {
+        paid:      { bg: 'bg-[#f0fdf4]', text: 'text-[#059669]', label: 'Төлөгдсөн' },
+        delivered: { bg: 'bg-[#f0fdf4]', text: 'text-[#059669]', label: 'Хүргэгдсэн' },
+        pending:   { bg: 'bg-[#fff8ec]', text: 'text-[#b45309]', label: 'Хүлээгдэж буй' },
+        shipped:   { bg: 'bg-[#eff6ff]', text: 'text-[#1d4ed8]', label: 'Илгээгдсэн' },
+        cancelled: { bg: 'bg-[#fff1f0]', text: 'text-[#c0392b]', label: 'Цуцлагдсан' },
+        refunded:  { bg: 'bg-[#f6f9fc]', text: 'text-[#697386]', label: 'Буцаагдсан' },
+    }
+    return map[status] ?? { bg: 'bg-[#f6f9fc]', text: 'text-[#697386]', label: status }
 }
 
-const openCheckout = (token: string) => {
-    window.open(`/checkout/${token}`, '_blank')
-}
-
-onMounted(() => {
-    loadOrders()
-})
+onMounted(() => { loadOrders() })
 </script>
 
 <template>
-    <DashboardCard padding="none">
-        <div class="p-4 border-b border-[#e2e8f0] dark:border-[#334155]">
-            <div class="flex items-center justify-between">
-                <h3 class="font-semibold text-gray-900 dark:text-white">Сүүлийн захиалга</h3>
-                <NuxtLink
-                    to="/dashboard/orders"
-                    class="text-xs text-[#16a34a] hover:text-[#15803d] dark:hover:text-green-400 font-medium"
-                >
-                    Бүгдийг харах
-                </NuxtLink>
-            </div>
-        </div>
-
-        <!-- Loading -->
-        <div v-if="loading" class="p-4 space-y-3">
-            <div v-for="i in 5" :key="i" class="animate-pulse flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gray-200 dark:bg-gray-800" />
-                <div class="flex-1 space-y-2">
-                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4" />
-                    <div class="h-3 bg-gray-200 dark:bg-gray-800 rounded w-1/2" />
-                </div>
-            </div>
-        </div>
-
-        <!-- Empty State -->
-        <div v-else-if="orders.length === 0" class="p-8 text-center">
-            <div
-                class="w-14 h-14 mx-auto rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-3"
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[#e3e8ee] bg-white">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-[#f0f4f8] px-5 py-4">
+            <div class="text-[13px] font-bold text-[#1a1f36]">Сүүлийн захиалгууд</div>
+            <NuxtLink
+                to="/dashboard/orders"
+                class="text-[12px] font-semibold text-[#059669] hover:text-[#047857] transition-colors"
             >
-                <UIcon name="i-lucide-shopping-cart" class="w-7 h-7 text-gray-400" />
-            </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Захиалга байхгүй байна</p>
+                Бүгдийг харах →
+            </NuxtLink>
         </div>
 
-        <!-- Orders List -->
-        <div v-else class="divide-y divide-[#e2e8f0] dark:divide-[#334155]">
+        <!-- Loading skeleton -->
+        <div v-if="loading" class="flex flex-col divide-y divide-[#f7fafc]">
+            <div
+                v-for="i in 5"
+                :key="i"
+                class="flex animate-pulse items-center gap-3 px-5 py-3"
+            >
+                <div class="h-3 w-16 rounded bg-[#f0f4f8]" />
+                <div class="h-4 w-20 flex-1 rounded bg-[#f0f4f8]" />
+                <div class="h-3 w-14 rounded bg-[#f0f4f8]" />
+            </div>
+        </div>
+
+        <!-- Empty state -->
+        <div v-else-if="!orders.length" class="flex flex-1 flex-col items-center justify-center gap-2 py-10">
+            <div class="text-2xl">🛒</div>
+            <p class="text-[12px] text-[#9baacf]">Захиалга байхгүй байна</p>
+        </div>
+
+        <!-- Order rows -->
+        <div v-else class="flex flex-col divide-y divide-[#f7fafc]">
             <NuxtLink
                 v-for="order in orders"
                 :key="order.id"
                 :to="`/dashboard/orders/${order.id}`"
-                class="flex items-center gap-3 p-4 hover:bg-[#f8fafc] dark:hover:bg-[#1e293b] transition-colors"
+                class="flex items-center gap-3 px-5 py-3 hover:bg-[#f6f9fc] transition-colors"
             >
-                <!-- Status Icon -->
-                <div
-                    class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    :class="{
-                        'bg-amber-100 dark:bg-amber-900/20 text-amber-500':
-                            order.status === 'pending',
-                        'bg-green-100 dark:bg-green-900/20 text-green-500':
-                            order.status === 'paid' || order.status === 'delivered',
-                        'bg-blue-100 dark:bg-blue-900/20 text-blue-500':
-                            order.status === 'shipped',
-                        'bg-red-100 dark:bg-red-900/20 text-red-500':
-                            order.status === 'cancelled',
-                        'bg-gray-100 dark:bg-gray-800 text-gray-500':
-                            order.status === 'refunded'
-                    }"
-                >
-                    <UIcon
-                        :name="statusIcons[order.status] || 'i-lucide-package'"
-                        class="w-5 h-5"
-                    />
-                </div>
-
-                <!-- Order Info -->
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2">
-                        <span class="font-medium text-gray-900 dark:text-white text-sm">
-                            #{{ order.order_number }}
-                        </span>
-                        <UBadge :color="getStatusColor(order.status)" variant="subtle" size="xs">
-                            {{ getStatusLabel(order.status) }}
-                        </UBadge>
-                    </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                <!-- Order number + source -->
+                <div class="min-w-0 flex-1">
+                    <div class="text-[12px] font-bold text-[#1a1f36]">#{{ order.order_number }}</div>
+                    <div class="text-[11px] text-[#9baacf]">
                         {{ order.customer?.name || 'Хэрэглэгч' }}
-                    </p>
+                        <template v-if="order.metadata?.source">
+                            · {{ sourceLabel(order.metadata.source) }}
+                        </template>
+                    </div>
                 </div>
 
-                <!-- Amount & Time -->
-                <div class="text-right flex-shrink-0 flex items-center gap-3">
-                    <div class="text-right">
-                        <p class="font-semibold text-gray-900 dark:text-white text-sm">
-                            {{ formatPrice(order.total_amount) }}
-                        </p>
-                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
-                            {{ timeAgo(order.created_at) }}
-                        </p>
-                    </div>
-                    <UTooltip text="Checkout нээх">
-                        <UButton
-                            v-if="order.checkout_token"
-                            icon="i-lucide-shopping-bag"
-                            variant="ghost"
-                            color="primary"
-                            size="sm"
-                            class="rounded-lg"
-                            @click.stop.prevent="openCheckout(order.checkout_token)"
-                        />
-                    </UTooltip>
+                <!-- Status badge -->
+                <span
+                    class="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                    :class="[statusStyle(order.status).bg, statusStyle(order.status).text]"
+                >
+                    {{ statusStyle(order.status).label }}
+                </span>
+
+                <!-- Amount -->
+                <div class="flex-shrink-0 text-right text-[12px] font-bold text-[#1a1f36]">
+                    {{ formatPrice(order.total_amount) }}
                 </div>
             </NuxtLink>
         </div>
-    </DashboardCard>
+    </div>
 </template>
