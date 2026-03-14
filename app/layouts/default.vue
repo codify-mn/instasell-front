@@ -8,26 +8,34 @@ const mainItems: NavigationMenuItem[] = [
         label: 'Нүүр',
         icon: 'i-lucide-layout-grid',
         to: '/dashboard',
-        onSelect: () => { open.value = false }
+        onSelect: () => {
+            open.value = false
+        }
     },
     {
         label: 'Захиалга',
         icon: 'i-lucide-shopping-bag',
         to: '/dashboard/orders',
-        onSelect: () => { open.value = false }
+        onSelect: () => {
+            open.value = false
+        }
     },
     {
         label: 'Бараа',
         icon: 'i-lucide-package',
         to: '/dashboard/products',
-        onSelect: () => { open.value = false }
+        onSelect: () => {
+            open.value = false
+        }
     },
     {
         label: 'Хэрэглэгчид',
         icon: 'i-lucide-users',
         to: '/dashboard/customers',
-        onSelect: () => { open.value = false }
-    },
+        onSelect: () => {
+            open.value = false
+        }
+    }
 ]
 
 const liveItems: NavigationMenuItem[] = [
@@ -36,48 +44,54 @@ const liveItems: NavigationMenuItem[] = [
         icon: 'i-lucide-tv-minimal-play',
         to: '/dashboard/live',
         badge: 'Pro багц',
-        onSelect: () => { open.value = false }
+        onSelect: () => {
+            open.value = false
+        }
     },
     {
         label: 'Автоматжуулалт',
         icon: 'i-lucide-zap',
         to: '/dashboard/automation',
-        onSelect: () => { open.value = false }
-    },
+        onSelect: () => {
+            open.value = false
+        }
+    }
 ]
 
 const settingsItems: NavigationMenuItem[] = [
-    {
-        label: 'Үйлчилгээний эрх',
-        to: '/dashboard/billing',
-        icon: 'i-lucide-credit-card',
-        defaultOpen: false,
-        type: 'trigger',
-        children: [
-            {
-                label: 'Идэвхтэй багц',
-                to: '/dashboard/billing',
-                exact: true,
-                onSelect: () => { open.value = false }
-            },
-            {
-                label: 'Багц сонгох',
-                to: '/dashboard/plans',
-                onSelect: () => { open.value = false }
-            },
-            {
-                label: 'Нэхэмжлэх',
-                to: '/dashboard/history',
-                onSelect: () => { open.value = false }
-            }
-        ]
-    },
+    // {
+    //     label: 'Үйлчилгээний эрх',
+    //     to: '/dashboard/billing',
+    //     icon: 'i-lucide-credit-card',
+    //     defaultOpen: false,
+    //     type: 'trigger',
+    //     children: [
+    //         {
+    //             label: 'Идэвхтэй багц',
+    //             to: '/dashboard/billing',
+    //             exact: true,
+    //             onSelect: () => { open.value = false }
+    //         },
+    //         {
+    //             label: 'Багц сонгох',
+    //             to: '/dashboard/plans',
+    //             onSelect: () => { open.value = false }
+    //         },
+    //         {
+    //             label: 'Нэхэмжлэх',
+    //             to: '/dashboard/history',
+    //             onSelect: () => { open.value = false }
+    //         }
+    //     ]
+    // },
     {
         label: 'Тохиргоо',
         to: '/dashboard/settings',
         icon: 'i-lucide-settings',
-        onSelect: () => { open.value = false }
-    },
+        onSelect: () => {
+            open.value = false
+        }
+    }
 ]
 
 const groups = computed(() => [
@@ -123,14 +137,19 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed
+                            ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]'
+                            : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]'
                     }"
                 />
 
                 <!-- Live section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Шууд дамжуулалт</span>
+                    <span
+                        class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]"
+                        >Шууд дамжуулалт</span
+                    >
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
@@ -140,14 +159,19 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed
+                            ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]'
+                            : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]'
                     }"
                 />
 
                 <!-- Settings section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Тохиргоо</span>
+                    <span
+                        class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]"
+                        >Тохиргоо</span
+                    >
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
@@ -157,8 +181,10 @@ const groups = computed(() => [
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed
+                            ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]'
+                            : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
+                        linkLeadingIcon: 'text-[var(--text-body)]'
                     }"
                 />
             </template>
