@@ -61,6 +61,10 @@ function getPlanFeatures(plan: Plan): { label: string; included: boolean }[] {
             included: plan.features.facebook_live
         },
         {
+            label: 'Коммент автоматжуулалт',
+            included: plan.features.automation
+        },
+        {
             label: 'Дэлгэрэнгүй тайлан',
             included: plan.features.advanced_analytics
         },

@@ -4,7 +4,12 @@ import { useShopSettings } from '~/composables/useShopSettings'
 useSeoMeta({ title: 'Автоматжуулалт - Instasell' })
 
 const { shop, isLoading, isSaving, fetchShop, updateShop } = useShopSettings()
+const { subscription, fetchSubscription } = useSubscription()
 const toast = useToast()
+
+const hasAutomationFeature = computed(() =>
+    subscription.value?.plan?.features?.automation ?? false
+)
 
 const state = reactive({
     automation_enabled: true,
@@ -17,7 +22,7 @@ const state = reactive({
 })
 
 const hasChanges = ref(false)
-watch(state, () => { hasChanges.value = true }, { deep: true })
+let stopWatcher: (() => void) | undefined
 
 onBeforeRouteLeave(() => {
     if (hasChanges.value) {
@@ -26,7 +31,7 @@ onBeforeRouteLeave(() => {
 })
 
 onMounted(async () => {
-    await fetchShop()
+    await Promise.all([fetchShop(), fetchSubscription()])
     if (shop.value?.settings) {
         const s = shop.value.settings
         state.automation_enabled = s.automation_enabled ?? true
@@ -38,27 +43,60 @@ onMounted(async () => {
         state.private_reply_message = s.private_reply_message || ''
     }
     await nextTick()
-    hasChanges.value = false
+    stopWatcher = watch(state, () => { hasChanges.value = true }, { deep: true })
+})
+
+onUnmounted(() => {
+    stopWatcher?.()
+})
+
+// Validation
+const validationWarnings = computed(() => {
+    const warnings: string[] = []
+    if (state.automation_enabled && state.trigger_keywords.length === 0) {
+        warnings.push('Түлхүүр үг нэмээгүй байна — автоматжуулалт ажиллахгүй')
+    }
+    if (state.auto_comment_enabled && !state.auto_comment_text.trim()) {
+        warnings.push('Нийтэд хариулт идэвхтэй боловч текст хоосон байна')
+    }
+    if (state.private_reply_enabled && !state.private_reply_message.trim()) {
+        warnings.push('Хувийн мессеж идэвхтэй боловч текст хоосон байна')
+    }
+    return warnings
 })
 
 async function save() {
-    await updateShop({
-        settings: {
-            ...shop.value?.settings,
-            automation_enabled: state.automation_enabled,
-            trigger_keywords: state.trigger_keywords,
-            like_comments: state.like_comments,
-            auto_comment_enabled: state.auto_comment_enabled,
-            auto_comment_text: state.auto_comment_text,
-            private_reply_enabled: state.private_reply_enabled,
-            private_reply_message: state.private_reply_message
-        }
-    })
-    hasChanges.value = false
+    if (validationWarnings.value.length > 0) {
+        const proceed = window.confirm(
+            validationWarnings.value.join('\n') + '\n\nҮргэлжлүүлэх үү?'
+        )
+        if (!proceed) return
+    }
+
+    try {
+        await updateShop({
+            settings: {
+                ...shop.value!.settings,
+                automation_enabled: state.automation_enabled,
+                trigger_keywords: state.trigger_keywords,
+                like_comments: state.like_comments,
+                auto_comment_enabled: state.auto_comment_enabled,
+                auto_comment_text: state.auto_comment_text,
+                private_reply_enabled: state.private_reply_enabled,
+                private_reply_message: state.private_reply_message
+            }
+        })
+        hasChanges.value = false
+    } catch {
+        // toast already shown by composable
+    }
 }
 
 // Keywords
 const keywordInput = ref('')
+const removedKeyword = ref<{ keyword: string; index: number } | null>(null)
+const undoTimeout = ref<ReturnType<typeof setTimeout>>()
+
 function addKeyword() {
     const kw = keywordInput.value.trim()
     if (kw && !state.trigger_keywords.includes(kw)) {
@@ -68,16 +106,36 @@ function addKeyword() {
 }
 function removeKeyword(kw: string) {
     const idx = state.trigger_keywords.indexOf(kw)
-    if (idx !== -1) state.trigger_keywords.splice(idx, 1)
+    if (idx === -1) return
+
+    state.trigger_keywords.splice(idx, 1)
+    removedKeyword.value = { keyword: kw, index: idx }
+
+    clearTimeout(undoTimeout.value)
+    undoTimeout.value = setTimeout(() => {
+        removedKeyword.value = null
+    }, 4000)
+}
+function undoRemoveKeyword() {
+    if (!removedKeyword.value) return
+    const { keyword, index } = removedKeyword.value
+    if (!state.trigger_keywords.includes(keyword)) {
+        state.trigger_keywords.splice(Math.min(index, state.trigger_keywords.length), 0, keyword)
+    }
+    removedKeyword.value = null
+    clearTimeout(undoTimeout.value)
 }
 function onKeywordKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') { e.preventDefault(); addKeyword() }
 }
 
-// Template variable insertion
+// Template variable insertion via template refs
+const autoCommentRef = ref<{ textarea: HTMLTextAreaElement } | null>(null)
+const privateReplyRef = ref<{ textarea: HTMLTextAreaElement } | null>(null)
+
 function insertVariable(field: 'auto_comment_text' | 'private_reply_message', variable: string) {
-    const selector = field === 'auto_comment_text' ? '#auto-comment-textarea' : '#private-reply-textarea'
-    const el = document.querySelector(selector) as HTMLTextAreaElement | null
+    const textareaWrapper = field === 'auto_comment_text' ? autoCommentRef.value : privateReplyRef.value
+    const el = textareaWrapper?.textarea
     if (!el) {
         state[field] = (state[field] || '') + variable
         return
@@ -93,24 +151,11 @@ function insertVariable(field: 'auto_comment_text' | 'private_reply_message', va
     })
 }
 
-const activeSteps = computed(() => {
-    let count = 0
-    if (state.like_comments) count++
-    if (state.auto_comment_enabled) count++
-    if (state.private_reply_enabled) count++
-    return count
-})
+const templateVariables = ['{order_number}', '{checkout_link}', '{customer_name}'] as const
 
-const previewKeyword = computed(() =>
-    state.trigger_keywords.length > 0 ? state.trigger_keywords[0] : 'авах'
+const previewKeyword = computed((): string =>
+    state.trigger_keywords.length > 0 ? state.trigger_keywords[0]! : 'авах'
 )
-
-function renderPreview(template: string): string {
-    return template
-        .replace(/\{order_number\}/g, '1234')
-        .replace(/\{checkout_link\}/g, 'instasell.mn/pay/abc')
-        .replace(/\{customer_name\}/g, 'Бат')
-}
 
 const showPreview = ref(false)
 </script>
@@ -134,7 +179,7 @@ const showPreview = ref(false)
                     </div>
                 </template>
                 <template #right>
-                    <div class="flex items-center gap-3">
+                    <div v-if="hasAutomationFeature" class="flex items-center gap-3">
                         <USwitch v-model="state.automation_enabled" />
                         <UButton
                             color="primary"
@@ -153,9 +198,38 @@ const showPreview = ref(false)
                 <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-muted" />
             </div>
 
+            <!-- Upgrade gate: automation not available on current plan -->
+            <div v-else-if="!hasAutomationFeature" class="flex flex-col items-center justify-center py-24 px-4 text-center empty-state-enter">
+                <div class="w-20 h-20 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mb-6">
+                    <UIcon name="i-lucide-lock" class="w-10 h-10 text-amber-500" />
+                </div>
+                <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">Автоматжуулалт Pro боломж</h3>
+                <p class="text-sm text-[var(--text-muted)] max-w-md mb-6">
+                    Коммент автомат уншиж захиалга үүсгэх, хариулт илгээх зэрэг боломжийг Стандарт эсвэл Pro багцаар ашиглаарай.
+                </p>
+                <UButton to="/dashboard/plans" color="primary" icon="i-lucide-arrow-up-right" size="lg">
+                    Багц сонгох
+                </UButton>
+            </div>
+
             <div v-else>
+                <!-- Disabled overlay -->
+                <div v-if="!state.automation_enabled" class="px-4 lg:px-8 pt-6 lg:pt-8">
+                    <div class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                        <UIcon name="i-lucide-pause-circle" class="w-5 h-5 text-gray-400 shrink-0" />
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Автоматжуулалт унтраасан байна</p>
+                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Дээрх товчийг идэвхжүүлж тохиргоогоо засварлана уу</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Split layout -->
-                <div class="p-4 lg:p-8 transition-opacity duration-200" :inert="!state.automation_enabled" :class="{ 'opacity-40': !state.automation_enabled }">
+                <div
+                    class="p-4 lg:p-8 transition-opacity duration-200"
+                    :class="{ 'opacity-40 pointer-events-none': !state.automation_enabled }"
+                    :inert="!state.automation_enabled"
+                >
                     <div class="flex gap-8">
                         <!-- Left column: Config cards -->
                         <div class="flex-1 max-w-2xl space-y-0">
@@ -175,16 +249,44 @@ const showPreview = ref(false)
                                                 v-for="kw in state.trigger_keywords"
                                                 :key="kw"
                                                 type="button"
-                                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium border border-gray-200 dark:border-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-red-600 dark:hover:bg-red-950/20 dark:hover:border-red-800/50 dark:hover:text-red-400 focus:bg-red-50 focus:border-red-200 focus:text-red-600 dark:focus:bg-red-950/20 dark:focus:border-red-800/50 dark:focus:text-red-400 transition-colors group"
+                                                :aria-label="`${kw} устгах`"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium border border-gray-200 dark:border-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-red-600 dark:hover:bg-red-950/20 dark:hover:border-red-800/50 dark:hover:text-red-400 focus:bg-red-50 focus:border-red-200 focus:text-red-600 dark:focus:bg-red-950/20 dark:focus:border-red-800/50 dark:focus:text-red-400 transition-colors group cursor-pointer"
                                                 @click="removeKeyword(kw)"
                                             >
                                                 {{ kw }}
-                                                <UIcon name="i-lucide-x" class="w-3 h-3 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity" />
+                                                <UIcon name="i-lucide-x" class="w-3 h-3 opacity-50 group-hover:opacity-100 group-focus:opacity-100 transition-opacity" />
                                             </button>
                                             <span v-if="state.trigger_keywords.length === 0" class="text-xs text-gray-400 italic">
                                                 Түлхүүр үг байхгүй байна...
                                             </span>
                                         </div>
+
+                                        <!-- Undo banner -->
+                                        <Transition
+                                            enter-active-class="transition duration-200 ease-out"
+                                            enter-from-class="opacity-0 -translate-y-1"
+                                            enter-to-class="opacity-100 translate-y-0"
+                                            leave-active-class="transition duration-150 ease-in"
+                                            leave-from-class="opacity-100 translate-y-0"
+                                            leave-to-class="opacity-0 -translate-y-1"
+                                        >
+                                            <div
+                                                v-if="removedKeyword"
+                                                class="flex items-center gap-2 mt-2 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 text-xs"
+                                            >
+                                                <UIcon name="i-lucide-undo-2" class="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                                                <span class="text-amber-700 dark:text-amber-400">
+                                                    "<strong>{{ removedKeyword.keyword }}</strong>" устгагдлаа
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    class="ml-auto text-amber-600 dark:text-amber-400 font-semibold hover:underline cursor-pointer"
+                                                    @click="undoRemoveKeyword"
+                                                >
+                                                    Буцаах
+                                                </button>
+                                            </div>
+                                        </Transition>
 
                                         <div class="flex gap-2 mt-3 max-w-sm">
                                             <UInput
@@ -270,9 +372,9 @@ const showPreview = ref(false)
                                     </div>
                                     <USwitch v-model="state.auto_comment_enabled" />
                                 </div>
-                                <div v-if="state.auto_comment_enabled" class="mt-4 pt-4 border-t border-[var(--border-primary)] pl-12">
+                                <div v-if="state.auto_comment_enabled" class="mt-4 pt-4 border-t border-[var(--border-primary)] pl-12 space-y-2">
                                     <UTextarea
-                                        id="auto-comment-textarea"
+                                        ref="autoCommentRef"
                                         v-model="state.auto_comment_text"
                                         :rows="2"
                                         autoresize
@@ -280,6 +382,15 @@ const showPreview = ref(false)
                                         class="w-full"
                                         placeholder="Баярлалаа! Мессежээр мэдэгдэлэе."
                                     />
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <button
+                                            v-for="v in templateVariables"
+                                            :key="v"
+                                            type="button"
+                                            class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-mono border border-gray-200 dark:border-gray-700 cursor-pointer"
+                                            @click="insertVariable('auto_comment_text', v)"
+                                        >{{ v }}</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -309,7 +420,7 @@ const showPreview = ref(false)
                                 </div>
                                 <div v-if="state.private_reply_enabled" class="mt-4 pt-4 border-t border-[var(--border-primary)] pl-12 space-y-2">
                                     <UTextarea
-                                        id="private-reply-textarea"
+                                        ref="privateReplyRef"
                                         v-model="state.private_reply_message"
                                         :rows="3"
                                         autoresize
@@ -319,15 +430,40 @@ const showPreview = ref(false)
                                     />
                                     <div class="flex flex-wrap gap-1.5">
                                         <button
-                                            v-for="v in ['{order_number}', '{checkout_link}', '{customer_name}']"
+                                            v-for="v in templateVariables"
                                             :key="v"
                                             type="button"
-                                            class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-mono border border-gray-200 dark:border-gray-700"
+                                            class="px-2 py-0.5 text-xs rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-primary-50 dark:hover:bg-primary-950/30 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-mono border border-gray-200 dark:border-gray-700 cursor-pointer"
                                             @click="insertVariable('private_reply_message', v)"
                                         >{{ v }}</button>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Validation warnings -->
+                            <Transition
+                                enter-active-class="transition duration-200 ease-out"
+                                enter-from-class="opacity-0 translate-y-1"
+                                enter-to-class="opacity-100 translate-y-0"
+                                leave-active-class="transition duration-150 ease-in"
+                                leave-from-class="opacity-100 translate-y-0"
+                                leave-to-class="opacity-0 translate-y-1"
+                            >
+                                <div v-if="validationWarnings.length > 0" class="mt-6 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50">
+                                    <div class="flex items-start gap-2.5">
+                                        <UIcon name="i-lucide-triangle-alert" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                                        <div class="space-y-1">
+                                            <p
+                                                v-for="(warning, i) in validationWarnings"
+                                                :key="i"
+                                                class="text-xs text-amber-700 dark:text-amber-400"
+                                            >
+                                                {{ warning }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Transition>
 
                             <!-- Bottom save -->
                             <div class="flex justify-end pt-8">
@@ -337,104 +473,17 @@ const showPreview = ref(false)
                             </div>
                         </div>
 
-                        <!-- Right column: Phone preview -->
+                        <!-- Right column: Preview -->
                         <div class="hidden lg:block w-80 shrink-0">
-                            <div class="sticky top-4 space-y-4">
-
-                                <!-- Facebook Comment Preview -->
-                                <div class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-                                    <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
-                                        <UIcon name="i-lucide-facebook" class="w-3.5 h-3.5 text-blue-500" />
-                                        <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Facebook коммент</span>
-                                    </div>
-                                    <div class="p-3 space-y-3">
-                                        <!-- User's comment -->
-                                        <div class="flex gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shrink-0">
-                                                <span class="text-white text-[10px] font-bold">Б</span>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                                                    <p class="text-[11px] font-semibold text-[var(--text-heading)]">Бат-Эрдэнэ</p>
-                                                    <p class="text-xs text-gray-700 dark:text-gray-300">{{ previewKeyword }}</p>
-                                                </div>
-                                                <div class="flex items-center gap-3 mt-1 pl-2">
-                                                    <span class="text-[10px] text-gray-400">2 мин</span>
-                                                    <span
-                                                        class="text-[10px] font-semibold transition-colors"
-                                                        :class="state.like_comments ? 'text-blue-500' : 'text-gray-400'"
-                                                    >
-                                                        {{ state.like_comments ? '👍 Таалагдсан' : 'Like' }}
-                                                    </span>
-                                                    <span class="text-[10px] text-gray-400 font-semibold">Хариулах</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bot's public reply (as a reply to the comment) -->
-                                        <div v-if="state.auto_comment_enabled" class="flex gap-2 pl-9">
-                                            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0">
-                                                <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                                                    <p class="text-[10px] font-semibold text-[var(--text-heading)]">Таны дэлгүүр</p>
-                                                    <p class="text-[11px] text-gray-700 dark:text-gray-300">{{ state.auto_comment_text || 'Баярлалаа! Мессежээр мэдэгдэлэе.' }}</p>
-                                                </div>
-                                                <div class="flex items-center gap-3 mt-1 pl-2">
-                                                    <span class="text-[10px] text-gray-400">Дөнгөж сая</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- System action badge -->
-                                <div class="flex items-center justify-center gap-2 py-1">
-                                    <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-                                    <span class="text-[10px] font-medium bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400 px-2.5 py-0.5 rounded-full border border-primary-200 dark:border-primary-800/50 whitespace-nowrap">
-                                        ✓ Захиалга #1234 үүслээ
-                                    </span>
-                                    <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-                                </div>
-
-                                <!-- Messenger Preview -->
-                                <div v-if="state.private_reply_enabled" class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-                                    <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
-                                        <UIcon name="i-lucide-message-circle" class="w-3.5 h-3.5 text-blue-500" />
-                                        <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Messenger хувийн мессеж</span>
-                                    </div>
-                                    <div class="p-3 space-y-2">
-                                        <!-- Bot message -->
-                                        <div class="flex gap-2">
-                                            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0 mt-0.5">
-                                                <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
-                                            </div>
-                                            <div class="space-y-1.5 flex-1 min-w-0">
-                                                <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-3 py-2">
-                                                    <p class="text-[11px] text-gray-800 dark:text-gray-200 leading-relaxed">
-                                                        {{ renderPreview(state.private_reply_message || 'Захиалга #{order_number} бүртгэгдлээ! Төлбөр: {checkout_link}') }}
-                                                    </p>
-                                                </div>
-                                                <!-- Checkout button template -->
-                                                <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-                                                    <div class="bg-gray-50 dark:bg-gray-800/50 px-3 py-2">
-                                                        <p class="text-[10px] text-gray-400">instasell.mn</p>
-                                                        <p class="text-[11px] font-medium text-gray-700 dark:text-gray-300">Төлбөр төлөх</p>
-                                                    </div>
-                                                    <div class="border-t border-gray-200 dark:border-gray-700 px-3 py-1.5 text-center">
-                                                        <span class="text-[11px] font-semibold text-blue-500">Төлбөр төлөх →</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Footer hint -->
-                                <p class="text-[10px] text-gray-400 dark:text-gray-600 text-center">
-                                    Тохиргоо өөрчлөхөд энд шууд харагдана
-                                </p>
+                            <div class="sticky top-4">
+                                <AutomationPreview
+                                    :preview-keyword="previewKeyword"
+                                    :like-comments="state.like_comments"
+                                    :auto-comment-enabled="state.auto_comment_enabled"
+                                    :auto-comment-text="state.auto_comment_text"
+                                    :private-reply-enabled="state.private_reply_enabled"
+                                    :private-reply-message="state.private_reply_message"
+                                />
                             </div>
                         </div>
 
@@ -458,91 +507,15 @@ const showPreview = ref(false)
                         <span class="text-sm font-semibold">Урьдчилан харах</span>
                     </template>
                     <template #body>
-                        <div class="p-4 space-y-4">
-                            <!-- Facebook Comment Preview -->
-                            <div class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-                                <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
-                                    <UIcon name="i-lucide-facebook" class="w-3.5 h-3.5 text-blue-500" />
-                                    <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Facebook коммент</span>
-                                </div>
-                                <div class="p-3 space-y-3">
-                                    <div class="flex gap-2">
-                                        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shrink-0">
-                                            <span class="text-white text-[10px] font-bold">Б</span>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                                                <p class="text-[11px] font-semibold text-[var(--text-heading)]">Бат-Эрдэнэ</p>
-                                                <p class="text-xs text-gray-700 dark:text-gray-300">{{ previewKeyword }}</p>
-                                            </div>
-                                            <div class="flex items-center gap-3 mt-1 pl-2">
-                                                <span class="text-[10px] text-gray-400">2 мин</span>
-                                                <span
-                                                    class="text-[10px] font-semibold transition-colors"
-                                                    :class="state.like_comments ? 'text-blue-500' : 'text-gray-400'"
-                                                >
-                                                    {{ state.like_comments ? '👍 Таалагдсан' : 'Like' }}
-                                                </span>
-                                                <span class="text-[10px] text-gray-400 font-semibold">Хариулах</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="state.auto_comment_enabled" class="flex gap-2 pl-9">
-                                        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0">
-                                            <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                                                <p class="text-[10px] font-semibold text-[var(--text-heading)]">Таны дэлгүүр</p>
-                                                <p class="text-[11px] text-gray-700 dark:text-gray-300">{{ state.auto_comment_text || 'Баярлалаа! Мессежээр мэдэгдэлэе.' }}</p>
-                                            </div>
-                                            <div class="flex items-center gap-3 mt-1 pl-2">
-                                                <span class="text-[10px] text-gray-400">Дөнгөж сая</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- System action badge -->
-                            <div class="flex items-center justify-center gap-2 py-1">
-                                <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-                                <span class="text-[10px] font-medium bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400 px-2.5 py-0.5 rounded-full border border-primary-200 dark:border-primary-800/50 whitespace-nowrap">
-                                    ✓ Захиалга #1234 үүслээ
-                                </span>
-                                <div class="h-px flex-1 bg-gray-200 dark:bg-gray-800" />
-                            </div>
-
-                            <!-- Messenger Preview -->
-                            <div v-if="state.private_reply_enabled" class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-                                <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
-                                    <UIcon name="i-lucide-message-circle" class="w-3.5 h-3.5 text-blue-500" />
-                                    <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Messenger хувийн мессеж</span>
-                                </div>
-                                <div class="p-3 space-y-2">
-                                    <div class="flex gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0 mt-0.5">
-                                            <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
-                                        </div>
-                                        <div class="space-y-1.5 flex-1 min-w-0">
-                                            <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl rounded-tl-sm px-3 py-2">
-                                                <p class="text-[11px] text-gray-800 dark:text-gray-200 leading-relaxed">
-                                                    {{ renderPreview(state.private_reply_message || 'Захиалга #{order_number} бүртгэгдлээ! Төлбөр: {checkout_link}') }}
-                                                </p>
-                                            </div>
-                                            <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-                                                <div class="bg-gray-50 dark:bg-gray-800/50 px-3 py-2">
-                                                    <p class="text-[10px] text-gray-400">instasell.mn</p>
-                                                    <p class="text-[11px] font-medium text-gray-700 dark:text-gray-300">Төлбөр төлөх</p>
-                                                </div>
-                                                <div class="border-t border-gray-200 dark:border-gray-700 px-3 py-1.5 text-center">
-                                                    <span class="text-[11px] font-semibold text-blue-500">Төлбөр төлөх →</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="p-4">
+                            <AutomationPreview
+                                :preview-keyword="previewKeyword"
+                                :like-comments="state.like_comments"
+                                :auto-comment-enabled="state.auto_comment_enabled"
+                                :auto-comment-text="state.auto_comment_text"
+                                :private-reply-enabled="state.private_reply_enabled"
+                                :private-reply-message="state.private_reply_message"
+                            />
                         </div>
                     </template>
                 </USlideover>

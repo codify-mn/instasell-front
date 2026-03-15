@@ -51,7 +51,7 @@ const formatRevenue = (v: number) => {
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm card-hover">
         <!-- Header -->
         <div class="border-b border-[var(--border-subtle)] px-5 py-4">
             <div class="text-sm font-bold text-[var(--text-heading)]">Захиалга хаанаас ирсэн?</div>

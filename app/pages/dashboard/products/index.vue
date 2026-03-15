@@ -612,7 +612,7 @@ onMounted(() => {
                 :ui="{
                     base: 'min-w-full border-separate border-spacing-0',
                     thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
-                    tbody: '[&>tr]:last:[&>td]:border-b-0',
+                    tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
                     th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
                     td: 'px-4 py-3 border-b border-[var(--border-primary)]',
                     tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
@@ -772,7 +772,7 @@ onMounted(() => {
                 </template>
 
                 <template #empty>
-                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                    <div class="flex flex-col items-center justify-center py-20 text-center empty-state-enter">
                         <div
                             class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
                         >

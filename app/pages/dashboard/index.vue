@@ -87,13 +87,11 @@ const shopChecks = computed(() => [
             <!-- Loading skeleton -->
             <div v-if="isLoading" class="mx-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                    <div v-for="i in 4" :key="i" class="h-28 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
+                    <div v-for="i in 4" :key="i" class="h-28 skeleton-shimmer" />
                 </div>
-                <div class="h-52 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
+                <div class="h-52 skeleton-shimmer" />
                 <div class="grid grid-cols-3 gap-3.5">
-                    <div class="h-56 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
-                    <div class="h-56 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
-                    <div class="h-56 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
+                    <div v-for="i in 3" :key="i" class="h-56 skeleton-shimmer" />
                 </div>
             </div>
 
@@ -107,7 +105,7 @@ const shopChecks = computed(() => [
                 </div>
 
                 <!-- Zone 1: 4 stat cards -->
-                <div data-tour-stats class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:grid-cols-4">
+                <div data-tour-stats class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:grid-cols-4 stagger-in">
                     <DashboardStatCard
                         label="Нийт орлого"
                         :value="formatRevenue(totalRevenue)"
@@ -150,7 +148,7 @@ const shopChecks = computed(() => [
                 />
 
                 <!-- Zone 3: Funnel + Orders + Shop -->
-                <div class="grid gap-3.5 grid-cols-1 lg:grid-cols-[1.6fr_1.4fr_1fr]">
+                <div class="grid gap-3.5 grid-cols-1 lg:grid-cols-[1.6fr_1.4fr_1fr] stagger-in">
                     <DashboardConversionFunnel :stats="conversionStats" />
                     <DashboardRecentOrders />
                     <DashboardShopCard

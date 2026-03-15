@@ -73,6 +73,7 @@ const featureItems = computed(() => {
     const f = subscription.value.plan.features
     return [
         { label: 'Facebook Live', on: f.facebook_live },
+        { label: 'Коммент автоматжуулалт', on: f.automation },
         { label: 'Дэвшилтэт тайлан', on: f.advanced_analytics },
         { label: 'Брэнд тохиргоо', on: f.custom_branding },
         { label: 'Тусгай дэмжлэг', on: f.priority_support },

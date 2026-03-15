@@ -59,31 +59,14 @@ const liveItems: NavigationMenuItem[] = [
 ]
 
 const settingsItems: NavigationMenuItem[] = [
-    // {
-    //     label: 'Үйлчилгээний эрх',
-    //     to: '/dashboard/billing',
-    //     icon: 'i-lucide-credit-card',
-    //     defaultOpen: false,
-    //     type: 'trigger',
-    //     children: [
-    //         {
-    //             label: 'Идэвхтэй багц',
-    //             to: '/dashboard/billing',
-    //             exact: true,
-    //             onSelect: () => { open.value = false }
-    //         },
-    //         {
-    //             label: 'Багц сонгох',
-    //             to: '/dashboard/plans',
-    //             onSelect: () => { open.value = false }
-    //         },
-    //         {
-    //             label: 'Нэхэмжлэх',
-    //             to: '/dashboard/history',
-    //             onSelect: () => { open.value = false }
-    //         }
-    //     ]
-    // },
+    {
+        label: 'Үйлчилгээний эрх',
+        to: '/dashboard/billing',
+        icon: 'i-lucide-credit-card',
+        onSelect: () => {
+            open.value = false
+        }
+    },
     {
         label: 'Тохиргоо',
         to: '/dashboard/settings',

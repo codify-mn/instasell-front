@@ -29,8 +29,8 @@ export default defineNuxtConfig({
     css: ['~/assets/css/main.css'],
 
     app: {
-        pageTransition: false,
-        layoutTransition: false
+        pageTransition: { name: 'page', mode: 'out-in' },
+        layoutTransition: { name: 'layout', mode: 'out-in' }
     },
 
     runtimeConfig: {

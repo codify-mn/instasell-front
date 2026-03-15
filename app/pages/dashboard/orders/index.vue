@@ -522,16 +522,18 @@ onMounted(() => {
                         />
                         <USelect v-model="filter.status" :items="statusOptions" class="w-full sm:w-32" size="sm" />
                         <div class="flex items-center gap-1.5">
-                            <input
+                            <UInput
                                 v-model="filter.date_from"
                                 type="date"
-                                class="h-8 rounded-md border border-[var(--border-primary)] bg-[var(--surface-inset)] px-2.5 text-xs text-[var(--text-body)] focus:outline-none focus:ring-1 focus:ring-primary-500"
+                                class="w-full sm:w-auto"
+                                size="sm"
                             />
                             <span class="text-xs text-[var(--text-placeholder)]">–</span>
-                            <input
+                            <UInput
                                 v-model="filter.date_to"
                                 type="date"
-                                class="h-8 rounded-md border border-[var(--border-primary)] bg-[var(--surface-inset)] px-2.5 text-xs text-[var(--text-body)] focus:outline-none focus:ring-1 focus:ring-primary-500"
+                                class="w-full sm:w-auto"
+                                size="sm"
                             />
                         </div>
                     </div>
@@ -544,7 +546,7 @@ onMounted(() => {
                 :ui="{
                     base: 'min-w-full border-separate border-spacing-0',
                     thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
-                    tbody: '[&>tr]:last:[&>td]:border-b-0',
+                    tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
                     th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
                     td: 'px-4 py-3 border-b border-[var(--border-primary)]',
                     tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
@@ -652,7 +654,7 @@ onMounted(() => {
                 </template>
 
                 <template #empty>
-                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                    <div class="flex flex-col items-center justify-center py-20 text-center empty-state-enter">
                         <div
                             class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
                         >

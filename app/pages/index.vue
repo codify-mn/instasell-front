@@ -197,7 +197,7 @@ onMounted(() => {
                         >
                             <div class="flex items-center gap-1.5">
                                 <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
-                                <span>Үнэгүй туршилт</span>
+                                <span>14 хоног үнэгүй</span>
                             </div>
                             <div class="flex items-center gap-1.5">
                                 <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
@@ -315,6 +315,55 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </UContainer>
+        </section>
+
+        <!-- Demo Video -->
+        <section id="demo" class="py-20 lg:py-24">
+            <UContainer class="max-w-4xl">
+                <div class="text-center mb-10">
+                    <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Демо</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                        2 минутад бүгдийг ойлгоорой
+                    </h2>
+                    <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
+                        Коммент → Захиалга → Төлбөр хүртэлх бүх процессыг харна уу
+                    </p>
+                </div>
+
+                <div class="relative rounded-2xl overflow-hidden border border-[var(--border-primary)] shadow-2xl aspect-video bg-gray-900">
+                    <!-- Replace src with your actual YouTube embed URL -->
+                    <iframe
+                        src=""
+                        class="w-full h-full"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    />
+
+                    <!-- Placeholder overlay — remove when video URL is set -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900/80 text-center px-8">
+                        <div class="w-20 h-20 rounded-full bg-white/10 backdrop-blur flex items-center justify-center mb-6 cursor-pointer hover:bg-white/20 transition-colors group">
+                            <UIcon name="i-lucide-play" class="w-8 h-8 text-white ml-1 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <p class="text-white/60 text-sm">Демо видео тун удахгүй нэмэгдэнэ</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 mt-8">
+                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
+                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">1</div>
+                        <p class="text-xs text-gray-500">Коммент илрүүлэлт</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
+                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">2</div>
+                        <p class="text-xs text-gray-500">Автомат захиалга</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
+                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">3</div>
+                        <p class="text-xs text-gray-500">QPay төлбөр</p>
                     </div>
                 </div>
             </UContainer>
@@ -594,7 +643,7 @@ onMounted(() => {
                             Борлуулалтаа автоматжуулахад бэлэн үү?
                         </h2>
                         <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto">
-                            Үнэгүй туршилт. Карт шаардлагагүй. 5 минутад бэлэн.
+                            14 хоног үнэгүй. Карт шаардлагагүй. 5 минутад бэлэн.
                         </p>
 
                         <div class="flex flex-col sm:flex-row gap-3 justify-center">

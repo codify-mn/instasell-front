@@ -111,7 +111,7 @@ const onMouseLeave = () => { tooltip.value = null }
 </script>
 
 <template>
-    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 shadow-sm">
+    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 shadow-sm card-hover">
         <!-- Header -->
         <div class="mb-5 flex items-start justify-between">
             <div>

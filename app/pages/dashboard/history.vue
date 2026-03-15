@@ -73,19 +73,19 @@ async function handleCheckPayment() {
                 <!-- Loading skeleton -->
                 <div v-if="loading" class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] overflow-hidden">
                     <div class="grid grid-cols-5 gap-4 px-4 py-3 border-b border-[var(--border-primary)] bg-[var(--surface-inset)]/60">
-                        <div v-for="i in 5" :key="i" class="h-3 rounded bg-[var(--surface-inset)] animate-pulse" :class="i === 5 ? 'w-12' : 'w-16'" />
+                        <div v-for="i in 5" :key="i" class="h-3 rounded bg-[var(--surface-inset)] shimmer-bar" :class="i === 5 ? 'w-12' : 'w-16'" />
                     </div>
                     <div v-for="i in 5" :key="i" class="grid grid-cols-5 gap-4 px-4 py-3.5 border-b border-[var(--border-subtle)]">
-                        <div class="h-3 w-20 rounded bg-[var(--surface-inset)] animate-pulse" />
-                        <div class="h-3 w-16 rounded bg-[var(--surface-inset)] animate-pulse" />
-                        <div class="h-3 w-12 rounded bg-[var(--surface-inset)] animate-pulse" />
-                        <div class="h-3 w-18 rounded bg-[var(--surface-inset)] animate-pulse" />
-                        <div class="h-5 w-16 rounded-full bg-[var(--surface-inset)] animate-pulse" />
+                        <div class="h-3 w-20 rounded bg-[var(--surface-inset)] shimmer-bar" />
+                        <div class="h-3 w-16 rounded bg-[var(--surface-inset)] shimmer-bar" />
+                        <div class="h-3 w-12 rounded bg-[var(--surface-inset)] shimmer-bar" />
+                        <div class="h-3 w-18 rounded bg-[var(--surface-inset)] shimmer-bar" />
+                        <div class="h-5 w-16 rounded-full bg-[var(--surface-inset)] shimmer-bar" />
                     </div>
                 </div>
 
                 <!-- Empty -->
-                <div v-else-if="!invoices.length" class="flex flex-col items-center justify-center py-16 text-center">
+                <div v-else-if="!invoices.length" class="flex flex-col items-center justify-center py-16 text-center empty-state-enter">
                     <UIcon name="i-lucide-receipt" class="size-10 text-[var(--text-placeholder)] mb-3" />
                     <p class="text-sm text-[var(--text-muted)] mb-4">Нэхэмжлэх байхгүй байна</p>
                     <UButton label="Багц авах" color="primary" size="sm" to="/dashboard/plans" />

@@ -552,3 +552,165 @@ h1, h2, h3 {
     @apply text-gray-200 dark:text-gray-800;
     line-height: 1;
 }
+
+/* ============================================
+   DASHBOARD ANIMATIONS & MICRO-INTERACTIONS
+   ============================================ */
+
+/* Skeleton shimmer — replaces flat animate-pulse */
+.skeleton-shimmer {
+    @apply relative overflow-hidden rounded-xl border border-[var(--border-primary)];
+    background: var(--surface-card);
+}
+
+.skeleton-shimmer::after,
+.shimmer-bar::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.15) 40%,
+        transparent 80%
+    );
+    animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer::after,
+.dark .shimmer-bar::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255,255,255,0.04) 40%,
+        transparent 80%
+    );
+}
+
+/* Small inline shimmer bars (table placeholders etc.) */
+.shimmer-bar {
+    @apply relative overflow-hidden;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Empty state entrance */
+.empty-state-enter {
+    animation: empty-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+}
+
+@keyframes empty-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Stagger children — apply to parent, children animate in order */
+.stagger-in > * {
+    animation: stagger-fade 0.4s ease-out both;
+}
+
+.stagger-in > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-in > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-in > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-in > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-in > *:nth-child(8) { animation-delay: 420ms; }
+
+@keyframes stagger-fade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Table row stagger — lighter animation for table rows */
+.stagger-rows tr {
+    animation: row-slide 0.3s ease-out both;
+}
+
+.stagger-rows tr:nth-child(1) { animation-delay: 0ms; }
+.stagger-rows tr:nth-child(2) { animation-delay: 30ms; }
+.stagger-rows tr:nth-child(3) { animation-delay: 60ms; }
+.stagger-rows tr:nth-child(4) { animation-delay: 90ms; }
+.stagger-rows tr:nth-child(5) { animation-delay: 120ms; }
+.stagger-rows tr:nth-child(6) { animation-delay: 150ms; }
+.stagger-rows tr:nth-child(7) { animation-delay: 180ms; }
+.stagger-rows tr:nth-child(8) { animation-delay: 210ms; }
+.stagger-rows tr:nth-child(9) { animation-delay: 240ms; }
+.stagger-rows tr:nth-child(10) { animation-delay: 270ms; }
+
+@keyframes row-slide {
+    from {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Dark mode crossfade — smooth theme switching */
+body,
+body *,
+[data-slot='sidebar'],
+.bg-\[var\(--surface-card\)\],
+.bg-\[var\(--surface-page\)\] {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Toast entrance — slide + spring from right */
+[data-sonner-toaster] [data-sonner-toast] {
+    animation: toast-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .stagger-in > *,
+    .stagger-rows tr,
+    .empty-state-enter,
+    .skeleton-shimmer::after,
+    .shimmer-bar::after,
+    [data-sonner-toaster] [data-sonner-toast] {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    body, body * {
+        transition-duration: 0s !important;
+    }
+
+    .page-enter-active,
+    .page-leave-active,
+    .layout-enter-active,
+    .layout-leave-active {
+        transition-duration: 0s !important;
+    }
+}

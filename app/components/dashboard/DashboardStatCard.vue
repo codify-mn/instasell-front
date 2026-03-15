@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import NumberFlow from '@number-flow/vue'
+
 interface Props {
     label: string
     value: string | number
@@ -69,7 +71,12 @@ const deltaSymbol = computed(() => {
         </div>
 
         <div class="text-2xl font-extrabold leading-none tracking-tight" :class="valueClass">
-            {{ value }}
+            <NumberFlow
+                v-if="typeof value === 'number'"
+                :value="value"
+                :format="{ useGrouping: true }"
+            />
+            <template v-else>{{ value }}</template>
         </div>
 
         <div class="mt-2 flex items-center gap-1.5">
