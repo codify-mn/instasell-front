@@ -1,124 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import 'tailwindcss' theme(static);
 @import '@nuxt/ui';
 
 @theme static {
-    --font-sans: 'Poppins', sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* Purple-blue primary (#3D4283 base) */
-    --color-primary-50: #eef0f9;
-    --color-primary-100: #d5d9f0;
-    --color-primary-200: #b3b9e2;
-    --color-primary-300: #8f97d1;
-    --color-primary-400: #6b73c0;
-    --color-primary-500: #4f57ab;
-    --color-primary-600: #3D4283; /* Base */
-    --color-primary-700: #333873;
-    --color-primary-800: #282d5e;
-    --color-primary-900: #1e2249;
-    --color-primary-950: #121430;
+    /* Shopify green (#008060 base) */
+    --color-primary-50: #f0fdf4;
+    --color-primary-100: #dcfce7;
+    --color-primary-200: #bbf7d0;
+    --color-primary-300: #86efac;
+    --color-primary-400: #4ade80;
+    --color-primary-500: #22c55e;
+    --color-primary-600: #008060; /* Base — Shopify green */
+    --color-primary-700: #006e52;
+    --color-primary-800: #005c45;
+    --color-primary-900: #004939;
+    --color-primary-950: #00332a;
 
-    /* Cool neutral secondary */
-    --color-secondary-50: #f8f9fc;
-    --color-secondary-100: #f3f4f8;
-    --color-secondary-200: #e2e4eb;
-    --color-secondary-300: #d0d3dc;
-    --color-secondary-400: #9da1b3;
-    --color-secondary-500: #6b7086;
-    --color-secondary-600: #4f5570;
-    --color-secondary-700: #1a1d36;
-    --color-secondary-800: #121526;
-    --color-secondary-900: #0d0f17;
-    --color-secondary-950: #060710;
+    /* Neutral gray (warm, not blue-tinted) */
+    --color-secondary-50: #fafafa;
+    --color-secondary-100: #f5f5f5;
+    --color-secondary-200: #e5e5e5;
+    --color-secondary-300: #d4d4d4;
+    --color-secondary-400: #a3a3a3;
+    --color-secondary-500: #737373;
+    --color-secondary-600: #525252;
+    --color-secondary-700: #303030;
+    --color-secondary-800: #1a1a1a;
+    --color-secondary-900: #111111;
+    --color-secondary-950: #0a0a0a;
 }
 
 /* ── Semantic tokens ── */
 :root {
     /* Surfaces */
-    --surface-page: #f8f9fc;
+    --surface-page: #f6f6f7;
     --surface-card: #ffffff;
-    --surface-inset: #f3f4f8;
-    --surface-overlay: #1a1d36;
+    --surface-inset: #f1f1f1;
+    --surface-overlay: #202223;
 
     /* Borders */
-    --border-primary: #e2e4eb;
-    --border-subtle: #eceef3;
-    --border-strong: #d0d3dc;
+    --border-primary: #e1e3e5;
+    --border-subtle: #ebebeb;
+    --border-strong: #c9cccf;
 
     /* Text */
-    --text-heading: #1a1d36;
-    --text-body: #4f5570;
-    --text-muted: #7c7f8e;
-    --text-placeholder: #a5a8b5;
-    --text-dimmed: #d0d3dc;
+    --text-heading: #202223;
+    --text-body: #6d7175;
+    --text-muted: #8c9196;
+    --text-placeholder: #b5b5b5;
+    --text-dimmed: #c9cccf;
 
-    /* Accent — primary (sparse: revenue, conversion, paid) */
-    --accent-green: #3D4283;
-    --accent-green-hover: #333873;
-    --accent-green-light: #eef0f9;
-    --accent-green-border: #b3b9e2;
+    /* Accent — green (sparse: revenue, conversion, paid) */
+    --accent-green: #008060;
+    --accent-green-hover: #006e52;
+    --accent-green-light: #f0fdf4;
+    --accent-green-border: #bbf7d0;
 
     /* Accent — warning */
-    --accent-warn: #e47a00;
-    --accent-warn-dark: #b45309;
-    --accent-warn-light: #fff8ec;
+    --accent-warn: #b98900;
+    --accent-warn-dark: #916a00;
+    --accent-warn-light: #fef3cd;
 
     /* Accent — error */
-    --accent-error: #dc2626;
-    --accent-error-light: #fff1f0;
+    --accent-error: #d72c0d;
+    --accent-error-light: #fff4f4;
 
     /* Accent — info */
-    --accent-info: #1d4ed8;
-    --accent-info-light: #eff6ff;
+    --accent-info: #2c6ecb;
+    --accent-info-light: #eef4fb;
 
     /* Misc */
-    --bar-neutral: #e2e4eb;
+    --bar-neutral: #e1e3e5;
 
-    /* Gradients (marketing pages) */
-    --gradient-start: #4f57ab;
-    --gradient-mid: #3D4283;
-    --gradient-end: #282d5e;
+    /* Gradients (marketing pages — subtle) */
+    --gradient-start: #008060;
+    --gradient-mid: #006e52;
+    --gradient-end: #004939;
 
-    /* Shadows */
-    --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-elevated: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-    --shadow-hover: 0 8px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.06);
+    /* Shadows — Shopify style: subtle, warm */
+    --shadow-card: 0 1px 2px rgba(26,26,26,0.05), 0 0 0 1px rgba(0,0,0,0.03);
+    --shadow-elevated: 0 3px 6px -1px rgba(26,26,26,0.06), 0 1px 3px rgba(26,26,26,0.04);
+    --shadow-hover: 0 4px 12px rgba(26,26,26,0.08);
 }
 
 /* Dark mode */
 .dark {
-    --surface-page: #0f1019;
-    --surface-card: #1a1d30;
-    --surface-inset: #1a1d30;
-    --surface-overlay: #0f1019;
+    --surface-page: #0d0d0d;
+    --surface-card: #1a1a1a;
+    --surface-inset: #202020;
+    --surface-overlay: #0d0d0d;
 
-    --border-primary: #2a2d45;
-    --border-subtle: #1a1d30;
-    --border-strong: #3d4160;
+    --border-primary: #333333;
+    --border-subtle: #2a2a2a;
+    --border-strong: #484848;
 
-    --text-heading: #e2e4f0;
-    --text-body: #c5c8d9;
-    --text-muted: #8f93ab;
-    --text-placeholder: #5c6080;
-    --text-dimmed: #3d4160;
+    --text-heading: #e3e3e3;
+    --text-body: #a3a3a3;
+    --text-muted: #8a8a8a;
+    --text-placeholder: #5c5c5c;
+    --text-dimmed: #3d3d3d;
 
-    --accent-green: #8f97d1;
-    --accent-green-hover: #b3b9e2;
-    --accent-green-light: rgba(30, 34, 73, 0.3);
-    --accent-green-border: #1e2249;
+    --accent-green: #36d583;
+    --accent-green-hover: #5be49b;
+    --accent-green-light: rgba(0, 128, 96, 0.15);
+    --accent-green-border: #004939;
 
-    --accent-warn-light: rgba(69, 26, 3, 0.3);
-    --accent-error-light: rgba(69, 10, 10, 0.3);
-    --accent-info-light: rgba(30, 58, 95, 0.3);
+    --accent-warn-light: rgba(185, 137, 0, 0.15);
+    --accent-error-light: rgba(215, 44, 13, 0.15);
+    --accent-info-light: rgba(44, 110, 203, 0.15);
 
-    --bar-neutral: #2a2d45;
+    --bar-neutral: #333333;
 
-    --gradient-start: #8f97d1;
-    --gradient-mid: #4f57ab;
-    --gradient-end: #3D4283;
+    --gradient-start: #36d583;
+    --gradient-mid: #008060;
+    --gradient-end: #006e52;
 
-    --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
-    --shadow-elevated: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-elevated: 0 3px 8px rgba(0,0,0,0.5);
 }
 
 /* Override Nuxt UI elevated bg to match project theme */
@@ -132,7 +132,8 @@
 /* Base styles */
 body {
     @apply bg-[var(--surface-page)] text-[var(--text-body)];
-    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3 {
@@ -170,8 +171,8 @@ h1, h2, h3 {
 
 /* Better scrollbars */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -196,7 +197,6 @@ h1, h2, h3 {
     background-image: linear-gradient(
         135deg,
         var(--gradient-start),
-        var(--gradient-mid),
         var(--gradient-end)
     );
 }
@@ -305,20 +305,12 @@ h1, h2, h3 {
 
 /* Card hover effects */
 .card-hover {
-    @apply transition-all duration-300;
+    @apply transition-all duration-200;
 }
 
 .card-hover:hover {
-    @apply -translate-y-1;
-    box-shadow:
-        0 20px 40px -15px rgba(61, 66, 131, 0.15),
-        0 10px 20px -10px rgba(61, 66, 131, 0.08);
-}
-
-.dark .card-hover:hover {
-    box-shadow:
-        0 20px 40px -15px rgba(143, 151, 209, 0.2),
-        0 10px 20px -10px rgba(79, 87, 171, 0.15);
+    @apply -translate-y-0.5;
+    box-shadow: var(--shadow-hover);
 }
 
 /* Clean card */
@@ -332,18 +324,19 @@ h1, h2, h3 {
 .glass-card-elevated {
     background: var(--surface-card);
     border: 1px solid var(--border-primary);
-    box-shadow: 0 2px 8px rgba(26, 29, 54, 0.06), 0 1px 2px rgba(26, 29, 54, 0.04);
+    box-shadow: var(--shadow-card);
+    @apply transition-shadow duration-200;
 }
 
 .glass-card-elevated:hover {
-    box-shadow: 0 4px 16px rgba(26, 29, 54, 0.1), 0 2px 4px rgba(26, 29, 54, 0.06);
+    box-shadow: var(--shadow-elevated);
 }
 
-/* Clean solid card (no blur) */
+/* Clean solid card */
 .card-clean {
     background: var(--surface-card);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: var(--shadow-card);
 }
 
@@ -353,36 +346,34 @@ h1, h2, h3 {
     color: var(--text-heading);
 }
 
-/* Hero radial mesh background */
+/* Hero background — clean, subtle */
 .hero-mesh-bg {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(61,66,131,0.13) 0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(61,66,131,0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(79,87,171,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,128,96,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(0,128,96,0.05) 0%, transparent 60%),
         #ffffff;
 }
 
 .dark .hero-mesh-bg {
     background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,87,171,0.10) 0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(79,87,171,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(143,151,209,0.05) 0%, transparent 55%),
-        #0f1019;
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,128,96,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(0,128,96,0.05) 0%, transparent 60%),
+        #0d0d0d;
 }
 
-/* Stats section — light primary-tinted background */
+/* Stats section background */
 .stats-section-bg {
-    background: linear-gradient(135deg, #eef0f9, #f8f9fc, #eef0f9);
-    border-top: 1px solid #e2e4eb;
-    border-bottom: 1px solid #e2e4eb;
+    background: #fafafa;
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
 }
 
 .dark .stats-section-bg {
-    background: linear-gradient(135deg, #0f1019, #1a1d30, #0f1019);
-    border-top-color: #2a2d45;
-    border-bottom-color: #2a2d45;
+    background: #141414;
+    border-top-color: #333333;
+    border-bottom-color: #333333;
 }
 
 /* Sidebar nav active indicator */
@@ -393,7 +384,11 @@ h1, h2, h3 {
 .glass-nav-active::before {
     content: '';
     @apply absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full;
-    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    background: #008060;
+}
+
+.dark .glass-nav-active::before {
+    background: #36d583;
 }
 
 /* Button shine effect */
@@ -404,7 +399,7 @@ h1, h2, h3 {
 .btn-shine::after {
     content: '';
     @apply absolute inset-0 -translate-x-full;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
     animation: shine 3s infinite;
 }
 
@@ -418,26 +413,14 @@ h1, h2, h3 {
     }
 }
 
-/* Icon container with gradient border */
+/* Icon container */
 .icon-container {
     @apply relative p-4 rounded-2xl;
-    background: linear-gradient(135deg, rgba(61, 66, 131, 0.1), rgba(79, 87, 171, 0.08));
+    background: rgba(0, 128, 96, 0.06);
 }
 
-.icon-container::before {
-    content: '';
-    @apply absolute inset-0 rounded-2xl;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.5;
+.dark .icon-container {
+    background: rgba(54, 213, 131, 0.08);
 }
 
 /* Step connector line */
@@ -446,9 +429,9 @@ h1, h2, h3 {
     background: linear-gradient(
         90deg,
         transparent,
-        var(--gradient-start),
-        var(--gradient-mid),
-        var(--gradient-end),
+        var(--border-primary),
+        var(--border-strong),
+        var(--border-primary),
         transparent
     );
 }
@@ -464,31 +447,20 @@ h1, h2, h3 {
 /* Pricing card popular highlight */
 .pricing-popular {
     @apply relative;
-    background: linear-gradient(135deg, rgba(61, 66, 131, 0.06), rgba(40, 45, 94, 0.04));
+    border: 2px solid #008060;
 }
 
-.pricing-popular::before {
-    content: '';
-    @apply absolute inset-0 rounded-2xl;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+.dark .pricing-popular {
+    border-color: #36d583;
 }
 
 /* Auth page split background */
 .auth-visual-bg {
     background: linear-gradient(
         135deg,
-        var(--gradient-start) 0%,
-        var(--gradient-mid) 50%,
-        var(--gradient-end) 100%
+        #008060 0%,
+        #006e52 50%,
+        #004939 100%
     );
 }
 
@@ -500,15 +472,38 @@ h1, h2, h3 {
 .docs-nav-active::before {
     content: '';
     @apply absolute left-0 top-0 bottom-0 w-0.5 rounded-full;
-    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    background: #008060;
 }
 
+.dark .docs-nav-active::before {
+    background: #36d583;
+}
 
-/* Noise texture overlay (subtle) */
-.noise-overlay::after {
-    content: '';
-    @apply absolute inset-0 pointer-events-none opacity-[0.015] dark:opacity-[0.03];
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+/* Smooth page transitions */
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.2s ease-out;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+
+/* Layout transitions */
+.layout-enter-active,
+.layout-leave-active {
+    transition: all 0.2s ease-out;
+}
+
+.layout-enter-from,
+.layout-leave-to {
+    opacity: 0;
 }
 
 /* Live indicator pulse */
@@ -536,22 +531,14 @@ h1, h2, h3 {
 
 /* Gradient border button */
 .btn-gradient-border {
-    @apply relative bg-[var(--surface-card)];
+    @apply relative;
+    border: 1px solid #008060;
+    color: #008060;
 }
 
-.btn-gradient-border::before {
-    content: '';
-    @apply absolute inset-0 rounded-lg;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+.dark .btn-gradient-border {
+    border-color: #36d583;
+    color: #36d583;
 }
 
 /* Testimonial card */
@@ -565,5 +552,3 @@ h1, h2, h3 {
     @apply text-gray-200 dark:text-gray-800;
     line-height: 1;
 }
-
-/* 1. The "Pro-Studio" Palette (Dark Mode)Most streaming platforms (OBS, Twitch, Restream) use dark themes because they reduce eye strain during long broadcasts and make colorful video feeds pop.Primary (Action): Electric Purple (#8A3FFC) or Vivid Blue (#0062FF). These colors feel "techy" and modern.Background: Deep Charcoal (#161616). Avoid pure black; charcoal looks more premium.Accent (Live Status): Signal Red (#FF0000). Essential for that "ON AIR" feeling.Text: Off-White (#F4F4F4) for high readability.2. The "E-commerce Trust" Palette (Light Mode)If your platform is more focused on the selling aspect (like Shopify or Amazon Live), a cleaner, lighter look builds trust and feels more "business-like."Primary (Brand): Deep Teal (#008080) or Indigo (#3F51B5). These suggest stability and security for handling payments.Background: Cool Gray (#F8F9FA). Feels airy and professional.Success Color: Emerald Green (#2ECC71). Use this for "Sale Confirmed" or "Stream Connected" notifications.Warning/Action: Bright Orange (#FD7E14). Great for "Limited Stock" alerts to create urgency.3. Psychologically Mapping Your ColorsWhen choosing, think about what you want the user to feel when they log in to your "DIY Restream" tool:ColorPsychological TriggerUse Case in Your AppVibrant BlueTrust & Technology"Connect Account" buttons, active stream indicators.Deep PurpleCreativity & LuxuryBranding, "Pro" features, or creator-tier tools.Bright RedUrgency & ExcitementThe "Go Live" button or "Hot Item" overlays.Slate GrayNeutralitySidebar backgrounds, inactive icons.4. Accessibility Tip (Contrast is King)Since you are handling overlays, you must ensure your color choices don't get "lost" when placed on top of a video.The "Border" Rule: Always give your overlay text a thin black outline or a semi-transparent dark background (glassmorphism).The "Safe Zone" Rule: Use high-contrast colors (White text on a Dark Blue background) for buttons to ensure users can navigate quickly during the "chaos" of a live sale. */
