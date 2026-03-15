@@ -119,33 +119,33 @@ async function handleCancel() {
 </script>
 
 <template>
-    <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
+    <div class="flex w-full h-full flex-col overflow-hidden bg-(--surface-page)">
         <!-- Header -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
-            <span class="text-base font-bold text-[var(--text-heading)]">Үйлчилгээний эрх</span>
+        <div class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7">
+            <span class="text-base font-bold text-(--text-heading)">Үйлчилгээний эрх</span>
         </div>
 
         <!-- Tabs -->
-        <div class="border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div class="border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7">
             <nav class="flex gap-6 -mb-px">
                 <NuxtLink
                     to="/dashboard/billing"
                     exact-active-class="border-primary-500 text-[var(--text-heading)]"
-                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors"
                 >
                     Идэвхтэй багц
                 </NuxtLink>
                 <NuxtLink
                     to="/dashboard/plans"
                     exact-active-class="border-primary-500 text-[var(--text-heading)]"
-                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors"
                 >
                     Багц сонгох
                 </NuxtLink>
                 <NuxtLink
                     to="/dashboard/history"
                     exact-active-class="border-primary-500 text-[var(--text-heading)]"
-                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors"
                 >
                     Нэхэмжлэх
                 </NuxtLink>
@@ -157,34 +157,34 @@ async function handleCancel() {
             <div class="max-w-3xl mx-auto px-4 sm:px-7 py-6 space-y-6">
                 <!-- Loading skeleton -->
                 <div v-if="loading" class="space-y-6">
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-4">
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5 space-y-4">
                         <div class="flex items-start justify-between">
                             <div class="space-y-2">
-                                <div class="h-5 w-32 rounded bg-[var(--surface-inset)] animate-pulse" />
-                                <div class="h-3 w-48 rounded bg-[var(--surface-inset)] animate-pulse" />
+                                <div class="h-5 w-32 rounded bg-(--surface-inset) animate-pulse" />
+                                <div class="h-3 w-48 rounded bg-(--surface-inset) animate-pulse" />
                             </div>
-                            <div class="h-6 w-20 rounded bg-[var(--surface-inset)] animate-pulse" />
+                            <div class="h-6 w-20 rounded bg-(--surface-inset) animate-pulse" />
                         </div>
-                        <div class="h-3 w-56 rounded bg-[var(--surface-inset)] animate-pulse" />
-                        <div class="border-t border-[var(--border-subtle)] pt-4 flex gap-2">
-                            <div class="h-8 w-28 rounded-md bg-[var(--surface-inset)] animate-pulse" />
-                            <div class="h-8 w-24 rounded-md bg-[var(--surface-inset)] animate-pulse" />
+                        <div class="h-3 w-56 rounded bg-(--surface-inset) animate-pulse" />
+                        <div class="border-t border-(--border-subtle) pt-4 flex gap-2">
+                            <div class="h-8 w-28 rounded-md bg-(--surface-inset) animate-pulse" />
+                            <div class="h-8 w-24 rounded-md bg-(--surface-inset) animate-pulse" />
                         </div>
                     </div>
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-4">
-                        <div class="h-4 w-20 rounded bg-[var(--surface-inset)] animate-pulse" />
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5 space-y-4">
+                        <div class="h-4 w-20 rounded bg-(--surface-inset) animate-pulse" />
                         <div v-for="i in 4" :key="i" class="space-y-1.5">
                             <div class="flex justify-between">
-                                <div class="h-3 w-24 rounded bg-[var(--surface-inset)] animate-pulse" />
-                                <div class="h-3 w-16 rounded bg-[var(--surface-inset)] animate-pulse" />
+                                <div class="h-3 w-24 rounded bg-(--surface-inset) animate-pulse" />
+                                <div class="h-3 w-16 rounded bg-(--surface-inset) animate-pulse" />
                             </div>
-                            <div class="h-1.5 w-full rounded-full bg-[var(--surface-inset)] animate-pulse" />
+                            <div class="h-1.5 w-full rounded-full bg-(--surface-inset) animate-pulse" />
                         </div>
                     </div>
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-3">
-                        <div class="h-4 w-28 rounded bg-[var(--surface-inset)] animate-pulse" />
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5 space-y-3">
+                        <div class="h-4 w-28 rounded bg-(--surface-inset) animate-pulse" />
                         <div class="grid grid-cols-2 gap-2">
-                            <div v-for="i in 5" :key="i" class="h-4 w-32 rounded bg-[var(--surface-inset)] animate-pulse" />
+                            <div v-for="i in 5" :key="i" class="h-4 w-32 rounded bg-(--surface-inset) animate-pulse" />
                         </div>
                     </div>
                 </div>
@@ -192,30 +192,30 @@ async function handleCancel() {
                 <!-- No subscription -->
                 <template v-else-if="!subscription">
                     <div class="flex flex-col items-center justify-center py-16 text-center">
-                        <UIcon name="i-lucide-credit-card" class="size-10 text-[var(--text-placeholder)] mb-3" />
-                        <p class="text-sm text-[var(--text-muted)] mb-4">Одоогоор идэвхтэй багц байхгүй байна</p>
+                        <UIcon name="i-lucide-credit-card" class="size-10 text-(--text-placeholder) mb-3" />
+                        <p class="text-sm text-(--text-muted) mb-4">Одоогоор идэвхтэй багц байхгүй байна</p>
                         <UButton label="Багц сонгох" color="primary" to="/dashboard/plans" />
                     </div>
                 </template>
 
                 <template v-else>
                     <!-- Plan overview -->
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5">
                         <div class="flex items-start justify-between mb-4">
                             <div>
                                 <div class="flex items-center gap-2.5 mb-1">
-                                    <h2 class="text-lg font-bold text-[var(--text-heading)]">{{ subscription.plan?.name }}</h2>
+                                    <h2 class="text-lg font-bold text-(--text-heading)">{{ subscription.plan?.name }}</h2>
                                     <UBadge :color="statusColor" variant="subtle" size="sm">{{ statusLabel }}</UBadge>
                                 </div>
-                                <p class="text-sm text-[var(--text-muted)]">{{ subscription.plan?.description }}</p>
+                                <p class="text-sm text-(--text-muted)">{{ subscription.plan?.description }}</p>
                             </div>
                             <div class="text-right">
-                                <div class="text-xl font-bold text-[var(--text-heading)]">{{ price }}</div>
-                                <div class="text-xs text-[var(--text-muted)]">/ {{ cycle }}</div>
+                                <div class="text-xl font-bold text-(--text-heading)">{{ price }}</div>
+                                <div class="text-xs text-(--text-muted)">/ {{ cycle }}</div>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[var(--text-muted)]">
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-(--text-muted)">
                             <div class="flex items-center gap-1.5">
                                 <UIcon name="i-lucide-calendar" class="size-3.5" />
                                 <span v-if="isTrialing && daysRemaining > 0">Туршилт: {{ daysRemaining }} хоног үлдсэн</span>
@@ -228,12 +228,12 @@ async function handleCancel() {
                                 <UIcon name="i-lucide-clock" class="size-3.5" />
                                 <span>
                                     {{ isPeriodExpired ? 'Дууссан' : isTrialing ? 'Дуусах' : 'Хүртэл' }}:
-                                    <strong class="text-[var(--text-heading)]">{{ periodEndDate }}</strong>
+                                    <strong class="text-(--text-heading)">{{ periodEndDate }}</strong>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="flex gap-2 mt-4 pt-4 border-t border-[var(--border-subtle)]">
+                        <div class="flex gap-2 mt-4 pt-4 border-t border-(--border-subtle)">
                             <UButton label="Багц өөрчлөх" color="primary" size="sm" to="/dashboard/plans" />
                             <UButton label="Нэхэмжлэх" color="neutral" variant="outline" size="sm" to="/dashboard/history" />
                             <UButton
@@ -248,13 +248,13 @@ async function handleCancel() {
                     </div>
 
                     <!-- Usage -->
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
-                        <h3 class="text-sm font-bold text-[var(--text-heading)] mb-4">Хэрэглээ</h3>
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5">
+                        <h3 class="text-sm font-bold text-(--text-heading) mb-4">Хэрэглээ</h3>
                         <div class="space-y-3.5">
                             <div v-for="item in usageItems" :key="item.label">
                                 <div class="flex items-center justify-between mb-1">
-                                    <span class="text-sm text-[var(--text-body)]">{{ item.label }}</span>
-                                    <span class="text-xs text-[var(--text-muted)]">
+                                    <span class="text-sm text-(--text-body)">{{ item.label }}</span>
+                                    <span class="text-xs text-(--text-muted)">
                                         <template v-if="item.isStorage">{{ formatStorage(item.current) }} / {{ formatStorage(item.max) }}</template>
                                         <template v-else>{{ item.current.toLocaleString() }} / {{ formatLimit(item.max) }}</template>
                                     </span>
@@ -265,8 +265,8 @@ async function handleCancel() {
                     </div>
 
                     <!-- Features -->
-                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
-                        <h3 class="text-sm font-bold text-[var(--text-heading)] mb-3">Багцын боломжууд</h3>
+                    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5">
+                        <h3 class="text-sm font-bold text-(--text-heading) mb-3">Багцын боломжууд</h3>
                         <div class="grid grid-cols-2 gap-2">
                             <div v-for="item in featureItems" :key="item.label" class="flex items-center gap-2 text-sm">
                                 <UIcon
@@ -283,8 +283,8 @@ async function handleCancel() {
                     <UModal v-model:open="showCancelModal">
                         <template #content>
                             <div class="p-6">
-                                <h3 class="text-lg font-bold text-[var(--text-heading)] mb-2">Захиалга цуцлах</h3>
-                                <p class="text-sm text-[var(--text-muted)] mb-6">
+                                <h3 class="text-lg font-bold text-(--text-heading) mb-2">Захиалга цуцлах</h3>
+                                <p class="text-sm text-(--text-muted) mb-6">
                                     Цуцалсан ч одоогийн хугацааны төгсгөл хүртэл ашиглах боломжтой.
                                 </p>
                                 <div class="flex justify-end gap-2">

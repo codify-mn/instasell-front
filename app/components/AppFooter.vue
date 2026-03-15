@@ -29,11 +29,11 @@ const columns = [
 
 <template>
     <footer
-        class="relative border-t border-[var(--border-primary)] bg-gray-50/50 dark:bg-gray-950/50"
+        class="relative border-t border-(--border-primary) bg-gray-50/50 dark:bg-gray-950/50"
     >
         <!-- Subtle gradient decoration -->
         <div
-            class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"
+            class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-500/50 to-transparent"
         />
 
         <UContainer class="max-w-7xl py-16">
@@ -75,7 +75,7 @@ const columns = [
 
                 <!-- Link columns -->
                 <div v-for="column in columns" :key="column.label">
-                    <h3 class="font-semibold text-[var(--text-heading)] mb-4">
+                    <h3 class="font-semibold text-(--text-heading) mb-4">
                         {{ column.label }}
                     </h3>
                     <ul class="space-y-3">
@@ -93,7 +93,7 @@ const columns = [
 
             <!-- Bottom bar -->
             <div
-                class="mt-12 pt-8 border-t border-[var(--border-primary)] flex flex-col sm:flex-row justify-between items-center gap-4"
+                class="mt-12 pt-8 border-t border-(--border-primary) flex flex-col sm:flex-row justify-between items-center gap-4"
             >
                 <p class="text-gray-500 dark:text-gray-400 text-sm">
                     &copy; {{ new Date().getFullYear() }} Кодифайя. Бүх эрх хуулиар хамгаалагдсан.

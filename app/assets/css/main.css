@@ -131,24 +131,24 @@
 
 /* Base styles */
 body {
-    @apply bg-[var(--surface-page)] text-[var(--text-body)];
+    @apply bg-(--surface-page) text-(--text-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3 {
-    @apply font-semibold text-[var(--text-heading)];
+    @apply font-semibold text-(--text-heading);
 }
 
 /* Dashboard content area */
 [data-slot='root'].flex-1 {
-    @apply bg-[var(--surface-page)];
+    @apply bg-(--surface-page);
 }
 
 /* Sidebar */
 #default[data-slot='sidebar'],
 [data-slot='sidebar'] {
-    @apply !bg-[var(--surface-card)] !border-[var(--border-primary)];
+    @apply bg-(--surface-card)! border-(--border-primary)!;
 }
 
 /* Active nav link — neutral highlight */
@@ -559,7 +559,7 @@ h1, h2, h3 {
 
 /* Skeleton shimmer — replaces flat animate-pulse */
 .skeleton-shimmer {
-    @apply relative overflow-hidden rounded-xl border border-[var(--border-primary)];
+    @apply relative overflow-hidden rounded-xl border border-(--border-primary);
     background: var(--surface-card);
 }
 

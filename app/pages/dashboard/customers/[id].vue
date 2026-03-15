@@ -93,7 +93,7 @@ onMounted(async () => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-4 sm:px-6 py-5 border-b border-[var(--border-primary)]">
+        <div class="px-4 sm:px-6 py-5 border-b border-(--border-primary)">
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-3">
                     <UButton
@@ -104,10 +104,10 @@ onMounted(async () => {
                         @click="router.push('/dashboard/customers')"
                     />
                     <div>
-                        <h1 class="text-2xl font-semibold text-[var(--text-heading)]">
+                        <h1 class="text-2xl font-semibold text-(--text-heading)">
                             {{ customer?.name || 'Хэрэглэгч' }}
                         </h1>
-                        <p class="mt-0.5 text-sm text-[var(--text-muted)]">
+                        <p class="mt-0.5 text-sm text-(--text-muted)">
                             Хэрэглэгчийн дэлгэрэнгүй мэдээлэл
                         </p>
                     </div>
@@ -128,36 +128,36 @@ onMounted(async () => {
             <!-- Loading -->
             <div v-if="loading" class="space-y-4 max-w-4xl">
                 <div class="animate-pulse space-y-4">
-                    <div class="h-48 bg-[var(--surface-inset)] rounded-xl" />
-                    <div class="h-64 bg-[var(--surface-inset)] rounded-xl" />
+                    <div class="h-48 bg-(--surface-inset) rounded-xl" />
+                    <div class="h-64 bg-(--surface-inset) rounded-xl" />
                 </div>
             </div>
 
             <div v-else-if="customer" class="space-y-6 max-w-4xl">
                 <!-- Stats Row -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
-                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Нийт захиалга</p>
-                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ orderCount }}</p>
+                    <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-4">
+                        <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wider">Нийт захиалга</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-(--text-heading)">{{ orderCount }}</p>
                     </div>
-                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
-                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Нийт зарцуулсан</p>
+                    <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-4">
+                        <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wider">Нийт зарцуулсан</p>
                         <p class="mt-1 text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400">{{ formatPrice(totalSpent) }}</p>
                     </div>
-                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
-                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Дундаж захиалга</p>
-                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ orderCount > 0 ? formatPrice(Math.round(totalSpent / orderCount)) : '-' }}</p>
+                    <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-4">
+                        <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wider">Дундаж захиалга</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-(--text-heading)">{{ orderCount > 0 ? formatPrice(Math.round(totalSpent / orderCount)) : '-' }}</p>
                     </div>
-                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
-                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Бүртгүүлсэн</p>
-                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ formatDateShort(customer.created_at) }}</p>
+                    <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-4">
+                        <p class="text-xs font-medium text-(--text-muted) uppercase tracking-wider">Бүртгүүлсэн</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-(--text-heading)">{{ formatDateShort(customer.created_at) }}</p>
                     </div>
                 </div>
 
                 <!-- Customer Info Card -->
-                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
-                    <div class="px-5 py-4 border-b border-[var(--border-primary)]">
-                        <h3 class="font-semibold text-[var(--text-heading)] flex items-center gap-2">
+                <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden">
+                    <div class="px-5 py-4 border-b border-(--border-primary)">
+                        <h3 class="font-semibold text-(--text-heading) flex items-center gap-2">
                             <UIcon name="i-lucide-user" class="w-4 h-4" />
                             Хэрэглэгчийн мэдээлэл
                         </h3>
@@ -166,17 +166,17 @@ onMounted(async () => {
                         <div class="flex items-start gap-4">
                             <UAvatar :alt="customer.name" size="xl" />
                             <div class="flex-1 min-w-0">
-                                <h2 class="text-lg font-bold text-[var(--text-heading)]">
+                                <h2 class="text-lg font-bold text-(--text-heading)">
                                     {{ customer.name }}
                                 </h2>
                                 <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                                     <div class="flex items-center gap-2.5">
-                                        <UIcon name="i-lucide-phone" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0" />
-                                        <span class="text-sm text-[var(--text-body)]">{{ customer.phone_number || '-' }}</span>
+                                        <UIcon name="i-lucide-phone" class="w-4 h-4 text-(--text-placeholder) shrink-0" />
+                                        <span class="text-sm text-(--text-body)">{{ customer.phone_number || '-' }}</span>
                                     </div>
                                     <div v-if="customer.email" class="flex items-center gap-2.5">
-                                        <UIcon name="i-lucide-mail" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0" />
-                                        <span class="text-sm text-[var(--text-body)]">{{ customer.email }}</span>
+                                        <UIcon name="i-lucide-mail" class="w-4 h-4 text-(--text-placeholder) shrink-0" />
+                                        <span class="text-sm text-(--text-body)">{{ customer.email }}</span>
                                     </div>
                                     <a
                                         v-if="customer.facebook_id"
@@ -189,12 +189,12 @@ onMounted(async () => {
                                         Facebook профайл
                                     </a>
                                     <div v-if="fullAddress" class="flex items-start gap-2.5 sm:col-span-2">
-                                        <UIcon name="i-lucide-map-pin" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0 mt-0.5" />
-                                        <span class="text-sm text-[var(--text-body)]">{{ fullAddress }}</span>
+                                        <UIcon name="i-lucide-map-pin" class="w-4 h-4 text-(--text-placeholder) shrink-0 mt-0.5" />
+                                        <span class="text-sm text-(--text-body)">{{ fullAddress }}</span>
                                     </div>
                                     <div v-if="customer.notes" class="flex items-start gap-2.5 sm:col-span-2">
-                                        <UIcon name="i-lucide-sticky-note" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0 mt-0.5" />
-                                        <span class="text-sm text-[var(--text-muted)]">{{ customer.notes }}</span>
+                                        <UIcon name="i-lucide-sticky-note" class="w-4 h-4 text-(--text-placeholder) shrink-0 mt-0.5" />
+                                        <span class="text-sm text-(--text-muted)">{{ customer.notes }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -203,13 +203,13 @@ onMounted(async () => {
                 </div>
 
                 <!-- Order History -->
-                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
-                    <div class="px-5 py-4 border-b border-[var(--border-primary)] flex items-center justify-between">
-                        <h3 class="font-semibold text-[var(--text-heading)] flex items-center gap-2">
+                <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden">
+                    <div class="px-5 py-4 border-b border-(--border-primary) flex items-center justify-between">
+                        <h3 class="font-semibold text-(--text-heading) flex items-center gap-2">
                             <UIcon name="i-lucide-shopping-bag" class="w-4 h-4" />
                             Захиалгын түүх
                         </h3>
-                        <span v-if="ordersTotal > 0" class="text-xs text-[var(--text-muted)]">
+                        <span v-if="ordersTotal > 0" class="text-xs text-(--text-muted)">
                             Нийт {{ ordersTotal }}
                         </span>
                     </div>
@@ -218,28 +218,28 @@ onMounted(async () => {
                         <div
                             v-for="i in 3"
                             :key="i"
-                            class="h-14 bg-[var(--surface-inset)] rounded-lg animate-pulse"
+                            class="h-14 bg-(--surface-inset) rounded-lg animate-pulse"
                         />
                     </div>
 
                     <div v-else-if="orders.length === 0" class="flex flex-col items-center justify-center py-12 text-center">
-                        <UIcon name="i-lucide-inbox" class="w-8 h-8 text-[var(--text-placeholder)] mb-2" />
-                        <p class="text-sm text-[var(--text-muted)]">Захиалга байхгүй байна</p>
+                        <UIcon name="i-lucide-inbox" class="w-8 h-8 text-(--text-placeholder) mb-2" />
+                        <p class="text-sm text-(--text-muted)">Захиалга байхгүй байна</p>
                     </div>
 
-                    <div v-else class="divide-y divide-[var(--border-primary)]">
+                    <div v-else class="divide-y divide-(--border-primary)">
                         <div
                             v-for="order in orders"
                             :key="order.id"
-                            class="flex items-center justify-between px-5 py-3.5 hover:bg-[var(--surface-inset)]/40 cursor-pointer transition-colors duration-150"
+                            class="flex items-center justify-between px-5 py-3.5 hover:bg-(--surface-inset)/40 cursor-pointer transition-colors duration-150"
                             @click="router.push(`/dashboard/orders/${order.id}`)"
                         >
                             <div class="flex items-center gap-4">
                                 <div>
-                                    <p class="font-semibold text-sm text-[var(--text-heading)]">
+                                    <p class="font-semibold text-sm text-(--text-heading)">
                                         #{{ order.order_number }}
                                     </p>
-                                    <p class="text-xs text-[var(--text-muted)] mt-0.5">
+                                    <p class="text-xs text-(--text-muted) mt-0.5">
                                         {{ formatDate(order.created_at) }}
                                     </p>
                                 </div>
@@ -252,10 +252,10 @@ onMounted(async () => {
                                 >
                                     {{ getStatusLabel(order.status) }}
                                 </UBadge>
-                                <span class="font-semibold text-sm text-[var(--text-heading)] min-w-[80px] text-right">
+                                <span class="font-semibold text-sm text-(--text-heading) min-w-20 text-right">
                                     {{ formatPrice(order.total_amount) }}
                                 </span>
-                                <UIcon name="i-lucide-chevron-right" class="w-4 h-4 text-[var(--text-placeholder)]" />
+                                <UIcon name="i-lucide-chevron-right" class="w-4 h-4 text-(--text-placeholder)" />
                             </div>
                         </div>
                     </div>
@@ -277,7 +277,7 @@ onMounted(async () => {
                     <p>
                         <strong>{{ customer?.name }}</strong> хэрэглэгчийг устгахдаа итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-(--text-muted) mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">

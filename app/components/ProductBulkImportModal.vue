@@ -165,7 +165,7 @@ watch(isOpen, (newVal) => {
                 <template #header>
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg font-semibold text-[var(--text-heading)]">
+                            <h3 class="text-lg font-semibold text-(--text-heading)">
                                 Бараагаа олноор нь нэмэх
                             </h3>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -213,7 +213,7 @@ watch(isOpen, (newVal) => {
                                 class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 text-sm font-medium"
                                 >1</span
                             >
-                            <span class="font-medium text-[var(--text-heading)]"
+                            <span class="font-medium text-(--text-heading)"
                                 >Загвар файл татаж авах</span
                             >
                         </div>
@@ -236,7 +236,7 @@ watch(isOpen, (newVal) => {
                                 class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 text-sm font-medium"
                                 >2</span
                             >
-                            <span class="font-medium text-[var(--text-heading)]"
+                            <span class="font-medium text-(--text-heading)"
                                 >Бөглөсөн файл байршуулах</span
                             >
                         </div>
@@ -267,7 +267,7 @@ watch(isOpen, (newVal) => {
                                     name="i-lucide-file-spreadsheet"
                                     class="w-10 h-10 text-primary-500"
                                 />
-                                <span class="font-medium text-[var(--text-heading)]">{{
+                                <span class="font-medium text-(--text-heading)">{{
                                     file.name
                                 }}</span>
                                 <span class="text-sm text-gray-500"
@@ -310,7 +310,7 @@ watch(isOpen, (newVal) => {
                         :class="
                             importResult.success
                                 ? 'bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800'
-                                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                                : 'bg-red-50 dark:border-red-800'
                         "
                     >
                         <div class="flex items-start gap-3">

@@ -269,7 +269,7 @@ watch(isOpen, (val) => {
                                         :class="
                                             purpose === p.value
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300'
+                                                : 'border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:border-gray-300'
                                         "
                                         @click="onPurposeChange(p.value)"
                                     >
@@ -292,7 +292,7 @@ watch(isOpen, (val) => {
                                         :class="
                                             selectedTemplate === t.value
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300'
+                                                : 'border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:border-gray-300'
                                         "
                                         @click="selectedTemplate = t.value; previewKey++"
                                     >
@@ -454,7 +454,7 @@ watch(isOpen, (val) => {
                                                 </div>
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <p class="text-sm font-medium text-[var(--text-heading)] truncate">
+                                                <p class="text-sm font-medium text-(--text-heading) truncate">
                                                     {{ product.name }}
                                                 </p>
                                                 <p class="text-xs text-gray-500">
@@ -510,18 +510,18 @@ watch(isOpen, (val) => {
                     </div>
 
                     <!-- Right Panel: Preview -->
-                    <div class="w-[45%] flex flex-col bg-[var(--surface-inset)]">
+                    <div class="w-[45%] flex flex-col bg-(--surface-inset)">
                         <div class="flex-1 flex items-center justify-center p-6 overflow-y-auto">
                             <div v-if="activeProduct" class="w-full max-w-sm">
                                 <!-- Facebook Preview Card -->
-                                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-sm">
+                                <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden shadow-sm">
                                     <!-- Page header -->
                                     <div class="flex items-center gap-2.5 px-4 pt-3 pb-2">
                                         <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center">
                                             <UIcon name="i-lucide-store" class="w-4 h-4 text-blue-600" />
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-[var(--text-heading)]">
+                                            <p class="text-sm font-semibold text-(--text-heading)">
                                                 {{ shop?.name || 'Таны дэлгүүр' }}
                                             </p>
                                             <p class="text-[11px] text-gray-500">Саяхан · 🌍</p>
@@ -553,7 +553,7 @@ watch(isOpen, (val) => {
                                         <span>👍❤️ 0</span>
                                         <span>0 сэтгэгдэл · 0 хуваалцсан</span>
                                     </div>
-                                    <div class="grid grid-cols-3 border-t border-[var(--border-primary)]">
+                                    <div class="grid grid-cols-3 border-t border-(--border-primary)">
                                         <div class="flex items-center justify-center gap-1.5 py-2 text-xs text-gray-500">
                                             <UIcon name="i-lucide-thumbs-up" class="w-3.5 h-3.5" /> Таалагдсан
                                         </div>

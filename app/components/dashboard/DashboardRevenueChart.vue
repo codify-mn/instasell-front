@@ -111,21 +111,21 @@ const onMouseLeave = () => { tooltip.value = null }
 </script>
 
 <template>
-    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 shadow-sm card-hover">
+    <div class="rounded-xl border border-(--border-primary) bg-(--surface-card) p-5 shadow-sm card-hover">
         <!-- Header -->
         <div class="mb-5 flex items-start justify-between">
             <div>
-                <div class="text-sm font-bold text-[var(--text-heading)]">Орлогын чиг хандлага</div>
-                <div class="mt-0.5 text-xs text-[var(--text-muted)]">
+                <div class="text-sm font-bold text-(--text-heading)">Орлогын чиг хандлага</div>
+                <div class="mt-0.5 text-xs text-(--text-muted)">
                     Нийт:
-                    <strong class="text-[var(--accent-green)]">{{ formatRevenue(totalRevenue) }}</strong>
+                    <strong class="text-(--accent-green)">{{ formatRevenue(totalRevenue) }}</strong>
                     <template v-if="averageOrderValue">
                         · Дундаж: {{ formatRevenue(averageOrderValue) }}
                     </template>
                 </div>
             </div>
-            <div class="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
-                <div class="h-2 w-2 rounded-full bg-[var(--accent-green)]" />
+            <div class="flex items-center gap-1.5 text-xs text-(--text-muted)">
+                <div class="h-2 w-2 rounded-full bg-(--accent-green)" />
                 Орлого
             </div>
         </div>
@@ -133,11 +133,11 @@ const onMouseLeave = () => { tooltip.value = null }
         <!-- Chart -->
         <div class="flex">
             <!-- Y axis -->
-            <div class="relative w-10 flex-shrink-0" style="height: 100px">
+            <div class="relative w-10 shrink-0" style="height: 100px">
                 <div
                     v-for="tick in yTicks"
                     :key="tick.pct"
-                    class="absolute right-2 -translate-y-1/2 whitespace-nowrap text-[9px] text-[var(--text-dimmed)]"
+                    class="absolute right-2 -translate-y-1/2 whitespace-nowrap text-[9px] text-(--text-dimmed)"
                     :style="{ top: `${tick.pct}%` }"
                 >
                     {{ formatCompact(tick.value) }}
@@ -148,7 +148,7 @@ const onMouseLeave = () => { tooltip.value = null }
             <div class="relative flex-1" style="height: 100px">
                 <!-- Grid -->
                 <div class="pointer-events-none absolute inset-0 flex flex-col justify-between">
-                    <div v-for="n in 5" :key="n" class="border-t border-dashed border-[var(--border-subtle)]" />
+                    <div v-for="n in 5" :key="n" class="border-t border-dashed border-(--border-subtle)" />
                 </div>
 
                 <svg
@@ -195,7 +195,7 @@ const onMouseLeave = () => { tooltip.value = null }
                         class="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full"
                         :style="{ left: `${tooltip.xPct}%`, top: `${tooltip.yPct}%`, marginTop: '-10px' }"
                     >
-                        <div class="rounded-lg bg-[var(--surface-overlay)] px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg whitespace-nowrap">
+                        <div class="rounded-lg bg-(--surface-overlay) px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg whitespace-nowrap">
                             {{ tooltip.label }} · {{ formatCompact(tooltip.value) }}₮
                         </div>
                     </div>
@@ -208,7 +208,7 @@ const onMouseLeave = () => { tooltip.value = null }
             <div
                 v-for="(lbl, i) in xLabels"
                 :key="i"
-                class="flex-1 text-center text-[10px] font-medium text-[var(--text-placeholder)]"
+                class="flex-1 text-center text-[10px] font-medium text-(--text-placeholder)"
             >
                 {{ lbl }}
             </div>

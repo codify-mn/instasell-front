@@ -24,9 +24,9 @@ watch(
     <div class="min-h-screen bg-white dark:bg-gray-950">
         <!-- Top Navigation -->
         <header
-            class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-950/80 border-b border-[var(--border-primary)]"
+            class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-950/80 border-b border-(--border-primary)"
         >
-            <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <!-- Left: Logo & Mobile toggle -->
                     <div class="flex items-center gap-4">
@@ -89,14 +89,14 @@ watch(
                             to="/login"
                             label="Нэвтрэх"
                             size="sm"
-                            class="hidden sm:flex bg-gradient-to-r from-primary-500 to-primary-600 border-0"
+                            class="hidden sm:flex bg-linear-to-r from-primary-500 to-primary-600 border-0"
                         />
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="max-w-[90rem] mx-auto flex">
+        <div class="max-w-360 mx-auto flex">
             <!-- Sidebar -->
             <aside
                 class="fixed lg:sticky top-16 z-40 w-72 h-[calc(100vh-4rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700"
@@ -113,7 +113,7 @@ watch(
                 />
 
                 <nav
-                    class="bg-white dark:bg-gray-950 lg:bg-transparent h-full p-6 border-r border-[var(--border-primary)] lg:border-0"
+                    class="bg-white dark:bg-gray-950 lg:bg-transparent h-full p-6 border-r border-(--border-primary) lg:border-0"
                 >
                     <!-- Quick links -->
                     <div class="mb-8">
@@ -170,7 +170,7 @@ watch(
 
                         <!-- Feedback section -->
                         <template #bottom>
-                            <div class="mt-16 pt-8 border-t border-[var(--border-primary)]">
+                            <div class="mt-16 pt-8 border-t border-(--border-primary)">
                                 <div
                                     class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
                                 >
@@ -201,7 +201,7 @@ watch(
             </main>
 
             <!-- Table of contents (Desktop) -->
-            <aside class="hidden xl:block w-64 flex-shrink-0">
+            <aside class="hidden xl:block w-64 shrink-0">
                 <div class="sticky top-24 p-6">
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
                         Энэ хуудсанд
@@ -217,18 +217,18 @@ watch(
 
         <!-- Footer -->
         <footer
-            class="border-t border-[var(--border-primary)] bg-[var(--surface-inset)]"
+            class="border-t border-(--border-primary) bg-(--surface-inset)"
         >
-            <div class="max-w-[90rem] mx-auto px-6 py-8">
+            <div class="max-w-360 mx-auto px-6 py-8">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <NuxtLink to="/" class="flex items-center gap-2">
                             <div
-                                class="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center"
+                                class="w-7 h-7 rounded-lg bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center"
                             >
                                 <UIcon name="i-lucide-zap" class="w-3.5 h-3.5 text-white" />
                             </div>
-                            <span class="font-semibold text-sm text-[var(--text-heading)]"
+                            <span class="font-semibold text-sm text-(--text-heading)"
                                 >Instasell</span
                             >
                         </NuxtLink>

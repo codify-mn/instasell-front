@@ -34,15 +34,15 @@ const visiblePages = computed(() => {
 </script>
 
 <template>
-    <div v-if="total > 0" class="px-4 sm:px-5 py-3 border-t border-[var(--border-subtle)] flex items-center justify-between">
-        <span class="text-xs text-[var(--text-muted)]">
+    <div v-if="total > 0" class="px-4 sm:px-5 py-3 border-t border-(--border-subtle) flex items-center justify-between">
+        <span class="text-xs text-(--text-muted)">
             {{ startItem }}–{{ endItem }} / {{ total }}
         </span>
 
         <div class="flex items-center gap-1">
             <!-- Prev -->
             <button
-                class="size-8 flex items-center justify-center rounded-md text-[var(--text-muted)] transition-colors"
+                class="size-8 flex items-center justify-center rounded-md text-(--text-muted) transition-colors"
                 :class="page <= 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[var(--surface-inset)] hover:text-[var(--text-heading)]'"
                 :disabled="page <= 1"
                 @click="emit('update:page', page - 1)"
@@ -52,13 +52,13 @@ const visiblePages = computed(() => {
 
             <!-- Page numbers -->
             <template v-for="p in visiblePages" :key="p">
-                <span v-if="p < 0" class="size-8 flex items-center justify-center text-xs text-[var(--text-placeholder)]">...</span>
+                <span v-if="p < 0" class="size-8 flex items-center justify-center text-xs text-(--text-placeholder)">...</span>
                 <button
                     v-else
                     class="size-8 flex items-center justify-center rounded-md text-xs font-medium transition-colors"
                     :class="p === page
                         ? 'bg-primary-500 text-white'
-                        : 'text-[var(--text-muted)] hover:bg-[var(--surface-inset)] hover:text-[var(--text-heading)]'"
+                        : 'text-[var(--text-muted)] hover:bg-(--surface-inset) hover:text-[var(--text-heading)]'"
                     @click="emit('update:page', p)"
                 >
                     {{ p }}
@@ -67,7 +67,7 @@ const visiblePages = computed(() => {
 
             <!-- Next -->
             <button
-                class="size-8 flex items-center justify-center rounded-md text-[var(--text-muted)] transition-colors"
+                class="size-8 flex items-center justify-center rounded-md text-(--text-muted) transition-colors"
                 :class="page >= totalPages ? 'opacity-30 cursor-not-allowed' : 'hover:bg-[var(--surface-inset)] hover:text-[var(--text-heading)]'"
                 :disabled="page >= totalPages"
                 @click="emit('update:page', page + 1)"

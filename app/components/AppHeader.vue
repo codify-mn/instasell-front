@@ -60,7 +60,7 @@ const navigation = [
             <UButton
                 to="/login?mode=register"
                 label="Үнэгүй эхлэх"
-                class="hidden lg:flex bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                class="hidden lg:flex bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
             />
         </template>
 
@@ -73,7 +73,7 @@ const navigation = [
                     to="/login?mode=register"
                     label="Үнэгүй эхлэх"
                     block
-                    class="bg-gradient-to-r from-primary-500 to-primary-600 border-0"
+                    class="bg-linear-to-r from-primary-500 to-primary-600 border-0"
                 />
             </div>
         </template>

@@ -21,11 +21,11 @@ const paddingClasses = {
 
 <template>
     <div
-        class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)]"
+        class="bg-(--surface-card) rounded-xl border border-(--border-primary)"
         style="box-shadow: var(--shadow-card)"
         :class="[
             paddingClasses[padding],
-            hover && 'hover:shadow-md hover:border-[var(--border-strong)] transition-all duration-300',
+            hover && 'hover:shadow-md hover:border-(--border-strong) transition-all duration-300',
             clickable && 'cursor-pointer'
         ]"
     >

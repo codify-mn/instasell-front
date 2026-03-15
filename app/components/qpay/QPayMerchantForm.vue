@@ -215,7 +215,7 @@ async function submit() {
                     <div
                         class="size-6 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all"
                         :class="s < step
-                            ? 'bg-[var(--accent-green)] border-[var(--accent-green)] text-white'
+                            ? 'bg-[var(--accent-green)] border-(--accent-green) text-white'
                             : s === step
                                 ? 'border-primary-500 text-primary-500 bg-primary-500/10'
                                 : 'border-[var(--border-primary)] text-[var(--text-placeholder)]'"
@@ -232,10 +232,10 @@ async function submit() {
         <!-- Step 1: Personal / Company Info -->
         <div v-if="step === 1" class="space-y-4">
             <div>
-                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">
+                <h3 class="text-sm font-bold text-(--text-heading) mb-1">
                     {{ merchantType === 'person' ? 'Хувийн мэдээлэл' : 'Компанийн мэдээлэл' }}
                 </h3>
-                <p class="text-xs text-[var(--text-muted)]">QPay бүртгэлд шаардлагатай мэдээлэл</p>
+                <p class="text-xs text-(--text-muted)">QPay бүртгэлд шаардлагатай мэдээлэл</p>
             </div>
 
             <!-- Type toggle -->
@@ -247,7 +247,7 @@ async function submit() {
                     class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all cursor-pointer"
                     :class="merchantType === t.val
                         ? 'border-primary-500 bg-primary-500/10 text-primary-500'
-                        : 'border-[var(--border-primary)] text-[var(--text-muted)] hover:border-[var(--border-strong)]'"
+                        : 'border-[var(--border-primary)] text-(--text-muted) hover:border-[var(--border-strong)]'"
                     @click="merchantType = t.val"
                 >
                     <UIcon :name="t.icon" class="size-4" />
@@ -299,8 +299,8 @@ async function submit() {
         <!-- Step 2: Contact -->
         <div v-if="step === 2" class="space-y-4">
             <div>
-                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Холбоо барих</h3>
-                <p class="text-xs text-[var(--text-muted)]">Утас болон и-мэйл хаяг</p>
+                <h3 class="text-sm font-bold text-(--text-heading) mb-1">Холбоо барих</h3>
+                <p class="text-xs text-(--text-muted)">Утас болон и-мэйл хаяг</p>
             </div>
             <UFormField label="Утас" required>
                 <UInput v-model="phone" placeholder="99001122" />
@@ -313,8 +313,8 @@ async function submit() {
         <!-- Step 3: Address -->
         <div v-if="step === 3" class="space-y-4">
             <div>
-                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Хаяг</h3>
-                <p class="text-xs text-[var(--text-muted)]">Бүртгэлийн хаягийн мэдээлэл</p>
+                <h3 class="text-sm font-bold text-(--text-heading) mb-1">Хаяг</h3>
+                <p class="text-xs text-(--text-muted)">Бүртгэлийн хаягийн мэдээлэл</p>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <UFormField label="Хот / Аймаг" required>
@@ -345,8 +345,8 @@ async function submit() {
         <!-- Step 4: Bank -->
         <div v-if="step === 4" class="space-y-4">
             <div>
-                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Банкны данс</h3>
-                <p class="text-xs text-[var(--text-muted)]">Төлбөр хүлээн авах дансны мэдээлэл</p>
+                <h3 class="text-sm font-bold text-(--text-heading) mb-1">Банкны данс</h3>
+                <p class="text-xs text-(--text-muted)">Төлбөр хүлээн авах дансны мэдээлэл</p>
             </div>
             <UFormField label="Банк" required>
                 <USelect v-model="bankCode" :items="banks" value-key="value" placeholder="Банк сонгох" />
@@ -360,7 +360,7 @@ async function submit() {
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">
+        <div class="flex items-center justify-between pt-2 border-t border-(--border-subtle)">
             <UButton
                 v-if="step > 1"
                 variant="ghost"

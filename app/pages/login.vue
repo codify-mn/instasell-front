@@ -153,7 +153,7 @@ const features = [
                             class="flex items-start gap-4"
                         >
                             <div
-                                class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center flex-shrink-0"
+                                class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center shrink-0"
                             >
                                 <UIcon :name="feature.icon" class="w-5 h-5" />
                             </div>
@@ -203,7 +203,7 @@ const features = [
 
                 <!-- Header -->
                 <div class="text-center mb-8">
-                    <h1 class="text-2xl md:text-3xl font-bold text-[var(--text-heading)] mb-2">
+                    <h1 class="text-2xl md:text-3xl font-bold text-(--text-heading) mb-2">
                         <template v-if="pendingVerificationEmail"> Имэйл баталгаажуулалт </template>
                         <template v-else>
                             {{ isRegisterMode ? 'Бүртгүүлэх' : 'Тавтай морилно уу' }}
@@ -328,7 +328,7 @@ const features = [
                         block
                         size="lg"
                         :loading="isLoading"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
                     >
                         Баталгаажуулах
                     </UButton>
@@ -402,7 +402,7 @@ const features = [
                         block
                         size="lg"
                         :loading="isLoading"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
                     >
                         Нэвтрэх
                     </UButton>
@@ -461,7 +461,7 @@ const features = [
                         block
                         size="lg"
                         :loading="isLoading"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
                     >
                         Бүртгүүлэх
                     </UButton>

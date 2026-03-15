@@ -84,18 +84,18 @@ const shopChecks = computed(() => [
 </script>
 
 <template>
-    <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
+    <div class="flex w-full h-full flex-col overflow-hidden bg-(--surface-page)">
         <!-- Topbar -->
         <div
-            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+            class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7"
         >
             <div class="flex items-center gap-3">
-                <span class="text-base font-bold text-[var(--text-heading)]">Нүүр хуудас</span>
+                <span class="text-base font-bold text-(--text-heading)">Нүүр хуудас</span>
             </div>
             <div class="flex items-center gap-2.5">
                 <button
                     type="button"
-                    class="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-primary)] bg-[var(--surface-card)] text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                    class="flex h-8 w-8 items-center justify-center rounded-lg border border-(--border-primary) bg-(--surface-card) text-(--text-muted) hover:text-(--text-heading) transition-colors"
                     title="Заавар"
                     @click="replayTour"
                 >
@@ -107,7 +107,7 @@ const shopChecks = computed(() => [
         <!-- Plan banner: trial or expired -->
         <div
             v-if="subscription && (isTrialing || isPlanExpired || !isActive)"
-            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] text-xs"
+            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-(--border-primary) text-xs"
             :class="
                 isTrialing && daysRemaining > 0
                     ? 'bg-amber-50 dark:bg-amber-950/20'
@@ -159,23 +159,23 @@ const shopChecks = computed(() => [
             v-else-if="
                 subscription && isActive && daysRemaining > 0 && subscription.plan?.slug !== 'free'
             "
-            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] bg-[var(--surface-card)] text-xs"
+            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-(--border-primary) bg-(--surface-card) text-xs"
         >
-            <div class="flex items-center gap-2 text-[var(--text-muted)]">
+            <div class="flex items-center gap-2 text-(--text-muted)">
                 <UIcon name="i-lucide-badge-check" class="size-3.5 text-primary-500" />
                 <span
-                    ><strong class="text-[var(--text-heading)]">{{
+                    ><strong class="text-(--text-heading)">{{
                         subscription.plan?.name
                     }}</strong>
                     багц</span
                 >
-                <span class="text-[var(--text-placeholder)]">·</span>
+                <span class="text-(--text-placeholder)">·</span>
                 <span v-if="planEndDate">{{ planEndDate }} хүртэл</span>
                 <span v-else>{{ daysRemaining }} хоног үлдсэн</span>
             </div>
             <NuxtLink
                 to="/dashboard/billing"
-                class="text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                class="text-(--text-muted) hover:text-(--text-heading) transition-colors"
             >
                 Дэлгэрэнгүй
             </NuxtLink>

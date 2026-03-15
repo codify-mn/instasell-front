@@ -211,7 +211,7 @@ const trustPoints = [
             <!-- Background decoration -->
             <div class="absolute inset-0 -z-10">
                 <div
-                    class="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-3xl opacity-30"
+                    class="absolute top-0 left-1/4 w-125 h-125 rounded-full blur-3xl opacity-30"
                     style="
                         background: radial-gradient(
                             circle,
@@ -221,7 +221,7 @@ const trustPoints = [
                     "
                 />
                 <div
-                    class="absolute top-20 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl opacity-30"
+                    class="absolute top-20 right-1/4 w-100 h-100 rounded-full blur-3xl opacity-30"
                     style="
                         background: radial-gradient(
                             circle,
@@ -244,7 +244,7 @@ const trustPoints = [
                     </div>
 
                     <h1
-                        class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-heading)] mb-6"
+                        class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-(--text-heading) mb-6"
                     >
                         Энгийн, <span class="text-gradient">ил тод</span> үнэ
                     </h1>
@@ -263,7 +263,7 @@ const trustPoints = [
                             class="relative px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300"
                             :class="
                                 !isYearly
-                                    ? 'bg-[var(--surface-card)] text-[var(--text-heading)] shadow-md'
+                                    ? 'bg-[var(--surface-card)] text-(--text-heading) shadow-md'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                             "
                             @click="isYearly = false"
@@ -274,14 +274,14 @@ const trustPoints = [
                             class="relative px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2"
                             :class="
                                 isYearly
-                                    ? 'bg-[var(--surface-card)] text-[var(--text-heading)] shadow-md'
+                                    ? 'bg-[var(--surface-card)] text-(--text-heading) shadow-md'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                             "
                             @click="isYearly = true"
                         >
                             Жилээр
                             <span
-                                class="bg-gradient-to-r from-primary-500 to-primary-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
+                                class="bg-linear-to-r from-primary-500 to-primary-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
                             >
                                 -20%
                             </span>
@@ -325,8 +325,8 @@ const trustPoints = [
                         class="relative flex flex-col rounded-2xl transition-all duration-300"
                         :class="[
                             isPopularPlan(plan)
-                                ? 'pricing-popular bg-[var(--surface-card)] scale-[1.02] z-10 shadow-xl'
-                                : 'bg-[var(--surface-card)] border border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
+                                ? 'pricing-popular bg-(--surface-card) scale-[1.02] z-10 shadow-xl'
+                                : 'bg-[var(--surface-card)] border border-(--border-primary) hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
                             isCurrentPlan(plan)
                                 ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-950'
                                 : ''
@@ -338,7 +338,7 @@ const trustPoints = [
                             class="absolute -top-4 left-1/2 -translate-x-1/2"
                         >
                             <span
-                                class="inline-flex items-center gap-1.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg"
+                                class="inline-flex items-center gap-1.5 bg-linear-to-r from-primary-500 to-primary-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg"
                             >
                                 <UIcon name="i-lucide-star" class="w-3.5 h-3.5" />
                                 Хамгийн түгээмэл
@@ -359,7 +359,7 @@ const trustPoints = [
                         <div class="p-8 flex-1 flex flex-col">
                             <!-- Plan Name & Description -->
                             <div class="mb-6">
-                                <h3 class="text-xl font-bold text-[var(--text-heading)] mb-2">
+                                <h3 class="text-xl font-bold text-(--text-heading) mb-2">
                                     {{ plan.name }}
                                 </h3>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -371,7 +371,7 @@ const trustPoints = [
                             <div class="mb-8">
                                 <div class="flex items-baseline gap-1">
                                     <span
-                                        class="text-4xl font-extrabold text-[var(--text-heading)]"
+                                        class="text-4xl font-extrabold text-(--text-heading)"
                                     >
                                         ₮{{
                                             formatPrice(
@@ -417,7 +417,7 @@ const trustPoints = [
                                     class="flex items-start gap-3 text-sm"
                                 >
                                     <div
-                                        class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                                        class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
                                         :class="
                                             feature.included
                                                 ? 'bg-primary-100 dark:bg-primary-900/30'
@@ -496,7 +496,7 @@ const trustPoints = [
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="py-24 bg-[var(--surface-inset)]">
+        <section id="faq" class="py-24 bg-(--surface-inset)">
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-16">
                     <div
@@ -507,7 +507,7 @@ const trustPoints = [
                             >Түгээмэл асуултууд</span
                         >
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         Асуулт байна уу?
                     </h2>
                     <p class="text-lg text-gray-600 dark:text-gray-400">
@@ -533,7 +533,7 @@ const trustPoints = [
         <section class="py-24">
             <UContainer class="max-w-4xl">
                 <div
-                    class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900"
+                    class="relative rounded-3xl overflow-hidden bg-linear-to-br from-gray-900 to-gray-800 dark:from-gray-800 dark:to-gray-900"
                 >
                     <!-- Background pattern -->
                     <div class="absolute inset-0 opacity-10">
@@ -552,7 +552,7 @@ const trustPoints = [
 
                     <div class="relative px-8 py-16 md:px-16 md:py-20 text-center">
                         <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mx-auto mb-6"
+                            class="w-16 h-16 rounded-2xl bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center mx-auto mb-6"
                         >
                             <UIcon name="i-lucide-building-2" class="w-8 h-8 text-white" />
                         </div>

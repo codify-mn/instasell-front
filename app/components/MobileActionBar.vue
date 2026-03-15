@@ -24,15 +24,15 @@ defineEmits<{
                 class="fixed bottom-0 inset-x-0 z-50 sm:hidden pb-[env(safe-area-inset-bottom)]"
             >
                 <div
-                    class="mx-3 mb-3 rounded-2xl border border-[var(--border-primary)] px-4 py-3 backdrop-blur-xl bg-[var(--surface-card)] shadow-[0_-4px_24px_rgba(0,0,0,0.12)]"
+                    class="mx-3 mb-3 rounded-2xl border border-(--border-primary) px-4 py-3 backdrop-blur-xl bg-(--surface-card) shadow-[0_-4px_24px_rgba(0,0,0,0.12)]"
                 >
                     <div class="flex items-center justify-between mb-2.5">
-                        <span class="text-sm font-semibold text-[var(--text-heading)]">
+                        <span class="text-sm font-semibold text-(--text-heading)">
                             {{ count }} {{ label || 'сонгогдсон' }}
                         </span>
                         <button
                             type="button"
-                            class="text-xs text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                            class="text-xs text-(--text-muted) hover:text-(--text-heading) transition-colors"
                             @click="$emit('clear')"
                         >
                             Цуцлах

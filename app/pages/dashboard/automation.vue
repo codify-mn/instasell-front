@@ -172,7 +172,7 @@ const showPreview = ref(false)
                             class="text-xs font-medium px-2.5 py-0.5 rounded-full border"
                             :class="state.automation_enabled
                                 ? 'bg-primary-50 dark:bg-primary-950/20 text-primary-600 dark:text-primary-400 border-primary-200 dark:border-primary-800/50'
-                                : 'bg-gray-50 dark:bg-gray-800 text-gray-500 border-gray-200 dark:border-gray-700'"
+                                : 'bg-gray-50 dark:border-gray-700'"
                         >
                             {{ state.automation_enabled ? 'Идэвхтэй' : 'Унтраасан' }}
                         </span>
@@ -203,8 +203,8 @@ const showPreview = ref(false)
                 <div class="w-20 h-20 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mb-6">
                     <UIcon name="i-lucide-lock" class="w-10 h-10 text-amber-500" />
                 </div>
-                <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">Автоматжуулалт Pro боломж</h3>
-                <p class="text-sm text-[var(--text-muted)] max-w-md mb-6">
+                <h3 class="text-lg font-semibold text-(--text-heading) mb-2">Автоматжуулалт Pro боломж</h3>
+                <p class="text-sm text-(--text-muted) max-w-md mb-6">
                     Коммент автомат уншиж захиалга үүсгэх, хариулт илгээх зэрэг боломжийг Стандарт эсвэл Pro багцаар ашиглаарай.
                 </p>
                 <UButton to="/dashboard/plans" color="primary" icon="i-lucide-arrow-up-right" size="lg">
@@ -235,16 +235,16 @@ const showPreview = ref(false)
                         <div class="flex-1 max-w-2xl space-y-0">
 
                             <!-- Card 1: Trigger -->
-                            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5">
+                            <div class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5">
                                 <div class="flex items-start gap-3">
                                     <div class="w-9 h-9 rounded-lg bg-primary-50 dark:bg-primary-950/30 flex items-center justify-center shrink-0">
-                                        <UIcon name="i-lucide-message-square" class="w-[18px] h-[18px] text-primary-500 dark:text-primary-400" />
+                                        <UIcon name="i-lucide-message-square" class="w-4.5 h-4.5 text-primary-500 dark:text-primary-400" />
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="text-sm font-semibold text-[var(--text-heading)]">Триггер</h3>
+                                        <h3 class="text-sm font-semibold text-(--text-heading)">Триггер</h3>
                                         <p class="text-xs text-gray-500 mt-0.5">Эдгээр үгсийг агуулсан коммент илрүүлнэ</p>
 
-                                        <div class="flex flex-wrap gap-2 mt-4 min-h-[28px]">
+                                        <div class="flex flex-wrap gap-2 mt-4 min-h-7">
                                             <button
                                                 v-for="kw in state.trigger_keywords"
                                                 :key="kw"
@@ -310,7 +310,7 @@ const showPreview = ref(false)
                             <div class="bg-primary-50 dark:bg-primary-950/20 rounded-xl border border-primary-200 dark:border-primary-800/50 p-5">
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center shrink-0">
-                                        <UIcon name="i-lucide-shopping-bag" class="w-[18px] h-[18px] text-primary-600 dark:text-primary-400" />
+                                        <UIcon name="i-lucide-shopping-bag" class="w-4.5 h-4.5 text-primary-600 dark:text-primary-400" />
                                     </div>
                                     <div class="flex-1">
                                         <h3 class="text-sm font-semibold text-primary-700 dark:text-primary-400">Захиалга үүсгэх</h3>
@@ -329,19 +329,19 @@ const showPreview = ref(false)
 
                             <!-- Card 3: Like Comment -->
                             <div
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 transition-opacity"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5 transition-opacity"
                                 :class="{ 'opacity-50': !state.like_comments }"
                             >
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                                         :class="state.like_comments ? 'bg-primary-50 dark:bg-primary-950/30' : 'bg-gray-100 dark:bg-gray-800'"
                                     >
-                                        <UIcon name="i-lucide-thumbs-up" class="w-[18px] h-[18px]"
+                                        <UIcon name="i-lucide-thumbs-up" class="w-4.5 h-4.5"
                                             :class="state.like_comments ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'"
                                         />
                                     </div>
                                     <div class="flex-1">
-                                        <h3 class="text-sm font-semibold text-[var(--text-heading)]">Комментод Like дарах</h3>
+                                        <h3 class="text-sm font-semibold text-(--text-heading)">Комментод Like дарах</h3>
                                         <p class="text-xs text-gray-500 mt-0.5">Захиалга илрүүлсэн комментод автоматаар Like дарна</p>
                                     </div>
                                     <USwitch v-model="state.like_comments" />
@@ -355,24 +355,24 @@ const showPreview = ref(false)
 
                             <!-- Card 4: Public Reply -->
                             <div
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 transition-opacity"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5 transition-opacity"
                                 :class="{ 'opacity-50': !state.auto_comment_enabled }"
                             >
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                                         :class="state.auto_comment_enabled ? 'bg-primary-50 dark:bg-primary-950/30' : 'bg-gray-100 dark:bg-gray-800'"
                                     >
-                                        <UIcon name="i-lucide-message-circle" class="w-[18px] h-[18px]"
+                                        <UIcon name="i-lucide-message-circle" class="w-4.5 h-4.5"
                                             :class="state.auto_comment_enabled ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'"
                                         />
                                     </div>
                                     <div class="flex-1">
-                                        <h3 class="text-sm font-semibold text-[var(--text-heading)]">Нийтэд хариулт бичих</h3>
+                                        <h3 class="text-sm font-semibold text-(--text-heading)">Нийтэд хариулт бичих</h3>
                                         <p class="text-xs text-gray-500 mt-0.5">Комментод нийтэд харагдах хариулт илгээнэ</p>
                                     </div>
                                     <USwitch v-model="state.auto_comment_enabled" />
                                 </div>
-                                <div v-if="state.auto_comment_enabled" class="mt-4 pt-4 border-t border-[var(--border-primary)] pl-12 space-y-2">
+                                <div v-if="state.auto_comment_enabled" class="mt-4 pt-4 border-t border-(--border-primary) pl-12 space-y-2">
                                     <UTextarea
                                         ref="autoCommentRef"
                                         v-model="state.auto_comment_text"
@@ -401,24 +401,24 @@ const showPreview = ref(false)
 
                             <!-- Card 5: Private Message -->
                             <div
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 transition-opacity"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5 transition-opacity"
                                 :class="{ 'opacity-50': !state.private_reply_enabled }"
                             >
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                                         :class="state.private_reply_enabled ? 'bg-primary-50 dark:bg-primary-950/30' : 'bg-gray-100 dark:bg-gray-800'"
                                     >
-                                        <UIcon name="i-lucide-send" class="w-[18px] h-[18px]"
+                                        <UIcon name="i-lucide-send" class="w-4.5 h-4.5"
                                             :class="state.private_reply_enabled ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'"
                                         />
                                     </div>
                                     <div class="flex-1">
-                                        <h3 class="text-sm font-semibold text-[var(--text-heading)]">Хувийн мессеж илгээх</h3>
+                                        <h3 class="text-sm font-semibold text-(--text-heading)">Хувийн мессеж илгээх</h3>
                                         <p class="text-xs text-gray-500 mt-0.5">Хэрэглэгчид checkout линктэй мессеж илгээнэ</p>
                                     </div>
                                     <USwitch v-model="state.private_reply_enabled" />
                                 </div>
-                                <div v-if="state.private_reply_enabled" class="mt-4 pt-4 border-t border-[var(--border-primary)] pl-12 space-y-2">
+                                <div v-if="state.private_reply_enabled" class="mt-4 pt-4 border-t border-(--border-primary) pl-12 space-y-2">
                                     <UTextarea
                                         ref="privateReplyRef"
                                         v-model="state.private_reply_message"

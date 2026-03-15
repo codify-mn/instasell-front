@@ -54,10 +54,10 @@ const glowClasses = {
             <UIcon :name="icon" class="w-5 h-5" />
         </div>
 
-        <h4 class="font-semibold text-[var(--text-heading)] text-sm">
+        <h4 class="font-semibold text-(--text-heading) text-sm">
             {{ title }}
         </h4>
-        <p v-if="description" class="text-xs text-[var(--text-muted)] mt-0.5">
+        <p v-if="description" class="text-xs text-(--text-muted) mt-0.5">
             {{ description }}
         </p>
     </NuxtLink>
@@ -75,10 +75,10 @@ const glowClasses = {
             <UIcon :name="icon" class="w-5 h-5" />
         </div>
 
-        <h4 class="font-semibold text-[var(--text-heading)] text-sm">
+        <h4 class="font-semibold text-(--text-heading) text-sm">
             {{ title }}
         </h4>
-        <p v-if="description" class="text-xs text-[var(--text-muted)] mt-0.5">
+        <p v-if="description" class="text-xs text-(--text-muted) mt-0.5">
             {{ description }}
         </p>
     </div>

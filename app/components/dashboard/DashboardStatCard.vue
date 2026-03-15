@@ -57,14 +57,14 @@ const deltaSymbol = computed(() => {
     <component
         :is="to ? resolveComponent('NuxtLink') : 'div'"
         :to="to"
-        class="relative block overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 shadow-sm transition-all duration-150"
-        :class="to ? 'cursor-pointer hover:border-[var(--border-strong)] hover:shadow-md' : ''"
+        class="relative block overflow-hidden rounded-xl border border-(--border-primary) bg-(--surface-card) p-5 shadow-sm transition-all duration-150"
+        :class="to ? 'cursor-pointer hover:border-(--border-strong) hover:shadow-md' : ''"
     >
         <!-- Colored top bar -->
-        <div class="absolute inset-x-0 top-0 h-[3px] rounded-t-xl" :class="topBarClass" />
+        <div class="absolute inset-x-0 top-0 h-0.75 rounded-t-xl" :class="topBarClass" />
 
         <div class="mb-3 flex items-start justify-between">
-            <span class="text-xs font-bold uppercase tracking-[0.6px] text-[var(--text-muted)]">
+            <span class="text-xs font-bold uppercase tracking-[0.6px] text-(--text-muted)">
                 {{ label }}
             </span>
             <UIcon v-if="icon" :name="icon" class="size-4" :class="iconClass" />
@@ -83,7 +83,7 @@ const deltaSymbol = computed(() => {
             <span v-if="delta !== undefined" class="text-xs font-bold" :class="deltaClass">
                 {{ deltaSymbol }} {{ Math.abs(delta) }}%
             </span>
-            <span v-if="subtitle || deltaLabel" class="text-xs text-[var(--text-placeholder)]">
+            <span v-if="subtitle || deltaLabel" class="text-xs text-(--text-placeholder)">
                 {{ deltaLabel || subtitle }}
             </span>
         </div>

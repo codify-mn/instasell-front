@@ -95,7 +95,7 @@ const groups = computed(() => [
             :default-size="22.22"
             :min-size="22.22"
             :max-size="22.22"
-            class="!bg-[var(--surface-card)] border-r border-[var(--border-primary)]"
+            class="bg-(--surface-card)! border-r border-(--border-primary)"
             :ui="{
                 header: 'mt-1',
                 footer: 'lg:border-t lg:border-[var(--border-primary)]'
@@ -110,7 +110,7 @@ const groups = computed(() => [
                     label="Хайх..."
                     placeholder="Хайх..."
                     :collapsed="collapsed"
-                    class="bg-[var(--surface-inset)] ring-[var(--border-primary)] text-[var(--text-muted)] hover:bg-[var(--border-primary)]"
+                    class="bg-(--surface-inset) ring-(--border-primary) text-(--text-muted) hover:bg-(--border-primary)"
                 />
 
                 <!-- Main nav items -->
@@ -132,7 +132,7 @@ const groups = computed(() => [
                 <!-- Live section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
                     <span
-                        class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]"
+                        class="text-[10px] font-bold uppercase tracking-widest text-(--text-placeholder)"
                         >Шууд дамжуулалт</span
                     >
                 </div>
@@ -154,7 +154,7 @@ const groups = computed(() => [
                 <!-- Settings section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
                     <span
-                        class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]"
+                        class="text-[10px] font-bold uppercase tracking-widest text-(--text-placeholder)"
                         >Тохиргоо</span
                     >
                 </div>

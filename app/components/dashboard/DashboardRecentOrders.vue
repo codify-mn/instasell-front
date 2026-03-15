@@ -45,49 +45,49 @@ onMounted(() => { loadOrders() })
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm card-hover">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-(--border-primary) bg-(--surface-card) shadow-sm card-hover">
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-[var(--border-subtle)] px-5 py-4">
-            <div class="text-sm font-bold text-[var(--text-heading)]">Сүүлийн захиалгууд</div>
+        <div class="flex items-center justify-between border-b border-(--border-subtle) px-5 py-4">
+            <div class="text-sm font-bold text-(--text-heading)">Сүүлийн захиалгууд</div>
             <NuxtLink
                 to="/dashboard/orders"
-                class="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                class="text-xs font-semibold text-(--text-muted) hover:text-(--text-heading) transition-colors"
             >
                 Бүгдийг харах →
             </NuxtLink>
         </div>
 
         <!-- Loading skeleton -->
-        <div v-if="loading" class="flex flex-col divide-y divide-[var(--border-subtle)]">
+        <div v-if="loading" class="flex flex-col divide-y divide-(--border-subtle)">
             <div
                 v-for="i in 5"
                 :key="i"
                 class="flex animate-pulse items-center gap-3 px-5 py-3"
             >
-                <div class="h-3 w-16 rounded bg-[var(--border-subtle)]" />
-                <div class="h-4 w-20 flex-1 rounded bg-[var(--border-subtle)]" />
-                <div class="h-3 w-14 rounded bg-[var(--border-subtle)]" />
+                <div class="h-3 w-16 rounded bg-(--border-subtle)" />
+                <div class="h-4 w-20 flex-1 rounded bg-(--border-subtle)" />
+                <div class="h-3 w-14 rounded bg-(--border-subtle)" />
             </div>
         </div>
 
         <!-- Empty state -->
         <div v-else-if="!orders.length" class="flex flex-1 flex-col items-center justify-center gap-2 py-10">
-            <UIcon name="i-lucide-shopping-bag" class="size-6 text-[var(--text-placeholder)]" />
-            <p class="text-xs text-[var(--text-placeholder)]">Одоогоор захиалга байхгүй</p>
+            <UIcon name="i-lucide-shopping-bag" class="size-6 text-(--text-placeholder)" />
+            <p class="text-xs text-(--text-placeholder)">Одоогоор захиалга байхгүй</p>
         </div>
 
         <!-- Order rows -->
-        <div v-else class="flex flex-col divide-y divide-[var(--border-subtle)]">
+        <div v-else class="flex flex-col divide-y divide-(--border-subtle)">
             <NuxtLink
                 v-for="order in orders"
                 :key="order.id"
                 :to="`/dashboard/orders/${order.id}`"
-                class="flex items-center gap-3 px-5 py-3 hover:bg-[var(--surface-inset)] transition-colors"
+                class="flex items-center gap-3 px-5 py-3 hover:bg-(--surface-inset) transition-colors"
             >
                 <!-- Order number + source -->
                 <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-[var(--text-heading)]">#{{ order.order_number }}</div>
-                    <div class="text-xs text-[var(--text-placeholder)]">
+                    <div class="text-xs font-bold text-(--text-heading)">#{{ order.order_number }}</div>
+                    <div class="text-xs text-(--text-placeholder)">
                         {{ order.customer?.name || 'Хэрэглэгч' }}
                         <template v-if="order.metadata?.source">
                             · {{ sourceLabel(order.metadata.source) }}
@@ -97,14 +97,14 @@ onMounted(() => { loadOrders() })
 
                 <!-- Status badge -->
                 <span
-                    class="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                    class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
                     :class="[statusStyle(order.status).bg, statusStyle(order.status).text]"
                 >
                     {{ statusStyle(order.status).label }}
                 </span>
 
                 <!-- Amount -->
-                <div class="flex-shrink-0 text-right text-xs font-bold text-[var(--text-heading)]">
+                <div class="shrink-0 text-right text-xs font-bold text-(--text-heading)">
                     {{ formatPrice(order.total_amount) }}
                 </div>
             </NuxtLink>

@@ -107,8 +107,8 @@ const createLive = async () => {
                         <USkeleton class="h-12 w-12 rounded-full" />
 
                         <div class="grid gap-2">
-                            <USkeleton class="h-4 w-[250px]" />
-                            <USkeleton class="h-4 w-[200px]" />
+                            <USkeleton class="h-4 w-62.5" />
+                            <USkeleton class="h-4 w-50" />
                         </div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ const createLive = async () => {
                         class="block group"
                     >
                         <div
-                            class="flex items-center gap-4 p-4 bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700"
+                            class="flex items-center gap-4 p-4 bg-(--surface-card) rounded-xl border border-(--border-primary) transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700"
                         >
                             <div
                                 class="shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
@@ -156,7 +156,7 @@ const createLive = async () => {
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-0.5">
                                     <h3
-                                        class="font-semibold text-md text-[var(--text-heading)] truncate group-hover:text-primary-500 transition-colors"
+                                        class="font-semibold text-md text-(--text-heading) truncate group-hover:text-primary-500 transition-colors"
                                     >
                                         {{ live.title || 'Untitled Live' }}
                                     </h3>
@@ -173,7 +173,7 @@ const createLive = async () => {
                                         <USeparator orientation="vertical" class="h-4" />
                                     </template>
 
-                                    <span class="text-xs text-[var(--text-muted)] truncate">
+                                    <span class="text-xs text-(--text-muted) truncate">
                                         {{ formatDate(live.created_at) }}
                                     </span>
                                 </p>
@@ -181,7 +181,7 @@ const createLive = async () => {
 
                             <!-- Stats -->
                             <div
-                                class="hidden sm:flex items-center gap-5 shrink-0 text-xs text-[var(--text-muted)]"
+                                class="hidden sm:flex items-center gap-5 shrink-0 text-xs text-(--text-muted)"
                             >
                                 <div class="flex items-center gap-1.5">
                                     <UIcon name="i-heroicons-eye" class="text-sm" />
@@ -225,10 +225,10 @@ const createLive = async () => {
                             class="text-2xl text-blue-600 dark:text-blue-400"
                         />
                     </div>
-                    <h3 class="font-semibold text-[var(--text-heading)] mb-1">
+                    <h3 class="font-semibold text-(--text-heading) mb-1">
                         Үүсгэсэн Live байхгүй байна.
                     </h3>
-                    <p class="text-sm text-[var(--text-muted)] mb-4">
+                    <p class="text-sm text-(--text-muted) mb-4">
                         Анхны Facebook Live худалдаагаа эхлүүлж, борлуулалтаа ихэсгээрэй.
                     </p>
                     <UButton color="primary" icon="i-lucide-video" @click="isLiveModalOpen = true">
@@ -240,7 +240,7 @@ const createLive = async () => {
             <UModal v-model:open="isLiveModalOpen">
                 <template #header>
                     <div class="flex-1 flex items-center justify-between">
-                        <h3 class="text-base font-semibold leading-6 text-[var(--text-heading)]">
+                        <h3 class="text-base font-semibold leading-6 text-(--text-heading)">
                             Create Live Sale
                         </h3>
                         <UButton
@@ -274,7 +274,7 @@ const createLive = async () => {
                                 size="sm"
                                 class="mb-2"
                             />
-                            <div class="max-h-48 overflow-y-auto space-y-1 border border-[var(--border-primary)] rounded-lg p-2">
+                            <div class="max-h-48 overflow-y-auto space-y-1 border border-(--border-primary) rounded-lg p-2">
                                 <div v-if="loadingProducts" class="flex justify-center p-4">
                                     <UIcon name="i-lucide-loader" class="animate-spin text-gray-400" />
                                 </div>
@@ -292,15 +292,15 @@ const createLive = async () => {
                                             :src="product.images[0]"
                                             class="w-8 h-8 rounded object-cover shrink-0"
                                         >
-                                        <div v-else class="w-8 h-8 rounded bg-[var(--surface-inset)] shrink-0" />
+                                        <div v-else class="w-8 h-8 rounded bg-(--surface-inset) shrink-0" />
                                         <span class="text-sm truncate flex-1">{{ product.name }}</span>
                                     </div>
-                                    <p v-if="availableProducts.length === 0" class="text-xs text-[var(--text-placeholder)] text-center py-2">
+                                    <p v-if="availableProducts.length === 0" class="text-xs text-(--text-placeholder) text-center py-2">
                                         Бараа олдсонгүй
                                     </p>
                                 </template>
                             </div>
-                            <p v-if="liveForm.product_ids.length" class="text-xs text-[var(--text-muted)] mt-1">
+                            <p v-if="liveForm.product_ids.length" class="text-xs text-(--text-muted) mt-1">
                                 {{ liveForm.product_ids.length }} бараа сонгогдсон
                             </p>
                         </UFormField>

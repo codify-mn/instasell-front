@@ -19,7 +19,7 @@ const toggle = () => {
     <div class="flex items-center justify-between gap-4 py-4 cursor-pointer group" @click="toggle">
         <div class="flex-1 min-w-0">
             <p
-                class="text-sm font-medium text-[var(--text-heading)] group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
+                class="text-sm font-medium text-(--text-heading) group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"
             >
                 {{ label }}
             </p>

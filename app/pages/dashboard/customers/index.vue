@@ -72,19 +72,19 @@ onMounted(() => {
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
         <div
-            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+            class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7"
         >
-            <span class="text-base font-bold text-[var(--text-heading)]">Хэрэглэгчид</span>
-            <span class="text-sm text-[var(--text-muted)]">Нийт {{ total }}</span>
+            <span class="text-base font-bold text-(--text-heading)">Хэрэглэгчид</span>
+            <span class="text-sm text-(--text-muted)">Нийт {{ total }}</span>
         </div>
 
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
             <div
-                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+                class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden"
             >
                 <!-- Search -->
-                <div class="px-4 py-3 border-b border-[var(--border-primary)]">
+                <div class="px-4 py-3 border-b border-(--border-primary)">
                     <div class="flex flex-wrap items-center gap-2">
                         <UInput
                             v-model="search"
@@ -115,12 +115,12 @@ onMounted(() => {
                         <div class="flex items-center gap-3" @click="onRowClick(row.original)">
                             <UAvatar :alt="row.original.name" size="sm" />
                             <div>
-                                <p class="font-medium text-[var(--text-heading)]">
+                                <p class="font-medium text-(--text-heading)">
                                     {{ row.original.name }}
                                 </p>
                                 <p
                                     v-if="row.original.email"
-                                    class="text-xs text-[var(--text-placeholder)]"
+                                    class="text-xs text-(--text-placeholder)"
                                 >
                                     {{ row.original.email }}
                                 </p>
@@ -129,7 +129,7 @@ onMounted(() => {
                     </template>
 
                     <template #phone_number-cell="{ row }">
-                        <span class="text-sm text-[var(--text-body)]">
+                        <span class="text-sm text-(--text-body)">
                             {{ row.original.phone_number || '-' }}
                         </span>
                     </template>
@@ -152,23 +152,23 @@ onMounted(() => {
                                 Профайл
                             </UBadge>
                         </a>
-                        <span v-else class="text-xs text-[var(--text-placeholder)]">-</span>
+                        <span v-else class="text-xs text-(--text-placeholder)">-</span>
                     </template>
 
                     <template #order_count-cell="{ row }">
-                        <span class="font-medium text-[var(--text-heading)]">
+                        <span class="font-medium text-(--text-heading)">
                             {{ row.original.order_count }}
                         </span>
                     </template>
 
                     <template #total_spent-cell="{ row }">
-                        <span class="font-medium text-[var(--text-heading)]">
+                        <span class="font-medium text-(--text-heading)">
                             {{ formatPrice(row.original.total_spent) }}
                         </span>
                     </template>
 
                     <template #last_order_at-cell="{ row }">
-                        <span class="text-sm text-[var(--text-muted)]">
+                        <span class="text-sm text-(--text-muted)">
                             {{ formatDateShort(row.original.last_order_at) }}
                         </span>
                     </template>
@@ -192,10 +192,10 @@ onMounted(() => {
                             >
                                 <UIcon name="i-lucide-users" class="w-10 h-10 text-primary-500" />
                             </div>
-                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                            <h3 class="text-lg font-semibold text-(--text-heading) mb-2">
                                 Хэрэглэгч олдсонгүй
                             </h3>
-                            <p class="text-[var(--text-muted)] max-w-sm">
+                            <p class="text-(--text-muted) max-w-sm">
                                 Одоогоор ямар ч хэрэглэгч байхгүй байна.
                             </p>
                         </div>

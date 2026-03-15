@@ -262,7 +262,7 @@ async function onSubmit() {
                             :class="[
                                 currentStep >= step.number
                                     ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                                    : 'bg-white dark:bg-gray-800 text-gray-400 border-2 border-gray-200 dark:border-gray-700'
+                                    : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'
                             ]"
                         >
                             <UIcon
@@ -288,7 +288,7 @@ async function onSubmit() {
 
             <!-- Glass card -->
             <div
-                class="bg-[var(--surface-card)] backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 overflow-hidden"
+                class="bg-(--surface-card) backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 overflow-hidden"
             >
                 <!-- Header -->
                 <div class="px-8 pt-8 pb-4">
@@ -305,7 +305,7 @@ async function onSubmit() {
                                     class="w-7 h-7 text-blue-500"
                                 />
                             </div>
-                            <h1 class="text-2xl font-bold text-[var(--text-heading)]">
+                            <h1 class="text-2xl font-bold text-(--text-heading)">
                                 Facebook холболт
                             </h1>
                             <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
@@ -319,7 +319,7 @@ async function onSubmit() {
                             >
                                 <UIcon name="i-lucide-store" class="w-7 h-7 text-primary-500" />
                             </div>
-                            <h1 class="text-2xl font-bold text-[var(--text-heading)]">
+                            <h1 class="text-2xl font-bold text-(--text-heading)">
                                 Дэлгүүрээ үүсгээрэй
                             </h1>
                             <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
@@ -387,7 +387,7 @@ async function onSubmit() {
                                             :class="
                                                 selectedPage?.id === page.id
                                                     ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-500'
+                                                    : 'bg-gray-100 text-gray-500'
                                             "
                                         >
                                             <img
@@ -398,7 +398,7 @@ async function onSubmit() {
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p
-                                                class="text-sm font-semibold text-[var(--text-heading)] truncate"
+                                                class="text-sm font-semibold text-(--text-heading) truncate"
                                             >
                                                 {{ page.page_name }}
                                             </p>

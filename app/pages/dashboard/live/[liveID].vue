@@ -126,7 +126,7 @@ const mobileTab = ref('camera')
             <canvas :ref="webrtc.canvasStream.canvasRef" class="hidden" />
 
             <!-- Mobile Tab Switcher -->
-            <div class="md:hidden flex border-b border-[var(--border-primary)]">
+            <div class="md:hidden flex border-b border-(--border-primary)">
                 <button
                     class="flex-1 py-2.5 text-sm font-medium text-center transition-colors"
                     :class="
@@ -184,7 +184,7 @@ const mobileTab = ref('camera')
                 >
                     <!-- Facebook Live Info Header (desktop only) -->
                     <div
-                        class="hidden md:flex items-center justify-between bg-[var(--surface-card)] px-4 py-3 rounded-lg shadow-sm"
+                        class="hidden md:flex items-center justify-between bg-(--surface-card) px-4 py-3 rounded-lg shadow-sm"
                     >
                         <div class="flex items-center gap-3 min-w-0">
                             <div
@@ -256,12 +256,12 @@ const mobileTab = ref('camera')
 
                     <!-- Destinations + Stats + Controls -->
                     <div class="px-3 md:px-0 space-y-2">
-                        <div class="bg-[var(--surface-card)] px-3 md:px-4 py-3 rounded-lg shadow-sm">
+                        <div class="bg-(--surface-card) px-3 md:px-4 py-3 rounded-lg shadow-sm">
                             <DestinationList />
                         </div>
                         <LiveStats :is-streaming="webrtc.isStreaming.value" :stats="stats" />
                         <div
-                            class="flex items-center justify-between bg-[var(--surface-card)] px-3 md:px-4 py-2 md:py-3 rounded-lg shadow-sm"
+                            class="flex items-center justify-between bg-(--surface-card) px-3 md:px-4 py-2 md:py-3 rounded-lg shadow-sm"
                         >
                             <div class="flex items-center gap-2">
                                 <span class="text-xs text-gray-500">Overlay:</span>

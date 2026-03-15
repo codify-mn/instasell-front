@@ -419,9 +419,9 @@ onMounted(() => {
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
         <div
-            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+            class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7"
         >
-            <span class="text-base font-bold text-[var(--text-heading)]">Захиалга</span>
+            <span class="text-base font-bold text-(--text-heading)">Захиалга</span>
             <div class="flex items-center gap-1.5">
                 <UButton
                     color="neutral"
@@ -554,10 +554,10 @@ onMounted(() => {
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
             <div
-                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+                class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden"
             >
                 <!-- Filters -->
-                <div class="px-4 py-3 border-b border-[var(--border-primary)]">
+                <div class="px-4 py-3 border-b border-(--border-primary)">
                     <div class="flex flex-wrap items-center gap-2">
                         <UInput
                             v-model="filter.keyword"
@@ -579,7 +579,7 @@ onMounted(() => {
                                 class="w-full sm:w-auto"
                                 size="sm"
                             />
-                            <span class="text-xs text-[var(--text-placeholder)]">–</span>
+                            <span class="text-xs text-(--text-placeholder)">–</span>
                             <UInput
                                 v-model="filter.date_to"
                                 type="date"
@@ -605,7 +605,7 @@ onMounted(() => {
                 >
                     <template #total_amount-header>
                         <button
-                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            class="flex items-center gap-1 cursor-pointer hover:text-(--text-heading) transition-colors"
                             @click="toggleSort('total_amount')"
                         >
                             Дүн
@@ -623,7 +623,7 @@ onMounted(() => {
 
                     <template #created_at-header>
                         <button
-                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            class="flex items-center gap-1 cursor-pointer hover:text-(--text-heading) transition-colors"
                             @click="toggleSort('created_at')"
                         >
                             Огноо
@@ -659,7 +659,7 @@ onMounted(() => {
                     <template #order_number-cell="{ row }">
                         <div class="cursor-pointer" @click="onRowClick(row.original)">
                             <span
-                                class="font-semibold text-[var(--text-heading)] hover:text-primary-600 transition-colors"
+                                class="font-semibold text-(--text-heading) hover:text-primary-600 transition-colors"
                             >
                                 #{{ row.original.order_number }}
                             </span>
@@ -668,10 +668,10 @@ onMounted(() => {
 
                     <template #customer-cell="{ row }">
                         <div class="cursor-pointer" @click="onRowClick(row.original)">
-                            <div class="font-medium text-[var(--text-heading)]">
+                            <div class="font-medium text-(--text-heading)">
                                 {{ row.original.customer?.name || '-' }}
                             </div>
-                            <div class="text-sm text-[var(--text-muted)]">
+                            <div class="text-sm text-(--text-muted)">
                                 {{ row.original.customer?.phone_number || '' }}
                             </div>
                         </div>
@@ -690,7 +690,7 @@ onMounted(() => {
                                 :label="`+${row.original.items.length - 4}`"
                             />
                         </UAvatarGroup>
-                        <span v-else class="text-xs text-[var(--text-placeholder)]"
+                        <span v-else class="text-xs text-(--text-placeholder)"
                             >{{ row.original.items?.length || 0 }} бараа</span
                         >
                     </template>
@@ -706,13 +706,13 @@ onMounted(() => {
                     </template>
 
                     <template #total_amount-cell="{ row }">
-                        <span class="font-medium text-[var(--text-heading)]">
+                        <span class="font-medium text-(--text-heading)">
                             {{ formatPrice(row.original.total_amount) }}
                         </span>
                     </template>
 
                     <template #created_at-cell="{ row }">
-                        <span class="text-[var(--text-muted)]">
+                        <span class="text-(--text-muted)">
                             {{ formatDate(row.original.created_at) }}
                         </span>
                     </template>
@@ -742,10 +742,10 @@ onMounted(() => {
                                     class="w-10 h-10 text-primary-500"
                                 />
                             </div>
-                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                            <h3 class="text-lg font-semibold text-(--text-heading) mb-2">
                                 Захиалга олдсонгүй
                             </h3>
-                            <p class="text-[var(--text-muted)] max-w-sm mb-6">
+                            <p class="text-(--text-muted) max-w-sm mb-6">
                                 Одоогоор ямар ч захиалга байхгүй байна. Шинэ захиалга нэмж эхлээрэй.
                             </p>
                             <UButton
@@ -783,7 +783,7 @@ onMounted(() => {
                         <strong>#{{ orderToCancel?.order_number }}</strong> захиалгыг цуцлахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                    <p class="text-sm text-(--text-muted) mt-2">
                         Энэ үйлдлийг буцаах боломжгүй.
                     </p>
 
@@ -820,7 +820,7 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> захиалгыг цуцлахдаа итгэлтэй
                         байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                    <p class="text-sm text-(--text-muted) mt-2">
                         Энэ үйлдлийг буцаах боломжгүй.
                     </p>
 
@@ -858,7 +858,7 @@ onMounted(() => {
                     </template>
 
                     <div class="space-y-4">
-                        <p class="text-sm text-[var(--text-muted)]">
+                        <p class="text-sm text-(--text-muted)">
                             CSV файлаар захиалга бөөнөөр оруулах. Загвар файлыг татаж форматыг харна
                             уу.
                         </p>
@@ -875,14 +875,14 @@ onMounted(() => {
 
                         <div>
                             <label
-                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                                class="block text-sm font-medium text-(--text-heading) mb-2"
                             >
                                 CSV файл сонгох
                             </label>
                             <input
                                 type="file"
                                 accept=".csv"
-                                class="block w-full text-sm text-[var(--text-muted)] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/20 dark:file:text-primary-300 cursor-pointer"
+                                class="block w-full text-sm text-(--text-muted) file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/20 dark:file:text-primary-300 cursor-pointer"
                                 @change="handleImportFile"
                             />
                         </div>

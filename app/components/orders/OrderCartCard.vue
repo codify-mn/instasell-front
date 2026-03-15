@@ -59,9 +59,9 @@ const decrementQuantity = (index: number) => {
 
 <template>
     <div
-        class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
+        class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5"
     >
-        <h3 class="text-sm font-medium text-[var(--text-heading)] mb-4">
+        <h3 class="text-sm font-medium text-(--text-heading) mb-4">
             Сонгосон бараа
             <span v-if="items.length > 0" class="text-gray-500">({{ items.length }})</span>
         </h3>
@@ -99,7 +99,7 @@ const decrementQuantity = (index: number) => {
 
                 <!-- Item Info -->
                 <div class="flex-1 min-w-0">
-                    <p class="font-medium text-[var(--text-heading)] text-sm truncate">
+                    <p class="font-medium text-(--text-heading) text-sm truncate">
                         {{ item.product.name }}
                     </p>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
@@ -115,7 +115,7 @@ const decrementQuantity = (index: number) => {
                                 :disabled="item.quantity <= 1"
                                 @click="decrementQuantity(index)"
                             />
-                            <span class="w-6 text-center text-sm text-[var(--text-heading)]">
+                            <span class="w-6 text-center text-sm text-(--text-heading)">
                                 {{ item.quantity }}
                             </span>
                             <UButton
@@ -127,7 +127,7 @@ const decrementQuantity = (index: number) => {
                                 @click="incrementQuantity(index)"
                             />
                         </div>
-                        <span class="text-sm font-medium text-[var(--text-heading)]">
+                        <span class="text-sm font-medium text-(--text-heading)">
                             {{ formatPrice(getItemTotal(item)) }}
                         </span>
                     </div>
@@ -148,7 +148,7 @@ const decrementQuantity = (index: number) => {
             <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                 <div class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Дүн</span>
-                    <span class="text-[var(--text-heading)]">{{ formatPrice(subtotal) }}</span>
+                    <span class="text-(--text-heading)">{{ formatPrice(subtotal) }}</span>
                 </div>
                 <div v-if="discount > 0" class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Хөнгөлөлт</span>
@@ -156,14 +156,14 @@ const decrementQuantity = (index: number) => {
                 </div>
                 <div v-if="shippingFee > 0" class="flex justify-between text-sm">
                     <span class="text-gray-500 dark:text-gray-400">Хүргэлт</span>
-                    <span class="text-[var(--text-heading)]">{{
+                    <span class="text-(--text-heading)">{{
                         formatPrice(shippingFee)
                     }}</span>
                 </div>
                 <div
                     class="flex justify-between text-base font-semibold pt-2 border-t border-gray-200 dark:border-gray-700"
                 >
-                    <span class="text-[var(--text-heading)]">Нийт дүн</span>
+                    <span class="text-(--text-heading)">Нийт дүн</span>
                     <span class="text-primary-600 dark:text-primary-400">{{
                         formatPrice(total)
                     }}</span>

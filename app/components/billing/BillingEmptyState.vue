@@ -14,11 +14,11 @@ const emit = defineEmits<{
 
 <template>
     <div class="flex flex-col items-center justify-center py-16 text-center">
-        <UIcon :name="icon || 'i-lucide-receipt'" class="size-10 text-[var(--text-placeholder)] mb-3" />
-        <h3 class="text-sm font-semibold text-[var(--text-heading)] mb-1">
+        <UIcon :name="icon || 'i-lucide-receipt'" class="size-10 text-(--text-placeholder) mb-3" />
+        <h3 class="text-sm font-semibold text-(--text-heading) mb-1">
             {{ title || 'Түүх байхгүй' }}
         </h3>
-        <p class="text-sm text-[var(--text-muted)] max-w-sm mb-5">
+        <p class="text-sm text-(--text-muted) max-w-sm mb-5">
             {{ description || 'Одоогоор ямар нэгэн төлбөр хийгээгүй байна.' }}
         </p>
         <UButton v-if="actionLabel" color="primary" size="sm" :to="actionTo" @click="emit('action')">

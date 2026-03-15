@@ -103,7 +103,7 @@ function handleSelect(plan: Plan) {
         <div v-if="loading" class="flex justify-center items-center py-20">
             <div class="flex items-center gap-3">
                 <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-primary-500" />
-                <span class="text-[var(--text-muted)]">Ачааллаж байна...</span>
+                <span class="text-(--text-muted)">Ачааллаж байна...</span>
             </div>
         </div>
 
@@ -115,8 +115,8 @@ function handleSelect(plan: Plan) {
                 class="relative flex flex-col rounded-2xl transition-all duration-300"
                 :class="[
                     isPopularPlan(plan)
-                        ? 'pricing-popular bg-[var(--surface-card)] scale-[1.02] z-10 shadow-xl'
-                        : 'bg-[var(--surface-card)] border border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
+                        ? 'pricing-popular bg-(--surface-card) scale-[1.02] z-10 shadow-xl'
+                        : 'bg-[var(--surface-card)] border border-(--border-primary) hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
                     isCurrentPlan(plan)
                         ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-950'
                         : ''
@@ -125,7 +125,7 @@ function handleSelect(plan: Plan) {
                 <!-- Popular Badge -->
                 <div v-if="isPopularPlan(plan)" class="absolute -top-4 left-1/2 -translate-x-1/2">
                     <span
-                        class="inline-flex items-center gap-1.5 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg"
+                        class="inline-flex items-center gap-1.5 bg-linear-to-r from-primary-500 to-primary-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg"
                     >
                         <UIcon name="i-lucide-star" class="w-3.5 h-3.5" />
                         Хамгийн түгээмэл
@@ -146,10 +146,10 @@ function handleSelect(plan: Plan) {
                 <div class="p-8 flex-1 flex flex-col">
                     <!-- Plan Name & Description -->
                     <div class="mb-6">
-                        <h3 class="text-xl font-bold text-[var(--text-heading)] mb-2">
+                        <h3 class="text-xl font-bold text-(--text-heading) mb-2">
                             {{ plan.name }}
                         </h3>
-                        <p class="text-sm text-[var(--text-muted)]">
+                        <p class="text-sm text-(--text-muted)">
                             {{ plan.description }}
                         </p>
                     </div>
@@ -157,7 +157,7 @@ function handleSelect(plan: Plan) {
                     <!-- Price -->
                     <div class="mb-8">
                         <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-[var(--text-heading)]">
+                            <span class="text-4xl font-extrabold text-(--text-heading)">
                                 ₮{{
                                     formatPrice(
                                         isYearly
@@ -166,13 +166,13 @@ function handleSelect(plan: Plan) {
                                     )
                                 }}
                             </span>
-                            <span class="text-[var(--text-muted)] font-medium">/сар</span>
+                            <span class="text-(--text-muted) font-medium">/сар</span>
                         </div>
 
                         <!-- Yearly savings info -->
                         <div v-if="isYearly && plan.monthly_price > 0" class="mt-2 space-y-1">
                             <div class="flex items-center gap-2">
-                                <span class="text-sm text-[var(--text-placeholder)] line-through">
+                                <span class="text-sm text-(--text-placeholder) line-through">
                                     ₮{{ formatPrice(plan.monthly_price * 12) }}/жил
                                 </span>
                                 <span
@@ -195,7 +195,7 @@ function handleSelect(plan: Plan) {
                             class="flex items-start gap-3 text-sm"
                         >
                             <div
-                                class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                                class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
                                 :class="
                                     feature.included
                                         ? 'bg-primary-100 dark:bg-primary-900/30'

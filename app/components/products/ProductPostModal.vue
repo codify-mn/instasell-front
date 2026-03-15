@@ -435,7 +435,7 @@ watch(
                                     :class="
                                         purpose === p.value
                                             ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                            : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                                            : 'border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
                                     "
                                     @click="onPurposeChange(p.value)"
                                 >
@@ -627,7 +627,7 @@ watch(
                                         :class="
                                             commentMode === 'all'
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                                                : 'border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
                                         "
                                         @click="commentMode = 'all'"
                                     >
@@ -639,7 +639,7 @@ watch(
                                         :class="
                                             commentMode === 'keywords'
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-700 dark:text-primary-300'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                                                : 'border-gray-200 dark:border-gray-700 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
                                         "
                                         @click="commentMode = 'keywords'"
                                     >
@@ -695,15 +695,15 @@ watch(
                             Facebook нийтлэлийн урьдчилсан харагдац
                         </label>
 
-                        <div v-if="selectedProductId" class="w-full max-w-[420px]">
+                        <div v-if="selectedProductId" class="w-full max-w-105">
                             <!-- Facebook Post Card -->
                             <div
-                                class="bg-[var(--surface-card)] rounded-lg shadow-sm border border-[var(--border-primary)] overflow-hidden"
+                                class="bg-(--surface-card) rounded-lg shadow-sm border border-(--border-primary) overflow-hidden"
                             >
                                 <!-- Post Header -->
                                 <div class="flex items-center gap-2.5 px-4 py-3">
                                     <div
-                                        class="w-10 h-10 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center flex-shrink-0 ring-1 ring-gray-200 dark:ring-gray-700"
+                                        class="w-10 h-10 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center shrink-0 ring-1 ring-gray-200 dark:ring-gray-700"
                                     >
                                         <img
                                             v-if="shop?.picture"
@@ -719,7 +719,7 @@ watch(
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p
-                                            class="text-[13px] font-semibold text-[var(--text-heading)] leading-tight truncate"
+                                            class="text-[13px] font-semibold text-(--text-heading) leading-tight truncate"
                                         >
                                             {{ shop?.name || 'Таны дэлгүүр' }}
                                         </p>
@@ -816,7 +816,7 @@ watch(
                                     <div class="flex items-center gap-1">
                                         <div class="flex -space-x-0.5">
                                             <div
-                                                class="w-[18px] h-[18px] rounded-full bg-blue-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
+                                                class="w-4.5 h-4.5 rounded-full bg-blue-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
                                             >
                                                 <UIcon
                                                     name="i-lucide-thumbs-up"
@@ -824,7 +824,7 @@ watch(
                                                 />
                                             </div>
                                             <div
-                                                class="w-[18px] h-[18px] rounded-full bg-red-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
+                                                class="w-4.5 h-4.5 rounded-full bg-red-500 flex items-center justify-center ring-2 ring-white dark:ring-gray-900"
                                             >
                                                 <UIcon
                                                     name="i-lucide-heart"
@@ -841,7 +841,7 @@ watch(
                                 </div>
 
                                 <!-- Divider -->
-                                <div class="mx-4 border-t border-[var(--border-primary)]" />
+                                <div class="mx-4 border-t border-(--border-primary)" />
 
                                 <!-- Action buttons -->
                                 <div class="grid grid-cols-3 px-2 py-1">
@@ -850,7 +850,7 @@ watch(
                                     >
                                         <UIcon
                                             name="i-lucide-thumbs-up"
-                                            class="w-[18px] h-[18px]"
+                                            class="w-4.5 h-4.5"
                                         />
                                         <span class="text-[13px] font-medium">Like</span>
                                     </button>
@@ -859,14 +859,14 @@ watch(
                                     >
                                         <UIcon
                                             name="i-lucide-message-circle"
-                                            class="w-[18px] h-[18px]"
+                                            class="w-4.5 h-4.5"
                                         />
                                         <span class="text-[13px] font-medium">Comment</span>
                                     </button>
                                     <button
                                         class="flex items-center justify-center gap-1.5 py-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                     >
-                                        <UIcon name="i-lucide-share" class="w-[18px] h-[18px]" />
+                                        <UIcon name="i-lucide-share" class="w-4.5 h-4.5" />
                                         <span class="text-[13px] font-medium">Share</span>
                                     </button>
                                 </div>

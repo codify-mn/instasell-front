@@ -47,7 +47,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         <!-- Background decoration -->
         <div class="absolute inset-0 -z-10 overflow-hidden">
             <div
-                class="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-3xl opacity-20"
+                class="absolute top-1/4 left-1/4 w-125 h-125 rounded-full blur-3xl opacity-20"
                 style="
                     background: radial-gradient(
                         circle,
@@ -57,7 +57,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                 "
             />
             <div
-                class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl opacity-20"
+                class="absolute bottom-1/4 right-1/4 w-100 h-100 rounded-full blur-3xl opacity-20"
                 style="
                     background: radial-gradient(
                         circle,
@@ -79,7 +79,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             </NuxtLink>
 
             <div
-                class="bg-[var(--surface-card)] rounded-2xl shadow-xl border border-[var(--border-primary)] p-8"
+                class="bg-(--surface-card) rounded-2xl shadow-xl border border-(--border-primary) p-8"
             >
                 <!-- Invalid Token state -->
                 <div v-if="isInvalidToken" class="text-center space-y-6">
@@ -89,7 +89,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <UIcon name="i-lucide-alert-triangle" class="w-8 h-8 text-amber-500" />
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
+                        <h1 class="text-2xl font-bold text-(--text-heading) mb-2">
                             Буруу холбоос
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">
@@ -100,7 +100,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         to="/forgot-password"
                         block
                         size="lg"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 border-0"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 border-0"
                     >
                         Дахин холбоос авах
                     </UButton>
@@ -114,7 +114,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <UIcon name="i-lucide-check-circle" class="w-8 h-8 text-primary-500" />
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
+                        <h1 class="text-2xl font-bold text-(--text-heading) mb-2">
                             Амжилттай!
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">Нууц үг амжилттай солигдлоо.</p>
@@ -123,7 +123,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         to="/login"
                         block
                         size="lg"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 border-0"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 border-0"
                     >
                         Нэвтрэх
                     </UButton>
@@ -133,11 +133,11 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                 <template v-else>
                     <div class="text-center mb-8">
                         <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/25"
+                            class="w-16 h-16 rounded-2xl bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/25"
                         >
                             <UIcon name="i-lucide-lock-keyhole" class="w-8 h-8 text-white" />
                         </div>
-                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
+                        <h1 class="text-2xl font-bold text-(--text-heading) mb-2">
                             Шинэ нууц үг
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">Шинэ нууц үгээ оруулна уу</p>
@@ -195,7 +195,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             block
                             size="lg"
                             :loading="isLoading"
-                            class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25"
+                            class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-lg shadow-primary-500/25"
                         >
                             Нууц үг солих
                         </UButton>

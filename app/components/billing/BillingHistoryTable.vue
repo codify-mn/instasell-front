@@ -63,12 +63,12 @@ const columns: TableColumn<SubscriptionInvoice>[] = [
 <template>
     <div>
         <div v-if="loading" class="flex justify-center py-12">
-            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-[var(--text-muted)]" />
+            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-(--text-muted)" />
         </div>
 
         <div v-else-if="invoices.length === 0" class="text-center py-12">
-            <UIcon name="i-lucide-receipt" class="size-10 text-[var(--text-placeholder)] mx-auto mb-3" />
-            <p class="text-sm text-[var(--text-muted)]">Нэхэмжлэх байхгүй</p>
+            <UIcon name="i-lucide-receipt" class="size-10 text-(--text-placeholder) mx-auto mb-3" />
+            <p class="text-sm text-(--text-muted)">Нэхэмжлэх байхгүй</p>
         </div>
 
         <UTable
@@ -85,25 +85,25 @@ const columns: TableColumn<SubscriptionInvoice>[] = [
             }"
         >
             <template #created_at-cell="{ row }">
-                <span class="text-[var(--text-muted)]">
+                <span class="text-(--text-muted)">
                     {{ formatDateShort(row.original.created_at) }}
                 </span>
             </template>
 
             <template #plan-cell="{ row }">
-                <span class="font-medium text-[var(--text-heading)]">
+                <span class="font-medium text-(--text-heading)">
                     {{ row.original.plan?.name || 'Тодорхойгүй' }}
                 </span>
             </template>
 
             <template #billing_cycle-cell="{ row }">
-                <span class="text-[var(--text-muted)]">
+                <span class="text-(--text-muted)">
                     {{ getBillingCycleLabel(row.original.billing_cycle) }}
                 </span>
             </template>
 
             <template #amount-cell="{ row }">
-                <span class="font-medium text-[var(--text-heading)]">
+                <span class="font-medium text-(--text-heading)">
                     {{ formatAmount(row.original.amount) }}
                 </span>
             </template>

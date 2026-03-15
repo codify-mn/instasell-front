@@ -13,12 +13,14 @@ const options: { label: string; value: Period }[] = [
     { label: 'Өнөөдөр', value: 'today' },
     { label: '7 хоног', value: '7d' },
     { label: '30 хоног', value: '30d' },
-    { label: 'Нийт', value: 'all' },
+    { label: 'Нийт', value: 'all' }
 ]
 </script>
 
 <template>
-    <div class="flex items-center gap-0.5 bg-[var(--surface-inset)] border border-[var(--border-primary)] rounded-lg p-1">
+    <div
+        class="flex items-center gap-0.5 bg-(--surface-inset) border border-(--border-primary) rounded-lg p-1"
+    >
         <button
             v-for="opt in options"
             :key="opt.value"
@@ -26,8 +28,8 @@ const options: { label: string; value: Period }[] = [
             class="px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 focus:outline-none"
             :class="
                 modelValue === opt.value
-                    ? 'bg-[var(--surface-card)] text-[var(--text-heading)] font-semibold shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-heading)]'
+                    ? 'bg-(--surface-card) text-(--text-heading) font-semibold shadow-sm'
+                    : 'text-(--text-muted) hover:text-(--text-heading)'
             "
             @click="emit('update:modelValue', opt.value)"
         >

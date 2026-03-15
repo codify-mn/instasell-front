@@ -30,7 +30,7 @@ const dropdownOpen = ref(false)
         :content="{ align: collapsed ? 'center' : 'start', side: 'top', sideOffset: 8, collisionPadding: 12 }"
     >
         <button
-            class="flex items-center gap-2.5 w-full rounded-lg px-2 py-2 transition-colors hover:bg-[var(--surface-inset)] cursor-pointer"
+            class="flex items-center gap-2.5 w-full rounded-lg px-2 py-2 transition-colors hover:bg-(--surface-inset) cursor-pointer"
             :class="[collapsed ? 'justify-center' : '', dropdownOpen ? 'bg-[var(--surface-inset)]' : '']"
         >
             <UAvatar
@@ -40,12 +40,12 @@ const dropdownOpen = ref(false)
                 class="shrink-0"
             />
             <template v-if="!collapsed">
-                <span class="flex-1 text-left text-sm font-medium text-[var(--text-heading)] truncate">
+                <span class="flex-1 text-left text-sm font-medium text-(--text-heading) truncate">
                     {{ user.name }}
                 </span>
                 <UIcon
                     name="i-lucide-ellipsis"
-                    class="size-4 text-[var(--text-muted)] shrink-0"
+                    class="size-4 text-(--text-muted) shrink-0"
                 />
             </template>
         </button>
@@ -60,8 +60,8 @@ const dropdownOpen = ref(false)
                         size="md"
                     />
                     <div class="min-w-0">
-                        <p class="text-sm font-semibold text-[var(--text-heading)] truncate">{{ user.name }}</p>
-                        <p v-if="authUser?.email" class="text-xs text-[var(--text-muted)] truncate">{{ authUser.email }}</p>
+                        <p class="text-sm font-semibold text-(--text-heading) truncate">{{ user.name }}</p>
+                        <p v-if="authUser?.email" class="text-xs text-(--text-muted) truncate">{{ authUser.email }}</p>
                     </div>
                 </div>
 
@@ -72,10 +72,10 @@ const dropdownOpen = ref(false)
                     <div class="flex items-center gap-2.5">
                         <UIcon
                             :name="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
-                            class="size-4 text-[var(--text-muted)] transition-transform duration-300"
+                            class="size-4 text-(--text-muted) transition-transform duration-300"
                             :class="isDark ? 'rotate-0' : 'rotate-0'"
                         />
-                        <span class="text-sm text-[var(--text-body)]">{{ isDark ? 'Бараан' : 'Цайвар' }}</span>
+                        <span class="text-sm text-(--text-body)">{{ isDark ? 'Бараан' : 'Цайвар' }}</span>
                     </div>
                     <button
                         class="theme-toggle"

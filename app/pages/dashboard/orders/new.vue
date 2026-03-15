@@ -286,7 +286,7 @@ const copyCheckoutLink = () => {
     <div class="w-full h-full flex flex-col overflow-hidden">
         <UDashboardPanel id="new-order">
             <template #header>
-                <UDashboardNavbar class="border-b border-[var(--border-primary)]">
+                <UDashboardNavbar class="border-b border-(--border-primary)">
                     <template #leading>
                         <div class="flex items-center gap-3">
                             <UButton
@@ -298,7 +298,7 @@ const copyCheckoutLink = () => {
                             />
                             <div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Захиалга</p>
-                                <h1 class="text-sm font-semibold text-[var(--text-heading)] leading-tight">Шинэ захиалга</h1>
+                                <h1 class="text-sm font-semibold text-(--text-heading) leading-tight">Шинэ захиалга</h1>
                             </div>
                         </div>
                     </template>
@@ -336,19 +336,19 @@ const copyCheckoutLink = () => {
                         <!-- Left: Products -->
                         <div class="flex-1 overflow-y-auto p-5 lg:p-7 space-y-2">
                             <div class="flex items-center justify-between mb-1">
-                                <h2 class="text-sm font-semibold text-[var(--text-heading)]">Бараа</h2>
+                                <h2 class="text-sm font-semibold text-(--text-heading)">Бараа</h2>
                                 <span v-if="cartItems.length" class="text-xs text-primary font-medium">{{ cartItems.length }} нэмэгдсэн</span>
                             </div>
                             <OrderProductGrid @select="handleProductSelect" />
                         </div>
 
                         <!-- Right: Sidebar -->
-                        <div class="w-full lg:w-[380px] xl:w-[400px] shrink-0 lg:border-l border-[var(--border-primary)] overflow-y-auto">
+                        <div class="w-full lg:w-95 xl:w-100 shrink-0 lg:border-l border-(--border-primary) overflow-y-auto">
                             <div class="divide-y divide-gray-200 dark:divide-gray-800">
 
                                 <!-- Customer -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Харилцагч</h2>
+                                    <h2 class="text-sm font-semibold text-(--text-heading) mb-4">Харилцагч</h2>
                                     <UFormField name="customer_phone">
                                         <UInput
                                             v-model="state.customer_phone"
@@ -365,7 +365,7 @@ const copyCheckoutLink = () => {
                                     <!-- Found customer -->
                                     <div v-if="foundCustomer && !showCustomerForm" class="mt-3 flex items-start justify-between gap-2 p-3 rounded-lg bg-primary-50 dark:bg-primary-950/20 border border-primary-200 dark:border-primary-900">
                                         <div class="min-w-0">
-                                            <p class="text-sm font-medium text-[var(--text-heading)]">{{ foundCustomer.name }}</p>
+                                            <p class="text-sm font-medium text-(--text-heading)">{{ foundCustomer.name }}</p>
                                             <p class="text-xs text-gray-500 mt-0.5 truncate">{{ customerSummary }}</p>
                                         </div>
                                         <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="showCustomerForm = true" />
@@ -413,7 +413,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Cart -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Захиалга</h2>
+                                    <h2 class="text-sm font-semibold text-(--text-heading) mb-4">Захиалга</h2>
                                     <OrderCartCard
                                         :items="cartItems"
                                         :shipping-fee="shippingFee"
@@ -425,7 +425,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Shipping & Discount -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Нэмэлт</h2>
+                                    <h2 class="text-sm font-semibold text-(--text-heading) mb-4">Нэмэлт</h2>
                                     <div class="grid grid-cols-2 gap-3">
                                         <UFormField label="Хүргэлтийн төлбөр">
                                             <UInput v-model.number="shippingFee" type="number" min="0" placeholder="0">
@@ -442,7 +442,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Payment Method -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Төлбөрийн арга</h2>
+                                    <h2 class="text-sm font-semibold text-(--text-heading) mb-4">Төлбөрийн арга</h2>
                                     <div class="grid grid-cols-2 gap-2">
                                         <button
                                             v-for="option in paymentMethodOptions"
@@ -451,7 +451,7 @@ const copyCheckoutLink = () => {
                                             class="flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm transition-all"
                                             :class="state.payment_method === option.value
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400 font-medium'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'"
+                                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'"
                                             @click="state.payment_method = option.value"
                                         >
                                             <UIcon :name="option.icon" class="w-4 h-4 shrink-0" />

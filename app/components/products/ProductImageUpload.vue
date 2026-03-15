@@ -105,7 +105,7 @@ const openFilePicker = () => {
                 <div
                     v-for="(img, index) in modelValue"
                     :key="index"
-                    class="relative flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 group cursor-pointer"
+                    class="relative shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 group cursor-pointer"
                     :class="index === 0 ? 'ring-2 ring-primary-500' : 'ring-1 ring-gray-200 dark:ring-gray-700'"
                     style="width: 72px; height: 72px"
                 >
@@ -124,7 +124,7 @@ const openFilePicker = () => {
                 <!-- Add more thumbnail -->
                 <button
                     type="button"
-                    class="flex-shrink-0 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500 flex items-center justify-center text-gray-400 hover:text-primary-500 transition-colors cursor-pointer"
+                    class="shrink-0 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500 flex items-center justify-center text-gray-400 hover:text-primary-500 transition-colors cursor-pointer"
                     style="width: 72px; height: 72px"
                     @click="openFilePicker"
                 >
@@ -134,10 +134,10 @@ const openFilePicker = () => {
 
             <!-- Upload progress -->
             <div v-if="progress.length > 0" class="space-y-1">
-                <div v-for="(item, index) in progress" :key="index" class="flex items-center gap-2 p-2 bg-[var(--surface-inset)] rounded-lg">
-                    <UIcon v-if="item.status === 'done'" name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
-                    <UIcon v-else-if="item.status === 'error'" name="i-lucide-x" class="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
-                    <UIcon v-else name="i-lucide-loader-2" class="w-3.5 h-3.5 text-gray-500 animate-spin flex-shrink-0" />
+                <div v-for="(item, index) in progress" :key="index" class="flex items-center gap-2 p-2 bg-(--surface-inset) rounded-lg">
+                    <UIcon v-if="item.status === 'done'" name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500 shrink-0" />
+                    <UIcon v-else-if="item.status === 'error'" name="i-lucide-x" class="w-3.5 h-3.5 text-red-500 shrink-0" />
+                    <UIcon v-else name="i-lucide-loader-2" class="w-3.5 h-3.5 text-gray-500 animate-spin shrink-0" />
                     <div class="flex-1 min-w-0">
                         <p class="text-xs truncate">{{ item.filename }}</p>
                         <div class="mt-0.5 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">

@@ -105,10 +105,10 @@ onMounted(() => {
 
 <template>
     <div
-        class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
+        class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5"
     >
         <div class="mb-4">
-            <h3 class="text-sm font-medium text-[var(--text-heading)] mb-3">Бараа сонгох</h3>
+            <h3 class="text-sm font-medium text-(--text-heading) mb-3">Бараа сонгох</h3>
             <UInput
                 v-model="searchKeyword"
                 placeholder="Бараа хайх..."
@@ -145,8 +145,8 @@ onMounted(() => {
                     isOutOfStock(product)
                         ? 'opacity-50 cursor-not-allowed border-gray-200 dark:border-gray-700'
                         : clickedId === product.id
-                            ? 'scale-95 border-primary-400 dark:border-primary-500 shadow-md'
-                            : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-sm'
+                            ? 'scale-95 dark:border-primary-500 shadow-md'
+                            : 'border-gray-200 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-sm'
                 ]"
                 @click="handleSelect(product)"
             >
@@ -199,7 +199,7 @@ onMounted(() => {
 
                 <!-- Product Info -->
                 <div class="p-2">
-                    <p class="text-sm font-medium text-[var(--text-heading)] truncate">
+                    <p class="text-sm font-medium text-(--text-heading) truncate">
                         {{ product.name }}
                     </p>
                     <div class="flex items-center gap-1 mt-1">

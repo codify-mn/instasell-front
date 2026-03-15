@@ -19,20 +19,20 @@ function renderPreview(template: string): string {
 <template>
     <div class="space-y-4">
         <!-- Facebook Comment Preview -->
-        <div class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-            <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
+        <div class="bg-(--surface-card) border border-(--border-primary) rounded-2xl overflow-hidden">
+            <div class="px-3 py-2 border-b border-(--border-primary) flex items-center gap-2">
                 <UIcon name="i-lucide-facebook" class="w-3.5 h-3.5 text-blue-500" />
                 <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Facebook коммент</span>
             </div>
             <div class="p-3 space-y-3">
                 <!-- User's comment -->
                 <div class="flex gap-2">
-                    <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shrink-0">
+                    <div class="w-7 h-7 rounded-full bg-linear-to-br from-blue-400 to-blue-600 flex items-center justify-center shrink-0">
                         <span class="text-white text-[10px] font-bold">Б</span>
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                            <p class="text-[11px] font-semibold text-[var(--text-heading)]">Бат-Эрдэнэ</p>
+                            <p class="text-[11px] font-semibold text-(--text-heading)">Бат-Эрдэнэ</p>
                             <p class="text-xs text-gray-700 dark:text-gray-300">{{ previewKeyword }}</p>
                         </div>
                         <div class="flex items-center gap-3 mt-1 pl-2">
@@ -50,12 +50,12 @@ function renderPreview(template: string): string {
 
                 <!-- Bot's public reply -->
                 <div v-if="autoCommentEnabled" class="flex gap-2 pl-9">
-                    <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0">
+                    <div class="w-6 h-6 rounded-full bg-linear-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0">
                         <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1.5">
-                            <p class="text-[10px] font-semibold text-[var(--text-heading)]">Таны дэлгүүр</p>
+                            <p class="text-[10px] font-semibold text-(--text-heading)">Таны дэлгүүр</p>
                             <p class="text-[11px] text-gray-700 dark:text-gray-300">{{ autoCommentText || 'Баярлалаа! Мессежээр мэдэгдэлэе.' }}</p>
                         </div>
                         <div class="flex items-center gap-3 mt-1 pl-2">
@@ -76,14 +76,14 @@ function renderPreview(template: string): string {
         </div>
 
         <!-- Messenger Preview -->
-        <div v-if="privateReplyEnabled" class="bg-[var(--surface-card)] border border-[var(--border-primary)] rounded-2xl overflow-hidden">
-            <div class="px-3 py-2 border-b border-[var(--border-primary)] flex items-center gap-2">
+        <div v-if="privateReplyEnabled" class="bg-(--surface-card) border border-(--border-primary) rounded-2xl overflow-hidden">
+            <div class="px-3 py-2 border-b border-(--border-primary) flex items-center gap-2">
                 <UIcon name="i-lucide-message-circle" class="w-3.5 h-3.5 text-blue-500" />
                 <span class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Messenger хувийн мессеж</span>
             </div>
             <div class="p-3 space-y-2">
                 <div class="flex gap-2">
-                    <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0 mt-0.5">
+                    <div class="w-6 h-6 rounded-full bg-linear-to-br from-primary-400 to-primary-600 flex items-center justify-center shrink-0 mt-0.5">
                         <UIcon name="i-lucide-store" class="w-3 h-3 text-white" />
                     </div>
                     <div class="space-y-1.5 flex-1 min-w-0">

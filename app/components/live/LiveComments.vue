@@ -43,7 +43,7 @@ function getAvatarColor(senderId: string): string {
 <template>
     <div
         ref="scrollContainer"
-        class="flex-1 overflow-y-auto p-2 border border-[var(--border-primary)] mx-2 rounded-lg"
+        class="flex-1 overflow-y-auto p-2 border border-(--border-primary) mx-2 rounded-lg"
     >
         <template v-if="comments.length === 0">
             <div class="flex flex-col items-center justify-center h-full gap-2">
@@ -70,7 +70,7 @@ function getAvatarColor(senderId: string): string {
                         <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">
                             {{ comment.sender_name }}
                         </span>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 break-words">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 wrap-break-word">
                             {{ comment.text }}
                         </p>
                     </div>

@@ -232,7 +232,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             >
                 <UIcon name="i-lucide-search-x" class="w-10 h-10 text-red-400" />
             </div>
-            <h2 class="text-xl font-bold text-[var(--text-heading)] mb-2">Захиалга олдсонгүй</h2>
+            <h2 class="text-xl font-bold text-(--text-heading) mb-2">Захиалга олдсонгүй</h2>
             <p class="text-gray-500 text-center max-w-sm">
                 Линкийн хугацаа дууссан эсвэл буруу байж магадгүй. Дэлгүүрээс шинэ линк авна уу.
             </p>
@@ -242,7 +242,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         <div v-else-if="showPayment && qpayData" class="flex items-center justify-center min-h-screen px-4">
             <div class="max-w-md w-full">
                 <div
-                    class="bg-[var(--surface-card)] rounded-2xl shadow-lg border border-[var(--border-primary)] p-6 sm:p-8"
+                    class="bg-(--surface-card) rounded-2xl shadow-lg border border-(--border-primary) p-6 sm:p-8"
                 >
                     <CheckoutPayment
                         :qpay-data="qpayData"
@@ -258,14 +258,14 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         <div v-else-if="completed" class="flex items-center justify-center min-h-screen px-4">
             <div class="max-w-md w-full text-center">
                 <div
-                    class="bg-[var(--surface-card)] rounded-2xl shadow-lg border border-[var(--border-primary)] p-8 sm:p-10"
+                    class="bg-(--surface-card) rounded-2xl shadow-lg border border-(--border-primary) p-8 sm:p-10"
                 >
                     <div
                         class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-950/30 flex items-center justify-center mx-auto mb-6"
                     >
                         <UIcon name="i-lucide-check" class="w-10 h-10 text-primary-500" />
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-[var(--text-heading)] mb-3">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-(--text-heading) mb-3">
                         Баярлалаа!
                     </h2>
                     <p class="text-gray-500 mb-8 leading-relaxed">
@@ -276,7 +276,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                     >
                         <UIcon name="i-lucide-hash" class="w-4 h-4 text-gray-400" />
                         <span class="text-sm text-gray-500">Захиалгын дугаар</span>
-                        <span class="font-mono font-bold text-[var(--text-heading)]">{{
+                        <span class="font-mono font-bold text-(--text-heading)">{{
                             order.order_number
                         }}</span>
                     </div>
@@ -287,13 +287,13 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         <!-- Checkout Form -->
         <div v-else>
             <!-- Shop Header -->
-            <div class="bg-[var(--surface-card)] border-b border-[var(--border-primary)]">
+            <div class="bg-(--surface-card) border-b border-(--border-primary)">
                 <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <UAvatar :src="order.shop?.picture" :alt="order.shop?.name" size="lg" />
                             <div>
-                                <h1 class="text-lg font-bold text-[var(--text-heading)]">
+                                <h1 class="text-lg font-bold text-(--text-heading)">
                                     {{ order.shop?.name }}
                                 </h1>
                                 <p class="text-xs text-gray-500">Захиалга баталгаажуулах</p>
@@ -309,7 +309,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
             <!-- Mobile Order Summary Bar -->
             <div
-                class="lg:hidden bg-[var(--surface-card)] border-b border-[var(--border-primary)]"
+                class="lg:hidden bg-(--surface-card) border-b border-(--border-primary)"
             >
                 <button
                     class="w-full px-4 py-3 flex items-center justify-between"
@@ -317,7 +317,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                 >
                     <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-shopping-bag" class="w-4 h-4 text-primary" />
-                        <span class="text-sm font-medium text-[var(--text-heading)]">
+                        <span class="text-sm font-medium text-(--text-heading)">
                             {{ itemCount }} бараа
                         </span>
                         <UIcon
@@ -326,13 +326,13 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             :class="showMobileItems ? 'rotate-180' : ''"
                         />
                     </div>
-                    <span class="text-sm font-bold text-[var(--text-heading)]">
+                    <span class="text-sm font-bold text-(--text-heading)">
                         {{ formatPrice(grandTotal) }}
                     </span>
                 </button>
                 <div
                     v-if="showMobileItems"
-                    class="px-4 pb-4 border-t border-[var(--border-primary)] pt-3 space-y-2"
+                    class="px-4 pb-4 border-t border-(--border-primary) pt-3 space-y-2"
                 >
                     <div
                         v-for="item in order.items"
@@ -342,7 +342,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <span class="text-gray-600 dark:text-gray-400 truncate mr-2">
                             {{ item.quantity }}x {{ item.name }}
                         </span>
-                        <span class="text-[var(--text-heading)] shrink-0">{{
+                        <span class="text-(--text-heading) shrink-0">{{
                             formatPrice(item.subtotal)
                         }}</span>
                     </div>
@@ -354,7 +354,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <span class="text-primary truncate mr-2">
                             + {{ item.quantity }}x {{ item.product.name }}
                         </span>
-                        <span class="text-[var(--text-heading)] shrink-0">{{
+                        <span class="text-(--text-heading) shrink-0">{{
                             formatPrice(getEffectivePrice(item.product) * item.quantity)
                         }}</span>
                     </div>
@@ -369,7 +369,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <UForm :schema="schema" :state="state" class="space-y-6" @submit="onSubmit">
                             <!-- Section 1: Contact -->
                             <section
-                                class="bg-[var(--surface-card)] rounded-2xl p-5 sm:p-6 shadow-sm border border-[var(--border-primary)]"
+                                class="bg-(--surface-card) rounded-2xl p-5 sm:p-6 shadow-sm border border-(--border-primary)"
                             >
                                 <div class="flex items-center gap-3 mb-5">
                                     <div
@@ -377,7 +377,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     >
                                         1
                                     </div>
-                                    <h3 class="font-semibold text-[var(--text-heading)]">
+                                    <h3 class="font-semibold text-(--text-heading)">
                                         Холбоо барих
                                     </h3>
                                 </div>
@@ -413,7 +413,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
                             <!-- Section 2: Delivery -->
                             <section
-                                class="bg-[var(--surface-card)] rounded-2xl p-5 sm:p-6 shadow-sm border border-[var(--border-primary)]"
+                                class="bg-(--surface-card) rounded-2xl p-5 sm:p-6 shadow-sm border border-(--border-primary)"
                             >
                                 <div class="flex items-center gap-3 mb-5">
                                     <div
@@ -421,7 +421,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     >
                                         2
                                     </div>
-                                    <h3 class="font-semibold text-[var(--text-heading)]">
+                                    <h3 class="font-semibold text-(--text-heading)">
                                         Хүргэлтийн хаяг
                                     </h3>
                                 </div>
@@ -489,7 +489,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             <!-- Section 3: Payment -->
                             <section
                                 v-if="paymentMethodOptions.length > 0"
-                                class="bg-[var(--surface-card)] rounded-2xl p-5 sm:p-6 shadow-sm border border-[var(--border-primary)]"
+                                class="bg-(--surface-card) rounded-2xl p-5 sm:p-6 shadow-sm border border-(--border-primary)"
                             >
                                 <div class="flex items-center gap-3 mb-5">
                                     <div
@@ -497,7 +497,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     >
                                         3
                                     </div>
-                                    <h3 class="font-semibold text-[var(--text-heading)]">
+                                    <h3 class="font-semibold text-(--text-heading)">
                                         Төлбөрийн арга
                                     </h3>
                                 </div>
@@ -581,11 +581,11 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <!-- Featured Products Section (below checkout) -->
                         <section
                             v-if="upsellProducts.length > 0"
-                            class="mt-8 bg-[var(--surface-card)] rounded-2xl p-5 sm:p-6 shadow-sm border border-[var(--border-primary)]"
+                            class="mt-8 bg-(--surface-card) rounded-2xl p-5 sm:p-6 shadow-sm border border-(--border-primary)"
                         >
                             <div class="flex items-center gap-3 mb-2">
                                 <UIcon name="i-lucide-sparkles" class="w-5 h-5 text-amber-500" />
-                                <h3 class="font-semibold text-[var(--text-heading)]">
+                                <h3 class="font-semibold text-(--text-heading)">
                                     Танд санал болгох
                                 </h3>
                             </div>
@@ -624,7 +624,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p
-                                            class="text-sm font-medium text-[var(--text-heading)] truncate"
+                                            class="text-sm font-medium text-(--text-heading) truncate"
                                         >
                                             {{ product.name }}
                                         </p>
@@ -656,13 +656,13 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                     </div>
 
                     <!-- Right: Order Summary (desktop sticky) -->
-                    <div class="hidden lg:block w-[340px] xl:w-[380px] shrink-0">
+                    <div class="hidden lg:block w-85 xl:w-95 shrink-0">
                         <div class="sticky top-8 space-y-5">
                             <div
-                                class="bg-[var(--surface-card)] rounded-2xl p-5 shadow-sm border border-[var(--border-primary)]"
+                                class="bg-(--surface-card) rounded-2xl p-5 shadow-sm border border-(--border-primary)"
                             >
                                 <h3
-                                    class="font-semibold text-[var(--text-heading)] mb-4 flex items-center gap-2"
+                                    class="font-semibold text-(--text-heading) mb-4 flex items-center gap-2"
                                 >
                                     <UIcon
                                         name="i-lucide-shopping-bag"
@@ -687,7 +687,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p
-                                                class="text-sm text-[var(--text-heading)] truncate"
+                                                class="text-sm text-(--text-heading) truncate"
                                             >
                                                 {{ item.name }}
                                             </p>
@@ -706,7 +706,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                 <!-- Upsell items in summary -->
                                 <template v-if="upsellCart.length > 0">
                                     <div
-                                        class="border-t border-dashed border-[var(--border-primary)] my-3"
+                                        class="border-t border-dashed border-(--border-primary) my-3"
                                     />
                                     <div class="space-y-3 mb-4">
                                         <div
@@ -723,7 +723,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p
-                                                    class="text-sm text-[var(--text-heading)] truncate"
+                                                    class="text-sm text-(--text-heading) truncate"
                                                 >
                                                     {{ item.product.name }}
                                                 </p>
@@ -745,7 +745,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
                                 <!-- Totals -->
                                 <div
-                                    class="border-t border-[var(--border-primary)] pt-3 space-y-2"
+                                    class="border-t border-(--border-primary) pt-3 space-y-2"
                                 >
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-500">Барааны дүн</span>
@@ -779,9 +779,9 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                         <span>-{{ formatPrice(order.discount) }}</span>
                                     </div>
                                     <div
-                                        class="flex justify-between pt-3 border-t border-[var(--border-primary)]"
+                                        class="flex justify-between pt-3 border-t border-(--border-primary)"
                                     >
-                                        <span class="font-semibold text-[var(--text-heading)]"
+                                        <span class="font-semibold text-(--text-heading)"
                                             >Нийт</span
                                         >
                                         <span class="text-lg font-bold text-primary">{{

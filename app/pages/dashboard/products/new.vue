@@ -224,7 +224,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <div class="flex items-center gap-2.5">
                             <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
                             <div>
-                                <h1 class="text-lg font-semibold text-[var(--text-heading)]">
+                                <h1 class="text-lg font-semibold text-(--text-heading)">
                                     Шинэ бараа
                                 </h1>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
@@ -257,12 +257,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                             <div class="flex-1 min-w-0 space-y-5">
 
                                 <!-- Image + Product Info Card -->
-                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5">
+                                <div class="bg-(--surface-card) rounded-2xl border border-(--border-primary) p-5">
                                     <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
 
                                         <!-- Column 1: Image Gallery -->
                                         <div>
-                                            <h3 class="text-sm font-semibold text-[var(--text-heading)] mb-3">Зураг</h3>
+                                            <h3 class="text-sm font-semibold text-(--text-heading) mb-3">Зураг</h3>
                                             <ProductImageUpload v-model="images" />
                                         </div>
 
@@ -340,10 +340,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                 </div>
 
                                 <!-- Variants Card -->
-                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5">
+                                <div class="bg-(--surface-card) rounded-2xl border border-(--border-primary) p-5">
                                     <div class="flex items-center justify-between mb-4">
                                         <div class="flex items-center gap-2">
-                                            <h3 class="text-sm font-semibold text-[var(--text-heading)]">Хэмжээ / Сонголтууд</h3>
+                                            <h3 class="text-sm font-semibold text-(--text-heading)">Хэмжээ / Сонголтууд</h3>
                                             <UTooltip text="Барааны хэмжээ, өнгө эсвэл бусад ялгааг нэм. Сонголт нэмсэн үед тус бүрд үлдэгдэл тохируулна." :popper="{ placement: 'top' }">
                                                 <UIcon name="i-lucide-help-circle" class="w-3.5 h-3.5 text-gray-400 cursor-help" />
                                             </UTooltip>
@@ -364,15 +364,15 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     <div v-if="options.length > 0" class="mb-4">
                                         <table class="w-full text-sm border-separate border-spacing-0">
                                             <thead>
-                                                <tr class="bg-[var(--surface-inset)]/60">
-                                                    <th class="text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider py-2.5 px-3 rounded-l-lg border-y border-l border-[var(--border-primary)]">Нэр / Хэмжээ</th>
-                                                    <th class="text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider py-2.5 px-3 w-28 border-y border-[var(--border-primary)]">Үлдэгдэл</th>
-                                                    <th class="w-10 rounded-r-lg border-y border-r border-[var(--border-primary)]" />
+                                                <tr class="bg-(--surface-inset)/60">
+                                                    <th class="text-left text-xs font-semibold text-(--text-muted) uppercase tracking-wider py-2.5 px-3 rounded-l-lg border-y border-l border-(--border-primary)">Нэр / Хэмжээ</th>
+                                                    <th class="text-left text-xs font-semibold text-(--text-muted) uppercase tracking-wider py-2.5 px-3 w-28 border-y border-(--border-primary)">Үлдэгдэл</th>
+                                                    <th class="w-10 rounded-r-lg border-y border-r border-(--border-primary)" />
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="(option, index) in options" :key="option.id" class="hover:bg-[var(--surface-inset)]/40 transition-colors duration-150">
-                                                    <td class="py-2 px-3 border-b border-[var(--border-primary)]">
+                                                <tr v-for="(option, index) in options" :key="option.id" class="hover:bg-(--surface-inset)/40 transition-colors duration-150">
+                                                    <td class="py-2 px-3 border-b border-(--border-primary)">
                                                         <UInput
                                                             v-model="option.name"
                                                             placeholder="жишээ нь: S, M, XL, Улаан"
@@ -380,12 +380,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                                             :ui="{ base: !option.name.trim() ? 'ring-red-500' : '' }"
                                                         />
                                                     </td>
-                                                    <td class="py-2 px-3 border-b border-[var(--border-primary)]">
+                                                    <td class="py-2 px-3 border-b border-(--border-primary)">
                                                         <UInput v-model.number="option.stock" type="number" placeholder="0" size="sm">
-                                                            <template #trailing><span class="text-[var(--text-placeholder)] text-xs">ш</span></template>
+                                                            <template #trailing><span class="text-(--text-placeholder) text-xs">ш</span></template>
                                                         </UInput>
                                                     </td>
-                                                    <td class="py-2 px-1 border-b border-[var(--border-primary)]">
+                                                    <td class="py-2 px-1 border-b border-(--border-primary)">
                                                         <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs" @click="removeOption(index)" />
                                                     </td>
                                                 </tr>
@@ -396,7 +396,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                     <!-- Quick add chips -->
                                     <div class="space-y-1.5">
                                         <div v-for="group in quickVariants" :key="group.label" class="flex flex-wrap items-center gap-1.5">
-                                            <span class="text-xs text-gray-400 dark:text-gray-500 shrink-0 min-w-[5rem]">{{ group.label }}:</span>
+                                            <span class="text-xs text-gray-400 dark:text-gray-500 shrink-0 min-w-20">{{ group.label }}:</span>
                                             <button
                                                 v-for="item in group.items"
                                                 :key="item"
@@ -497,8 +497,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                         <span>Харилцагчид харагдах байдал</span>
                                     </template>
 
-                                    <div class="rounded-xl overflow-hidden border border-[var(--border-primary)] shadow-sm">
-                                        <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center relative overflow-hidden">
+                                    <div class="rounded-xl overflow-hidden border border-(--border-primary) shadow-sm">
+                                        <div class="aspect-square bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center relative overflow-hidden">
                                             <img v-if="images.length > 0" :src="images[0]" class="w-full h-full object-cover absolute inset-0" alt="" />
                                             <UIcon v-else name="i-lucide-image" class="w-12 h-12 text-gray-300 dark:text-gray-600" />
                                             <div v-if="state.timed_sale_enabled && state.timed_sale_price && timedSaleDiscountPercent > 0" class="absolute top-2 left-2">
@@ -508,8 +508,8 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                             </div>
                                         </div>
 
-                                        <div class="p-3.5 bg-[var(--surface-card)]">
-                                            <p class="text-sm font-semibold text-[var(--text-heading)] line-clamp-2 mb-2 leading-snug">
+                                        <div class="p-3.5 bg-(--surface-card)">
+                                            <p class="text-sm font-semibold text-(--text-heading) line-clamp-2 mb-2 leading-snug">
                                                 {{ state.name || 'Барааны нэр...' }}
                                             </p>
 
@@ -540,7 +540,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                                 </ProductFormCard>
 
                                 <!-- Settings Card -->
-                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5 space-y-1">
+                                <div class="bg-(--surface-card) rounded-2xl border border-(--border-primary) p-5 space-y-1">
                                     <ProductSettingToggle
                                         v-model="state.track_inventory"
                                         label="Үлдэгдэл автоматаар тооцох"

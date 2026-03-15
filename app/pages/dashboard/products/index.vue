@@ -566,9 +566,9 @@ onMounted(() => {
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
         <div
-            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+            class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7"
         >
-            <span class="text-base font-bold text-[var(--text-heading)]">Бараа бүтээгдэхүүн</span>
+            <span class="text-base font-bold text-(--text-heading)">Бараа бүтээгдэхүүн</span>
             <div class="flex items-center gap-1.5">
                 <UButton
                     color="neutral"
@@ -744,10 +744,10 @@ onMounted(() => {
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
             <div
-                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+                class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden"
             >
                 <!-- Filters -->
-                <div v-if="!suggestMode" class="px-4 py-3 border-b border-[var(--border-primary)]">
+                <div v-if="!suggestMode" class="px-4 py-3 border-b border-(--border-primary)">
                     <div class="flex flex-wrap items-center gap-2">
                         <UInput
                             v-model="filter.keyword"
@@ -784,7 +784,7 @@ onMounted(() => {
                 <div v-if="suggestMode" class="suggest-mode-table flex flex-col">
                     <!-- Zone header: explains what this is + count control -->
                     <div
-                        class="flex items-center justify-between px-5 py-3.5 border-b border-[var(--border-primary)]"
+                        class="flex items-center justify-between px-5 py-3.5 border-b border-(--border-primary)"
                     >
                         <div class="flex items-center gap-2.5">
                             <div
@@ -793,17 +793,17 @@ onMounted(() => {
                                 <UIcon name="i-lucide-shopping-cart" class="w-4.5 h-4.5" />
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-[var(--text-heading)]">
+                                <div class="text-sm font-semibold text-(--text-heading)">
                                     Checkout-д санал болгох бараа
                                 </div>
-                                <div class="text-xs text-[var(--text-muted)]">
+                                <div class="text-xs text-(--text-muted)">
                                     Дээрх <strong>{{ suggestCount }}</strong> бараа захиалга хийх
                                     хуудсанд харагдана
                                 </div>
                             </div>
                         </div>
                         <div
-                            class="flex items-center gap-1 bg-[var(--surface-card)] rounded-lg border border-emerald-300 dark:border-emerald-700 px-1 shrink-0"
+                            class="flex items-center gap-1 bg-(--surface-card) rounded-lg border border-emerald-300 dark:border-emerald-700 px-1 shrink-0"
                         >
                             <button
                                 class="w-7 h-7 flex items-center justify-center rounded text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors disabled:opacity-30"
@@ -831,7 +831,7 @@ onMounted(() => {
                         <div
                             v-for="(product, index) in products"
                             :key="product.id"
-                            class="suggest-row flex items-center transition-colors duration-150 hover:bg-[var(--surface-inset)]/40 border-l-2 border-b border-b-[var(--border-primary)]"
+                            class="suggest-row flex items-center transition-colors duration-150 hover:bg-(--surface-inset)/40 border-l-2 border-b border-b-(--border-primary)"
                             :class="
                                 index < suggestCount
                                     ? 'border-l-emerald-500'
@@ -861,7 +861,7 @@ onMounted(() => {
                             <!-- Product info -->
                             <div class="flex items-center gap-3 flex-1 min-w-0 py-3.5 pr-2">
                                 <div
-                                    class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0 bg-[var(--surface-inset)]"
+                                    class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0 bg-(--surface-inset)"
                                 >
                                     <img
                                         v-if="product.images?.length"
@@ -872,14 +872,14 @@ onMounted(() => {
                                     <UIcon
                                         v-else
                                         name="i-lucide-package"
-                                        class="w-5 h-5 text-[var(--text-placeholder)]"
+                                        class="w-5 h-5 text-(--text-placeholder)"
                                     />
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <div class="font-medium text-[var(--text-heading)] truncate">
+                                    <div class="font-medium text-(--text-heading) truncate">
                                         {{ product.name }}
                                     </div>
-                                    <div class="text-xs text-[var(--text-muted)]">
+                                    <div class="text-xs text-(--text-muted)">
                                         {{
                                             formatPrice(
                                                 product.timed_sale_enabled &&
@@ -903,7 +903,7 @@ onMounted(() => {
                                     <UIcon name="i-lucide-shopping-cart" class="w-3 h-3 mr-0.5" />
                                     Санал болгоно
                                 </UBadge>
-                                <span v-else class="text-xs text-[var(--text-placeholder)]"
+                                <span v-else class="text-xs text-(--text-placeholder)"
                                     >Харагдахгүй</span
                                 >
                             </div>
@@ -912,10 +912,10 @@ onMounted(() => {
 
                     <!-- Sticky save bar -->
                     <div
-                        class="sticky bottom-0 flex items-center justify-between px-5 py-3 bg-[var(--surface-card)] border-t border-[var(--border-primary)] shadow-[0_-2px_8px_rgba(0,0,0,0.05)]"
+                        class="sticky bottom-0 flex items-center justify-between px-5 py-3 bg-(--surface-card) border-t border-(--border-primary) shadow-[0_-2px_8px_rgba(0,0,0,0.05)]"
                     >
                         <div
-                            class="hidden sm:flex items-center gap-1.5 text-sm text-[var(--text-muted)]"
+                            class="hidden sm:flex items-center gap-1.5 text-sm text-(--text-muted)"
                         >
                             <UIcon name="i-lucide-move" class="w-4 h-4 shrink-0" />
                             <span>Дээш доош чирж дараалал өөрчлөөрэй</span>
@@ -958,7 +958,7 @@ onMounted(() => {
                 >
                     <template #base_price-header>
                         <button
-                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            class="flex items-center gap-1 cursor-pointer hover:text-(--text-heading) transition-colors"
                             @click="toggleSort('price')"
                         >
                             Үнийн дүн
@@ -974,7 +974,7 @@ onMounted(() => {
 
                     <template #name-header>
                         <button
-                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            class="flex items-center gap-1 cursor-pointer hover:text-(--text-heading) transition-colors"
                             @click="toggleSort('name')"
                         >
                             Бараа бүтээгдэхүүн
@@ -1011,7 +1011,7 @@ onMounted(() => {
                             @click="onRowClick(row.original)"
                         >
                             <div
-                                class="w-10 h-10 rounded-lg bg-[var(--surface-inset)] flex items-center justify-center overflow-hidden shrink-0"
+                                class="w-10 h-10 rounded-lg bg-(--surface-inset) flex items-center justify-center overflow-hidden shrink-0"
                             >
                                 <img
                                     v-if="row.original.images?.length"
@@ -1022,10 +1022,10 @@ onMounted(() => {
                                 <UIcon
                                     v-else
                                     name="i-lucide-package"
-                                    class="w-5 h-5 text-[var(--text-placeholder)]"
+                                    class="w-5 h-5 text-(--text-placeholder)"
                                 />
                             </div>
-                            <span class="font-medium text-[var(--text-heading)]">
+                            <span class="font-medium text-(--text-heading)">
                                 {{ row.original.name }}
                             </span>
                             <button
@@ -1062,7 +1062,7 @@ onMounted(() => {
                     </template>
 
                     <template #base_price-cell="{ row }">
-                        <span class="text-[var(--text-heading)]">
+                        <span class="text-(--text-heading)">
                             {{
                                 formatPrice(
                                     row.original.timed_sale_enabled && row.original.timed_sale_price
@@ -1086,7 +1086,7 @@ onMounted(() => {
                     </template>
 
                     <template #category-cell="{ row }">
-                        <span class="text-[var(--text-muted)]">
+                        <span class="text-(--text-muted)">
                             {{ row.original.category || '-' }}
                         </span>
                     </template>
@@ -1137,10 +1137,10 @@ onMounted(() => {
                             >
                                 <UIcon name="i-lucide-package" class="w-10 h-10 text-primary-500" />
                             </div>
-                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                            <h3 class="text-lg font-semibold text-(--text-heading) mb-2">
                                 Бүтээгдэхүүн олдсонгүй
                             </h3>
-                            <p class="text-[var(--text-muted)] max-w-sm mb-6">
+                            <p class="text-(--text-muted) max-w-sm mb-6">
                                 Одоогоор ямар ч бүтээгдэхүүн байхгүй байна. Шинэ бүтээгдэхүүн нэмж
                                 эхлээрэй.
                             </p>
@@ -1180,7 +1180,7 @@ onMounted(() => {
                         <strong>{{ productToDelete?.name }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                    <p class="text-sm text-(--text-muted) mt-2">
                         Энэ үйлдлийг буцаах боломжгүй.
                     </p>
 
@@ -1217,7 +1217,7 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                    <p class="text-sm text-(--text-muted) mt-2">
                         Энэ үйлдлийг буцаах боломжгүй.
                     </p>
 
@@ -1256,7 +1256,7 @@ onMounted(() => {
                     </template>
 
                     <div class="space-y-4">
-                        <p class="text-sm text-[var(--text-muted)]">
+                        <p class="text-sm text-(--text-muted)">
                             CSV файлаар бараа бөөнөөр оруулах. Загвар файлыг татаж форматыг харна
                             уу.
                         </p>
@@ -1273,21 +1273,21 @@ onMounted(() => {
 
                         <div>
                             <label
-                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                                class="block text-sm font-medium text-(--text-heading) mb-2"
                             >
                                 CSV файл сонгох
                             </label>
                             <input
                                 type="file"
                                 accept=".csv"
-                                class="block w-full text-sm text-[var(--text-muted)] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/20 dark:file:text-primary-300 cursor-pointer"
+                                class="block w-full text-sm text-(--text-muted) file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/20 dark:file:text-primary-300 cursor-pointer"
                                 @change="handleImportFile"
                             />
                         </div>
 
                         <div>
                             <label
-                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                                class="block text-sm font-medium text-(--text-heading) mb-2"
                             >
                                 Импортлосон бараануудын эхний төлөв
                             </label>

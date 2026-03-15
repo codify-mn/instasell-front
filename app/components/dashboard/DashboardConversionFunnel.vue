@@ -51,11 +51,11 @@ const formatRevenue = (v: number) => {
 </script>
 
 <template>
-    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] shadow-sm card-hover">
+    <div class="flex h-full flex-col overflow-hidden rounded-xl border border-(--border-primary) bg-(--surface-card) shadow-sm card-hover">
         <!-- Header -->
-        <div class="border-b border-[var(--border-subtle)] px-5 py-4">
-            <div class="text-sm font-bold text-[var(--text-heading)]">Захиалга хаанаас ирсэн?</div>
-            <div class="text-xs text-[var(--text-muted)] mt-0.5">Эх сурвалжаар ангилсан захиалгууд</div>
+        <div class="border-b border-(--border-subtle) px-5 py-4">
+            <div class="text-sm font-bold text-(--text-heading)">Захиалга хаанаас ирсэн?</div>
+            <div class="text-xs text-(--text-muted) mt-0.5">Эх сурвалжаар ангилсан захиалгууд</div>
         </div>
 
         <!-- Body -->
@@ -104,8 +104,8 @@ const formatRevenue = (v: number) => {
                     </svg>
                     <!-- Center text -->
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span class="text-lg font-extrabold text-[var(--text-heading)] leading-none">{{ totalOrders }}</span>
-                        <span class="text-[10px] text-[var(--text-muted)] mt-0.5">захиалга</span>
+                        <span class="text-lg font-extrabold text-(--text-heading) leading-none">{{ totalOrders }}</span>
+                        <span class="text-[10px] text-(--text-muted) mt-0.5">захиалга</span>
                     </div>
                 </div>
 
@@ -114,45 +114,45 @@ const formatRevenue = (v: number) => {
                     <div>
                         <div class="flex items-center gap-2 mb-0.5">
                             <div class="size-2 rounded-full bg-primary-500 shrink-0" />
-                            <span class="text-xs font-semibold text-[var(--text-heading)]">Live дамжуулалт</span>
+                            <span class="text-xs font-semibold text-(--text-heading)">Live дамжуулалт</span>
                         </div>
-                        <div class="pl-4 text-xs text-[var(--text-muted)]">
+                        <div class="pl-4 text-xs text-(--text-muted)">
                             {{ liveOrders.toLocaleString() }} захиалга
-                            <span v-if="totalOrders" class="font-semibold text-[var(--text-body)]">({{ livePct }}%)</span>
+                            <span v-if="totalOrders" class="font-semibold text-(--text-body)">({{ livePct }}%)</span>
                         </div>
                     </div>
                     <div>
                         <div class="flex items-center gap-2 mb-0.5">
-                            <div class="size-2 rounded-full bg-[var(--accent-green)] shrink-0" />
-                            <span class="text-xs font-semibold text-[var(--text-heading)]">Мессеж / Пост</span>
+                            <div class="size-2 rounded-full bg-(--accent-green) shrink-0" />
+                            <span class="text-xs font-semibold text-(--text-heading)">Мессеж / Пост</span>
                         </div>
-                        <div class="pl-4 text-xs text-[var(--text-muted)]">
+                        <div class="pl-4 text-xs text-(--text-muted)">
                             {{ postOrders.toLocaleString() }} захиалга
-                            <span v-if="totalOrders" class="font-semibold text-[var(--text-body)]">({{ postPct }}%)</span>
+                            <span v-if="totalOrders" class="font-semibold text-(--text-body)">({{ postPct }}%)</span>
                         </div>
                     </div>
                     <div>
                         <div class="flex items-center gap-2 mb-0.5">
-                            <div class="size-2 rounded-full bg-[var(--text-muted)] shrink-0" />
-                            <span class="text-xs font-semibold text-[var(--text-heading)]">Гараар үүсгэсэн</span>
+                            <div class="size-2 rounded-full bg-(--text-muted) shrink-0" />
+                            <span class="text-xs font-semibold text-(--text-heading)">Гараар үүсгэсэн</span>
                         </div>
-                        <div class="pl-4 text-xs text-[var(--text-muted)]">
+                        <div class="pl-4 text-xs text-(--text-muted)">
                             {{ manualOrders.toLocaleString() }} захиалга
-                            <span v-if="totalOrders" class="font-semibold text-[var(--text-body)]">({{ manualPct }}%)</span>
+                            <span v-if="totalOrders" class="font-semibold text-(--text-body)">({{ manualPct }}%)</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Footer -->
-            <div class="mt-auto border-t border-[var(--border-subtle)] pt-3 flex items-center justify-between">
+            <div class="mt-auto border-t border-(--border-subtle) pt-3 flex items-center justify-between">
                 <div>
-                    <div class="text-xs text-[var(--text-muted)]">Төлөгдсөн</div>
-                    <div class="text-sm font-bold text-[var(--text-heading)]">{{ (stats?.orders_paid ?? 0).toLocaleString() }}</div>
+                    <div class="text-xs text-(--text-muted)">Төлөгдсөн</div>
+                    <div class="text-sm font-bold text-(--text-heading)">{{ (stats?.orders_paid ?? 0).toLocaleString() }}</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-xs text-[var(--text-muted)]">Орлого</div>
-                    <div class="text-sm font-bold text-[var(--text-heading)]">{{ formatRevenue(stats?.paid_revenue ?? 0) }}</div>
+                    <div class="text-xs text-(--text-muted)">Орлого</div>
+                    <div class="text-sm font-bold text-(--text-heading)">{{ formatRevenue(stats?.paid_revenue ?? 0) }}</div>
                 </div>
             </div>
         </div>

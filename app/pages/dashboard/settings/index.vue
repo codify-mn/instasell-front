@@ -301,7 +301,7 @@ async function onBgFileChange(e: Event) {
 <template>
     <div>
         <div v-if="isLoading" class="flex justify-center py-12">
-            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-[var(--text-muted)]" />
+            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-(--text-muted)" />
         </div>
 
         <UForm v-else id="shop-settings" :schema="shopSchema" :state="state" @submit="onSubmit">
@@ -384,14 +384,14 @@ async function onBgFileChange(e: Event) {
                             />
                         </div>
                         <div>
-                            <h4 class="font-medium text-[var(--text-heading)]">Facebook</h4>
-                            <p v-if="user?.is_facebook_connected" class="text-sm text-[var(--text-muted)]">
+                            <h4 class="font-medium text-(--text-heading)">Facebook</h4>
+                            <p v-if="user?.is_facebook_connected" class="text-sm text-(--text-muted)">
                                 Холбогдсон:
-                                <span class="font-medium text-[var(--text-heading)]">{{
+                                <span class="font-medium text-(--text-heading)">{{
                                     shopData?.facebook_page?.page_name
                                 }}</span>
                             </p>
-                            <p v-else class="text-sm text-[var(--text-muted)]">
+                            <p v-else class="text-sm text-(--text-muted)">
                                 Facebook хуудасаа холбож захиалга болон бараагаа удирдаарай.
                             </p>
                         </div>
@@ -446,7 +446,7 @@ async function onBgFileChange(e: Event) {
                                 : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'"
                             @click="state.bank_account_bank_name = bank.label; state.bank_account_bank_code = bank.value"
                         >
-                            <img :src="bank.logo" class="w-5 h-5 rounded-sm object-contain flex-shrink-0" />
+                            <img :src="bank.logo" class="w-5 h-5 rounded-sm object-contain shrink-0" />
                             <span class="truncate">{{ bank.label }}</span>
                         </button>
                     </div>
@@ -497,16 +497,16 @@ async function onBgFileChange(e: Event) {
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div
-                            class="w-10 h-10 rounded-xl bg-[var(--surface-inset)] flex items-center justify-center"
+                            class="w-10 h-10 rounded-xl bg-(--surface-inset) flex items-center justify-center"
                         >
                             <UIcon
                                 name="i-lucide-smartphone"
-                                class="w-5 h-5 text-[var(--text-muted)]"
+                                class="w-5 h-5 text-(--text-muted)"
                             />
                         </div>
                         <div>
-                            <h4 class="font-medium text-[var(--text-heading)]">QPay мерчант</h4>
-                            <p class="text-sm text-[var(--text-muted)]">
+                            <h4 class="font-medium text-(--text-heading)">QPay мерчант</h4>
+                            <p class="text-sm text-(--text-muted)">
                                 <template v-if="qpayLoading"> Ачаалж байна... </template>
                                 <template v-else-if="qpayStatus?.is_registered">
                                     Merchant ID: {{ qpayStatus.merchant_id }}
@@ -536,9 +536,9 @@ async function onBgFileChange(e: Event) {
                 <!-- QPay hint when not registered and bank account is empty -->
                 <template v-if="!qpayStatus?.is_registered && !state.bank_account_account_number">
                     <USeparator class="my-4" />
-                    <div class="flex items-center gap-2 px-3 py-2 bg-[var(--accent-warn-light)] rounded-lg border border-[var(--accent-warn)]/20">
-                        <UIcon name="i-lucide-info" class="w-4 h-4 text-[var(--accent-warn-dark)] shrink-0" />
-                        <p class="text-xs text-[var(--accent-warn-dark)]">
+                    <div class="flex items-center gap-2 px-3 py-2 bg-(--accent-warn-light) rounded-lg border border-(--accent-warn)/20">
+                        <UIcon name="i-lucide-info" class="w-4 h-4 text-(--accent-warn-dark) shrink-0" />
+                        <p class="text-xs text-(--accent-warn-dark)">
                             QPay бүртгэхийн өмнө дээрх <span class="font-semibold">Банкны мэдээлэл</span> хэсгийг бөглөнө үү — бүртгэлд автоматаар ашиглагдана.
                         </p>
                     </div>
@@ -547,13 +547,13 @@ async function onBgFileChange(e: Event) {
                 <template v-if="qpayStatus?.is_registered && qpayStatus.bank_account">
                     <USeparator class="my-4" />
                     <div class="space-y-2">
-                        <p class="text-sm font-medium text-[var(--text-muted)]">
+                        <p class="text-sm font-medium text-(--text-muted)">
                             Бүртгэлтэй данс
                         </p>
                         <div
-                            class="flex items-center gap-3 p-3 bg-[var(--surface-inset)] rounded-lg"
+                            class="flex items-center gap-3 p-3 bg-(--surface-inset) rounded-lg"
                         >
-                            <UIcon name="i-lucide-credit-card" class="w-4 h-4 text-[var(--text-placeholder)]" />
+                            <UIcon name="i-lucide-credit-card" class="w-4 h-4 text-(--text-placeholder)" />
                             <span class="text-sm"
                                 >{{ qpayStatus.bank_account.account_number }} -
                                 {{ qpayStatus.bank_account.account_name }}</span
@@ -647,7 +647,7 @@ async function onBgFileChange(e: Event) {
                     <div
                         v-for="bg in backgrounds"
                         :key="bg"
-                        class="relative group w-24 h-24 rounded-lg overflow-hidden border border-[var(--border-primary)]"
+                        class="relative group w-24 h-24 rounded-lg overflow-hidden border border-(--border-primary)"
                     >
                         <img :src="bg" class="w-full h-full object-cover" alt="Background" />
                         <button
@@ -659,18 +659,18 @@ async function onBgFileChange(e: Event) {
                     </div>
                     <button
                         v-if="backgrounds.length < 10"
-                        class="w-24 h-24 rounded-lg border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary-400 transition-colors"
+                        class="w-24 h-24 rounded-lg border-2 border-dashed border-(--border-primary) flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary-400 transition-colors"
                         :disabled="uploadingBg"
                         @click="onBgFileClick"
                     >
                         <UIcon
                             v-if="uploadingBg"
                             name="i-lucide-loader-2"
-                            class="w-5 h-5 animate-spin text-[var(--text-placeholder)]"
+                            class="w-5 h-5 animate-spin text-(--text-placeholder)"
                         />
                         <template v-else>
-                            <UIcon name="i-lucide-plus" class="w-5 h-5 text-[var(--text-placeholder)]" />
-                            <span class="text-xs text-[var(--text-placeholder)]">Нэмэх</span>
+                            <UIcon name="i-lucide-plus" class="w-5 h-5 text-(--text-placeholder)" />
+                            <span class="text-xs text-(--text-placeholder)">Нэмэх</span>
                         </template>
                     </button>
                     <input
@@ -681,7 +681,7 @@ async function onBgFileChange(e: Event) {
                         @change="onBgFileChange"
                     />
                 </div>
-                <p v-if="backgrounds.length === 0" class="text-sm text-[var(--text-placeholder)] mt-2">
+                <p v-if="backgrounds.length === 0" class="text-sm text-(--text-placeholder) mt-2">
                     Дэвсгэр зураг нэмээгүй байна.
                 </p>
             </UPageCard>
@@ -740,12 +740,12 @@ async function onBgFileChange(e: Event) {
 
             <UPageCard
                 variant="subtle"
-                class="bg-gradient-to-tl from-error/10 from-5% to-transparent"
+                class="bg-linear-to-tl from-error/10 from-5% to-transparent"
             >
                 <div class="flex items-start justify-between gap-4">
                     <div>
-                        <h4 class="font-medium text-[var(--text-heading)] mb-1">Бүртгэл устгах</h4>
-                        <p class="text-sm text-[var(--text-muted)] max-w-md">
+                        <h4 class="font-medium text-(--text-heading) mb-1">Бүртгэл устгах</h4>
+                        <p class="text-sm text-(--text-muted) max-w-md">
                             Манай үйлчилгээг цаашид ашиглахгүй бол бүртгэлээ устгах боломжтой. Энэ үйлдлийг буцаах боломжгүй бөгөөд бүх мэдээлэл бүрмөсөн устгагдах болно.
                         </p>
                     </div>
@@ -778,18 +778,18 @@ async function onBgFileChange(e: Event) {
                     <template #header>
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-10 h-10 rounded-full bg-[var(--surface-inset)] flex items-center justify-center"
+                                class="w-10 h-10 rounded-full bg-(--surface-inset) flex items-center justify-center"
                             >
                                 <UIcon
                                     name="i-lucide-smartphone"
-                                    class="w-5 h-5 text-[var(--text-muted)]"
+                                    class="w-5 h-5 text-(--text-muted)"
                                 />
                             </div>
                             <div>
-                                <h3 class="font-semibold text-[var(--text-heading)]">
+                                <h3 class="font-semibold text-(--text-heading)">
                                     QPay бүртгүүлэх
                                 </h3>
-                                <p class="text-sm text-[var(--text-muted)]">Мерчант мэдээллээ оруулна уу</p>
+                                <p class="text-sm text-(--text-muted)">Мерчант мэдээллээ оруулна уу</p>
                             </div>
                         </div>
                     </template>
@@ -816,15 +816,15 @@ async function onBgFileChange(e: Event) {
             <template #content>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-[var(--accent-error-light)] flex items-center justify-center shrink-0">
-                            <UIcon name="i-lucide-triangle-alert" class="w-5 h-5 text-[var(--accent-error)]" />
+                        <div class="w-10 h-10 rounded-full bg-(--accent-error-light) flex items-center justify-center shrink-0">
+                            <UIcon name="i-lucide-triangle-alert" class="w-5 h-5 text-(--accent-error)" />
                         </div>
                         <div>
-                            <h3 class="font-semibold text-[var(--text-heading)]">Бүртгэл устгах уу?</h3>
-                            <p class="text-sm text-[var(--text-muted)]">Энэ үйлдлийг буцаах боломжгүй</p>
+                            <h3 class="font-semibold text-(--text-heading)">Бүртгэл устгах уу?</h3>
+                            <p class="text-sm text-(--text-muted)">Энэ үйлдлийг буцаах боломжгүй</p>
                         </div>
                     </div>
-                    <p class="text-sm text-[var(--text-muted)] mb-6">
+                    <p class="text-sm text-(--text-muted) mb-6">
                         Бүх бараа, захиалга, хэрэглэгчийн мэдээлэл бүрмөсөн устгагдах болно. Итгэлтэй байна уу?
                     </p>
                     <div class="flex justify-end gap-3">

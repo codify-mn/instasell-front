@@ -23,7 +23,7 @@ defineProps<{
         </span>
         <span
             v-if="isRegistered && merchantType"
-            class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded bg-[var(--surface-inset)] text-[var(--text-muted)]"
+            class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded bg-(--surface-inset) text-(--text-muted)"
         >
             {{ merchantType === 'company' ? 'Компани' : 'Хувь хүн' }}
         </span>

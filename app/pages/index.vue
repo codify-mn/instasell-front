@@ -151,9 +151,9 @@ onMounted(() => {
                         <h1
                             class="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] mb-6 fade-in-up fade-in-up-delay-1"
                         >
-                            <span class="text-[var(--text-heading)]">Facebook Live</span>
+                            <span class="text-(--text-heading)">Facebook Live</span>
                             <br>
-                            <span class="text-[var(--text-heading)]">захиалгыг </span>
+                            <span class="text-(--text-heading)">захиалгыг </span>
                             <span class="text-gradient">автоматжуул</span>
                         </h1>
 
@@ -161,7 +161,7 @@ onMounted(() => {
                             class="text-lg text-gray-500 dark:text-gray-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed fade-in-up fade-in-up-delay-2"
                         >
                             Коммент дээрх захиалгыг автоматаар хүлээн авч, өдөрт
-                            <strong class="text-[var(--text-heading)] font-semibold">3+ цаг хэмнээрэй</strong>.
+                            <strong class="text-(--text-heading) font-semibold">3+ цаг хэмнээрэй</strong>.
                             Ганц ч захиалга алдахгүй.
                         </p>
 
@@ -171,7 +171,7 @@ onMounted(() => {
                             <UButton
                                 to="/login?mode=register"
                                 size="xl"
-                                class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300 btn-shine"
+                                class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300 btn-shine"
                             >
                                 <span>Үнэгүй эхлэх</span>
                                 <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-1" />
@@ -215,7 +215,7 @@ onMounted(() => {
                         <div class="relative">
                             <!-- Glow effect -->
                             <div
-                                class="absolute -inset-4 bg-gradient-to-r from-primary-500/20 via-blue-500/15 to-indigo-500/20 blur-3xl rounded-3xl"
+                                class="absolute -inset-4 bg-linear-to-r from-primary-500/20 via-blue-500/15 to-indigo-500/20 blur-3xl rounded-3xl"
                             />
 
                             <!-- Dashboard mockup -->
@@ -264,7 +264,7 @@ onMounted(() => {
                                             <div class="space-y-2.5">
                                                 <div class="flex items-center justify-between py-2 border-b border-gray-700/50">
                                                     <div class="flex items-center gap-2.5">
-                                                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-[10px] font-bold text-white">БД</div>
+                                                        <div class="w-8 h-8 rounded-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center text-[10px] font-bold text-white">БД</div>
                                                         <div>
                                                             <div class="text-sm text-white">Болормаа Д.</div>
                                                             <div class="text-[11px] text-gray-500">2 бараа · Live коммент</div>
@@ -274,7 +274,7 @@ onMounted(() => {
                                                 </div>
                                                 <div class="flex items-center justify-between py-2">
                                                     <div class="flex items-center gap-2.5">
-                                                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-[10px] font-bold text-white">БЭ</div>
+                                                        <div class="w-8 h-8 rounded-full bg-linear-to-br from-violet-500 to-purple-500 flex items-center justify-center text-[10px] font-bold text-white">БЭ</div>
                                                         <div>
                                                             <div class="text-sm text-white">Батболд Э.</div>
                                                             <div class="text-[11px] text-gray-500">1 бараа · Live коммент</div>
@@ -291,11 +291,11 @@ onMounted(() => {
                             <!-- Floating cards -->
                             <div class="absolute -right-6 top-16 float-delay-1">
                                 <div class="glass-card rounded-xl px-4 py-3 shadow-lg flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+                                    <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center shrink-0">
                                         <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-medium text-[var(--text-heading)] whitespace-nowrap">Шинэ захиалга!</div>
+                                        <div class="text-sm font-medium text-(--text-heading) whitespace-nowrap">Шинэ захиалга!</div>
                                         <div class="text-xs text-gray-500">₮45,000 · Болормаа</div>
                                     </div>
                                 </div>
@@ -304,7 +304,7 @@ onMounted(() => {
                             <div class="absolute -left-6 bottom-24 float">
                                 <div class="glass-card rounded-xl px-4 py-3 shadow-lg">
                                     <div class="flex items-center gap-2.5">
-                                        <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+                                        <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center shrink-0">
                                             <UIcon name="i-lucide-trending-up" class="w-4 h-4 text-primary-500" />
                                         </div>
                                         <div>
@@ -325,7 +325,7 @@ onMounted(() => {
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-10">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Демо</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         2 минутад бүгдийг ойлгоорой
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -333,7 +333,7 @@ onMounted(() => {
                     </p>
                 </div>
 
-                <div class="relative rounded-2xl overflow-hidden border border-[var(--border-primary)] shadow-2xl aspect-video bg-gray-900">
+                <div class="relative rounded-2xl overflow-hidden border border-(--border-primary) shadow-2xl aspect-video bg-gray-900">
                     <!-- Replace src with your actual YouTube embed URL -->
                     <iframe
                         src=""
@@ -353,16 +353,16 @@ onMounted(() => {
                 </div>
 
                 <div class="grid grid-cols-3 gap-4 mt-8">
-                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
-                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">1</div>
+                    <div class="text-center p-4 rounded-xl bg-(--surface-card) border border-(--border-primary)">
+                        <div class="text-2xl font-bold text-(--text-heading) mb-1">1</div>
                         <p class="text-xs text-gray-500">Коммент илрүүлэлт</p>
                     </div>
-                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
-                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">2</div>
+                    <div class="text-center p-4 rounded-xl bg-(--surface-card) border border-(--border-primary)">
+                        <div class="text-2xl font-bold text-(--text-heading) mb-1">2</div>
                         <p class="text-xs text-gray-500">Автомат захиалга</p>
                     </div>
-                    <div class="text-center p-4 rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]">
-                        <div class="text-2xl font-bold text-[var(--text-heading)] mb-1">3</div>
+                    <div class="text-center p-4 rounded-xl bg-(--surface-card) border border-(--border-primary)">
+                        <div class="text-2xl font-bold text-(--text-heading) mb-1">3</div>
                         <p class="text-xs text-gray-500">QPay төлбөр</p>
                     </div>
                 </div>
@@ -385,7 +385,7 @@ onMounted(() => {
                             [`fade-in-up-delay-${index + 1}`]: statsVisible
                         }"
                     >
-                        <div class="text-4xl md:text-5xl font-extrabold text-[var(--text-heading)] mb-1">
+                        <div class="text-4xl md:text-5xl font-extrabold text-(--text-heading) mb-1">
                             {{ stat.value }}<span class="text-[#4f57ab] text-2xl md:text-3xl">{{ stat.unit }}</span>
                         </div>
                         <div class="text-sm text-[#64748b] dark:text-gray-400">
@@ -400,7 +400,7 @@ onMounted(() => {
         <section class="py-20 lg:py-24">
             <UContainer class="max-w-5xl">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         Танил асуудлууд уу?
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -411,20 +411,20 @@ onMounted(() => {
                     <div
                         v-for="pain in painPoints"
                         :key="pain.problem"
-                        class="p-5 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)] transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800/50"
+                        class="p-5 rounded-2xl bg-(--surface-card) border border-(--border-primary) transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800/50"
                     >
                         <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                            <div class="w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0">
                                 <UIcon name="i-lucide-x" class="w-3.5 h-3.5 text-red-500" />
                             </div>
                             <p class="text-sm text-gray-400 line-through">{{ pain.problem }}</p>
                         </div>
                         <div class="w-px h-3 bg-gray-200 dark:bg-gray-700 ml-3.5" />
                         <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+                            <div class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
                                 <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500" />
                             </div>
-                            <p class="text-sm font-semibold text-[var(--text-heading)]">{{ pain.solution }}</p>
+                            <p class="text-sm font-semibold text-(--text-heading)">{{ pain.solution }}</p>
                         </div>
                     </div>
                 </div>
@@ -432,11 +432,11 @@ onMounted(() => {
         </section>
 
         <!-- Features -->
-        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-[var(--surface-inset)]">
+        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-(--surface-inset)">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Боломжууд</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         Яагаад Instasell?
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -448,7 +448,7 @@ onMounted(() => {
                     <div
                         v-for="(feature, index) in features"
                         :key="feature.title"
-                        class="group relative p-6 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-primary-500/10"
+                        class="group relative p-6 rounded-2xl bg-(--surface-card) border border-(--border-primary) transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-primary-500/10"
                         :class="{
                             'fade-in-up': featuresVisible,
                             [`fade-in-up-delay-${index + 1}`]: featuresVisible
@@ -464,7 +464,7 @@ onMounted(() => {
                                 {{ feature.stat }}
                             </span>
                         </div>
-                        <h3 class="text-base font-semibold text-[var(--text-heading)] mb-2">
+                        <h3 class="text-base font-semibold text-(--text-heading) mb-2">
                             {{ feature.title }}
                         </h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -491,7 +491,7 @@ onMounted(() => {
                     <!-- Right: Copy -->
                     <div>
                         <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Мульти стриминг</p>
-                        <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                        <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                             Нэг дороос бүх платформд Live хийгээрэй
                         </h2>
                         <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
@@ -500,29 +500,29 @@ onMounted(() => {
 
                         <div class="space-y-4">
                             <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0 mt-0.5">
                                     <UIcon name="i-lucide-radio" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Нэг товчоор бүгдэд Live</p>
+                                    <p class="font-semibold text-sm text-(--text-heading)">Нэг товчоор бүгдэд Live</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Facebook, Instagram-д нэгэн зэрэг дамжуулна</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0 mt-0.5">
                                     <UIcon name="i-lucide-layers" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Бараа мэдээлэл overlay</p>
+                                    <p class="font-semibold text-sm text-(--text-heading)">Бараа мэдээлэл overlay</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Live дээр барааны нэр, үнэ автомат харагдана</p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center shrink-0 mt-0.5">
                                     <UIcon name="i-lucide-message-square" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Коммент автомат уншина</p>
+                                    <p class="font-semibold text-sm text-(--text-heading)">Коммент автомат уншина</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Бүх платформын коммент захиалгыг нэг дороос удирдана</p>
                                 </div>
                             </div>
@@ -533,11 +533,11 @@ onMounted(() => {
         </section>
 
         <!-- How It Works -->
-        <section ref="stepsRef" class="py-20 lg:py-24 bg-[var(--surface-inset)]">
+        <section ref="stepsRef" class="py-20 lg:py-24 bg-(--surface-inset)">
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Хэрхэн ажилладаг</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         3 алхамаар эхлээрэй
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -556,9 +556,9 @@ onMounted(() => {
                         }"
                     >
                         <!-- Step number -->
-                        <div class="flex flex-col items-center flex-shrink-0">
+                        <div class="flex flex-col items-center shrink-0">
                             <div
-                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20"
+                                class="w-12 h-12 rounded-xl bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg shadow-primary-500/20"
                             >
                                 <span class="text-sm font-bold text-white">{{ step.step }}</span>
                             </div>
@@ -567,7 +567,7 @@ onMounted(() => {
 
                         <!-- Content -->
                         <div class="pb-2 pt-1">
-                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-1">
+                            <h3 class="text-lg font-semibold text-(--text-heading) mb-1">
                                 {{ step.title }}
                             </h3>
                             <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
@@ -581,7 +581,7 @@ onMounted(() => {
                     <UButton
                         to="/login?mode=register"
                         size="xl"
-                        class="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
+                        class="bg-linear-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 border-0 shadow-xl shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300"
                     >
                         <span>Одоо эхлэх</span>
                         <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-1" />
@@ -591,11 +591,11 @@ onMounted(() => {
         </section>
 
         <!-- Testimonials -->
-        <section class="py-20 lg:py-24 bg-[var(--surface-inset)]">
+        <section class="py-20 lg:py-24 bg-(--surface-inset)">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Сэтгэгдэл</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-(--text-heading) mb-4">
                         Худалдаачдын туршлага
                     </h2>
                 </div>
@@ -604,7 +604,7 @@ onMounted(() => {
                     <div
                         v-for="testimonial in testimonials"
                         :key="testimonial.author"
-                        class="p-6 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)]"
+                        class="p-6 rounded-2xl bg-(--surface-card) border border-(--border-primary)"
                     >
                         <div class="flex items-center gap-1 mb-4">
                             <UIcon v-for="n in 5" :key="n" name="i-lucide-star" class="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -616,7 +616,7 @@ onMounted(() => {
 
                         <div class="flex items-center justify-between">
                             <div>
-                                <div class="font-semibold text-sm text-[var(--text-heading)]">
+                                <div class="font-semibold text-sm text-(--text-heading)">
                                     {{ testimonial.author }}
                                 </div>
                                 <div class="text-xs text-gray-500">

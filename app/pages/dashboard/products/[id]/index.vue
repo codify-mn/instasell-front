@@ -204,7 +204,7 @@ onMounted(async () => {
                     <template #title>
                         <div v-if="product">
                             <h1
-                                class="text-lg font-semibold text-[var(--text-heading)] flex items-center gap-2"
+                                class="text-lg font-semibold text-(--text-heading) flex items-center gap-2"
                             >
                                 {{ product.name }}
                                 <UBadge
@@ -229,7 +229,7 @@ onMounted(async () => {
                             </h1>
                         </div>
                         <div v-else>
-                            <h1 class="text-lg font-semibold text-[var(--text-heading)]">
+                            <h1 class="text-lg font-semibold text-(--text-heading)">
                                 Уншиж байна...
                             </h1>
                         </div>
@@ -266,7 +266,7 @@ onMounted(async () => {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Left: Main Image -->
                         <div
-                            class="bg-gray-50 dark:bg-gray-800/50 rounded-xl overflow-hidden aspect-square border border-[var(--border-primary)] flex items-center justify-center"
+                            class="bg-gray-50 dark:bg-gray-800/50 rounded-xl overflow-hidden aspect-square border border-(--border-primary) flex items-center justify-center"
                         >
                             <img
                                 v-if="product.images && product.images.length > 0"
@@ -280,7 +280,7 @@ onMounted(async () => {
                         <!-- Right: Details -->
                         <div class="md:col-span-2 space-y-4">
                             <div
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 shadow-sm"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5 shadow-sm"
                             >
                                 <h3 class="text-sm font-medium text-gray-500 mb-4">
                                     Ерөнхий мэдээлэл
@@ -289,7 +289,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Үнэ</p>
                                         <p
-                                            class="text-lg font-semibold text-[var(--text-heading)]"
+                                            class="text-lg font-semibold text-(--text-heading)"
                                         >
                                             {{ product.price.toLocaleString() }}₮
                                         </p>
@@ -303,7 +303,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Үлдэгдэл</p>
                                         <p
-                                            class="text-lg font-medium text-[var(--text-heading)]"
+                                            class="text-lg font-medium text-(--text-heading)"
                                         >
                                             {{
                                                 product.has_variants
@@ -315,7 +315,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Түлхүүр үг</p>
                                         <p
-                                            class="text-sm font-medium text-[var(--text-heading)] bg-gray-100 dark:bg-gray-800 inline-block px-2 py-1 rounded"
+                                            class="text-sm font-medium text-(--text-heading) bg-gray-100 dark:bg-gray-800 inline-block px-2 py-1 rounded"
                                         >
                                             {{ product.keyword }}
                                         </p>
@@ -326,7 +326,7 @@ onMounted(async () => {
                             <!-- Variants Summary (if any) -->
                             <div
                                 v-if="product.has_variants && product.variants?.length > 0"
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 shadow-sm"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) p-5 shadow-sm"
                             >
                                 <h3 class="text-sm font-medium text-gray-500 mb-3">Хувилбарууд</h3>
                                 <div class="flex flex-wrap gap-2">
@@ -335,7 +335,7 @@ onMounted(async () => {
                                         :key="v.id"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
                                     >
-                                        <span class="font-medium text-[var(--text-heading)]">{{
+                                        <span class="font-medium text-(--text-heading)">{{
                                             v.name
                                         }}</span>
                                         <span class="text-gray-400">|</span>
@@ -351,42 +351,42 @@ onMounted(async () => {
                     <!-- Statistics Overview -->
                     <div v-if="posts.length > 0" class="grid grid-cols-2 lg:grid-cols-5 gap-4">
                         <div
-                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
+                            class="bg-(--surface-card) p-4 rounded-xl border border-(--border-primary) shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт нийтлэл</span>
-                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
+                            <span class="text-2xl font-bold text-(--text-heading)">{{
                                 posts.length
                             }}</span>
                         </div>
                         <div
-                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
+                            class="bg-(--surface-card) p-4 rounded-xl border border-(--border-primary) shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт хариу үйлдэл</span>
-                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
+                            <span class="text-2xl font-bold text-(--text-heading)">{{
                                 formatCount(totalPostReactions)
                             }}</span>
                         </div>
                         <div
-                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
+                            class="bg-(--surface-card) p-4 rounded-xl border border-(--border-primary) shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт коммент</span>
-                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
+                            <span class="text-2xl font-bold text-(--text-heading)">{{
                                 formatCount(totalPostComments)
                             }}</span>
                         </div>
                         <div
-                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
+                            class="bg-(--surface-card) p-4 rounded-xl border border-(--border-primary) shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт хуваалцсан</span>
-                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
+                            <span class="text-2xl font-bold text-(--text-heading)">{{
                                 formatCount(posts.reduce((acc, p) => acc + p.shares_count, 0))
                             }}</span>
                         </div>
                         <div
-                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
+                            class="bg-(--surface-card) p-4 rounded-xl border border-(--border-primary) shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт харагдсан</span>
-                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
+                            <span class="text-2xl font-bold text-(--text-heading)">{{
                                 formatCount(totalPostViews)
                             }}</span>
                         </div>
@@ -396,7 +396,7 @@ onMounted(async () => {
                     <div v-if="posts.length > 0" class="pt-4">
                         <div class="flex items-center justify-between mb-5">
                             <h2
-                                class="text-lg font-semibold text-[var(--text-heading)] flex items-center gap-2"
+                                class="text-lg font-semibold text-(--text-heading) flex items-center gap-2"
                             >
                                 <UIcon name="i-lucide-share-2" class="w-5 h-5 text-blue-500" />
                                 Холбогдсон Facebook нийтлэлүүд
@@ -408,7 +408,7 @@ onMounted(async () => {
                             <div
                                 v-for="post in posts"
                                 :key="post.id"
-                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                                class="bg-(--surface-card) rounded-xl border border-(--border-primary) overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <!-- Post Header - Page info -->
                                 <div class="flex items-center gap-3 px-4 pt-4 pb-3">
@@ -430,7 +430,7 @@ onMounted(async () => {
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center gap-2">
                                             <span
-                                                class="text-sm font-semibold text-[var(--text-heading)] truncate"
+                                                class="text-sm font-semibold text-(--text-heading) truncate"
                                             >
                                                 {{ post.page_name || 'Facebook Page' }}
                                             </span>
@@ -497,7 +497,7 @@ onMounted(async () => {
                                     <img
                                         :src="post.image_url"
                                         :alt="product?.name"
-                                        class="w-full object-cover max-h-[400px]"
+                                        class="w-full object-cover max-h-100"
                                     />
                                     <!-- Watch badge overlay -->
                                     <div
@@ -511,12 +511,12 @@ onMounted(async () => {
 
                                 <!-- Engagement Stats Bar -->
                                 <div
-                                    class="px-4 py-2.5 flex items-center justify-between border-b border-[var(--border-primary)]"
+                                    class="px-4 py-2.5 flex items-center justify-between border-b border-(--border-primary)"
                                 >
                                     <div class="flex items-center gap-1.5">
                                         <div class="flex -space-x-1">
                                             <div
-                                                class="w-[18px] h-[18px] rounded-full bg-blue-500 flex items-center justify-center"
+                                                class="w-4.5 h-4.5 rounded-full bg-blue-500 flex items-center justify-center"
                                             >
                                                 <UIcon
                                                     name="i-lucide-thumbs-up"
@@ -524,7 +524,7 @@ onMounted(async () => {
                                                 />
                                             </div>
                                             <div
-                                                class="w-[18px] h-[18px] rounded-full bg-red-500 flex items-center justify-center"
+                                                class="w-4.5 h-4.5 rounded-full bg-red-500 flex items-center justify-center"
                                             >
                                                 <UIcon
                                                     name="i-lucide-heart"
@@ -546,7 +546,7 @@ onMounted(async () => {
 
                                 <!-- Action Buttons (like FB) -->
                                 <div
-                                    class="grid grid-cols-3 border-b border-[var(--border-primary)]"
+                                    class="grid grid-cols-3 border-b border-(--border-primary)"
                                 >
                                     <button
                                         class="flex items-center justify-center gap-2 py-2.5 text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
@@ -583,7 +583,7 @@ onMounted(async () => {
                                 <!-- Views stat (subtle) -->
                                 <div
                                     v-if="post.views_count > 0"
-                                    class="px-4 py-1.5 flex items-center gap-1 text-[11px] text-gray-400 border-b border-[var(--border-primary)]"
+                                    class="px-4 py-1.5 flex items-center gap-1 text-[11px] text-gray-400 border-b border-(--border-primary)"
                                 >
                                     <UIcon name="i-lucide-eye" class="w-3 h-3" />
                                     {{ formatCount(post.views_count) }} харагдсан
@@ -628,7 +628,7 @@ onMounted(async () => {
                                                 >
                                                     <div class="flex items-center gap-2">
                                                         <span
-                                                            class="text-[13px] font-semibold text-[var(--text-heading)]"
+                                                            class="text-[13px] font-semibold text-(--text-heading)"
                                                         >
                                                             {{ comment.sender_name || 'Хэрэглэгч' }}
                                                         </span>

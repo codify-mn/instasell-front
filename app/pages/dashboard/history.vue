@@ -46,22 +46,22 @@ async function handleCheckPayment() {
 </script>
 
 <template>
-    <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
+    <div class="flex w-full h-full flex-col overflow-hidden bg-(--surface-page)">
         <!-- Header -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
-            <span class="text-base font-bold text-[var(--text-heading)]">Үйлчилгээний эрх</span>
+        <div class="flex h-14 shrink-0 items-center justify-between border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7">
+            <span class="text-base font-bold text-(--text-heading)">Үйлчилгээний эрх</span>
         </div>
 
         <!-- Tabs -->
-        <div class="border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div class="border-b border-(--border-primary) bg-(--surface-card) px-4 sm:px-7">
             <nav class="flex gap-6 -mb-px">
-                <NuxtLink to="/dashboard/billing" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors">
+                <NuxtLink to="/dashboard/billing" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors">
                     Идэвхтэй багц
                 </NuxtLink>
-                <NuxtLink to="/dashboard/plans" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors">
+                <NuxtLink to="/dashboard/plans" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors">
                     Багц сонгох
                 </NuxtLink>
-                <NuxtLink to="/dashboard/history" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors">
+                <NuxtLink to="/dashboard/history" exact-active-class="border-primary-500 text-[var(--text-heading)]" class="py-3 text-sm font-medium border-b-2 border-transparent text-(--text-muted) hover:text-(--text-heading) transition-colors">
                     Нэхэмжлэх
                 </NuxtLink>
             </nav>
@@ -71,28 +71,28 @@ async function handleCheckPayment() {
         <div class="flex-1 overflow-y-auto">
             <div class="max-w-4xl mx-auto px-4 sm:px-7 py-6">
                 <!-- Loading skeleton -->
-                <div v-if="loading" class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] overflow-hidden">
-                    <div class="grid grid-cols-5 gap-4 px-4 py-3 border-b border-[var(--border-primary)] bg-[var(--surface-inset)]/60">
-                        <div v-for="i in 5" :key="i" class="h-3 rounded bg-[var(--surface-inset)] shimmer-bar" :class="i === 5 ? 'w-12' : 'w-16'" />
+                <div v-if="loading" class="rounded-xl border border-(--border-primary) bg-(--surface-card) overflow-hidden">
+                    <div class="grid grid-cols-5 gap-4 px-4 py-3 border-b border-(--border-primary) bg-(--surface-inset)/60">
+                        <div v-for="i in 5" :key="i" class="h-3 rounded bg-(--surface-inset) shimmer-bar" :class="i === 5 ? 'w-12' : 'w-16'" />
                     </div>
-                    <div v-for="i in 5" :key="i" class="grid grid-cols-5 gap-4 px-4 py-3.5 border-b border-[var(--border-subtle)]">
-                        <div class="h-3 w-20 rounded bg-[var(--surface-inset)] shimmer-bar" />
-                        <div class="h-3 w-16 rounded bg-[var(--surface-inset)] shimmer-bar" />
-                        <div class="h-3 w-12 rounded bg-[var(--surface-inset)] shimmer-bar" />
-                        <div class="h-3 w-18 rounded bg-[var(--surface-inset)] shimmer-bar" />
-                        <div class="h-5 w-16 rounded-full bg-[var(--surface-inset)] shimmer-bar" />
+                    <div v-for="i in 5" :key="i" class="grid grid-cols-5 gap-4 px-4 py-3.5 border-b border-(--border-subtle)">
+                        <div class="h-3 w-20 rounded bg-(--surface-inset) shimmer-bar" />
+                        <div class="h-3 w-16 rounded bg-(--surface-inset) shimmer-bar" />
+                        <div class="h-3 w-12 rounded bg-(--surface-inset) shimmer-bar" />
+                        <div class="h-3 w-18 rounded bg-(--surface-inset) shimmer-bar" />
+                        <div class="h-5 w-16 rounded-full bg-(--surface-inset) shimmer-bar" />
                     </div>
                 </div>
 
                 <!-- Empty -->
                 <div v-else-if="!invoices.length" class="flex flex-col items-center justify-center py-16 text-center empty-state-enter">
-                    <UIcon name="i-lucide-receipt" class="size-10 text-[var(--text-placeholder)] mb-3" />
-                    <p class="text-sm text-[var(--text-muted)] mb-4">Нэхэмжлэх байхгүй байна</p>
+                    <UIcon name="i-lucide-receipt" class="size-10 text-(--text-placeholder) mb-3" />
+                    <p class="text-sm text-(--text-muted) mb-4">Нэхэмжлэх байхгүй байна</p>
                     <UButton label="Багц авах" color="primary" size="sm" to="/dashboard/plans" />
                 </div>
 
                 <!-- Table -->
-                <div v-else class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] overflow-hidden">
+                <div v-else class="rounded-xl border border-(--border-primary) bg-(--surface-card) overflow-hidden">
                     <BillingHistoryTable
                         :invoices="invoices"
                         :loading="loading"

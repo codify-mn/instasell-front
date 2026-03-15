@@ -117,7 +117,7 @@ const onSubmit = (event: FormSubmitEvent<Schema>) => {
 
         <div
             v-if="state.track_inventory && !state.has_variants"
-            class="grid grid-cols-2 gap-4 p-4 bg-[var(--surface-inset)] rounded-lg"
+            class="grid grid-cols-2 gap-4 p-4 bg-(--surface-inset) rounded-lg"
         >
             <UFormField label="SKU" name="sku">
                 <UInput v-model="state.sku" placeholder="SKU-001" />
