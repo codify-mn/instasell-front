@@ -9,8 +9,6 @@ export default defineNuxtConfig({
         'nuxt-og-image'
     ],
 
-    ssr: false,
-
     devtools: {
         enabled: process.env.NODE_ENV !== 'production'
     },
@@ -29,6 +27,9 @@ export default defineNuxtConfig({
     css: ['~/assets/css/main.css'],
 
     app: {
+        head: {
+            htmlAttrs: { lang: 'mn' }
+        },
         pageTransition: { name: 'page', mode: 'out-in' },
         layoutTransition: { name: 'layout', mode: 'out-in' }
     },
@@ -41,10 +42,15 @@ export default defineNuxtConfig({
     },
 
     routeRules: {
-        '/api': {
-            cors: true,
-            proxy: 'http://localhost:4000/api'
-        },
+        '/dashboard/**': { ssr: false },
+        '/login': { ssr: false },
+        '/signup': { ssr: false },
+        '/forgot-password': { ssr: false },
+        '/reset-password': { ssr: false },
+        '/otp-test': { ssr: false },
+        '/auth/**': { ssr: false },
+        '/checkout/**': { ssr: false },
+        '/onboarding': { ssr: false },
         '/docs': {
             redirect: '/docs/getting-started'
         }

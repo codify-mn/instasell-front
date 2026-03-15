@@ -20,9 +20,14 @@ export function useUpload() {
     const uploading = ref(false)
     const progress = ref<UploadProgress[]>([])
 
+    const removeBg = ref(true)
+
     const uploadSingle = async (file: File): Promise<UploadResult> => {
         const formData = new FormData()
         formData.append('file', file)
+        if (removeBg.value) {
+            formData.append('remove_bg', 'true')
+        }
 
         const result = await $fetch<UploadResult>(`${apiUrl}/api/upload`, {
             method: 'POST',
@@ -103,6 +108,7 @@ export function useUpload() {
     return {
         uploading,
         progress,
+        removeBg,
         uploadSingle,
         uploadMultiple,
         uploadFiles,

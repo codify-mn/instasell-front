@@ -8,7 +8,7 @@ const emit = defineEmits<{
     'update:modelValue': [value: string[]]
 }>()
 
-const { uploadFiles, uploading, progress, clearProgress } = useUpload()
+const { uploadFiles, uploading, progress, clearProgress, removeBg } = useUpload()
 const toast = useToast()
 
 const isDragging = ref(false)
@@ -167,6 +167,15 @@ const openFilePicker = () => {
                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Зураг оруулах</p>
                 <p class="text-xs text-gray-400">PNG, JPG, WEBP — 5MB хүртэл</p>
             </template>
+        </div>
+
+        <!-- Remove background toggle -->
+        <div class="flex items-center justify-between p-3 mt-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+            <div class="flex items-center gap-2">
+                <UIcon name="i-lucide-eraser" class="w-4 h-4 text-gray-500" />
+                <span class="text-sm text-gray-600 dark:text-gray-400">Арын дэвсгэр арилгах</span>
+            </div>
+            <USwitch v-model="removeBg" />
         </div>
     </div>
 </template>

@@ -7,7 +7,16 @@ useSeoMeta({
     title: 'Бүтээгдэхүүн - Instasell'
 })
 
-const { fetchProducts, deleteProduct, updateProduct, fetchCategories, exportProductsCSV, downloadImportTemplate, importProducts, reorderProducts } = useProducts()
+const {
+    fetchProducts,
+    deleteProduct,
+    updateProduct,
+    fetchCategories,
+    exportProductsCSV,
+    downloadImportTemplate,
+    importProducts,
+    reorderProducts
+} = useProducts()
 const toast = useToast()
 const router = useRouter()
 
@@ -49,7 +58,8 @@ const filter = reactive({
 
 const toggleSort = (col: string) => {
     if (filter.sort_by === col) {
-        filter.sort_dir = filter.sort_dir === 'asc' ? 'desc' : filter.sort_dir === 'desc' ? '' : 'asc'
+        filter.sort_dir =
+            filter.sort_dir === 'asc' ? 'desc' : filter.sort_dir === 'desc' ? '' : 'asc'
         if (!filter.sort_dir) filter.sort_by = ''
     } else {
         filter.sort_by = col
@@ -153,7 +163,9 @@ const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('mn-MN').format(price) + '₮'
 }
 
-const setPage = (p: number) => { filter.page = p }
+const setPage = (p: number) => {
+    filter.page = p
+}
 
 // Selection helpers
 const isSelected = (product: Product) => {
@@ -336,7 +348,13 @@ const exporting = ref(false)
 const handleExportCSV = async (mode: 'filtered' | 'selected') => {
     exporting.value = true
     try {
-        const params: { status?: string; keyword?: string; category?: string; stock?: string; ids?: number[] } = {}
+        const params: {
+            status?: string
+            keyword?: string
+            category?: string
+            stock?: string
+            ids?: number[]
+        } = {}
         if (mode === 'selected') {
             params.ids = selectedRows.value.map((p) => p.id)
         } else {
@@ -521,7 +539,14 @@ onBeforeUnmount(() => {
 
 // Watch filters
 watch(
-    [() => filter.keyword, () => filter.category, () => filter.status, () => filter.stock, () => filter.sort_by, () => filter.sort_dir],
+    [
+        () => filter.keyword,
+        () => filter.category,
+        () => filter.status,
+        () => filter.stock,
+        () => filter.sort_by,
+        () => filter.sort_dir
+    ],
     () => {
         filter.page = 1
         loadProducts()
@@ -540,68 +565,76 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div
+            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+        >
             <span class="text-base font-bold text-[var(--text-heading)]">Бараа бүтээгдэхүүн</span>
             <div class="flex items-center gap-1.5">
+                <UButton
+                    color="neutral"
+                    variant="ghost"
+                    icon="i-lucide-upload"
+                    size="sm"
+                    @click="importModalOpen = true"
+                >
+                    Импорт
+                </UButton>
+                <UDropdownMenu
+                    :items="[
+                        [
+                            {
+                                label: 'Бүх бараа (шүүлтүүрээр)',
+                                icon: 'i-lucide-filter',
+                                onSelect: () => handleExportCSV('filtered')
+                            },
+                            {
+                                label: `Сонгосон (${selectedRows.length})`,
+                                icon: 'i-lucide-check-square',
+                                disabled: selectedRows.length === 0,
+                                onSelect: () => handleExportCSV('selected')
+                            }
+                        ]
+                    ]"
+                >
                     <UButton
                         color="neutral"
                         variant="ghost"
-                        icon="i-lucide-upload"
+                        icon="i-lucide-download"
                         size="sm"
-                        @click="importModalOpen = true"
+                        :loading="exporting"
                     >
-                        Импорт
+                        Экспорт
                     </UButton>
-                    <UDropdownMenu
-                        :items="[
-                            [
-                                {
-                                    label: 'Бүх бараа (шүүлтүүрээр)',
-                                    icon: 'i-lucide-filter',
-                                    onSelect: () => handleExportCSV('filtered')
-                                },
-                                {
-                                    label: `Сонгосон (${selectedRows.length})`,
-                                    icon: 'i-lucide-check-square',
-                                    disabled: selectedRows.length === 0,
-                                    onSelect: () => handleExportCSV('selected')
-                                }
-                            ]
-                        ]"
-                    >
-                        <UButton
-                            color="neutral"
-                            variant="ghost"
-                            icon="i-lucide-download"
-                            size="sm"
-                            :loading="exporting"
-                        >
-                            Экспорт
-                        </UButton>
-                    </UDropdownMenu>
-                    <UButton
-                        v-if="!suggestMode"
-                        color="neutral"
-                        variant="soft"
-                        icon="i-lucide-shopping-cart"
-                        size="sm"
-                        @click="enterSuggestMode"
-                    >
-                        Санал болгох
-                    </UButton>
-                    <UButton v-if="!suggestMode" to="/dashboard/products/new" color="primary" size="sm" icon="i-lucide-plus">
-                        Нэмэх
-                    </UButton>
-                    <UButton
-                        v-if="suggestMode"
-                        color="neutral"
-                        variant="ghost"
-                        size="sm"
-                        icon="i-lucide-x"
-                        @click="exitSuggestMode"
-                    >
-                        Болих
-                    </UButton>
+                </UDropdownMenu>
+                <UButton
+                    v-if="!suggestMode"
+                    color="neutral"
+                    variant="soft"
+                    icon="i-lucide-shopping-cart"
+                    size="sm"
+                    @click="enterSuggestMode"
+                >
+                    Санал болгох
+                </UButton>
+                <UButton
+                    v-if="!suggestMode"
+                    to="/dashboard/products/new"
+                    color="primary"
+                    size="sm"
+                    icon="i-lucide-plus"
+                >
+                    Нэмэх
+                </UButton>
+                <UButton
+                    v-if="suggestMode"
+                    color="neutral"
+                    variant="ghost"
+                    size="sm"
+                    icon="i-lucide-x"
+                    @click="exitSuggestMode"
+                >
+                    Болих
+                </UButton>
             </div>
         </div>
 
@@ -671,15 +704,48 @@ onMounted(() => {
         </Transition>
 
         <MobileActionBar :count="selectedRows.length" @clear="clearSelection">
-            <UButton size="sm" color="primary" variant="soft" icon="i-lucide-share-2" @click="openBulkPostModal">Facebook</UButton>
-            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-check-circle" :loading="bulkActionLoading" @click="bulkSetStatus('active')">Идэвхжүүлэх</UButton>
-            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-archive" :loading="bulkActionLoading" @click="bulkSetStatus('draft')">Ноорог</UButton>
-            <UButton size="sm" color="error" variant="outline" icon="i-lucide-trash-2" :loading="bulkActionLoading" @click="bulkDeleteModalOpen = true">Устгах</UButton>
+            <UButton
+                size="sm"
+                color="primary"
+                variant="soft"
+                icon="i-lucide-share-2"
+                @click="openBulkPostModal"
+                >Facebook</UButton
+            >
+            <UButton
+                size="sm"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-check-circle"
+                :loading="bulkActionLoading"
+                @click="bulkSetStatus('active')"
+                >Идэвхжүүлэх</UButton
+            >
+            <UButton
+                size="sm"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-archive"
+                :loading="bulkActionLoading"
+                @click="bulkSetStatus('draft')"
+                >Ноорог</UButton
+            >
+            <UButton
+                size="sm"
+                color="error"
+                variant="outline"
+                icon="i-lucide-trash-2"
+                :loading="bulkActionLoading"
+                @click="bulkDeleteModalOpen = true"
+                >Устгах</UButton
+            >
         </MobileActionBar>
 
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
-            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+            <div
+                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+            >
                 <!-- Filters -->
                 <div v-if="!suggestMode" class="px-4 py-3 border-b border-[var(--border-primary)]">
                     <div class="flex flex-wrap items-center gap-2">
@@ -690,8 +756,18 @@ onMounted(() => {
                             class="w-full sm:w-64"
                             size="sm"
                         />
-                        <USelect v-model="filter.status" :items="statusOptions" class="w-full sm:w-32" size="sm" />
-                        <USelect v-model="filter.stock" :items="stockOptions" class="w-full sm:w-32" size="sm" />
+                        <USelect
+                            v-model="filter.status"
+                            :items="statusOptions"
+                            class="w-full sm:w-32"
+                            size="sm"
+                        />
+                        <USelect
+                            v-model="filter.stock"
+                            :items="stockOptions"
+                            class="w-full sm:w-32"
+                            size="sm"
+                        />
                         <USelect
                             v-model="filter.category"
                             :items="[
@@ -706,19 +782,29 @@ onMounted(() => {
 
                 <!-- Suggest Mode (drag-and-drop reordering) -->
                 <div v-if="suggestMode" class="suggest-mode-table flex flex-col">
-
                     <!-- Zone header: explains what this is + count control -->
-                    <div class="flex items-center justify-between px-5 py-3.5 border-b border-[var(--border-primary)]">
+                    <div
+                        class="flex items-center justify-between px-5 py-3.5 border-b border-[var(--border-primary)]"
+                    >
                         <div class="flex items-center gap-2.5">
-                            <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500 text-white shrink-0">
+                            <div
+                                class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500 text-white shrink-0"
+                            >
                                 <UIcon name="i-lucide-shopping-cart" class="w-4.5 h-4.5" />
                             </div>
                             <div>
-                                <div class="text-sm font-semibold text-[var(--text-heading)]">Checkout-д санал болгох бараа</div>
-                                <div class="text-xs text-[var(--text-muted)]">Дээрх <strong>{{ suggestCount }}</strong> бараа захиалга хийх хуудсанд харагдана</div>
+                                <div class="text-sm font-semibold text-[var(--text-heading)]">
+                                    Checkout-д санал болгох бараа
+                                </div>
+                                <div class="text-xs text-[var(--text-muted)]">
+                                    Дээрх <strong>{{ suggestCount }}</strong> бараа захиалга хийх
+                                    хуудсанд харагдана
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-1 bg-[var(--surface-card)] rounded-lg border border-emerald-300 dark:border-emerald-700 px-1 shrink-0">
+                        <div
+                            class="flex items-center gap-1 bg-[var(--surface-card)] rounded-lg border border-emerald-300 dark:border-emerald-700 px-1 shrink-0"
+                        >
                             <button
                                 class="w-7 h-7 flex items-center justify-center rounded text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors disabled:opacity-30"
                                 :disabled="suggestCount <= 1"
@@ -726,7 +812,10 @@ onMounted(() => {
                             >
                                 <UIcon name="i-lucide-minus" class="w-4 h-4" />
                             </button>
-                            <span class="w-6 text-center text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">{{ suggestCount }}</span>
+                            <span
+                                class="w-6 text-center text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums"
+                                >{{ suggestCount }}</span
+                            >
                             <button
                                 class="w-7 h-7 flex items-center justify-center rounded text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors disabled:opacity-30"
                                 :disabled="suggestCount >= products.length"
@@ -743,16 +832,27 @@ onMounted(() => {
                             v-for="(product, index) in products"
                             :key="product.id"
                             class="suggest-row flex items-center transition-colors duration-150 hover:bg-[var(--surface-inset)]/40 border-l-2 border-b border-b-[var(--border-primary)]"
-                            :class="index < suggestCount ? 'border-l-emerald-500' : 'border-l-transparent'"
+                            :class="
+                                index < suggestCount
+                                    ? 'border-l-emerald-500'
+                                    : 'border-l-transparent'
+                            "
                         >
                             <!-- Drag handle -->
-                            <div class="drag-handle cursor-grab active:cursor-grabbing flex items-center gap-2 pl-4 pr-2 py-3.5 shrink-0">
-                                <UIcon name="i-lucide-grip-vertical" class="w-5 h-5 text-gray-300 dark:text-gray-600" />
+                            <div
+                                class="drag-handle cursor-grab active:cursor-grabbing flex items-center gap-2 pl-4 pr-2 py-3.5 shrink-0"
+                            >
+                                <UIcon
+                                    name="i-lucide-grip-vertical"
+                                    class="w-5 h-5 text-gray-300 dark:text-gray-600"
+                                />
                                 <span
                                     class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0"
-                                    :class="index < suggestCount
-                                        ? 'bg-emerald-500 text-white'
-                                        : 'bg-gray-100 dark:bg-gray-800 text-[var(--text-muted)]'"
+                                    :class="
+                                        index < suggestCount
+                                            ? 'bg-emerald-500 text-white'
+                                            : 'bg-gray-100 dark:bg-gray-800 text-[var(--text-muted)]'
+                                    "
                                 >
                                     {{ index + 1 }}
                                 </span>
@@ -760,14 +860,34 @@ onMounted(() => {
 
                             <!-- Product info -->
                             <div class="flex items-center gap-3 flex-1 min-w-0 py-3.5 pr-2">
-                                <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0 bg-[var(--surface-inset)]">
-                                    <img v-if="product.images?.length" :src="product.images[0]" :alt="product.name" class="w-full h-full object-cover" />
-                                    <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-[var(--text-placeholder)]" />
+                                <div
+                                    class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0 bg-[var(--surface-inset)]"
+                                >
+                                    <img
+                                        v-if="product.images?.length"
+                                        :src="product.images[0]"
+                                        :alt="product.name"
+                                        class="w-full h-full object-cover"
+                                    />
+                                    <UIcon
+                                        v-else
+                                        name="i-lucide-package"
+                                        class="w-5 h-5 text-[var(--text-placeholder)]"
+                                    />
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <div class="font-medium text-[var(--text-heading)] truncate">{{ product.name }}</div>
+                                    <div class="font-medium text-[var(--text-heading)] truncate">
+                                        {{ product.name }}
+                                    </div>
                                     <div class="text-xs text-[var(--text-muted)]">
-                                        {{ formatPrice(product.timed_sale_enabled && product.timed_sale_price ? product.timed_sale_price : product.price || 0) }}
+                                        {{
+                                            formatPrice(
+                                                product.timed_sale_enabled &&
+                                                    product.timed_sale_price
+                                                    ? product.timed_sale_price
+                                                    : product.price || 0
+                                            )
+                                        }}
                                     </div>
                                 </div>
                             </div>
@@ -783,212 +903,265 @@ onMounted(() => {
                                     <UIcon name="i-lucide-shopping-cart" class="w-3 h-3 mr-0.5" />
                                     Санал болгоно
                                 </UBadge>
-                                <span v-else class="text-xs text-[var(--text-placeholder)]">Харагдахгүй</span>
+                                <span v-else class="text-xs text-[var(--text-placeholder)]"
+                                    >Харагдахгүй</span
+                                >
                             </div>
                         </div>
                     </div>
 
                     <!-- Sticky save bar -->
-                    <div class="sticky bottom-0 flex items-center justify-between px-5 py-3 bg-[var(--surface-card)] border-t border-[var(--border-primary)] shadow-[0_-2px_8px_rgba(0,0,0,0.05)]">
-                        <div class="hidden sm:flex items-center gap-1.5 text-sm text-[var(--text-muted)]">
+                    <div
+                        class="sticky bottom-0 flex items-center justify-between px-5 py-3 bg-[var(--surface-card)] border-t border-[var(--border-primary)] shadow-[0_-2px_8px_rgba(0,0,0,0.05)]"
+                    >
+                        <div
+                            class="hidden sm:flex items-center gap-1.5 text-sm text-[var(--text-muted)]"
+                        >
                             <UIcon name="i-lucide-move" class="w-4 h-4 shrink-0" />
                             <span>Дээш доош чирж дараалал өөрчлөөрэй</span>
                         </div>
                         <div class="flex items-center gap-2 sm:ml-auto">
-                            <UButton color="neutral" variant="outline" size="sm" @click="exitSuggestMode">Болих</UButton>
-                            <UButton color="primary" size="sm" icon="i-lucide-check" :loading="savingOrder" @click="saveSuggestOrder">Хадгалах</UButton>
+                            <UButton
+                                color="neutral"
+                                variant="outline"
+                                size="sm"
+                                @click="exitSuggestMode"
+                                >Болих</UButton
+                            >
+                            <UButton
+                                color="primary"
+                                size="sm"
+                                icon="i-lucide-check"
+                                :loading="savingOrder"
+                                @click="saveSuggestOrder"
+                                >Хадгалах</UButton
+                            >
                         </div>
                     </div>
                 </div>
 
                 <!-- Normal Table -->
-            <UTable
-                v-if="!suggestMode"
-                :data="products"
-                :columns="columns"
-                :loading="loading"
-                class="w-full"
-                :ui="{
-                    base: 'min-w-full border-separate border-spacing-0',
-                    thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
-                    tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
-                    th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
-                    td: 'px-4 py-3 border-b border-[var(--border-primary)]',
-                    tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
-                }"
-            >
-                <template #base_price-header>
-                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('price')">
-                        Үнийн дүн
-                        <UIcon :name="sortIcon('price')" class="size-3" :class="filter.sort_by === 'price' ? 'text-primary-500' : 'opacity-40'" />
-                    </button>
-                </template>
-
-                <template #name-header>
-                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('name')">
-                        Бараа бүтээгдэхүүн
-                        <UIcon :name="sortIcon('name')" class="size-3" :class="filter.sort_by === 'name' ? 'text-primary-500' : 'opacity-40'" />
-                    </button>
-                </template>
-
-                <template #select-header>
-                    <UCheckbox
-                        :model-value="isAllSelected"
-                        :indeterminate="isSomeSelected"
-                        @update:model-value="toggleSelectAll"
-                    />
-                </template>
-
-                <template #select-cell="{ row }">
-                    <div @click.stop>
-                        <UCheckbox
-                            :model-value="isSelected(row.original)"
-                            @update:model-value="toggleSelect(row.original)"
-                        />
-                    </div>
-                </template>
-
-                <template #name-cell="{ row }">
-                    <div
-                        class="flex items-center gap-3 cursor-pointer"
-                        @click="onRowClick(row.original)"
-                    >
-                        <div
-                            class="w-10 h-10 rounded-lg bg-[var(--surface-inset)] flex items-center justify-center overflow-hidden shrink-0"
-                        >
-                            <img
-                                v-if="row.original.images?.length"
-                                :src="row.original.images[0]"
-                                :alt="row.original.name"
-                                class="w-full h-full object-cover"
-                            />
-                            <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-[var(--text-placeholder)]" />
-                        </div>
-                        <span class="font-medium text-[var(--text-heading)]">
-                            {{ row.original.name }}
-                        </span>
+                <UTable
+                    v-if="!suggestMode"
+                    :data="products"
+                    :columns="columns"
+                    :loading="loading"
+                    class="w-full"
+                    :ui="{
+                        base: 'min-w-full border-separate border-spacing-0',
+                        thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
+                        tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
+                        th: 'border-b border-[var(--border-primary)] px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                        td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+                        tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
+                    }"
+                >
+                    <template #base_price-header>
                         <button
-                            type="button"
-                            class="shrink-0 p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                            :title="
-                                row.original.is_featured
-                                    ? 'Санал болгохоос хасах'
-                                    : 'Checkout-д санал болгох'
-                            "
-                            @click.stop="toggleFeatured(row.original)"
+                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            @click="toggleSort('price')"
                         >
+                            Үнийн дүн
                             <UIcon
-                                name="i-lucide-shopping-cart"
-                                class="w-4 h-4"
+                                :name="sortIcon('price')"
+                                class="size-3"
                                 :class="
-                                    row.original.is_featured
-                                        ? 'text-emerald-500'
-                                        : 'text-gray-300 dark:text-gray-600'
+                                    filter.sort_by === 'price' ? 'text-primary-500' : 'opacity-40'
                                 "
                             />
                         </button>
-                    </div>
-                </template>
+                    </template>
 
-                <template #status-cell="{ row }">
-                    <UBadge
-                        :color="statusColors[row.original.status] || 'neutral'"
-                        variant="subtle"
-                        class="font-medium"
-                    >
-                        {{ statusLabels[row.original.status] || row.original.status }}
-                    </UBadge>
-                </template>
-
-                <template #base_price-cell="{ row }">
-                    <span class="text-[var(--text-heading)]">
-                        {{
-                            formatPrice(
-                                row.original.timed_sale_enabled && row.original.timed_sale_price
-                                    ? row.original.timed_sale_price
-                                    : row.original.price || 0
-                            )
-                        }}
-                    </span>
-                </template>
-
-                <template #stock-cell="{ row }">
-                    <span
-                        :class="
-                            getStock(row.original) <= 5
-                                ? 'text-orange-500'
-                                : 'text-[var(--text-muted)]'
-                        "
-                    >
-                        {{ getStockLabel(row.original) }}
-                    </span>
-                </template>
-
-                <template #category-cell="{ row }">
-                    <span class="text-[var(--text-muted)]">
-                        {{ row.original.category || '-' }}
-                    </span>
-                </template>
-
-                <template #actions-cell="{ row }">
-                    <div class="flex items-center justify-end gap-1" @click.stop>
-                        <div
-                            class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    <template #name-header>
+                        <button
+                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            @click="toggleSort('name')"
                         >
-                            <UButton
-                                label="Нийтлэх"
-                                icon="i-lucide-share-2"
-                                color="neutral"
-                                variant="subtle"
-                                size="md"
-                                title="Facebook-д нийтлэх"
-                                @click.stop="openPostModal(row.original)"
-                            />
-                            <UButton
-                                label="Засах"
-                                icon="i-lucide-pencil"
-                                color="neutral"
-                                variant="ghost"
-                                size="md"
-                                title="Засах"
-                                @click.stop="
-                                    router.push(`/dashboard/products/${row.original.id}/edit`)
+                            Бараа бүтээгдэхүүн
+                            <UIcon
+                                :name="sortIcon('name')"
+                                class="size-3"
+                                :class="
+                                    filter.sort_by === 'name' ? 'text-primary-500' : 'opacity-40'
                                 "
                             />
-                        </div>
-                        <UDropdownMenu :items="getActionItems(row.original)">
-                            <UButton
-                                icon="i-lucide-more-horizontal"
-                                color="neutral"
-                                variant="ghost"
-                                size="md"
+                        </button>
+                    </template>
+
+                    <template #select-header>
+                        <UCheckbox
+                            :model-value="isAllSelected"
+                            :indeterminate="isSomeSelected"
+                            @update:model-value="toggleSelectAll"
+                        />
+                    </template>
+
+                    <template #select-cell="{ row }">
+                        <div @click.stop>
+                            <UCheckbox
+                                :model-value="isSelected(row.original)"
+                                @update:model-value="toggleSelect(row.original)"
                             />
-                        </UDropdownMenu>
-                    </div>
-                </template>
-
-                <template #empty>
-                    <div class="flex flex-col items-center justify-center py-20 text-center empty-state-enter">
-                        <div
-                            class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
-                        >
-                            <UIcon name="i-lucide-package" class="w-10 h-10 text-primary-500" />
                         </div>
-                        <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
-                            Бүтээгдэхүүн олдсонгүй
-                        </h3>
-                        <p class="text-[var(--text-muted)] max-w-sm mb-6">
-                            Одоогоор ямар ч бүтээгдэхүүн байхгүй байна. Шинэ бүтээгдэхүүн нэмж
-                            эхлээрэй.
-                        </p>
-                        <UButton to="/dashboard/products/new" color="primary" icon="i-lucide-plus">
-                            Бүтээгдэхүүн нэмэх
-                        </UButton>
-                    </div>
-                </template>
-            </UTable>
+                    </template>
 
-                <TablePagination v-if="!suggestMode" :page="filter.page" :total="total" :page-size="filter.size" @update:page="setPage" />
+                    <template #name-cell="{ row }">
+                        <div
+                            class="flex items-center gap-3 cursor-pointer"
+                            @click="onRowClick(row.original)"
+                        >
+                            <div
+                                class="w-10 h-10 rounded-lg bg-[var(--surface-inset)] flex items-center justify-center overflow-hidden shrink-0"
+                            >
+                                <img
+                                    v-if="row.original.images?.length"
+                                    :src="row.original.images[0]"
+                                    :alt="row.original.name"
+                                    class="w-full h-full object-cover"
+                                />
+                                <UIcon
+                                    v-else
+                                    name="i-lucide-package"
+                                    class="w-5 h-5 text-[var(--text-placeholder)]"
+                                />
+                            </div>
+                            <span class="font-medium text-[var(--text-heading)]">
+                                {{ row.original.name }}
+                            </span>
+                            <button
+                                type="button"
+                                class="shrink-0 p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                :title="
+                                    row.original.is_featured
+                                        ? 'Санал болгохоос хасах'
+                                        : 'Checkout-д санал болгох'
+                                "
+                                @click.stop="toggleFeatured(row.original)"
+                            >
+                                <UIcon
+                                    name="i-lucide-shopping-cart"
+                                    class="w-4 h-4"
+                                    :class="
+                                        row.original.is_featured
+                                            ? 'text-emerald-500'
+                                            : 'text-gray-300 dark:text-gray-600'
+                                    "
+                                />
+                            </button>
+                        </div>
+                    </template>
+
+                    <template #status-cell="{ row }">
+                        <UBadge
+                            :color="statusColors[row.original.status] || 'neutral'"
+                            variant="subtle"
+                            class="font-medium"
+                        >
+                            {{ statusLabels[row.original.status] || row.original.status }}
+                        </UBadge>
+                    </template>
+
+                    <template #base_price-cell="{ row }">
+                        <span class="text-[var(--text-heading)]">
+                            {{
+                                formatPrice(
+                                    row.original.timed_sale_enabled && row.original.timed_sale_price
+                                        ? row.original.timed_sale_price
+                                        : row.original.price || 0
+                                )
+                            }}
+                        </span>
+                    </template>
+
+                    <template #stock-cell="{ row }">
+                        <span
+                            :class="
+                                getStock(row.original) <= 5
+                                    ? 'text-orange-500'
+                                    : 'text-[var(--text-muted)]'
+                            "
+                        >
+                            {{ getStockLabel(row.original) }}
+                        </span>
+                    </template>
+
+                    <template #category-cell="{ row }">
+                        <span class="text-[var(--text-muted)]">
+                            {{ row.original.category || '-' }}
+                        </span>
+                    </template>
+
+                    <template #actions-cell="{ row }">
+                        <div class="flex items-center justify-end gap-1" @click.stop>
+                            <div
+                                class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                                <UButton
+                                    label="Нийтлэх"
+                                    icon="i-lucide-share-2"
+                                    color="neutral"
+                                    variant="subtle"
+                                    size="md"
+                                    title="Facebook-д нийтлэх"
+                                    @click.stop="openPostModal(row.original)"
+                                />
+                                <UButton
+                                    label="Засах"
+                                    icon="i-lucide-pencil"
+                                    color="neutral"
+                                    variant="ghost"
+                                    size="md"
+                                    title="Засах"
+                                    @click.stop="
+                                        router.push(`/dashboard/products/${row.original.id}/edit`)
+                                    "
+                                />
+                            </div>
+                            <UDropdownMenu :items="getActionItems(row.original)">
+                                <UButton
+                                    icon="i-lucide-more-horizontal"
+                                    color="neutral"
+                                    variant="ghost"
+                                    size="md"
+                                />
+                            </UDropdownMenu>
+                        </div>
+                    </template>
+
+                    <template #empty>
+                        <div
+                            class="flex flex-col items-center justify-center py-20 text-center empty-state-enter"
+                        >
+                            <div
+                                class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
+                            >
+                                <UIcon name="i-lucide-package" class="w-10 h-10 text-primary-500" />
+                            </div>
+                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                                Бүтээгдэхүүн олдсонгүй
+                            </h3>
+                            <p class="text-[var(--text-muted)] max-w-sm mb-6">
+                                Одоогоор ямар ч бүтээгдэхүүн байхгүй байна. Шинэ бүтээгдэхүүн нэмж
+                                эхлээрэй.
+                            </p>
+                            <UButton
+                                to="/dashboard/products/new"
+                                color="primary"
+                                icon="i-lucide-plus"
+                            >
+                                Бүтээгдэхүүн нэмэх
+                            </UButton>
+                        </div>
+                    </template>
+                </UTable>
+
+                <TablePagination
+                    v-if="!suggestMode"
+                    :page="filter.page"
+                    :total="total"
+                    :page-size="filter.size"
+                    @update:page="setPage"
+                />
             </div>
         </div>
 
@@ -1007,7 +1180,9 @@ onMounted(() => {
                         <strong>{{ productToDelete?.name }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                        Энэ үйлдлийг буцаах боломжгүй.
+                    </p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -1042,7 +1217,9 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> бүтээгдэхүүнийг устгахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                        Энэ үйлдлийг буцаах боломжгүй.
+                    </p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -1080,7 +1257,8 @@ onMounted(() => {
 
                     <div class="space-y-4">
                         <p class="text-sm text-[var(--text-muted)]">
-                            CSV файлаар бараа бөөнөөр оруулах. Загвар файлыг татаж форматыг харна уу.
+                            CSV файлаар бараа бөөнөөр оруулах. Загвар файлыг татаж форматыг харна
+                            уу.
                         </p>
 
                         <UButton
@@ -1094,7 +1272,9 @@ onMounted(() => {
                         </UButton>
 
                         <div>
-                            <label class="block text-sm font-medium text-[var(--text-heading)] mb-2">
+                            <label
+                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                            >
                                 CSV файл сонгох
                             </label>
                             <input
@@ -1106,10 +1286,16 @@ onMounted(() => {
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-[var(--text-heading)] mb-2">
+                            <label
+                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                            >
                                 Импортлосон бараануудын эхний төлөв
                             </label>
-                            <USelect v-model="selectedImportStatus" :items="importStatusOptions" class="w-full" />
+                            <USelect
+                                v-model="selectedImportStatus"
+                                :items="importStatusOptions"
+                                class="w-full"
+                            />
                         </div>
                     </div>
 

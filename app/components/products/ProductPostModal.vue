@@ -115,11 +115,11 @@ const finalCaption = computed(() => {
     let text = caption.value.trim()
     if (!text) return ''
     if (watchComments.value && selectedProduct.value) {
-        const sku = selectedProduct.value.search_keywords
-        if (commentMode.value === 'keywords' && sku) {
-            text += `\n\n📝 Сагсанд нэмэхийн тулд "${sku}" гэж коммент бичнэ үү.`
+        const keyword = selectedProduct.value.keyword
+        if (commentMode.value === 'keywords' && keyword) {
+            text += `\n\n📝 Сагсанд нэмэхийн тулд "${keyword}" гэж коммент бичнэ үү.\nЭсвэл чатаар "buy ${keyword}" гэж бичнэ үү.`
         } else {
-            text += '\n\n📝 Сагсанд нэмэхийн тулд коммент бичнэ үү.'
+            text += `\n\n📝 Сагсанд нэмэхийн тулд коммент бичнэ үү.\nЭсвэл чатаар "buy ${keyword}" гэж бичнэ үү.`
         }
     }
     return text
@@ -425,7 +425,7 @@ watch(
                         </div>
 
                         <!-- Purpose -->
-                        <div>
+                        <div v-if="imageMode === 'ai'">
                             <label class="block text-sm font-medium mb-1.5">Зорилго</label>
                             <div class="flex gap-2">
                                 <button
@@ -659,7 +659,7 @@ watch(
                                         Доорх түлхүүр үгийг коммент бичвэл сагсанд нэмнэ:
                                     </p>
                                     <div
-                                        v-if="selectedProduct?.search_keywords"
+                                        v-if="selectedProduct?.keyword"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800"
                                     >
                                         <UIcon
@@ -669,7 +669,7 @@ watch(
                                         <span
                                             class="text-sm font-semibold font-mono text-primary-700 dark:text-primary-300"
                                         >
-                                            {{ selectedProduct?.search_keywords }}
+                                            {{ selectedProduct?.keyword }}
                                         </span>
                                     </div>
                                     <p v-else class="text-xs text-amber-500 dark:text-amber-400">
@@ -799,7 +799,13 @@ watch(
                                             name="i-lucide-image"
                                             class="w-10 h-10 text-gray-200 dark:text-gray-700"
                                         />
-                                        <p class="text-xs text-gray-400">AI зураг үүсгэнэ үү</p>
+                                        <UButton
+                                            icon="i-lucide-sparkles"
+                                            :loading="loadingAIImage"
+                                            @click="handleGenerateAIImage"
+                                        >
+                                            AI зураг үүсгэх
+                                        </UButton>
                                     </div>
                                 </div>
 
@@ -876,7 +882,7 @@ watch(
                                     class="w-4 h-4 text-primary-600 dark:text-primary-400 shrink-0"
                                 />
                                 <p class="text-xs text-primary-700 dark:text-primary-300">
-                                    Автомат захиалга идэвхтэй — комментод захиалга үүснэ
+                                    Автомат захиалга идэвхтэй — комментод бичвэл захиалга авна
                                 </p>
                             </div>
                         </div>

@@ -71,14 +71,18 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div
+            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+        >
             <span class="text-base font-bold text-[var(--text-heading)]">Хэрэглэгчид</span>
             <span class="text-sm text-[var(--text-muted)]">Нийт {{ total }}</span>
         </div>
 
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
-            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+            <div
+                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+            >
                 <!-- Search -->
                 <div class="px-4 py-3 border-b border-[var(--border-primary)]">
                     <div class="flex flex-wrap items-center gap-2">
@@ -102,7 +106,7 @@ onMounted(() => {
                         base: 'min-w-full border-separate border-spacing-0',
                         thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
                         tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
-                        th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                        th: 'border-b border-[var(--border-primary)] px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
                         td: 'px-4 py-3 border-b border-[var(--border-primary)]',
                         tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150 cursor-pointer'
                     }"
@@ -114,7 +118,10 @@ onMounted(() => {
                                 <p class="font-medium text-[var(--text-heading)]">
                                     {{ row.original.name }}
                                 </p>
-                                <p v-if="row.original.email" class="text-xs text-[var(--text-placeholder)]">
+                                <p
+                                    v-if="row.original.email"
+                                    class="text-xs text-[var(--text-placeholder)]"
+                                >
                                     {{ row.original.email }}
                                 </p>
                             </div>
@@ -135,7 +142,12 @@ onMounted(() => {
                             rel="noopener noreferrer"
                             @click.stop
                         >
-                            <UBadge color="info" variant="subtle" size="xs" class="cursor-pointer hover:opacity-80 transition-opacity">
+                            <UBadge
+                                color="info"
+                                variant="subtle"
+                                size="xs"
+                                class="cursor-pointer hover:opacity-80 transition-opacity"
+                            >
                                 <UIcon name="i-lucide-facebook" class="w-3 h-3 mr-1" />
                                 Профайл
                             </UBadge>
@@ -172,8 +184,12 @@ onMounted(() => {
                     </template>
 
                     <template #empty>
-                        <div class="flex flex-col items-center justify-center py-20 text-center empty-state-enter">
-                            <div class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6">
+                        <div
+                            class="flex flex-col items-center justify-center py-20 text-center empty-state-enter"
+                        >
+                            <div
+                                class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
+                            >
                                 <UIcon name="i-lucide-users" class="w-10 h-10 text-primary-500" />
                             </div>
                             <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
@@ -186,7 +202,12 @@ onMounted(() => {
                     </template>
                 </UTable>
 
-                <TablePagination :page="page" :total="total" :page-size="size" @update:page="setPage" />
+                <TablePagination
+                    :page="page"
+                    :total="total"
+                    :page-size="size"
+                    @update:page="setPage"
+                />
             </div>
         </div>
     </div>

@@ -1,4 +1,7 @@
 export default defineNuxtRouteMiddleware(async (to) => {
+    // Skip auth entirely during SSR — no cookies available on server
+    if (import.meta.server) return
+
     const { isAuthenticated, isLoading, needsOnboarding, fetchUser } = useAuth()
 
     // Skip middleware for public pages

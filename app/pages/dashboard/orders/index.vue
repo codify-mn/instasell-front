@@ -6,8 +6,17 @@ useSeoMeta({
     title: 'Захиалга - Instasell'
 })
 
-const { fetchOrders, updateOrderStatus, cancelOrder, getStatusLabel, getStatusColor, formatPrice, exportOrdersCSV, downloadOrderImportTemplate, importOrdersCSV } =
-    useOrders()
+const {
+    fetchOrders,
+    updateOrderStatus,
+    cancelOrder,
+    getStatusLabel,
+    getStatusColor,
+    formatPrice,
+    exportOrdersCSV,
+    downloadOrderImportTemplate,
+    importOrdersCSV
+} = useOrders()
 const toast = useToast()
 const router = useRouter()
 
@@ -31,7 +40,8 @@ const filter = reactive({
 
 const toggleSort = (col: string) => {
     if (filter.sort_by === col) {
-        filter.sort_dir = filter.sort_dir === 'asc' ? 'desc' : filter.sort_dir === 'desc' ? '' : 'asc'
+        filter.sort_dir =
+            filter.sort_dir === 'asc' ? 'desc' : filter.sort_dir === 'desc' ? '' : 'asc'
         if (!filter.sort_dir) filter.sort_by = ''
     } else {
         filter.sort_by = col
@@ -69,13 +79,13 @@ const getOrderImages = (order: Order) => {
     if (!order.items?.length) return []
     const seen = new Set<string>()
     return order.items
-        .filter(item => {
+        .filter((item) => {
             const img = item.product?.images?.[0]
             if (!img || seen.has(img)) return false
             seen.add(img)
             return true
         })
-        .map(item => ({
+        .map((item) => ({
             src: item.product!.images![0],
             alt: item.name
         }))
@@ -104,8 +114,9 @@ const loadOrders = async () => {
     }
 }
 
-
-const setPage = (p: number) => { filter.page = p }
+const setPage = (p: number) => {
+    filter.page = p
+}
 
 // Selection helpers
 const isSelected = (order: Order) => {
@@ -382,7 +393,14 @@ const handleImport = async () => {
 
 // Watch filters
 watch(
-    [() => filter.keyword, () => filter.status, () => filter.date_from, () => filter.date_to, () => filter.sort_by, () => filter.sort_dir],
+    [
+        () => filter.keyword,
+        () => filter.status,
+        () => filter.date_from,
+        () => filter.date_to,
+        () => filter.sort_by,
+        () => filter.sort_dir
+    ],
     () => {
         filter.page = 1
         loadOrders()
@@ -400,48 +418,50 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div
+            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+        >
             <span class="text-base font-bold text-[var(--text-heading)]">Захиалга</span>
             <div class="flex items-center gap-1.5">
+                <UButton
+                    color="neutral"
+                    variant="ghost"
+                    icon="i-lucide-upload"
+                    size="sm"
+                    @click="importModalOpen = true"
+                >
+                    Импорт
+                </UButton>
+                <UDropdownMenu
+                    :items="[
+                        [
+                            {
+                                label: 'Бүх захиалга (шүүлтүүрээр)',
+                                icon: 'i-lucide-filter',
+                                onSelect: () => handleExportCSV('filtered')
+                            },
+                            {
+                                label: `Сонгосон (${selectedRows.length})`,
+                                icon: 'i-lucide-check-square',
+                                disabled: selectedRows.length === 0,
+                                onSelect: () => handleExportCSV('selected')
+                            }
+                        ]
+                    ]"
+                >
                     <UButton
                         color="neutral"
                         variant="ghost"
-                        icon="i-lucide-upload"
+                        icon="i-lucide-download"
                         size="sm"
-                        @click="importModalOpen = true"
+                        :loading="exporting"
                     >
-                        Импорт
+                        Экспорт
                     </UButton>
-                    <UDropdownMenu
-                        :items="[
-                            [
-                                {
-                                    label: 'Бүх захиалга (шүүлтүүрээр)',
-                                    icon: 'i-lucide-filter',
-                                    onSelect: () => handleExportCSV('filtered')
-                                },
-                                {
-                                    label: `Сонгосон (${selectedRows.length})`,
-                                    icon: 'i-lucide-check-square',
-                                    disabled: selectedRows.length === 0,
-                                    onSelect: () => handleExportCSV('selected')
-                                }
-                            ]
-                        ]"
-                    >
-                        <UButton
-                            color="neutral"
-                            variant="ghost"
-                            icon="i-lucide-download"
-                            size="sm"
-                            :loading="exporting"
-                        >
-                            Экспорт
-                        </UButton>
-                    </UDropdownMenu>
-                    <UButton to="/dashboard/orders/new" color="primary" size="sm" icon="i-lucide-plus">
-                        Нэмэх
-                    </UButton>
+                </UDropdownMenu>
+                <UButton to="/dashboard/orders/new" color="primary" size="sm" icon="i-lucide-plus">
+                    Нэмэх
+                </UButton>
             </div>
         </div>
 
@@ -502,14 +522,40 @@ onMounted(() => {
         </Transition>
 
         <MobileActionBar :count="selectedRows.length" @clear="clearSelection">
-            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-download" :loading="exporting" @click="handleExportCSV('selected')">Экспорт</UButton>
-            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-credit-card" :loading="bulkActionLoading" @click="bulkSetStatus('paid')">Төлөгдсөн</UButton>
-            <UButton size="sm" color="error" variant="outline" icon="i-lucide-x-circle" :loading="bulkActionLoading" @click="bulkCancelModalOpen = true">Цуцлах</UButton>
+            <UButton
+                size="sm"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-download"
+                :loading="exporting"
+                @click="handleExportCSV('selected')"
+                >Экспорт</UButton
+            >
+            <UButton
+                size="sm"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-credit-card"
+                :loading="bulkActionLoading"
+                @click="bulkSetStatus('paid')"
+                >Төлөгдсөн</UButton
+            >
+            <UButton
+                size="sm"
+                color="error"
+                variant="outline"
+                icon="i-lucide-x-circle"
+                :loading="bulkActionLoading"
+                @click="bulkCancelModalOpen = true"
+                >Цуцлах</UButton
+            >
         </MobileActionBar>
 
         <!-- Filters + Table Card -->
         <div class="flex-1 overflow-auto p-4 sm:p-6">
-            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+            <div
+                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+            >
                 <!-- Filters -->
                 <div class="px-4 py-3 border-b border-[var(--border-primary)]">
                     <div class="flex flex-wrap items-center gap-2">
@@ -520,7 +566,12 @@ onMounted(() => {
                             class="w-full sm:w-64"
                             size="sm"
                         />
-                        <USelect v-model="filter.status" :items="statusOptions" class="w-full sm:w-32" size="sm" />
+                        <USelect
+                            v-model="filter.status"
+                            :items="statusOptions"
+                            class="w-full sm:w-32"
+                            size="sm"
+                        />
                         <div class="flex items-center gap-1.5">
                             <UInput
                                 v-model="filter.date_from"
@@ -538,145 +589,182 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-            <UTable
-                :data="orders"
-                :columns="columns"
-                :loading="loading"
-                class="w-full"
-                :ui="{
-                    base: 'min-w-full border-separate border-spacing-0',
-                    thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
-                    tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
-                    th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
-                    td: 'px-4 py-3 border-b border-[var(--border-primary)]',
-                    tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
-                }"
-            >
-                <template #total_amount-header>
-                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('total_amount')">
-                        Дүн
-                        <UIcon :name="sortIcon('total_amount')" class="size-3" :class="filter.sort_by === 'total_amount' ? 'text-primary-500' : 'opacity-40'" />
-                    </button>
-                </template>
-
-                <template #created_at-header>
-                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('created_at')">
-                        Огноо
-                        <UIcon :name="sortIcon('created_at')" class="size-3" :class="filter.sort_by === 'created_at' ? 'text-primary-500' : 'opacity-40'" />
-                    </button>
-                </template>
-
-                <template #select-header>
-                    <UCheckbox
-                        :model-value="isAllSelected"
-                        :indeterminate="isSomeSelected"
-                        @update:model-value="toggleSelectAll"
-                    />
-                </template>
-
-                <template #select-cell="{ row }">
-                    <div @click.stop>
-                        <UCheckbox
-                            :model-value="isSelected(row.original)"
-                            @update:model-value="toggleSelect(row.original)"
-                        />
-                    </div>
-                </template>
-
-                <template #order_number-cell="{ row }">
-                    <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <span class="font-semibold text-[var(--text-heading)] hover:text-primary-600 transition-colors">
-                            #{{ row.original.order_number }}
-                        </span>
-                    </div>
-                </template>
-
-                <template #customer-cell="{ row }">
-                    <div class="cursor-pointer" @click="onRowClick(row.original)">
-                        <div class="font-medium text-[var(--text-heading)]">
-                            {{ row.original.customer?.name || '-' }}
-                        </div>
-                        <div class="text-sm text-[var(--text-muted)]">
-                            {{ row.original.customer?.phone_number || '' }}
-                        </div>
-                    </div>
-                </template>
-
-                <template #products-cell="{ row }">
-                    <UAvatarGroup v-if="getOrderImages(row.original).length" size="xs">
-                        <UAvatar
-                            v-for="(img, i) in getOrderImages(row.original)"
-                            :key="i"
-                            :src="img.src"
-                            :alt="img.alt"
-                        />
-                        <UAvatar
-                            v-if="row.original.items.length > 4"
-                            :label="`+${row.original.items.length - 4}`"
-                        />
-                    </UAvatarGroup>
-                    <span v-else class="text-xs text-[var(--text-placeholder)]">{{ row.original.items?.length || 0 }} бараа</span>
-                </template>
-
-                <template #status-cell="{ row }">
-                    <UBadge
-                        :color="getStatusColor(row.original.status)"
-                        variant="subtle"
-                        class="font-medium"
-                    >
-                        {{ getStatusLabel(row.original.status) }}
-                    </UBadge>
-                </template>
-
-                <template #total_amount-cell="{ row }">
-                    <span class="font-medium text-[var(--text-heading)]">
-                        {{ formatPrice(row.original.total_amount) }}
-                    </span>
-                </template>
-
-                <template #created_at-cell="{ row }">
-                    <span class="text-[var(--text-muted)]">
-                        {{ formatDate(row.original.created_at) }}
-                    </span>
-                </template>
-
-                <template #actions-cell="{ row }">
-                    <div class="flex items-center justify-end gap-1" @click.stop>
-                        <UDropdownMenu :items="getActionItems(row.original)">
-                            <UButton
-                                icon="i-lucide-more-horizontal"
-                                color="neutral"
-                                variant="ghost"
-                                size="md"
-                            />
-                        </UDropdownMenu>
-                    </div>
-                </template>
-
-                <template #empty>
-                    <div class="flex flex-col items-center justify-center py-20 text-center empty-state-enter">
-                        <div
-                            class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
+                <UTable
+                    :data="orders"
+                    :columns="columns"
+                    :loading="loading"
+                    class="w-full"
+                    :ui="{
+                        base: 'min-w-full border-separate border-spacing-0',
+                        thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
+                        tbody: '[&>tr]:last:[&>td]:border-b-0 stagger-rows',
+                        th: 'border-b border-[var(--border-primary)] px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                        td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+                        tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
+                    }"
+                >
+                    <template #total_amount-header>
+                        <button
+                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            @click="toggleSort('total_amount')"
                         >
+                            Дүн
                             <UIcon
-                                name="i-lucide-shopping-cart"
-                                class="w-10 h-10 text-primary-500"
+                                :name="sortIcon('total_amount')"
+                                class="size-3"
+                                :class="
+                                    filter.sort_by === 'total_amount'
+                                        ? 'text-primary-500'
+                                        : 'opacity-40'
+                                "
+                            />
+                        </button>
+                    </template>
+
+                    <template #created_at-header>
+                        <button
+                            class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors"
+                            @click="toggleSort('created_at')"
+                        >
+                            Огноо
+                            <UIcon
+                                :name="sortIcon('created_at')"
+                                class="size-3"
+                                :class="
+                                    filter.sort_by === 'created_at'
+                                        ? 'text-primary-500'
+                                        : 'opacity-40'
+                                "
+                            />
+                        </button>
+                    </template>
+
+                    <template #select-header>
+                        <UCheckbox
+                            :model-value="isAllSelected"
+                            :indeterminate="isSomeSelected"
+                            @update:model-value="toggleSelectAll"
+                        />
+                    </template>
+
+                    <template #select-cell="{ row }">
+                        <div @click.stop>
+                            <UCheckbox
+                                :model-value="isSelected(row.original)"
+                                @update:model-value="toggleSelect(row.original)"
                             />
                         </div>
-                        <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
-                            Захиалга олдсонгүй
-                        </h3>
-                        <p class="text-[var(--text-muted)] max-w-sm mb-6">
-                            Одоогоор ямар ч захиалга байхгүй байна. Шинэ захиалга нэмж эхлээрэй.
-                        </p>
-                        <UButton to="/dashboard/orders/new" color="primary" icon="i-lucide-plus">
-                            Захиалга нэмэх
-                        </UButton>
-                    </div>
-                </template>
-            </UTable>
+                    </template>
 
-                <TablePagination :page="filter.page" :total="total" :page-size="filter.size" @update:page="setPage" />
+                    <template #order_number-cell="{ row }">
+                        <div class="cursor-pointer" @click="onRowClick(row.original)">
+                            <span
+                                class="font-semibold text-[var(--text-heading)] hover:text-primary-600 transition-colors"
+                            >
+                                #{{ row.original.order_number }}
+                            </span>
+                        </div>
+                    </template>
+
+                    <template #customer-cell="{ row }">
+                        <div class="cursor-pointer" @click="onRowClick(row.original)">
+                            <div class="font-medium text-[var(--text-heading)]">
+                                {{ row.original.customer?.name || '-' }}
+                            </div>
+                            <div class="text-sm text-[var(--text-muted)]">
+                                {{ row.original.customer?.phone_number || '' }}
+                            </div>
+                        </div>
+                    </template>
+
+                    <template #products-cell="{ row }">
+                        <UAvatarGroup v-if="getOrderImages(row.original).length" size="xs">
+                            <UAvatar
+                                v-for="(img, i) in getOrderImages(row.original)"
+                                :key="i"
+                                :src="img.src"
+                                :alt="img.alt"
+                            />
+                            <UAvatar
+                                v-if="row.original.items.length > 4"
+                                :label="`+${row.original.items.length - 4}`"
+                            />
+                        </UAvatarGroup>
+                        <span v-else class="text-xs text-[var(--text-placeholder)]"
+                            >{{ row.original.items?.length || 0 }} бараа</span
+                        >
+                    </template>
+
+                    <template #status-cell="{ row }">
+                        <UBadge
+                            :color="getStatusColor(row.original.status)"
+                            variant="subtle"
+                            class="font-medium"
+                        >
+                            {{ getStatusLabel(row.original.status) }}
+                        </UBadge>
+                    </template>
+
+                    <template #total_amount-cell="{ row }">
+                        <span class="font-medium text-[var(--text-heading)]">
+                            {{ formatPrice(row.original.total_amount) }}
+                        </span>
+                    </template>
+
+                    <template #created_at-cell="{ row }">
+                        <span class="text-[var(--text-muted)]">
+                            {{ formatDate(row.original.created_at) }}
+                        </span>
+                    </template>
+
+                    <template #actions-cell="{ row }">
+                        <div class="flex items-center justify-end gap-1" @click.stop>
+                            <UDropdownMenu :items="getActionItems(row.original)">
+                                <UButton
+                                    icon="i-lucide-more-horizontal"
+                                    color="neutral"
+                                    variant="ghost"
+                                    size="md"
+                                />
+                            </UDropdownMenu>
+                        </div>
+                    </template>
+
+                    <template #empty>
+                        <div
+                            class="flex flex-col items-center justify-center py-20 text-center empty-state-enter"
+                        >
+                            <div
+                                class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6"
+                            >
+                                <UIcon
+                                    name="i-lucide-shopping-cart"
+                                    class="w-10 h-10 text-primary-500"
+                                />
+                            </div>
+                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                                Захиалга олдсонгүй
+                            </h3>
+                            <p class="text-[var(--text-muted)] max-w-sm mb-6">
+                                Одоогоор ямар ч захиалга байхгүй байна. Шинэ захиалга нэмж эхлээрэй.
+                            </p>
+                            <UButton
+                                to="/dashboard/orders/new"
+                                color="primary"
+                                icon="i-lucide-plus"
+                            >
+                                Захиалга нэмэх
+                            </UButton>
+                        </div>
+                    </template>
+                </UTable>
+
+                <TablePagination
+                    :page="filter.page"
+                    :total="total"
+                    :page-size="filter.size"
+                    @update:page="setPage"
+                />
             </div>
         </div>
 
@@ -695,7 +783,9 @@ onMounted(() => {
                         <strong>#{{ orderToCancel?.order_number }}</strong> захиалгыг цуцлахдаа
                         итгэлтэй байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                        Энэ үйлдлийг буцаах боломжгүй.
+                    </p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -730,7 +820,9 @@ onMounted(() => {
                         <strong>{{ selectedRows.length }}</strong> захиалгыг цуцлахдаа итгэлтэй
                         байна уу?
                     </p>
-                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">
+                        Энэ үйлдлийг буцаах боломжгүй.
+                    </p>
 
                     <template #footer>
                         <div class="flex justify-end gap-2">
@@ -767,7 +859,8 @@ onMounted(() => {
 
                     <div class="space-y-4">
                         <p class="text-sm text-[var(--text-muted)]">
-                            CSV файлаар захиалга бөөнөөр оруулах. Загвар файлыг татаж форматыг харна уу.
+                            CSV файлаар захиалга бөөнөөр оруулах. Загвар файлыг татаж форматыг харна
+                            уу.
                         </p>
 
                         <UButton
@@ -781,7 +874,9 @@ onMounted(() => {
                         </UButton>
 
                         <div>
-                            <label class="block text-sm font-medium text-[var(--text-heading)] mb-2">
+                            <label
+                                class="block text-sm font-medium text-[var(--text-heading)] mb-2"
+                            >
                                 CSV файл сонгох
                             </label>
                             <input

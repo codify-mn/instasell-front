@@ -37,7 +37,9 @@ const planEndDate = computed(() => {
 
 const isPlanExpired = computed(() => daysRemaining.value === 0 && !isTrialing.value)
 
-watch(period, (p) => { fetchAll(periodToDays(p)) })
+watch(period, (p) => {
+    fetchAll(periodToDays(p))
+})
 
 const replayTour = () => {
     resetTour()
@@ -60,33 +62,33 @@ const formatRevenue = (v: number) => {
 
 // Shop panel props
 const shopName = computed(() => shop.value?.name || 'Миний дэлгүүр')
-const shopHandle = computed(() =>
-    shop.value?.id ? `instasell.mn/shop/${shop.value.id}` : ''
-)
+const shopHandle = computed(() => (shop.value?.id ? `instasell.mn/shop/${shop.value.id}` : ''))
 
 const shopChecks = computed(() => [
     {
         label: 'QPay бүртгэлтэй',
         ok: !!shop.value?.qpay?.is_registered,
-        action: '/dashboard/settings#qpay',
+        action: '/dashboard/settings#qpay'
     },
     {
         label: 'Facebook холбогдсон',
         ok: !!shop.value?.facebook_page_id,
-        action: '/dashboard/settings',
+        action: '/dashboard/settings'
     },
     {
         label: 'Банкны данс',
         ok: !!shop.value?.settings?.bank_account?.account_number,
-        action: '/dashboard/settings#bank-account',
-    },
+        action: '/dashboard/settings#bank-account'
+    }
 ])
 </script>
 
 <template>
     <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
         <!-- Topbar -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+        <div
+            class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7"
+        >
             <div class="flex items-center gap-3">
                 <span class="text-base font-bold text-[var(--text-heading)]">Нүүр хуудас</span>
             </div>
@@ -106,17 +108,29 @@ const shopChecks = computed(() => [
         <div
             v-if="subscription && (isTrialing || isPlanExpired || !isActive)"
             class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] text-xs"
-            :class="isTrialing && daysRemaining > 0
-                ? 'bg-amber-50 dark:bg-amber-950/20'
-                : 'bg-red-50 dark:bg-red-950/20'"
+            :class="
+                isTrialing && daysRemaining > 0
+                    ? 'bg-amber-50 dark:bg-amber-950/20'
+                    : 'bg-red-50 dark:bg-red-950/20'
+            "
         >
             <div class="flex items-center gap-2">
                 <UIcon
-                    :name="isTrialing && daysRemaining > 0 ? 'i-lucide-clock' : 'i-lucide-alert-triangle'"
+                    :name="
+                        isTrialing && daysRemaining > 0
+                            ? 'i-lucide-clock'
+                            : 'i-lucide-alert-triangle'
+                    "
                     class="size-3.5"
                     :class="isTrialing && daysRemaining > 0 ? 'text-amber-500' : 'text-red-500'"
                 />
-                <span :class="isTrialing && daysRemaining > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-red-700 dark:text-red-400'">
+                <span
+                    :class="
+                        isTrialing && daysRemaining > 0
+                            ? 'text-amber-700 dark:text-amber-400'
+                            : 'text-red-700 dark:text-red-400'
+                    "
+                >
                     <template v-if="isTrialing && daysRemaining > 0">
                         <strong>{{ subscription.plan?.name }}</strong> туршилт —
                         {{ daysRemaining }} хоног үлдсэн
@@ -130,7 +144,11 @@ const shopChecks = computed(() => [
             <NuxtLink
                 to="/dashboard/plans"
                 class="font-semibold hover:underline shrink-0"
-                :class="isTrialing && daysRemaining > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'"
+                :class="
+                    isTrialing && daysRemaining > 0
+                        ? 'text-amber-600 dark:text-amber-400'
+                        : 'text-red-600 dark:text-red-400'
+                "
             >
                 Багц сонгох →
             </NuxtLink>
@@ -138,25 +156,38 @@ const shopChecks = computed(() => [
 
         <!-- Plan banner: active paid plan -->
         <div
-            v-else-if="subscription && isActive && daysRemaining > 0 && subscription.plan?.slug !== 'free'"
+            v-else-if="
+                subscription && isActive && daysRemaining > 0 && subscription.plan?.slug !== 'free'
+            "
             class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] bg-[var(--surface-card)] text-xs"
         >
             <div class="flex items-center gap-2 text-[var(--text-muted)]">
                 <UIcon name="i-lucide-badge-check" class="size-3.5 text-primary-500" />
-                <span><strong class="text-[var(--text-heading)]">{{ subscription.plan?.name }}</strong> багц</span>
+                <span
+                    ><strong class="text-[var(--text-heading)]">{{
+                        subscription.plan?.name
+                    }}</strong>
+                    багц</span
+                >
                 <span class="text-[var(--text-placeholder)]">·</span>
                 <span v-if="planEndDate">{{ planEndDate }} хүртэл</span>
                 <span v-else>{{ daysRemaining }} хоног үлдсэн</span>
             </div>
-            <NuxtLink to="/dashboard/billing" class="text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors">
+            <NuxtLink
+                to="/dashboard/billing"
+                class="text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+            >
                 Дэлгэрэнгүй
             </NuxtLink>
         </div>
 
         <!-- Scrollable content -->
-        <div class="flex-1 overflow-y-auto">
-            <!-- Loading skeleton -->
-            <div v-if="isLoading" class="mx-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
+        <div class="flex-1 overflow-y-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
+            <div class="flex items-center justify-start">
+                <DashboardPeriodSelect v-model="period" />
+            </div>
+
+            <template v-if="isLoading">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                     <div v-for="i in 4" :key="i" class="h-28 skeleton-shimmer" />
                 </div>
@@ -164,19 +195,16 @@ const shopChecks = computed(() => [
                 <div class="grid grid-cols-3 gap-3.5">
                     <div v-for="i in 3" :key="i" class="h-56 skeleton-shimmer" />
                 </div>
-            </div>
+            </template>
 
-            <!-- Content -->
-            <div v-else class="mx-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
+            <template v-else>
                 <DashboardTour ref="tourRef" />
 
-                <!-- Period filter -->
-                <div class="flex items-center justify-start">
-                    <DashboardPeriodSelect v-model="period" />
-                </div>
-
                 <!-- Zone 1: 4 stat cards -->
-                <div data-tour-stats class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:grid-cols-4 stagger-in">
+                <div
+                    data-tour-stats
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:grid-cols-4 stagger-in"
+                >
                     <DashboardStatCard
                         label="Нийт орлого"
                         :value="formatRevenue(totalRevenue)"
@@ -228,7 +256,7 @@ const shopChecks = computed(() => [
                         :checks="shopChecks"
                     />
                 </div>
-            </div>
+            </template>
         </div>
     </div>
 </template>
