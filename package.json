@@ -26,11 +26,13 @@
         "motion-v": "1.10.3",
         "nuxt": "^4.2.2",
         "nuxt-og-image": "^5.1.13",
+        "sortablejs": "^1.15.7",
         "torph": "^0.0.5",
         "zod": "^4.2.1"
     },
     "devDependencies": {
         "@nuxt/eslint": "^1.12.1",
+        "@types/sortablejs": "^1.15.9",
         "eslint": "^9.39.2",
         "typescript": "^5.9.3",
         "vue-tsc": "^3.2.1"

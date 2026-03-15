@@ -3,6 +3,7 @@
 import type { Period } from '~/components/dashboard/DashboardPeriodSelect.vue'
 
 const { orderStats, conversionStats, revenueChart, isLoading, fetchAll } = useDashboardData()
+const { subscription, isTrialing, isActive, daysRemaining, fetchSubscription } = useSubscription()
 const shop = useShop()
 const isDev = import.meta.dev
 const { resetTour } = useTour()
@@ -15,7 +16,26 @@ const periodToDays = (p: Period): number => {
     return map[p]
 }
 
-onMounted(() => { fetchAll(periodToDays(period.value)) })
+onMounted(() => {
+    fetchAll(periodToDays(period.value))
+    fetchSubscription()
+})
+
+const formatDateShort = (dateStr: string | undefined): string => {
+    if (!dateStr) return ''
+    const d = new Date(dateStr)
+    return `${d.getMonth() + 1}-р сарын ${d.getDate()}`
+}
+
+const planEndDate = computed(() => {
+    if (!subscription.value) return ''
+    const dateStr = isTrialing.value
+        ? subscription.value.trial_end_date
+        : subscription.value.current_period_end
+    return formatDateShort(dateStr)
+})
+
+const isPlanExpired = computed(() => daysRemaining.value === 0 && !isTrialing.value)
 
 watch(period, (p) => { fetchAll(periodToDays(p)) })
 
@@ -80,6 +100,57 @@ const shopChecks = computed(() => [
                     <UIcon name="i-lucide-circle-help" class="h-4 w-4" />
                 </button>
             </div>
+        </div>
+
+        <!-- Plan banner: trial or expired -->
+        <div
+            v-if="subscription && (isTrialing || isPlanExpired || !isActive)"
+            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] text-xs"
+            :class="isTrialing && daysRemaining > 0
+                ? 'bg-amber-50 dark:bg-amber-950/20'
+                : 'bg-red-50 dark:bg-red-950/20'"
+        >
+            <div class="flex items-center gap-2">
+                <UIcon
+                    :name="isTrialing && daysRemaining > 0 ? 'i-lucide-clock' : 'i-lucide-alert-triangle'"
+                    class="size-3.5"
+                    :class="isTrialing && daysRemaining > 0 ? 'text-amber-500' : 'text-red-500'"
+                />
+                <span :class="isTrialing && daysRemaining > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-red-700 dark:text-red-400'">
+                    <template v-if="isTrialing && daysRemaining > 0">
+                        <strong>{{ subscription.plan?.name }}</strong> туршилт —
+                        {{ daysRemaining }} хоног үлдсэн
+                        <span v-if="planEndDate">({{ planEndDate }})</span>
+                    </template>
+                    <template v-else>
+                        Багцын хугацаа дууссан <span v-if="planEndDate">({{ planEndDate }})</span>
+                    </template>
+                </span>
+            </div>
+            <NuxtLink
+                to="/dashboard/plans"
+                class="font-semibold hover:underline shrink-0"
+                :class="isTrialing && daysRemaining > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'"
+            >
+                Багц сонгох →
+            </NuxtLink>
+        </div>
+
+        <!-- Plan banner: active paid plan -->
+        <div
+            v-else-if="subscription && isActive && daysRemaining > 0 && subscription.plan?.slug !== 'free'"
+            class="flex items-center justify-between px-4 sm:px-7 py-2 border-b border-[var(--border-primary)] bg-[var(--surface-card)] text-xs"
+        >
+            <div class="flex items-center gap-2 text-[var(--text-muted)]">
+                <UIcon name="i-lucide-badge-check" class="size-3.5 text-primary-500" />
+                <span><strong class="text-[var(--text-heading)]">{{ subscription.plan?.name }}</strong> багц</span>
+                <span class="text-[var(--text-placeholder)]">·</span>
+                <span v-if="planEndDate">{{ planEndDate }} хүртэл</span>
+                <span v-else>{{ daysRemaining }} хоног үлдсэн</span>
+            </div>
+            <NuxtLink to="/dashboard/billing" class="text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors">
+                Дэлгэрэнгүй
+            </NuxtLink>
         </div>
 
         <!-- Scrollable content -->

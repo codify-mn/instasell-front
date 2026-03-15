@@ -55,6 +55,23 @@ const cycle = computed(() =>
     subscription.value?.billing_cycle === 'monthly' ? 'сар' : 'жил'
 )
 
+const formatDateMn = (dateStr: string | undefined): string => {
+    if (!dateStr) return ''
+    const d = new Date(dateStr)
+    const months = ['1-р сар', '2-р сар', '3-р сар', '4-р сар', '5-р сар', '6-р сар', '7-р сар', '8-р сар', '9-р сар', '10-р сар', '11-р сар', '12-р сар']
+    return `${d.getFullYear()} оны ${months[d.getMonth()]}ын ${d.getDate()}`
+}
+
+const periodEndDate = computed(() => {
+    if (!subscription.value) return ''
+    const dateStr = isTrialing.value
+        ? subscription.value.trial_end_date
+        : subscription.value.current_period_end
+    return formatDateMn(dateStr)
+})
+
+const isPeriodExpired = computed(() => daysRemaining.value === 0 && !isTrialing.value)
+
 const usageItems = computed(() => {
     if (!usage.value || !subscription.value?.plan) return []
     const plan = subscription.value.plan
@@ -198,12 +215,21 @@ async function handleCancel() {
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4 text-sm text-[var(--text-muted)]">
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[var(--text-muted)]">
                             <div class="flex items-center gap-1.5">
                                 <UIcon name="i-lucide-calendar" class="size-3.5" />
-                                <span v-if="isTrialing">Туршилт: {{ daysRemaining }} хоног үлдсэн</span>
-                                <span v-else-if="isActive">Дараагийн төлбөр: {{ daysRemaining }} хоногийн дараа</span>
+                                <span v-if="isTrialing && daysRemaining > 0">Туршилт: {{ daysRemaining }} хоног үлдсэн</span>
+                                <span v-else-if="isTrialing && daysRemaining === 0" class="text-red-500">Туршилт өнөөдөр дуусна</span>
+                                <span v-else-if="isPeriodExpired" class="text-red-500">Хугацаа дууссан</span>
+                                <span v-else-if="isActive && daysRemaining > 0">Дараагийн төлбөр: {{ daysRemaining }} хоногийн дараа</span>
                                 <span v-else>Хугацаа дууссан</span>
+                            </div>
+                            <div v-if="periodEndDate" class="flex items-center gap-1.5">
+                                <UIcon name="i-lucide-clock" class="size-3.5" />
+                                <span>
+                                    {{ isPeriodExpired ? 'Дууссан' : isTrialing ? 'Дуусах' : 'Хүртэл' }}:
+                                    <strong class="text-[var(--text-heading)]">{{ periodEndDate }}</strong>
+                                </span>
                             </div>
                         </div>
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
 import type { Product } from '~/composables/useProducts'
+import Sortable from 'sortablejs'
 
 useSeoMeta({
     title: 'Бүтээгдэхүүн - Instasell'
 })
 
-const { fetchProducts, deleteProduct, updateProduct, fetchCategories, exportProductsCSV, downloadImportTemplate, importProducts } = useProducts()
+const { fetchProducts, deleteProduct, updateProduct, fetchCategories, exportProductsCSV, downloadImportTemplate, importProducts, reorderProducts } = useProducts()
 const toast = useToast()
 const router = useRouter()
 
@@ -438,6 +439,86 @@ const getActionItems = (product: Product) => [
     ]
 ]
 
+// === Suggest mode (drag-and-drop reordering + featured marking) ===
+const suggestMode = ref(false)
+const suggestCount = ref(3)
+const savingOrder = ref(false)
+let sortableInstance: Sortable | null = null
+
+const enterSuggestMode = () => {
+    // Only allow on first page with no filters/sorting
+    if (filter.page !== 1) {
+        filter.page = 1
+    }
+    suggestMode.value = true
+    nextTick(initSortable)
+}
+
+const exitSuggestMode = async () => {
+    destroySortable()
+    suggestMode.value = false
+    await loadProducts()
+}
+
+const initSortable = () => {
+    destroySortable()
+    const list = document.querySelector('.suggest-sortable-list')
+    if (!list) return
+
+    sortableInstance = Sortable.create(list as HTMLElement, {
+        animation: 250,
+        handle: '.drag-handle',
+        draggable: '.suggest-row',
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        dragClass: 'sortable-drag',
+        onEnd: (evt: Sortable.SortableEvent) => {
+            if (evt.oldIndex === undefined || evt.newIndex === undefined) return
+            const moved = products.value.splice(evt.oldIndex, 1)[0]
+            products.value.splice(evt.newIndex, 0, moved)
+        }
+    })
+}
+
+const destroySortable = () => {
+    if (sortableInstance) {
+        sortableInstance.destroy()
+        sortableInstance = null
+    }
+}
+
+const saveSuggestOrder = async () => {
+    savingOrder.value = true
+    try {
+        const items = products.value.map((p, index) => ({
+            id: p.id,
+            sort_order: index + 1,
+            is_featured: index < suggestCount.value
+        }))
+        await reorderProducts(items)
+        toast.add({
+            title: 'Амжилттай',
+            description: `Эхний ${suggestCount.value} бараа checkout-д санал болгоно`,
+            color: 'primary'
+        })
+        suggestMode.value = false
+        destroySortable()
+        await loadProducts()
+    } catch (err: any) {
+        toast.add({
+            title: 'Алдаа',
+            description: err.data?.message || 'Дараалал хадгалахад алдаа гарлаа',
+            color: 'error'
+        })
+    } finally {
+        savingOrder.value = false
+    }
+}
+
+onBeforeUnmount(() => {
+    destroySortable()
+})
+
 // Watch filters
 watch(
     [() => filter.keyword, () => filter.category, () => filter.status, () => filter.stock, () => filter.sort_by, () => filter.sort_dir],
@@ -498,8 +579,28 @@ onMounted(() => {
                             Экспорт
                         </UButton>
                     </UDropdownMenu>
-                    <UButton to="/dashboard/products/new" color="primary" size="sm" icon="i-lucide-plus">
+                    <UButton
+                        v-if="!suggestMode"
+                        color="neutral"
+                        variant="soft"
+                        icon="i-lucide-shopping-cart"
+                        size="sm"
+                        @click="enterSuggestMode"
+                    >
+                        Санал болгох
+                    </UButton>
+                    <UButton v-if="!suggestMode" to="/dashboard/products/new" color="primary" size="sm" icon="i-lucide-plus">
                         Нэмэх
+                    </UButton>
+                    <UButton
+                        v-if="suggestMode"
+                        color="neutral"
+                        variant="ghost"
+                        size="sm"
+                        icon="i-lucide-x"
+                        @click="exitSuggestMode"
+                    >
+                        Болих
                     </UButton>
             </div>
         </div>
@@ -580,7 +681,7 @@ onMounted(() => {
         <div class="flex-1 overflow-auto p-4 sm:p-6">
             <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
                 <!-- Filters -->
-                <div class="px-4 py-3 border-b border-[var(--border-primary)]">
+                <div v-if="!suggestMode" class="px-4 py-3 border-b border-[var(--border-primary)]">
                     <div class="flex flex-wrap items-center gap-2">
                         <UInput
                             v-model="filter.keyword"
@@ -603,8 +704,106 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <!-- Table -->
+                <!-- Suggest Mode (drag-and-drop reordering) -->
+                <div v-if="suggestMode" class="suggest-mode-table flex flex-col">
+
+                    <!-- Zone header: explains what this is + count control -->
+                    <div class="flex items-center justify-between px-5 py-3.5 border-b border-[var(--border-primary)]">
+                        <div class="flex items-center gap-2.5">
+                            <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500 text-white shrink-0">
+                                <UIcon name="i-lucide-shopping-cart" class="w-4.5 h-4.5" />
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-[var(--text-heading)]">Checkout-д санал болгох бараа</div>
+                                <div class="text-xs text-[var(--text-muted)]">Дээрх <strong>{{ suggestCount }}</strong> бараа захиалга хийх хуудсанд харагдана</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 bg-[var(--surface-card)] rounded-lg border border-emerald-300 dark:border-emerald-700 px-1 shrink-0">
+                            <button
+                                class="w-7 h-7 flex items-center justify-center rounded text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors disabled:opacity-30"
+                                :disabled="suggestCount <= 1"
+                                @click="suggestCount = Math.max(1, suggestCount - 1)"
+                            >
+                                <UIcon name="i-lucide-minus" class="w-4 h-4" />
+                            </button>
+                            <span class="w-6 text-center text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">{{ suggestCount }}</span>
+                            <button
+                                class="w-7 h-7 flex items-center justify-center rounded text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors disabled:opacity-30"
+                                :disabled="suggestCount >= products.length"
+                                @click="suggestCount = Math.min(products.length, suggestCount + 1)"
+                            >
+                                <UIcon name="i-lucide-plus" class="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Single sortable list (one container for drag-and-drop to work) -->
+                    <div class="suggest-sortable-list">
+                        <div
+                            v-for="(product, index) in products"
+                            :key="product.id"
+                            class="suggest-row flex items-center transition-colors duration-150 hover:bg-[var(--surface-inset)]/40 border-l-2 border-b border-b-[var(--border-primary)]"
+                            :class="index < suggestCount ? 'border-l-emerald-500' : 'border-l-transparent'"
+                        >
+                            <!-- Drag handle -->
+                            <div class="drag-handle cursor-grab active:cursor-grabbing flex items-center gap-2 pl-4 pr-2 py-3.5 shrink-0">
+                                <UIcon name="i-lucide-grip-vertical" class="w-5 h-5 text-gray-300 dark:text-gray-600" />
+                                <span
+                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0"
+                                    :class="index < suggestCount
+                                        ? 'bg-emerald-500 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-800 text-[var(--text-muted)]'"
+                                >
+                                    {{ index + 1 }}
+                                </span>
+                            </div>
+
+                            <!-- Product info -->
+                            <div class="flex items-center gap-3 flex-1 min-w-0 py-3.5 pr-2">
+                                <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0 bg-[var(--surface-inset)]">
+                                    <img v-if="product.images?.length" :src="product.images[0]" :alt="product.name" class="w-full h-full object-cover" />
+                                    <UIcon v-else name="i-lucide-package" class="w-5 h-5 text-[var(--text-placeholder)]" />
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="font-medium text-[var(--text-heading)] truncate">{{ product.name }}</div>
+                                    <div class="text-xs text-[var(--text-muted)]">
+                                        {{ formatPrice(product.timed_sale_enabled && product.timed_sale_price ? product.timed_sale_price : product.price || 0) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: badge or label -->
+                            <div class="pr-5 py-3.5 shrink-0">
+                                <UBadge
+                                    v-if="index < suggestCount"
+                                    color="success"
+                                    variant="subtle"
+                                    class="font-medium text-xs"
+                                >
+                                    <UIcon name="i-lucide-shopping-cart" class="w-3 h-3 mr-0.5" />
+                                    Санал болгоно
+                                </UBadge>
+                                <span v-else class="text-xs text-[var(--text-placeholder)]">Харагдахгүй</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sticky save bar -->
+                    <div class="sticky bottom-0 flex items-center justify-between px-5 py-3 bg-[var(--surface-card)] border-t border-[var(--border-primary)] shadow-[0_-2px_8px_rgba(0,0,0,0.05)]">
+                        <div class="hidden sm:flex items-center gap-1.5 text-sm text-[var(--text-muted)]">
+                            <UIcon name="i-lucide-move" class="w-4 h-4 shrink-0" />
+                            <span>Дээш доош чирж дараалал өөрчлөөрэй</span>
+                        </div>
+                        <div class="flex items-center gap-2 sm:ml-auto">
+                            <UButton color="neutral" variant="outline" size="sm" @click="exitSuggestMode">Болих</UButton>
+                            <UButton color="primary" size="sm" icon="i-lucide-check" :loading="savingOrder" @click="saveSuggestOrder">Хадгалах</UButton>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Normal Table -->
             <UTable
+                v-if="!suggestMode"
                 :data="products"
                 :columns="columns"
                 :loading="loading"
@@ -679,15 +878,12 @@ onMounted(() => {
                             @click.stop="toggleFeatured(row.original)"
                         >
                             <UIcon
-                                name="i-lucide-star"
+                                name="i-lucide-shopping-cart"
                                 class="w-4 h-4"
-                                :style="
-                                    row.original.is_featured ? 'color: #f59e0b; fill: #f59e0b;' : ''
-                                "
                                 :class="
-                                    !row.original.is_featured
-                                        ? 'text-gray-300 dark:text-gray-600'
-                                        : ''
+                                    row.original.is_featured
+                                        ? 'text-emerald-500'
+                                        : 'text-gray-300 dark:text-gray-600'
                                 "
                             />
                         </button>
@@ -792,7 +988,7 @@ onMounted(() => {
                 </template>
             </UTable>
 
-                <TablePagination :page="filter.page" :total="total" :page-size="filter.size" @update:page="setPage" />
+                <TablePagination v-if="!suggestMode" :page="filter.page" :total="total" :page-size="filter.size" @update:page="setPage" />
             </div>
         </div>
 
@@ -951,3 +1147,20 @@ onMounted(() => {
         />
     </div>
 </template>
+
+<style scoped>
+.suggest-sortable-list .sortable-ghost {
+    opacity: 0.3;
+}
+
+.suggest-sortable-list .sortable-chosen {
+    background: var(--surface-card) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 10;
+}
+
+.suggest-sortable-list .sortable-drag {
+    opacity: 0.95;
+}
+</style>

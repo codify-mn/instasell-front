@@ -31,6 +31,7 @@ export interface Product {
 
     // Featured product (shown on checkout)
     is_featured: boolean
+    sort_order: number
 }
 
 export interface ProductVariant {
@@ -272,6 +273,14 @@ export function useProducts() {
         })
     }
 
+    const reorderProducts = async (products: { id: number; sort_order: number; is_featured: boolean }[]): Promise<void> => {
+        await $fetch(`${apiUrl}/api/products/reorder`, {
+            method: 'PUT',
+            credentials: 'include',
+            body: { products }
+        })
+    }
+
     return {
         fetchProducts,
         fetchProduct,
@@ -285,6 +294,7 @@ export function useProducts() {
         updateVariantStock,
         exportProductsCSV,
         downloadImportTemplate,
-        importProducts
+        importProducts,
+        reorderProducts
     }
 }
