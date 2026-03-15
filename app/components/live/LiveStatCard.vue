@@ -20,7 +20,7 @@ const iconColorClasses = {
     primary:
         'text-primary-500 bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/20',
     success:
-        'text-green-500 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/30 dark:to-green-800/20',
+        'text-primary-500 bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-900/30 dark:to-primary-800/20',
     warning:
         'text-amber-500 bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-amber-900/30 dark:to-amber-800/20',
     error: 'text-red-500 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/30 dark:to-red-800/20',
@@ -86,7 +86,7 @@ useRootClick(next)
                 <span
                     v-if="trend !== undefined && trend !== 0"
                     class="text-xs font-medium mb-1 flex items-center gap-0.5"
-                    :class="trend > 0 ? 'text-green-500' : 'text-red-500'"
+                    :class="trend > 0 ? 'text-primary-500' : 'text-red-500'"
                 >
                     <UIcon
                         :name="trend > 0 ? 'i-lucide-trending-up' : 'i-lucide-trending-down'"

@@ -51,7 +51,7 @@ const settingsItems: NavigationMenuItem[] = [
         label: 'Үйлчилгээний эрх',
         to: '/dashboard/billing',
         icon: 'i-lucide-credit-card',
-        defaultOpen: false,
+        defaultOpen: true,
         type: 'trigger',
         children: [
             {
@@ -90,12 +90,14 @@ const groups = computed(() => [
 </script>
 
 <template>
-    <UDashboardGroup unit="rem">
+    <UDashboardGroup unit="%">
         <UDashboardSidebar
             id="default"
             v-model:open="open"
             collapsible
-            resizable
+            :default-size="22.22"
+            :min-size="22.22"
+            :max-size="22.22"
             class="!bg-[var(--surface-card)] border-r border-[var(--border-primary)]"
             :ui="{
                 header: 'mt-1',
@@ -119,46 +121,46 @@ const groups = computed(() => [
                     :collapsed="collapsed"
                     :items="[mainItems]"
                     orientation="vertical"
-                    color="success"
+                    color="primary"
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10' : 'p-2.5 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10',
+                        linkLeadingIcon: 'text-[var(--text-body)] size-4',
                     }"
                 />
 
                 <!-- Live section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Шууд дамжуулалт</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Шууд дамжуулалт</span>
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
                     :items="[liveItems]"
                     orientation="vertical"
-                    color="success"
+                    color="primary"
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10' : 'p-2.5 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10',
+                        linkLeadingIcon: 'text-[var(--text-body)] size-4',
                     }"
                 />
 
                 <!-- Settings section -->
                 <div v-if="!collapsed" class="px-3 pt-3 pb-1">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Тохиргоо</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[var(--text-placeholder)]">Тохиргоо</span>
                 </div>
                 <UNavigationMenu
                     :collapsed="collapsed"
                     :items="[settingsItems]"
                     orientation="vertical"
-                    color="success"
+                    color="primary"
                     tooltip
                     popover
                     :ui="{
-                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]' : 'p-3 text-md text-[var(--text-body)] hover:before:bg-[var(--surface-inset)]',
-                        linkLeadingIcon: 'text-[var(--text-body)]',
+                        link: collapsed ? 'py-2 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10' : 'p-2.5 text-sm text-[var(--text-body)] hover:before:bg-primary-500/10',
+                        linkLeadingIcon: 'text-[var(--text-body)] size-4',
                     }"
                 />
             </template>

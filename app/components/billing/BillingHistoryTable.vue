@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { TableColumn } from '@nuxt/ui'
 import type { SubscriptionInvoice } from '~/types/billing'
 
-defineProps<{
+const props = defineProps<{
     invoices: SubscriptionInvoice[]
     loading?: boolean
 }>()
@@ -10,13 +11,7 @@ const emit = defineEmits<{
     'view-invoice': [invoice: SubscriptionInvoice]
 }>()
 
-function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    })
-}
+// uses auto-imported formatDateShort from composables/formatter.ts
 
 function formatAmount(amount: number) {
     return amount.toLocaleString() + '₮'
@@ -54,85 +49,97 @@ function getStatusLabel(status: string) {
 function getBillingCycleLabel(cycle: string) {
     return cycle === 'yearly' ? 'Жилээр' : 'Сараар'
 }
+
+const columns: TableColumn<SubscriptionInvoice>[] = [
+    { accessorKey: 'created_at', header: 'Огноо' },
+    { accessorKey: 'plan', header: 'Багц' },
+    { accessorKey: 'billing_cycle', header: 'Төлбөрийн мөчлөг' },
+    { accessorKey: 'amount', header: 'Дүн' },
+    { accessorKey: 'status', header: 'Төлөв' },
+    { accessorKey: 'actions', header: '' }
+]
 </script>
 
 <template>
     <div>
         <div v-if="loading" class="flex justify-center py-12">
-            <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-gray-400" />
+            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-[var(--text-muted)]" />
         </div>
 
         <div v-else-if="invoices.length === 0" class="text-center py-12">
-            <UIcon name="i-lucide-receipt" class="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p class="text-gray-500">Төлбөрийн түүх байхгүй</p>
+            <UIcon name="i-lucide-receipt" class="size-10 text-[var(--text-placeholder)] mx-auto mb-3" />
+            <p class="text-sm text-[var(--text-muted)]">Нэхэмжлэх байхгүй</p>
         </div>
 
-        <div v-else class="overflow-x-auto">
-            <table class="w-full">
-                <thead>
-                    <tr
-                        class="text-left text-sm text-gray-500 border-b border-gray-200 dark:border-gray-800"
+        <UTable
+            v-else
+            :data="invoices"
+            :columns="columns"
+            :ui="{
+                base: 'min-w-full border-separate border-spacing-0',
+                thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
+                tbody: '[&>tr]:last:[&>td]:border-b-0',
+                th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+                tr: 'hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
+            }"
+        >
+            <template #created_at-cell="{ row }">
+                <span class="text-[var(--text-muted)]">
+                    {{ formatDateShort(row.original.created_at) }}
+                </span>
+            </template>
+
+            <template #plan-cell="{ row }">
+                <span class="font-medium text-[var(--text-heading)]">
+                    {{ row.original.plan?.name || 'Тодорхойгүй' }}
+                </span>
+            </template>
+
+            <template #billing_cycle-cell="{ row }">
+                <span class="text-[var(--text-muted)]">
+                    {{ getBillingCycleLabel(row.original.billing_cycle) }}
+                </span>
+            </template>
+
+            <template #amount-cell="{ row }">
+                <span class="font-medium text-[var(--text-heading)]">
+                    {{ formatAmount(row.original.amount) }}
+                </span>
+            </template>
+
+            <template #status-cell="{ row }">
+                <UBadge
+                    :color="getStatusColor(row.original.status)"
+                    variant="subtle"
+                    size="sm"
+                >
+                    {{ getStatusLabel(row.original.status) }}
+                </UBadge>
+            </template>
+
+            <template #actions-cell="{ row }">
+                <div class="flex justify-end">
+                    <UButton
+                        v-if="row.original.status === 'pending'"
+                        size="xs"
+                        variant="ghost"
+                        icon="i-lucide-credit-card"
+                        @click="emit('view-invoice', row.original)"
                     >
-                        <th class="pb-3 font-medium">Огноо</th>
-                        <th class="pb-3 font-medium">Багц</th>
-                        <th class="pb-3 font-medium">Төлбөрийн мөчлөг</th>
-                        <th class="pb-3 font-medium text-right">Дүн</th>
-                        <th class="pb-3 font-medium text-center">Төлөв</th>
-                        <th class="pb-3 font-medium text-right">Үйлдэл</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                    <tr
-                        v-for="invoice in invoices"
-                        :key="invoice.id"
-                        class="text-sm hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
+                        Төлөх
+                    </UButton>
+                    <UButton
+                        v-else
+                        size="xs"
+                        variant="ghost"
+                        icon="i-lucide-file-text"
+                        disabled
                     >
-                        <td class="py-4 text-gray-700 dark:text-gray-300">
-                            {{ formatDate(invoice.created_at) }}
-                        </td>
-                        <td class="py-4">
-                            <span class="font-medium text-gray-900 dark:text-white">
-                                {{ invoice.plan?.name || 'Тодорхойгүй' }}
-                            </span>
-                        </td>
-                        <td class="py-4 text-gray-600 dark:text-gray-400">
-                            {{ getBillingCycleLabel(invoice.billing_cycle) }}
-                        </td>
-                        <td class="py-4 text-right font-medium text-gray-900 dark:text-white">
-                            {{ formatAmount(invoice.amount) }}
-                        </td>
-                        <td class="py-4 text-center">
-                            <UBadge
-                                :color="getStatusColor(invoice.status)"
-                                variant="subtle"
-                                size="sm"
-                            >
-                                {{ getStatusLabel(invoice.status) }}
-                            </UBadge>
-                        </td>
-                        <td class="py-4 text-right">
-                            <UButton
-                                v-if="invoice.status === 'pending'"
-                                size="xs"
-                                variant="ghost"
-                                icon="i-lucide-credit-card"
-                                @click="emit('view-invoice', invoice)"
-                            >
-                                Төлөх
-                            </UButton>
-                            <UButton
-                                v-else
-                                size="xs"
-                                variant="ghost"
-                                icon="i-lucide-file-text"
-                                disabled
-                            >
-                                Баримт
-                            </UButton>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                        Баримт
+                    </UButton>
+                </div>
+            </template>
+        </UTable>
     </div>
 </template>

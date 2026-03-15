@@ -79,7 +79,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
             </NuxtLink>
 
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-8"
+                class="bg-[var(--surface-card)] rounded-2xl shadow-xl border border-[var(--border-primary)] p-8"
             >
                 <!-- Invalid Token state -->
                 <div v-if="isInvalidToken" class="text-center space-y-6">
@@ -89,7 +89,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         <UIcon name="i-lucide-alert-triangle" class="w-8 h-8 text-amber-500" />
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
                             Буруу холбоос
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">
@@ -109,12 +109,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                 <!-- Success state -->
                 <div v-else-if="isSubmitted" class="text-center space-y-6">
                     <div
-                        class="w-16 h-16 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto"
+                        class="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mx-auto"
                     >
-                        <UIcon name="i-lucide-check-circle" class="w-8 h-8 text-green-500" />
+                        <UIcon name="i-lucide-check-circle" class="w-8 h-8 text-primary-500" />
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
                             Амжилттай!
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">Нууц үг амжилттай солигдлоо.</p>
@@ -137,7 +137,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
                         >
                             <UIcon name="i-lucide-lock-keyhole" class="w-8 h-8 text-white" />
                         </div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 class="text-2xl font-bold text-[var(--text-heading)] mb-2">
                             Шинэ нууц үг
                         </h1>
                         <p class="text-gray-500 dark:text-gray-400">Шинэ нууц үгээ оруулна уу</p>

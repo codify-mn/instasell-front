@@ -203,7 +203,7 @@ const features = [
 
                 <!-- Header -->
                 <div class="text-center mb-8">
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 class="text-2xl md:text-3xl font-bold text-[var(--text-heading)] mb-2">
                         <template v-if="pendingVerificationEmail"> Имэйл баталгаажуулалт </template>
                         <template v-else>
                             {{ isRegisterMode ? 'Бүртгүүлэх' : 'Тавтай морилно уу' }}
@@ -263,7 +263,7 @@ const features = [
 
         <div class="relative my-8">
           <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-200 dark:border-gray-800" />
+            <div class="w-full border-t border-[var(--border-primary)]" />
           </div>
           <div class="relative flex justify-center">
             <span class="px-4 text-sm text-gray-500 bg-white dark:bg-gray-950">эсвэл</span>

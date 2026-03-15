@@ -62,6 +62,11 @@ export interface ConversionStats {
     orders_paid: number
     paid_revenue: number
     conversion_rate: number
+    live_comments: number
+    post_comments: number
+    live_orders_created: number
+    post_orders_created: number
+    manual_orders_created: number
 }
 
 export const useDashboardData = () => {
@@ -75,9 +80,12 @@ export const useDashboardData = () => {
     const isLoading = ref(true)
     const error = ref<string | null>(null)
 
-    const fetchOrderStats = async () => {
+    const fetchOrderStats = async (days?: number) => {
         try {
-            const data = await $fetch<OrderStats>(`${config.public.apiUrl}/api/orders/stats`, {
+            const url = days
+                ? `${config.public.apiUrl}/api/orders/stats?days=${days}`
+                : `${config.public.apiUrl}/api/orders/stats`
+            const data = await $fetch<OrderStats>(url, {
                 credentials: 'include'
             })
             orderStats.value = data
@@ -110,12 +118,14 @@ export const useDashboardData = () => {
         }
     }
 
-    const fetchConversionStats = async () => {
+    const fetchConversionStats = async (days?: number) => {
         try {
-            const data = await $fetch<ConversionStats>(
-                `${config.public.apiUrl}/api/dashboard/conversion`,
-                { credentials: 'include' }
-            )
+            const url = days
+                ? `${config.public.apiUrl}/api/dashboard/conversion?days=${days}`
+                : `${config.public.apiUrl}/api/dashboard/conversion`
+            const data = await $fetch<ConversionStats>(url, {
+                credentials: 'include'
+            })
             conversionStats.value = data
         } catch (err: any) {
             console.error('Failed to fetch conversion stats:', err)
@@ -139,10 +149,10 @@ export const useDashboardData = () => {
         error.value = null
         try {
             await Promise.all([
-                fetchOrderStats(),
+                fetchOrderStats(days),
                 fetchProductStats(),
                 fetchCustomerStats(),
-                fetchConversionStats(),
+                fetchConversionStats(days),
                 fetchRevenueChart(days),
             ])
         } catch (err: any) {

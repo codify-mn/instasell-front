@@ -55,13 +55,7 @@ const columns: TableColumn<Sale>[] = [
         accessorKey: 'date',
         header: 'Date',
         cell: ({ row }) => {
-            return new Date(row.getValue('date')).toLocaleString('en-US', {
-                day: 'numeric',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            })
+            return formatDate(row.getValue('date'))
         }
     },
     {
@@ -107,10 +101,11 @@ const columns: TableColumn<Sale>[] = [
         class="shrink-0"
         :ui="{
             base: 'table-fixed border-separate border-spacing-0',
-            thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
+            thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
             tbody: '[&>tr]:last:[&>td]:border-b-0',
-            th: 'first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r',
-            td: 'border-b border-default'
+            th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+            td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+            tr: 'hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
         }"
     />
 </template>

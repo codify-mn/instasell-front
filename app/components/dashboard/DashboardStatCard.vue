@@ -8,6 +8,7 @@ interface Props {
     icon?: string
     accent?: boolean
     warn?: boolean
+    topBar?: 'primary' | 'accent' | 'warn' | 'neutral'
     to?: string
 }
 
@@ -20,15 +21,21 @@ const isUp = computed(() => props.delta !== undefined && props.delta > 0)
 const isDown = computed(() => props.delta !== undefined && props.delta < 0)
 
 const topBarClass = computed(() => {
-    if (props.accent) return 'bg-[var(--accent-green)]'
-    if (props.warn) return 'bg-[var(--accent-warn)]'
+    if (props.topBar === 'primary') return 'bg-primary-500'
+    if (props.topBar === 'accent' || props.accent) return 'bg-[var(--accent-green)]'
+    if (props.topBar === 'warn' || props.warn) return 'bg-[var(--accent-warn)]'
     return 'bg-[var(--bar-neutral)]'
 })
 
 const valueClass = computed(() => {
-    if (props.accent) return 'text-[var(--accent-green)]'
     if (props.warn) return 'text-[var(--accent-warn-dark)]'
     return 'text-[var(--text-heading)]'
+})
+
+const iconClass = computed(() => {
+    if (props.accent) return 'text-[var(--accent-green)]'
+    if (props.warn) return 'text-[var(--accent-warn-dark)]'
+    return 'text-[var(--text-muted)]'
 })
 
 const deltaClass = computed(() => {
@@ -58,7 +65,7 @@ const deltaSymbol = computed(() => {
             <span class="text-xs font-bold uppercase tracking-[0.6px] text-[var(--text-muted)]">
                 {{ label }}
             </span>
-            <span v-if="icon" class="text-base leading-none">{{ icon }}</span>
+            <UIcon v-if="icon" :name="icon" class="size-4" :class="iconClass" />
         </div>
 
         <div class="text-2xl font-extrabold leading-none tracking-tight" :class="valueClass">

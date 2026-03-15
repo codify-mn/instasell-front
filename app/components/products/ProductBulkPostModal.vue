@@ -193,7 +193,7 @@ async function handleBulkPost() {
         toast.add({
             title: 'Амжилттай',
             description: `${successCount} бараа Facebook-д нийтлэгдлээ`,
-            color: 'success'
+            color: 'primary'
         })
         emit('success')
         isOpen.value = false
@@ -389,7 +389,7 @@ watch(isOpen, (val) => {
                             <!-- Watch Comments -->
                             <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
                                 <div class="flex items-center gap-2">
-                                    <UIcon name="i-lucide-eye" class="w-4 h-4 text-green-500" />
+                                    <UIcon name="i-lucide-eye" class="w-4 h-4 text-primary-500" />
                                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Коммент хянах
                                     </span>
@@ -454,7 +454,7 @@ watch(isOpen, (val) => {
                                                 </div>
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                <p class="text-sm font-medium text-[var(--text-heading)] truncate">
                                                     {{ product.name }}
                                                 </p>
                                                 <p class="text-xs text-gray-500">
@@ -468,7 +468,7 @@ watch(isOpen, (val) => {
                                                 <UIcon
                                                     v-if="captions[product.id]?.trim()"
                                                     name="i-lucide-check-circle"
-                                                    class="w-4 h-4 text-green-500"
+                                                    class="w-4 h-4 text-primary-500"
                                                 />
                                                 <UIcon
                                                     v-else
@@ -510,18 +510,18 @@ watch(isOpen, (val) => {
                     </div>
 
                     <!-- Right Panel: Preview -->
-                    <div class="w-[45%] flex flex-col bg-gray-50 dark:bg-gray-900/50">
+                    <div class="w-[45%] flex flex-col bg-[var(--surface-inset)]">
                         <div class="flex-1 flex items-center justify-center p-6 overflow-y-auto">
                             <div v-if="activeProduct" class="w-full max-w-sm">
                                 <!-- Facebook Preview Card -->
-                                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+                                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-sm">
                                     <!-- Page header -->
                                     <div class="flex items-center gap-2.5 px-4 pt-3 pb-2">
                                         <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center">
                                             <UIcon name="i-lucide-store" class="w-4 h-4 text-blue-600" />
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            <p class="text-sm font-semibold text-[var(--text-heading)]">
                                                 {{ shop?.name || 'Таны дэлгүүр' }}
                                             </p>
                                             <p class="text-[11px] text-gray-500">Саяхан · 🌍</p>
@@ -553,7 +553,7 @@ watch(isOpen, (val) => {
                                         <span>👍❤️ 0</span>
                                         <span>0 сэтгэгдэл · 0 хуваалцсан</span>
                                     </div>
-                                    <div class="grid grid-cols-3 border-t border-gray-100 dark:border-gray-800">
+                                    <div class="grid grid-cols-3 border-t border-[var(--border-primary)]">
                                         <div class="flex items-center justify-center gap-1.5 py-2 text-xs text-gray-500">
                                             <UIcon name="i-lucide-thumbs-up" class="w-3.5 h-3.5" /> Таалагдсан
                                         </div>

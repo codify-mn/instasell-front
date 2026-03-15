@@ -40,7 +40,7 @@ const confirmDelete = async () => {
     deleting.value = true
     try {
         await deleteProduct(productId.value)
-        toast.add({ title: 'Амжилттай', description: 'Бүтээгдэхүүн устгагдлаа', color: 'success' })
+        toast.add({ title: 'Амжилттай', description: 'Бүтээгдэхүүн устгагдлаа', color: 'primary' })
         router.push('/dashboard/products')
     } catch (err: any) {
         toast.add({
@@ -64,7 +64,7 @@ const commentsPage = ref(1)
 const commentsSize = 20
 const refreshingStats = ref<number | null>(null)
 
-const commentsTotalPages = computed(() => Math.ceil(commentsTotal.value / commentsSize))
+
 
 const loadPosts = async () => {
     postsLoading.value = true
@@ -117,7 +117,7 @@ const refreshStats = async (post: ProductPostStats) => {
         if (selectedPost.value?.id === post.id) {
             selectedPost.value = updated
         }
-        toast.add({ title: 'Амжилттай', description: 'Статистик шинэчлэгдлээ', color: 'success' })
+        toast.add({ title: 'Амжилттай', description: 'Статистик шинэчлэгдлээ', color: 'primary' })
     } catch {
         toast.add({
             title: 'Алдаа',
@@ -129,30 +129,12 @@ const refreshStats = async (post: ProductPostStats) => {
     }
 }
 
-const prevCommentsPage = () => {
-    if (commentsPage.value > 1) {
-        commentsPage.value--
-        loadComments()
-    }
+const setCommentsPage = (p: number) => {
+    commentsPage.value = p
+    loadComments()
 }
 
-const nextCommentsPage = () => {
-    if (commentsPage.value < commentsTotalPages.value) {
-        commentsPage.value++
-        loadComments()
-    }
-}
-
-const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr)
-    return d.toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
-}
+// uses auto-imported formatDate from composables/formatter.ts
 
 const timeAgo = (dateStr: string) => {
     const now = new Date()
@@ -222,13 +204,13 @@ onMounted(async () => {
                     <template #title>
                         <div v-if="product">
                             <h1
-                                class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2"
+                                class="text-lg font-semibold text-[var(--text-heading)] flex items-center gap-2"
                             >
                                 {{ product.name }}
                                 <UBadge
                                     :color="
                                         product.status === 'active'
-                                            ? 'success'
+                                            ? 'primary'
                                             : product.status === 'draft'
                                               ? 'neutral'
                                               : 'error'
@@ -247,7 +229,7 @@ onMounted(async () => {
                             </h1>
                         </div>
                         <div v-else>
-                            <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h1 class="text-lg font-semibold text-[var(--text-heading)]">
                                 Уншиж байна...
                             </h1>
                         </div>
@@ -284,7 +266,7 @@ onMounted(async () => {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Left: Main Image -->
                         <div
-                            class="bg-gray-50 dark:bg-gray-800/50 rounded-xl overflow-hidden aspect-square border border-gray-100 dark:border-gray-800 flex items-center justify-center"
+                            class="bg-gray-50 dark:bg-gray-800/50 rounded-xl overflow-hidden aspect-square border border-[var(--border-primary)] flex items-center justify-center"
                         >
                             <img
                                 v-if="product.images && product.images.length > 0"
@@ -298,7 +280,7 @@ onMounted(async () => {
                         <!-- Right: Details -->
                         <div class="md:col-span-2 space-y-4">
                             <div
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 shadow-sm"
                             >
                                 <h3 class="text-sm font-medium text-gray-500 mb-4">
                                     Ерөнхий мэдээлэл
@@ -307,7 +289,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Үнэ</p>
                                         <p
-                                            class="text-lg font-semibold text-gray-900 dark:text-white"
+                                            class="text-lg font-semibold text-[var(--text-heading)]"
                                         >
                                             {{ product.price.toLocaleString() }}₮
                                         </p>
@@ -321,7 +303,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Үлдэгдэл</p>
                                         <p
-                                            class="text-lg font-medium text-gray-900 dark:text-white"
+                                            class="text-lg font-medium text-[var(--text-heading)]"
                                         >
                                             {{
                                                 product.has_variants
@@ -333,7 +315,7 @@ onMounted(async () => {
                                     <div>
                                         <p class="text-xs text-gray-500 mb-1">Түлхүүр үг</p>
                                         <p
-                                            class="text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 inline-block px-2 py-1 rounded"
+                                            class="text-sm font-medium text-[var(--text-heading)] bg-gray-100 dark:bg-gray-800 inline-block px-2 py-1 rounded"
                                         >
                                             {{ product.keyword }}
                                         </p>
@@ -344,7 +326,7 @@ onMounted(async () => {
                             <!-- Variants Summary (if any) -->
                             <div
                                 v-if="product.has_variants && product.variants?.length > 0"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5 shadow-sm"
                             >
                                 <h3 class="text-sm font-medium text-gray-500 mb-3">Хувилбарууд</h3>
                                 <div class="flex flex-wrap gap-2">
@@ -353,7 +335,7 @@ onMounted(async () => {
                                         :key="v.id"
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm"
                                     >
-                                        <span class="font-medium text-gray-900 dark:text-white">{{
+                                        <span class="font-medium text-[var(--text-heading)]">{{
                                             v.name
                                         }}</span>
                                         <span class="text-gray-400">|</span>
@@ -369,42 +351,42 @@ onMounted(async () => {
                     <!-- Statistics Overview -->
                     <div v-if="posts.length > 0" class="grid grid-cols-2 lg:grid-cols-5 gap-4">
                         <div
-                            class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col"
+                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт нийтлэл</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
                                 posts.length
                             }}</span>
                         </div>
                         <div
-                            class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col"
+                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт хариу үйлдэл</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
                                 formatCount(totalPostReactions)
                             }}</span>
                         </div>
                         <div
-                            class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col"
+                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт коммент</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
                                 formatCount(totalPostComments)
                             }}</span>
                         </div>
                         <div
-                            class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col"
+                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт хуваалцсан</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
                                 formatCount(posts.reduce((acc, p) => acc + p.shares_count, 0))
                             }}</span>
                         </div>
                         <div
-                            class="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col"
+                            class="bg-[var(--surface-card)] p-4 rounded-xl border border-[var(--border-primary)] shadow-sm flex flex-col"
                         >
                             <span class="text-gray-500 text-sm mb-1">Нийт харагдсан</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{
+                            <span class="text-2xl font-bold text-[var(--text-heading)]">{{
                                 formatCount(totalPostViews)
                             }}</span>
                         </div>
@@ -414,7 +396,7 @@ onMounted(async () => {
                     <div v-if="posts.length > 0" class="pt-4">
                         <div class="flex items-center justify-between mb-5">
                             <h2
-                                class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2"
+                                class="text-lg font-semibold text-[var(--text-heading)] flex items-center gap-2"
                             >
                                 <UIcon name="i-lucide-share-2" class="w-5 h-5 text-blue-500" />
                                 Холбогдсон Facebook нийтлэлүүд
@@ -426,7 +408,7 @@ onMounted(async () => {
                             <div
                                 v-for="post in posts"
                                 :key="post.id"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <!-- Post Header - Page info -->
                                 <div class="flex items-center gap-3 px-4 pt-4 pb-3">
@@ -448,7 +430,7 @@ onMounted(async () => {
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center gap-2">
                                             <span
-                                                class="text-sm font-semibold text-gray-900 dark:text-white truncate"
+                                                class="text-sm font-semibold text-[var(--text-heading)] truncate"
                                             >
                                                 {{ post.page_name || 'Facebook Page' }}
                                             </span>
@@ -457,7 +439,7 @@ onMounted(async () => {
                                                     post.purpose === 'sale'
                                                         ? 'error'
                                                         : post.purpose === 'new_arrival'
-                                                          ? 'success'
+                                                          ? 'primary'
                                                           : 'neutral'
                                                 "
                                                 variant="subtle"
@@ -520,7 +502,7 @@ onMounted(async () => {
                                     <!-- Watch badge overlay -->
                                     <div
                                         v-if="post.watch_comments"
-                                        class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-green-500/90 text-white rounded-full text-[10px] font-medium backdrop-blur-sm"
+                                        class="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 bg-primary-500/90 text-white rounded-full text-[10px] font-medium backdrop-blur-sm"
                                     >
                                         <UIcon name="i-lucide-eye" class="w-3 h-3" />
                                         Автомат
@@ -529,7 +511,7 @@ onMounted(async () => {
 
                                 <!-- Engagement Stats Bar -->
                                 <div
-                                    class="px-4 py-2.5 flex items-center justify-between border-b border-gray-100 dark:border-gray-800"
+                                    class="px-4 py-2.5 flex items-center justify-between border-b border-[var(--border-primary)]"
                                 >
                                     <div class="flex items-center gap-1.5">
                                         <div class="flex -space-x-1">
@@ -564,7 +546,7 @@ onMounted(async () => {
 
                                 <!-- Action Buttons (like FB) -->
                                 <div
-                                    class="grid grid-cols-3 border-b border-gray-100 dark:border-gray-800"
+                                    class="grid grid-cols-3 border-b border-[var(--border-primary)]"
                                 >
                                     <button
                                         class="flex items-center justify-center gap-2 py-2.5 text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
@@ -601,7 +583,7 @@ onMounted(async () => {
                                 <!-- Views stat (subtle) -->
                                 <div
                                     v-if="post.views_count > 0"
-                                    class="px-4 py-1.5 flex items-center gap-1 text-[11px] text-gray-400 border-b border-gray-100 dark:border-gray-800"
+                                    class="px-4 py-1.5 flex items-center gap-1 text-[11px] text-gray-400 border-b border-[var(--border-primary)]"
                                 >
                                     <UIcon name="i-lucide-eye" class="w-3 h-3" />
                                     {{ formatCount(post.views_count) }} харагдсан
@@ -646,13 +628,13 @@ onMounted(async () => {
                                                 >
                                                     <div class="flex items-center gap-2">
                                                         <span
-                                                            class="text-[13px] font-semibold text-gray-900 dark:text-white"
+                                                            class="text-[13px] font-semibold text-[var(--text-heading)]"
                                                         >
                                                             {{ comment.sender_name || 'Хэрэглэгч' }}
                                                         </span>
                                                         <UBadge
                                                             v-if="comment.is_processed"
-                                                            color="success"
+                                                            color="primary"
                                                             variant="subtle"
                                                             size="xs"
                                                         >
@@ -674,44 +656,7 @@ onMounted(async () => {
                                         </div>
                                     </div>
 
-                                    <!-- Pagination -->
-                                    <div
-                                        v-if="commentsTotal > commentsSize"
-                                        class="px-4 py-2.5 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between"
-                                    >
-                                        <button
-                                            v-if="commentsPage < commentsTotalPages"
-                                            class="text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                                            @click="nextCommentsPage"
-                                        >
-                                            Өмнөх сэтгэгдлүүд...
-                                        </button>
-                                        <span v-else />
-                                        <span class="text-[11px] text-gray-400">
-                                            {{ (commentsPage - 1) * commentsSize + 1 }}-{{
-                                                Math.min(commentsPage * commentsSize, commentsTotal)
-                                            }}
-                                            / {{ commentsTotal }}
-                                        </span>
-                                        <div class="flex items-center gap-1">
-                                            <UButton
-                                                icon="i-lucide-chevron-left"
-                                                variant="ghost"
-                                                color="neutral"
-                                                size="xs"
-                                                :disabled="commentsPage <= 1"
-                                                @click="prevCommentsPage"
-                                            />
-                                            <UButton
-                                                icon="i-lucide-chevron-right"
-                                                variant="ghost"
-                                                color="neutral"
-                                                size="xs"
-                                                :disabled="commentsPage >= commentsTotalPages"
-                                                @click="nextCommentsPage"
-                                            />
-                                        </div>
-                                    </div>
+                                    <TablePagination :page="commentsPage" :total="commentsTotal" :page-size="commentsSize" @update:page="setCommentsPage" />
                                 </div>
                             </div>
                         </div>

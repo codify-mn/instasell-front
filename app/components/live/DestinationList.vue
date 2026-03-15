@@ -45,7 +45,7 @@ const addFacebookDestination = async () => {
         toast.add({
             title: 'Facebook Live нэмэгдлээ',
             description: 'RTMP URL амжилттай үүслээ',
-            color: 'success'
+            color: 'primary'
         })
     } catch {
         toast.add({
@@ -82,7 +82,7 @@ const addCustomDestination = async () => {
         customForm.name = ''
         customForm.server_url = ''
         customForm.stream_key = ''
-        toast.add({ title: 'RTMP destination нэмэгдлээ', color: 'success' })
+        toast.add({ title: 'RTMP destination нэмэгдлээ', color: 'primary' })
     } catch {
         toast.add({ title: 'Алдаа', description: 'Destination нэмэхэд алдаа гарлаа', color: 'error' })
     }

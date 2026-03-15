@@ -89,7 +89,7 @@ const daysColor = computed(() => {
                 <div v-if="subLoading" class="h-8 w-full animate-pulse rounded-lg bg-[var(--border-subtle)]" />
                 <template v-else-if="hasSubscription && subscription">
                     <div class="flex items-center gap-2 rounded-lg border border-[var(--accent-green-border)] bg-[var(--accent-green-light)] px-3 py-2">
-                        <span class="text-xs font-bold text-[var(--accent-green)]">⚡ {{ planName }}</span>
+                        <span class="text-xs font-bold text-[var(--accent-green)]">{{ planName }}</span>
                         <template v-if="daysRemaining > 0">
                             <span class="h-1.5 w-1.5 rounded-full flex-shrink-0" :class="daysColor" />
                             <span class="text-xs text-[var(--text-muted)]">

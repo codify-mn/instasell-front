@@ -66,12 +66,11 @@ const shopChecks = computed(() => [
 <template>
     <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
         <!-- Topbar -->
-        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-7">
+        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
             <div class="flex items-center gap-3">
                 <span class="text-base font-bold text-[var(--text-heading)]">Нүүр хуудас</span>
             </div>
             <div class="flex items-center gap-2.5">
-                <DashboardPeriodSelect v-model="period" />
                 <button
                     type="button"
                     class="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-primary)] bg-[var(--surface-card)] text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
@@ -80,17 +79,14 @@ const shopChecks = computed(() => [
                 >
                     <UIcon name="i-lucide-circle-help" class="h-4 w-4" />
                 </button>
-                <ClientOnly>
-                    <DashboardTestActions v-if="isDev" />
-                </ClientOnly>
             </div>
         </div>
 
         <!-- Scrollable content -->
         <div class="flex-1 overflow-y-auto">
             <!-- Loading skeleton -->
-            <div v-if="isLoading" class="mx-auto max-w-7xl px-7 py-6 space-y-5">
-                <div class="grid grid-cols-4 gap-3.5">
+            <div v-if="isLoading" class="mx-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                     <div v-for="i in 4" :key="i" class="h-28 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
                 </div>
                 <div class="h-52 animate-pulse rounded-xl bg-[var(--surface-card)] border border-[var(--border-primary)]" />
@@ -102,38 +98,44 @@ const shopChecks = computed(() => [
             </div>
 
             <!-- Content -->
-            <div v-else class="mx-auto max-w-7xl px-7 py-6 space-y-5">
+            <div v-else class="mx-auto max-w-7xl px-4 sm:px-7 py-6 space-y-5">
                 <DashboardTour ref="tourRef" />
 
+                <!-- Period filter -->
+                <div class="flex items-center justify-start">
+                    <DashboardPeriodSelect v-model="period" />
+                </div>
+
                 <!-- Zone 1: 4 stat cards -->
-                <div data-tour-stats class="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+                <div data-tour-stats class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 lg:grid-cols-4">
                     <DashboardStatCard
                         label="Нийт орлого"
                         :value="formatRevenue(totalRevenue)"
-                        :subtitle="`Дундаж ${formatRevenue(avgOrderValue)}`"
-                        icon="💵"
-                        :accent="true"
+                        :subtitle="`Дундаж захиалга ${formatRevenue(avgOrderValue)}`"
+                        icon="i-lucide-wallet"
+                        top-bar="primary"
                         to="/dashboard/orders"
                     />
                     <DashboardStatCard
-                        label="Хувиргалтын хувь"
+                        label="Хувиргалт"
                         :value="`${Math.round(conversionRate * 10) / 10}%`"
-                        subtitle="сэтгэгдэл → төлөлт"
-                        icon="⚡"
-                        :accent="true"
+                        subtitle="Сэтгэгдлээс төлбөр хүртэл"
+                        icon="i-lucide-arrow-right-left"
+                        top-bar="primary"
                     />
                     <DashboardStatCard
                         label="Нийт захиалга"
                         :value="totalOrders"
-                        :subtitle="`${ordersPaid} нь төлөгдсөн`"
-                        icon="🛒"
+                        :subtitle="`${ordersPaid} төлөгдсөн`"
+                        icon="i-lucide-shopping-bag"
+                        :accent="true"
                         to="/dashboard/orders"
                     />
                     <DashboardStatCard
-                        label="Хүлээгдэж буй"
+                        label="Шийдвэрлэх захиалга"
                         :value="pendingOrders"
-                        subtitle="хурдан шийдвэрлэх"
-                        icon="⏳"
+                        subtitle="Төлбөр хүлээгдэж буй"
+                        icon="i-lucide-clock"
                         :warn="pendingOrders > 0"
                         to="/dashboard/orders"
                     />

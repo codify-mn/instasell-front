@@ -51,6 +51,8 @@ export interface ProductFilter {
     category?: string
     status?: string
     stock?: string
+    sort_by?: string
+    sort_dir?: string
     page?: number
     size?: number
     sale_id?: number
@@ -117,6 +119,8 @@ export function useProducts() {
         if (filter.category) params.set('category', filter.category)
         if (filter.status) params.set('status', filter.status)
         if (filter.stock) params.set('stock', filter.stock)
+        if (filter.sort_by) params.set('sort_by', filter.sort_by)
+        if (filter.sort_dir) params.set('sort_dir', filter.sort_dir)
         if (filter.page) params.set('page', filter.page.toString())
         if (filter.size) params.set('size', filter.size.toString())
         if (filter.sale_id) params.set('sale_id', filter.sale_id.toString())
@@ -208,28 +212,49 @@ export function useProducts() {
         })
     }
 
+    // CSV Export
+    const exportProductsCSV = async (params: {
+        status?: string
+        keyword?: string
+        category?: string
+        stock?: string
+        ids?: number[]
+    }): Promise<void> => {
+        const query = new URLSearchParams()
+        if (params.status) query.set('status', params.status)
+        if (params.keyword) query.set('keyword', params.keyword)
+        if (params.category) query.set('category', params.category)
+        if (params.stock) query.set('stock', params.stock)
+        if (params.ids?.length) query.set('ids', params.ids.join(','))
+
+        const queryStr = query.toString()
+        const url = `${apiUrl}/api/products/export/csv${queryStr ? `?${queryStr}` : ''}`
+
+        const response = await fetch(url, { credentials: 'include' })
+        const blob = await response.blob()
+        const blobUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.setAttribute('download', `бараа_${new Date().toISOString().slice(0, 10)}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(blobUrl)
+    }
+
+    // CSV Import
     const downloadImportTemplate = async (): Promise<void> => {
         const url = `${apiUrl}/api/products/import/template`
-        // Create a temporary link to trigger download
+        const response = await fetch(url, { credentials: 'include' })
+        const blob = await response.blob()
+        const blobUrl = URL.createObjectURL(blob)
         const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', 'baraa_import_template.xlsx')
-        // For cross-origin requests with credentials, we need to fetch and create blob
-        try {
-            const response = await fetch(url, { credentials: 'include' })
-            const blob = await response.blob()
-            const blobUrl = URL.createObjectURL(blob)
-            link.href = blobUrl
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-            URL.revokeObjectURL(blobUrl)
-        } catch {
-            // Fallback: direct link
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-        }
+        link.href = blobUrl
+        link.setAttribute('download', 'бараа_загвар.csv')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(blobUrl)
     }
 
     const importProducts = async (
@@ -258,6 +283,7 @@ export function useProducts() {
         updateVariant,
         deleteVariant,
         updateVariantStock,
+        exportProductsCSV,
         downloadImportTemplate,
         importProducts
     }

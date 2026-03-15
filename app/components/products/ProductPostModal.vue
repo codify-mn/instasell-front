@@ -263,7 +263,7 @@ async function handlePost() {
             background: selectedBackground.value,
             ai_image_url: aiImageUrl.value
         })
-        toast.add({ title: 'Facebook-д амжилттай нийтэллээ!', color: 'success' })
+        toast.add({ title: 'Facebook-д амжилттай нийтэллээ!', color: 'primary' })
         isOpen.value = false
     } catch (err: any) {
         const message = err?.data?.message || err?.message || 'Алдаа гарлаа'
@@ -698,7 +698,7 @@ watch(
                         <div v-if="selectedProductId" class="w-full max-w-[420px]">
                             <!-- Facebook Post Card -->
                             <div
-                                class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
+                                class="bg-[var(--surface-card)] rounded-lg shadow-sm border border-[var(--border-primary)] overflow-hidden"
                             >
                                 <!-- Post Header -->
                                 <div class="flex items-center gap-2.5 px-4 py-3">
@@ -719,7 +719,7 @@ watch(
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p
-                                            class="text-[13px] font-semibold text-gray-900 dark:text-white leading-tight truncate"
+                                            class="text-[13px] font-semibold text-[var(--text-heading)] leading-tight truncate"
                                         >
                                             {{ shop?.name || 'Таны дэлгүүр' }}
                                         </p>
@@ -835,7 +835,7 @@ watch(
                                 </div>
 
                                 <!-- Divider -->
-                                <div class="mx-4 border-t border-gray-200 dark:border-gray-800" />
+                                <div class="mx-4 border-t border-[var(--border-primary)]" />
 
                                 <!-- Action buttons -->
                                 <div class="grid grid-cols-3 px-2 py-1">
@@ -869,13 +869,13 @@ watch(
                             <!-- Watch comments indicator -->
                             <div
                                 v-if="watchComments"
-                                class="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50"
+                                class="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-900/50"
                             >
                                 <UIcon
                                     name="i-lucide-bot"
-                                    class="w-4 h-4 text-green-600 dark:text-green-400 shrink-0"
+                                    class="w-4 h-4 text-primary-600 dark:text-primary-400 shrink-0"
                                 />
-                                <p class="text-xs text-green-700 dark:text-green-300">
+                                <p class="text-xs text-primary-700 dark:text-primary-300">
                                     Автомат захиалга идэвхтэй — комментод захиалга үүснэ
                                 </p>
                             </div>

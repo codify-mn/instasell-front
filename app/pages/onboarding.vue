@@ -206,7 +206,7 @@ async function onSubmit() {
         toast.add({
             title: 'Амжилттай!',
             description: 'Таны дэлгүүр бэлэн боллоо',
-            color: 'success'
+            color: 'primary'
         })
 
         navigateTo('/dashboard')
@@ -288,7 +288,7 @@ async function onSubmit() {
 
             <!-- Glass card -->
             <div
-                class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 overflow-hidden"
+                class="bg-[var(--surface-card)] backdrop-blur-xl rounded-2xl border border-white/20 dark:border-gray-700/30 shadow-xl shadow-gray-200/50 dark:shadow-gray-950/50 overflow-hidden"
             >
                 <!-- Header -->
                 <div class="px-8 pt-8 pb-4">
@@ -305,7 +305,7 @@ async function onSubmit() {
                                     class="w-7 h-7 text-blue-500"
                                 />
                             </div>
-                            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                            <h1 class="text-2xl font-bold text-[var(--text-heading)]">
                                 Facebook холболт
                             </h1>
                             <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
@@ -319,7 +319,7 @@ async function onSubmit() {
                             >
                                 <UIcon name="i-lucide-store" class="w-7 h-7 text-primary-500" />
                             </div>
-                            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                            <h1 class="text-2xl font-bold text-[var(--text-heading)]">
                                 Дэлгүүрээ үүсгээрэй
                             </h1>
                             <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">
@@ -398,7 +398,7 @@ async function onSubmit() {
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <p
-                                                class="text-sm font-semibold text-gray-900 dark:text-white truncate"
+                                                class="text-sm font-semibold text-[var(--text-heading)] truncate"
                                             >
                                                 {{ page.page_name }}
                                             </p>

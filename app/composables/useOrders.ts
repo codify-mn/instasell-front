@@ -40,10 +40,17 @@ export interface OrderMetadata {
     tracking_number?: string
 }
 
+export interface OrderItemProduct {
+    id: number
+    name: string
+    images?: string[]
+}
+
 export interface OrderItem {
     id: number
     order_id: number
     product_id: number
+    product?: OrderItemProduct
     variant_id?: number
     sku: string
     name: string
@@ -96,6 +103,10 @@ export interface OrdersResponse {
 export interface OrderFilter {
     keyword?: string
     status?: string
+    date_from?: string
+    date_to?: string
+    sort_by?: string
+    sort_dir?: string
     page?: number
     size?: number
 }
@@ -144,6 +155,10 @@ export function useOrders() {
         const params = new URLSearchParams()
         if (filter.keyword) params.set('keyword', filter.keyword)
         if (filter.status) params.set('status', filter.status)
+        if (filter.date_from) params.set('date_from', filter.date_from)
+        if (filter.date_to) params.set('date_to', filter.date_to)
+        if (filter.sort_by) params.set('sort_by', filter.sort_by)
+        if (filter.sort_dir) params.set('sort_dir', filter.sort_dir)
         if (filter.page) params.set('page', filter.page.toString())
         if (filter.size) params.set('size', filter.size.toString())
 
@@ -241,6 +256,69 @@ export function useOrders() {
         )
     }
 
+    // CSV Export
+    const exportOrdersCSV = async (params: {
+        status?: string
+        keyword?: string
+        ids?: number[]
+    }): Promise<void> => {
+        const query = new URLSearchParams()
+        if (params.status) query.set('status', params.status)
+        if (params.keyword) query.set('keyword', params.keyword)
+        if (params.ids?.length) query.set('ids', params.ids.join(','))
+
+        const queryStr = query.toString()
+        const url = `${apiUrl}/api/orders/export/csv${queryStr ? `?${queryStr}` : ''}`
+
+        try {
+            const response = await fetch(url, { credentials: 'include' })
+            const blob = await response.blob()
+            const blobUrl = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = blobUrl
+            link.setAttribute('download', `захиалга_${new Date().toISOString().slice(0, 10)}.csv`)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(blobUrl)
+        } catch {
+            throw new Error('CSV татахад алдаа гарлаа')
+        }
+    }
+
+    // CSV Import
+    const downloadOrderImportTemplate = async (): Promise<void> => {
+        const url = `${apiUrl}/api/orders/import/template`
+        try {
+            const response = await fetch(url, { credentials: 'include' })
+            const blob = await response.blob()
+            const blobUrl = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = blobUrl
+            link.setAttribute('download', 'захиалга_загвар.csv')
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(blobUrl)
+        } catch {
+            throw new Error('Загвар татахад алдаа гарлаа')
+        }
+    }
+
+    const importOrdersCSV = async (file: File): Promise<{ created: number; errors: string[]; total: number }> => {
+        const formData = new FormData()
+        formData.append('file', file)
+
+        return await $fetch<{ created: number; errors: string[]; total: number }>(
+            `${apiUrl}/api/orders/import`,
+            {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            }
+        )
+    }
+
     // Helper functions for display
     const formatPrice = (price: number): string => {
         return new Intl.NumberFormat('mn-MN').format(price) + '₮'
@@ -290,6 +368,9 @@ export function useOrders() {
         cancelOrder,
         fetchOrderStats,
         fetchRecentOrders,
+        exportOrdersCSV,
+        downloadOrderImportTemplate,
+        importOrdersCSV,
         formatPrice,
         getStatusLabel,
         getStatusColor,

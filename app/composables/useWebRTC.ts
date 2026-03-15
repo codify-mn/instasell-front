@@ -140,7 +140,7 @@ export const useWebRTC = () => {
             toast.add({
                 title: 'Success',
                 description: 'Stream started successfully',
-                color: 'success'
+                color: 'primary'
             })
         } catch (error: any) {
             console.error('Streaming error:', error)

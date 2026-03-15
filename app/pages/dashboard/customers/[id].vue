@@ -55,22 +55,11 @@ const loadOrders = async () => {
     }
 }
 
-const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
-}
-
 const confirmDelete = async () => {
     deleting.value = true
     try {
         await deleteCustomer(customerId)
-        toast.add({ title: 'Хэрэглэгч устгагдлаа', color: 'success' })
+        toast.add({ title: 'Хэрэглэгч устгагдлаа', color: 'primary' })
         router.push('/dashboard/customers')
     } catch (err: any) {
         toast.add({
@@ -84,6 +73,17 @@ const confirmDelete = async () => {
     }
 }
 
+const fullAddress = computed(() => {
+    if (!customer.value) return ''
+    const parts = [
+        customer.value.city,
+        customer.value.district,
+        customer.value.apartment,
+        customer.value.address
+    ].filter(Boolean)
+    return parts.join(', ')
+})
+
 onMounted(async () => {
     await loadCustomer()
     loadOrders()
@@ -91,152 +91,155 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div>
-    <div class="w-full h-full overflow-y-auto">
-        <UDashboardPanel id="customer-detail">
-            <UDashboardNavbar>
-                <template #title>
-                    <div class="flex items-center gap-2">
-                        <UButton
-                            icon="i-lucide-arrow-left"
-                            variant="ghost"
-                            color="neutral"
-                            size="xs"
-                            @click="router.push('/dashboard/customers')"
-                        />
-                        <UIcon name="i-lucide-user" class="w-5 h-5" />
-                        <span>{{ customer?.name || 'Хэрэглэгч' }}</span>
-                    </div>
-                </template>
-                <template #right>
+    <div class="flex flex-col h-full w-full">
+        <!-- Header -->
+        <div class="px-4 sm:px-6 py-5 border-b border-[var(--border-primary)]">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
                     <UButton
-                        v-if="customer"
-                        icon="i-lucide-trash-2"
-                        color="error"
+                        icon="i-lucide-arrow-left"
                         variant="ghost"
+                        color="neutral"
                         size="sm"
-                        @click="showDeleteModal = true"
+                        @click="router.push('/dashboard/customers')"
                     />
-                </template>
-            </UDashboardNavbar>
+                    <div>
+                        <h1 class="text-2xl font-semibold text-[var(--text-heading)]">
+                            {{ customer?.name || 'Хэрэглэгч' }}
+                        </h1>
+                        <p class="mt-0.5 text-sm text-[var(--text-muted)]">
+                            Хэрэглэгчийн дэлгэрэнгүй мэдээлэл
+                        </p>
+                    </div>
+                </div>
+                <UButton
+                    v-if="customer"
+                    icon="i-lucide-trash-2"
+                    color="error"
+                    variant="ghost"
+                    size="sm"
+                    @click="showDeleteModal = true"
+                />
+            </div>
+        </div>
 
+        <!-- Content -->
+        <div class="flex-1 overflow-auto p-4 sm:p-6">
             <!-- Loading -->
-            <div v-if="loading" class="p-6 space-y-4">
+            <div v-if="loading" class="space-y-4 max-w-4xl">
                 <div class="animate-pulse space-y-4">
-                    <div class="h-32 bg-gray-200 dark:bg-gray-800 rounded-xl" />
-                    <div class="h-64 bg-gray-200 dark:bg-gray-800 rounded-xl" />
+                    <div class="h-48 bg-[var(--surface-inset)] rounded-xl" />
+                    <div class="h-64 bg-[var(--surface-inset)] rounded-xl" />
                 </div>
             </div>
 
-            <div v-else-if="customer" class="p-4 space-y-6 max-w-4xl">
+            <div v-else-if="customer" class="space-y-6 max-w-4xl">
+                <!-- Stats Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
+                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Нийт захиалга</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ orderCount }}</p>
+                    </div>
+                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
+                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Нийт зарцуулсан</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-primary-600 dark:text-primary-400">{{ formatPrice(totalSpent) }}</p>
+                    </div>
+                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
+                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Дундаж захиалга</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ orderCount > 0 ? formatPrice(Math.round(totalSpent / orderCount)) : '-' }}</p>
+                    </div>
+                    <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-4">
+                        <p class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Бүртгүүлсэн</p>
+                        <p class="mt-1 text-xl sm:text-2xl font-bold text-[var(--text-heading)]">{{ formatDateShort(customer.created_at) }}</p>
+                    </div>
+                </div>
+
                 <!-- Customer Info Card -->
-                <div
-                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6"
-                >
-                    <div class="flex items-start gap-4">
-                        <UAvatar :alt="customer.name" size="xl" />
-                        <div class="flex-1 min-w-0">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                                {{ customer.name }}
-                            </h2>
-                            <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                                <div class="flex items-center gap-2 text-gray-500">
-                                    <UIcon name="i-lucide-phone" class="w-4 h-4" />
-                                    {{ customer.phone_number || '-' }}
-                                </div>
-                                <div
-                                    v-if="customer.email"
-                                    class="flex items-center gap-2 text-gray-500"
-                                >
-                                    <UIcon name="i-lucide-mail" class="w-4 h-4" />
-                                    {{ customer.email }}
-                                </div>
-                                <a
-                                    v-if="customer.facebook_id"
-                                    :href="`https://facebook.com/${customer.facebook_id}`"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="flex items-center gap-2 text-blue-500 hover:text-blue-600 transition-colors"
-                                >
-                                    <UIcon name="i-lucide-facebook" class="w-4 h-4" />
-                                    Facebook профайл үзэх
-                                </a>
-                                <div
-                                    v-if="customer.city"
-                                    class="flex items-center gap-2 text-gray-500"
-                                >
-                                    <UIcon name="i-lucide-map-pin" class="w-4 h-4" />
-                                    {{ customer.city
-                                    }}{{ customer.district ? `, ${customer.district}` : '' }}
-                                </div>
-                                <div
-                                    v-if="customer.address"
-                                    class="flex items-center gap-2 text-gray-500 sm:col-span-2"
-                                >
-                                    <UIcon name="i-lucide-home" class="w-4 h-4" />
-                                    {{ customer.address
-                                    }}{{ customer.apartment ? `, ${customer.apartment}` : '' }}
+                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+                    <div class="px-5 py-4 border-b border-[var(--border-primary)]">
+                        <h3 class="font-semibold text-[var(--text-heading)] flex items-center gap-2">
+                            <UIcon name="i-lucide-user" class="w-4 h-4" />
+                            Хэрэглэгчийн мэдээлэл
+                        </h3>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start gap-4">
+                            <UAvatar :alt="customer.name" size="xl" />
+                            <div class="flex-1 min-w-0">
+                                <h2 class="text-lg font-bold text-[var(--text-heading)]">
+                                    {{ customer.name }}
+                                </h2>
+                                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                                    <div class="flex items-center gap-2.5">
+                                        <UIcon name="i-lucide-phone" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0" />
+                                        <span class="text-sm text-[var(--text-body)]">{{ customer.phone_number || '-' }}</span>
+                                    </div>
+                                    <div v-if="customer.email" class="flex items-center gap-2.5">
+                                        <UIcon name="i-lucide-mail" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0" />
+                                        <span class="text-sm text-[var(--text-body)]">{{ customer.email }}</span>
+                                    </div>
+                                    <a
+                                        v-if="customer.facebook_id"
+                                        :href="`https://facebook.com/${customer.facebook_id}`"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="flex items-center gap-2.5 text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                                    >
+                                        <UIcon name="i-lucide-facebook" class="w-4 h-4 shrink-0" />
+                                        Facebook профайл
+                                    </a>
+                                    <div v-if="fullAddress" class="flex items-start gap-2.5 sm:col-span-2">
+                                        <UIcon name="i-lucide-map-pin" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0 mt-0.5" />
+                                        <span class="text-sm text-[var(--text-body)]">{{ fullAddress }}</span>
+                                    </div>
+                                    <div v-if="customer.notes" class="flex items-start gap-2.5 sm:col-span-2">
+                                        <UIcon name="i-lucide-sticky-note" class="w-4 h-4 text-[var(--text-placeholder)] shrink-0 mt-0.5" />
+                                        <span class="text-sm text-[var(--text-muted)]">{{ customer.notes }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Stats -->
-                    <div
-                        class="mt-6 grid grid-cols-2 gap-4 pt-6 border-t border-gray-100 dark:border-gray-800"
-                    >
-                        <div>
-                            <p class="text-sm text-gray-500">Нийт захиалга</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">
-                                {{ orderCount }}
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Нийт зарцуулсан</p>
-                            <p class="text-2xl font-bold text-primary">
-                                {{ formatPrice(totalSpent) }}
-                            </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Order History -->
-                <div
-                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6"
-                >
-                    <h3
-                        class="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
-                    >
-                        <UIcon name="i-lucide-shopping-bag" class="w-4 h-4" />
-                        Захиалгын түүх
-                    </h3>
+                <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+                    <div class="px-5 py-4 border-b border-[var(--border-primary)] flex items-center justify-between">
+                        <h3 class="font-semibold text-[var(--text-heading)] flex items-center gap-2">
+                            <UIcon name="i-lucide-shopping-bag" class="w-4 h-4" />
+                            Захиалгын түүх
+                        </h3>
+                        <span v-if="ordersTotal > 0" class="text-xs text-[var(--text-muted)]">
+                            Нийт {{ ordersTotal }}
+                        </span>
+                    </div>
 
-                    <div v-if="loadingOrders" class="animate-pulse space-y-3">
+                    <div v-if="loadingOrders" class="p-5 space-y-3">
                         <div
                             v-for="i in 3"
                             :key="i"
-                            class="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg"
+                            class="h-14 bg-[var(--surface-inset)] rounded-lg animate-pulse"
                         />
                     </div>
 
-                    <div v-else-if="orders.length === 0" class="text-center py-8 text-gray-400">
-                        <UIcon name="i-lucide-inbox" class="w-8 h-8 mx-auto mb-2" />
-                        <p>Захиалга байхгүй байна</p>
+                    <div v-else-if="orders.length === 0" class="flex flex-col items-center justify-center py-12 text-center">
+                        <UIcon name="i-lucide-inbox" class="w-8 h-8 text-[var(--text-placeholder)] mb-2" />
+                        <p class="text-sm text-[var(--text-muted)]">Захиалга байхгүй байна</p>
                     </div>
 
-                    <div v-else class="space-y-3">
+                    <div v-else class="divide-y divide-[var(--border-primary)]">
                         <div
                             v-for="order in orders"
                             :key="order.id"
-                            class="flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition-colors"
+                            class="flex items-center justify-between px-5 py-3.5 hover:bg-[var(--surface-inset)]/40 cursor-pointer transition-colors duration-150"
                             @click="router.push(`/dashboard/orders/${order.id}`)"
                         >
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-4">
                                 <div>
-                                    <p class="font-medium text-sm text-gray-900 dark:text-white">
-                                        {{ order.order_number }}
+                                    <p class="font-semibold text-sm text-[var(--text-heading)]">
+                                        #{{ order.order_number }}
                                     </p>
-                                    <p class="text-xs text-gray-400">
+                                    <p class="text-xs text-[var(--text-muted)] mt-0.5">
                                         {{ formatDate(order.created_at) }}
                                     </p>
                                 </div>
@@ -249,38 +252,45 @@ onMounted(async () => {
                                 >
                                     {{ getStatusLabel(order.status) }}
                                 </UBadge>
-                                <span class="font-medium text-sm text-gray-900 dark:text-white">
+                                <span class="font-semibold text-sm text-[var(--text-heading)] min-w-[80px] text-right">
                                     {{ formatPrice(order.total_amount) }}
                                 </span>
+                                <UIcon name="i-lucide-chevron-right" class="w-4 h-4 text-[var(--text-placeholder)]" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </UDashboardPanel>
-    </div>
+        </div>
 
-    <UModal v-model:open="showDeleteModal">
-        <template #content>
-            <div class="p-6">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                        <UIcon name="i-lucide-trash-2" class="w-5 h-5 text-red-600 dark:text-red-400" />
-                    </div>
-                    <div>
-                        <h3 class="font-semibold text-gray-900 dark:text-white">Хэрэглэгч устгах</h3>
-                        <p class="text-sm text-gray-500">Энэ үйлдлийг буцаах боломжгүй</p>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    <span class="font-medium text-gray-900 dark:text-white">{{ customer?.name }}</span> хэрэглэгчийг устгах уу?
-                </p>
-                <div class="flex justify-end gap-3">
-                    <UButton variant="ghost" color="neutral" @click="showDeleteModal = false">Болих</UButton>
-                    <UButton color="error" :loading="deleting" @click="confirmDelete">Устгах</UButton>
-                </div>
-            </div>
-        </template>
-    </UModal>
+        <!-- Delete Modal -->
+        <UModal v-model:open="showDeleteModal">
+            <template #content>
+                <UCard>
+                    <template #header>
+                        <div class="flex items-center gap-2">
+                            <UIcon name="i-lucide-alert-triangle" class="text-red-500" />
+                            <span class="font-semibold">Хэрэглэгч устгах</span>
+                        </div>
+                    </template>
+
+                    <p>
+                        <strong>{{ customer?.name }}</strong> хэрэглэгчийг устгахдаа итгэлтэй байна уу?
+                    </p>
+                    <p class="text-sm text-[var(--text-muted)] mt-2">Энэ үйлдлийг буцаах боломжгүй.</p>
+
+                    <template #footer>
+                        <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="outline" @click="showDeleteModal = false">
+                                Болих
+                            </UButton>
+                            <UButton color="error" :loading="deleting" @click="confirmDelete">
+                                Устгах
+                            </UButton>
+                        </div>
+                    </template>
+                </UCard>
+            </template>
+        </UModal>
     </div>
 </template>

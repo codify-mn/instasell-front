@@ -301,7 +301,7 @@ async function onBgFileChange(e: Event) {
 <template>
     <div>
         <div v-if="isLoading" class="flex justify-center py-12">
-            <UIcon name="i-lucide-loader-2" class="w-8 h-8 animate-spin text-muted" />
+            <UIcon name="i-lucide-loader-2" class="size-6 animate-spin text-[var(--text-muted)]" />
         </div>
 
         <UForm v-else id="shop-settings" :schema="shopSchema" :state="state" @submit="onSubmit">
@@ -376,11 +376,11 @@ async function onBgFileChange(e: Event) {
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div
-                            class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center"
+                            class="w-10 h-10 rounded-xl bg-primary-500/10 flex items-center justify-center"
                         >
                             <UIcon
                                 name="i-simple-icons-facebook"
-                                class="w-6 h-6 text-blue-600 dark:text-blue-400"
+                                class="w-5 h-5 text-primary-500"
                             />
                         </div>
                         <div>
@@ -442,8 +442,8 @@ async function onBgFileChange(e: Event) {
                             type="button"
                             class="flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all cursor-pointer"
                             :class="state.bank_account_bank_name === bank.label
-                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400'
-                                : 'border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-600'"
+                                ? 'border-primary-500 bg-primary-500/10 text-primary-500'
+                                : 'border-[var(--border-primary)] hover:border-[var(--border-strong)]'"
                             @click="state.bank_account_bank_name = bank.label; state.bank_account_bank_code = bank.value"
                         >
                             <img :src="bank.logo" class="w-5 h-5 rounded-sm object-contain flex-shrink-0" />
@@ -497,11 +497,11 @@ async function onBgFileChange(e: Event) {
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div
-                            class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center"
+                            class="w-10 h-10 rounded-xl bg-[var(--surface-inset)] flex items-center justify-center"
                         >
                             <UIcon
                                 name="i-lucide-smartphone"
-                                class="w-6 h-6 text-purple-600 dark:text-purple-400"
+                                class="w-5 h-5 text-[var(--text-muted)]"
                             />
                         </div>
                         <div>
@@ -536,9 +536,9 @@ async function onBgFileChange(e: Event) {
                 <!-- QPay hint when not registered and bank account is empty -->
                 <template v-if="!qpayStatus?.is_registered && !state.bank_account_account_number">
                     <USeparator class="my-4" />
-                    <div class="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800/50">
-                        <UIcon name="i-lucide-info" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                        <p class="text-xs text-amber-700 dark:text-amber-300">
+                    <div class="flex items-center gap-2 px-3 py-2 bg-[var(--accent-warn-light)] rounded-lg border border-[var(--accent-warn)]/20">
+                        <UIcon name="i-lucide-info" class="w-4 h-4 text-[var(--accent-warn-dark)] shrink-0" />
+                        <p class="text-xs text-[var(--accent-warn-dark)]">
                             QPay бүртгэхийн өмнө дээрх <span class="font-semibold">Банкны мэдээлэл</span> хэсгийг бөглөнө үү — бүртгэлд автоматаар ашиглагдана.
                         </p>
                     </div>
@@ -659,7 +659,7 @@ async function onBgFileChange(e: Event) {
                     </div>
                     <button
                         v-if="backgrounds.length < 10"
-                        class="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary-400 transition-colors"
+                        class="w-24 h-24 rounded-lg border-2 border-dashed border-[var(--border-primary)] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-primary-400 transition-colors"
                         :disabled="uploadingBg"
                         @click="onBgFileClick"
                     >
@@ -778,11 +778,11 @@ async function onBgFileChange(e: Event) {
                     <template #header>
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center"
+                                class="w-10 h-10 rounded-full bg-[var(--surface-inset)] flex items-center justify-center"
                             >
                                 <UIcon
                                     name="i-lucide-smartphone"
-                                    class="w-5 h-5 text-purple-600 dark:text-purple-400"
+                                    class="w-5 h-5 text-[var(--text-muted)]"
                                 />
                             </div>
                             <div>
@@ -816,8 +816,8 @@ async function onBgFileChange(e: Event) {
             <template #content>
                 <div class="p-6">
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shrink-0">
-                            <UIcon name="i-lucide-triangle-alert" class="w-5 h-5 text-red-600 dark:text-red-400" />
+                        <div class="w-10 h-10 rounded-full bg-[var(--accent-error-light)] flex items-center justify-center shrink-0">
+                            <UIcon name="i-lucide-triangle-alert" class="w-5 h-5 text-[var(--accent-error)]" />
                         </div>
                         <div>
                             <h3 class="font-semibold text-[var(--text-heading)]">Бүртгэл устгах уу?</h3>

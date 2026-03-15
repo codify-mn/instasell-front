@@ -138,7 +138,7 @@ const handleAdd = async (product: Product) => {
             title: 'Product Added',
             description: `Added ${product.name} for live stream`,
             icon: 'i-heroicons-check-circle',
-            color: 'success'
+            color: 'primary'
         })
     } catch (error) {
         toast.add({
@@ -169,7 +169,7 @@ const handleSelect = async (product: Product) => {
         title: 'Бараа сонгогдлоо',
         description: `${product.name} live дээр харагдаж байна`,
         icon: 'i-heroicons-check-circle',
-        color: 'success'
+        color: 'primary'
     })
 }
 
@@ -213,7 +213,7 @@ const handleQuickCreate = async () => {
             title: 'Product Created',
             description: `${quickCreateForm.name} created successfully`,
             icon: 'i-heroicons-check-circle',
-            color: 'success'
+            color: 'primary'
         })
 
         resetQuickCreateForm()
@@ -233,9 +233,9 @@ const handleQuickCreate = async () => {
 
 <template>
     <div
-        class="flex flex-col h-full rounded-lg bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800"
+        class="flex flex-col h-full rounded-lg bg-[var(--surface-card)] border-l border-[var(--border-primary)]"
     >
-        <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="p-4 border-b border-[var(--border-primary)]">
             <h3 class="font-semibold text-lg mb-3">Бараанууд</h3>
             <UInput
                 v-model="search"
@@ -298,7 +298,7 @@ const handleQuickCreate = async () => {
             </template>
         </div>
 
-        <div class="p-2 border-t border-gray-200 dark:border-gray-800">
+        <div class="p-2 border-t border-[var(--border-primary)]">
             <UButton block icon="i-lucide-plus" @click="quickCreateOpen = true">
                 Quick Add Product
             </UButton>

@@ -21,114 +21,79 @@ onMounted(async () => {
     await Promise.all([fetchSubscription(), fetchUsage()])
 })
 
-const statusColor = computed(() => {
-    switch (subscription.value?.status) {
-        case 'active':
-            return 'success'
-        case 'trialing':
-            return 'info'
-        case 'past_due':
-            return 'warning'
-        case 'canceled':
-        case 'expired':
-            return 'error'
-        default:
-            return 'neutral'
+const statusLabel = computed(() => {
+    const map: Record<string, string> = {
+        active: 'Идэвхтэй',
+        trialing: 'Туршилт',
+        past_due: 'Хугацаа хэтэрсэн',
+        canceled: 'Цуцлагдсан',
+        expired: 'Дууссан'
     }
+    return map[subscription.value?.status ?? ''] ?? 'Тодорхойгүй'
 })
 
-const statusLabel = computed(() => {
-    switch (subscription.value?.status) {
-        case 'active':
-            return 'Идэвхтэй'
-        case 'trialing':
-            return 'Туршилтын хугацаа'
-        case 'past_due':
-            return 'Хугацаа хэтэрсэн'
-        case 'canceled':
-            return 'Цуцлагдсан'
-        case 'expired':
-            return 'Дууссан'
-        default:
-            return 'Тодорхойгүй'
+const statusColor = computed(() => {
+    const map: Record<string, string> = {
+        active: 'success',
+        trialing: 'info',
+        past_due: 'warning',
+        canceled: 'error',
+        expired: 'error'
     }
+    return map[subscription.value?.status ?? ''] ?? 'neutral'
 })
+
+const price = computed(() => {
+    if (!subscription.value?.plan) return ''
+    const p = subscription.value.billing_cycle === 'monthly'
+        ? subscription.value.plan.monthly_price
+        : subscription.value.plan.yearly_price
+    return p?.toLocaleString() + '₮'
+})
+
+const cycle = computed(() =>
+    subscription.value?.billing_cycle === 'monthly' ? 'сар' : 'жил'
+)
 
 const usageItems = computed(() => {
     if (!usage.value || !subscription.value?.plan) return []
-
     const plan = subscription.value.plan
-
-    const calcPercent = (current: number, max: number) => {
-        if (max === -1) return 0
-        return Math.min(100, (current / max) * 100)
-    }
+    const pct = (c: number, m: number) => m === -1 ? 0 : Math.min(100, (c / m) * 100)
 
     return [
-        {
-            label: 'Бүтээгдэхүүн',
-            current: usage.value.product_count,
-            max: plan.limits.max_products,
-            icon: 'i-lucide-package',
-            percent: calcPercent(usage.value.product_count, plan.limits.max_products)
-        },
-        {
-            label: 'Захиалга /сараар/',
-            current: usage.value.order_count_month,
-            max: plan.limits.max_orders_per_month,
-            icon: 'i-lucide-shopping-cart',
-            percent: calcPercent(usage.value.order_count_month, plan.limits.max_orders_per_month)
-        },
-        {
-            label: 'Хадгалах зай',
-            current: usage.value.storage_used_mb,
-            max: plan.limits.max_storage_mb,
-            icon: 'i-lucide-hard-drive',
-            isStorage: true,
-            percent: calcPercent(usage.value.storage_used_mb, plan.limits.max_storage_mb)
-        },
-        {
-            label: 'Дэлгүүр',
-            current: usage.value.shop_count,
-            max: plan.limits.max_shops,
-            icon: 'i-lucide-store',
-            percent: calcPercent(usage.value.shop_count, plan.limits.max_shops)
-        }
+        { label: 'Бүтээгдэхүүн', current: usage.value.product_count, max: plan.limits.max_products, percent: pct(usage.value.product_count, plan.limits.max_products) },
+        { label: 'Захиалга /сар/', current: usage.value.order_count_month, max: plan.limits.max_orders_per_month, percent: pct(usage.value.order_count_month, plan.limits.max_orders_per_month) },
+        { label: 'Хадгалах зай', current: usage.value.storage_used_mb, max: plan.limits.max_storage_mb, isStorage: true, percent: pct(usage.value.storage_used_mb, plan.limits.max_storage_mb) },
+        { label: 'Дэлгүүр', current: usage.value.shop_count, max: plan.limits.max_shops, percent: pct(usage.value.shop_count, plan.limits.max_shops) }
     ]
 })
 
 const featureItems = computed(() => {
     if (!subscription.value?.plan) return []
-
-    const features = subscription.value.plan.features
-
+    const f = subscription.value.plan.features
     return [
-        { label: 'Facebook Live', enabled: features.facebook_live },
-        { label: 'Дэвшилтэт аналитик', enabled: features.advanced_analytics },
-        { label: 'Брэндийн тохиргоо', enabled: features.custom_branding },
-        { label: 'Тусгай дэмжлэг', enabled: features.priority_support },
-        { label: 'API хандалт', enabled: features.api_access }
+        { label: 'Facebook Live', on: f.facebook_live },
+        { label: 'Дэвшилтэт тайлан', on: f.advanced_analytics },
+        { label: 'Брэнд тохиргоо', on: f.custom_branding },
+        { label: 'Тусгай дэмжлэг', on: f.priority_support },
+        { label: 'API хандалт', on: f.api_access }
     ]
 })
+
+const progressColor = (pct: number) => {
+    if (pct >= 90) return 'error'
+    if (pct >= 70) return 'warning'
+    return 'primary'
+}
 
 async function handleCancel() {
     canceling.value = true
     try {
         await cancelSubscription()
         showCancelModal.value = false
-        toast.add({
-            title: 'Амжилттай',
-            description: 'Таны захиалга цуцлагдлаа.',
-            icon: 'i-lucide-check',
-            color: 'success'
-        })
+        toast.add({ title: 'Амжилттай', description: 'Захиалга цуцлагдлаа.', color: 'primary' })
     } catch {
-        toast.add({
-            title: 'Алдаа',
-            description: 'Захиалга цуцлахад алдаа гарлаа.',
-            icon: 'i-lucide-x',
-            color: 'error'
-        })
+        toast.add({ title: 'Алдаа', description: 'Цуцлахад алдаа гарлаа.', color: 'error' })
     } finally {
         canceling.value = false
     }
@@ -136,324 +101,174 @@ async function handleCancel() {
 </script>
 
 <template>
-    <div class="w-full h-full overflow-y-auto">
-        <UDashboardPanel id="billing" :ui="{ body: 'lg:py-12' }">
-            <template #header>
-                <UDashboardNavbar title="Төлбөр">
-                    <template #leading>
-                        <UDashboardSidebarCollapse />
-                    </template>
-                </UDashboardNavbar>
+    <div class="flex w-full h-full flex-col overflow-hidden bg-[var(--surface-page)]">
+        <!-- Header -->
+        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+            <span class="text-base font-bold text-[var(--text-heading)]">Үйлчилгээний эрх</span>
+        </div>
 
-                <UDashboardToolbar>
-                    <UNavigationMenu
-                        :items="[
-                            [
-                                {
-                                    label: 'Төлбөр',
-                                    icon: 'i-lucide-credit-card',
-                                    to: '/dashboard/billing',
-                                    exact: true
-                                },
-                                {
-                                    label: 'Багц сонгох',
-                                    icon: 'i-lucide-crown',
-                                    to: '/dashboard/plans'
-                                },
-                                {
-                                    label: 'Түүх',
-                                    icon: 'i-lucide-history',
-                                    to: '/dashboard/history'
-                                }
-                            ]
-                        ]"
-                        highlight
-                        class="-mx-1 flex-1"
-                    />
-                </UDashboardToolbar>
-            </template>
+        <!-- Tabs -->
+        <div class="border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+            <nav class="flex gap-6 -mb-px">
+                <NuxtLink
+                    to="/dashboard/billing"
+                    exact-active-class="border-primary-500 text-[var(--text-heading)]"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                >
+                    Идэвхтэй багц
+                </NuxtLink>
+                <NuxtLink
+                    to="/dashboard/plans"
+                    exact-active-class="border-primary-500 text-[var(--text-heading)]"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                >
+                    Багц сонгох
+                </NuxtLink>
+                <NuxtLink
+                    to="/dashboard/history"
+                    exact-active-class="border-primary-500 text-[var(--text-heading)]"
+                    class="py-3 text-sm font-medium border-b-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-heading)] transition-colors"
+                >
+                    Нэхэмжлэх
+                </NuxtLink>
+            </nav>
+        </div>
 
-            <template #body>
-                <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full lg:max-w-2xl mx-auto">
-                    <div v-if="loading" class="flex justify-center items-center py-12">
-                        <UIcon
-                            name="i-lucide-loader-2"
-                            class="w-8 h-8 animate-spin text-gray-400"
-                        />
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="max-w-3xl mx-auto px-4 sm:px-7 py-6 space-y-6">
+                <!-- Loading skeleton -->
+                <div v-if="loading" class="space-y-6">
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="space-y-2">
+                                <div class="h-5 w-32 rounded bg-[var(--surface-inset)] animate-pulse" />
+                                <div class="h-3 w-48 rounded bg-[var(--surface-inset)] animate-pulse" />
+                            </div>
+                            <div class="h-6 w-20 rounded bg-[var(--surface-inset)] animate-pulse" />
+                        </div>
+                        <div class="h-3 w-56 rounded bg-[var(--surface-inset)] animate-pulse" />
+                        <div class="border-t border-[var(--border-subtle)] pt-4 flex gap-2">
+                            <div class="h-8 w-28 rounded-md bg-[var(--surface-inset)] animate-pulse" />
+                            <div class="h-8 w-24 rounded-md bg-[var(--surface-inset)] animate-pulse" />
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-4">
+                        <div class="h-4 w-20 rounded bg-[var(--surface-inset)] animate-pulse" />
+                        <div v-for="i in 4" :key="i" class="space-y-1.5">
+                            <div class="flex justify-between">
+                                <div class="h-3 w-24 rounded bg-[var(--surface-inset)] animate-pulse" />
+                                <div class="h-3 w-16 rounded bg-[var(--surface-inset)] animate-pulse" />
+                            </div>
+                            <div class="h-1.5 w-full rounded-full bg-[var(--surface-inset)] animate-pulse" />
+                        </div>
+                    </div>
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5 space-y-3">
+                        <div class="h-4 w-28 rounded bg-[var(--surface-inset)] animate-pulse" />
+                        <div class="grid grid-cols-2 gap-2">
+                            <div v-for="i in 5" :key="i" class="h-4 w-32 rounded bg-[var(--surface-inset)] animate-pulse" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No subscription -->
+                <template v-else-if="!subscription">
+                    <div class="flex flex-col items-center justify-center py-16 text-center">
+                        <UIcon name="i-lucide-credit-card" class="size-10 text-[var(--text-placeholder)] mb-3" />
+                        <p class="text-sm text-[var(--text-muted)] mb-4">Одоогоор идэвхтэй багц байхгүй байна</p>
+                        <UButton label="Багц сонгох" color="primary" to="/dashboard/plans" />
+                    </div>
+                </template>
+
+                <template v-else>
+                    <!-- Plan overview -->
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-1">
+                                    <h2 class="text-lg font-bold text-[var(--text-heading)]">{{ subscription.plan?.name }}</h2>
+                                    <UBadge :color="statusColor" variant="subtle" size="sm">{{ statusLabel }}</UBadge>
+                                </div>
+                                <p class="text-sm text-[var(--text-muted)]">{{ subscription.plan?.description }}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xl font-bold text-[var(--text-heading)]">{{ price }}</div>
+                                <div class="text-xs text-[var(--text-muted)]">/ {{ cycle }}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 text-sm text-[var(--text-muted)]">
+                            <div class="flex items-center gap-1.5">
+                                <UIcon name="i-lucide-calendar" class="size-3.5" />
+                                <span v-if="isTrialing">Туршилт: {{ daysRemaining }} хоног үлдсэн</span>
+                                <span v-else-if="isActive">Дараагийн төлбөр: {{ daysRemaining }} хоногийн дараа</span>
+                                <span v-else>Хугацаа дууссан</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 mt-4 pt-4 border-t border-[var(--border-subtle)]">
+                            <UButton label="Багц өөрчлөх" color="primary" size="sm" to="/dashboard/plans" />
+                            <UButton label="Нэхэмжлэх" color="neutral" variant="outline" size="sm" to="/dashboard/history" />
+                            <UButton
+                                v-if="isActive && subscription.plan?.slug !== 'free'"
+                                label="Цуцлах"
+                                color="error"
+                                variant="ghost"
+                                size="sm"
+                                @click="showCancelModal = true"
+                            />
+                        </div>
                     </div>
 
-                    <template v-else-if="subscription">
-                        <!-- Current Plan -->
-                        <UPageCard
-                            title="Одоогийн багц"
-                            description="Таны захиалгын мэдээлэл"
-                            variant="subtle"
-                        >
-                            <div class="flex flex-col gap-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="p-2 rounded-lg bg-primary-100 dark:bg-primary-900"
-                                        >
-                                            <UIcon
-                                                name="i-lucide-crown"
-                                                class="w-6 h-6 text-primary-600 dark:text-primary-400"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h3 class="text-lg font-semibold">
-                                                {{ subscription.plan?.name }}
-                                            </h3>
-                                            <p class="text-sm text-gray-500">
-                                                {{ subscription.plan?.description }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <UBadge :color="statusColor" variant="subtle">
-                                        {{ statusLabel }}
-                                    </UBadge>
-                                </div>
-
-                                <div
-                                    class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
-                                >
-                                    <UIcon name="i-lucide-calendar" class="w-4 h-4" />
-                                    <span v-if="isTrialing">
-                                        Туршилтын хугацаа дуусах: {{ daysRemaining }} хоног үлдсэн
-                                    </span>
-                                    <span v-else-if="isActive">
-                                        Дараагийн төлбөр: {{ daysRemaining }} хоногийн дараа
-                                    </span>
-                                    <span v-else> Хугацаа дууссан </span>
-                                </div>
-
-                                <div class="flex items-center gap-2 text-sm">
-                                    <span class="text-gray-600 dark:text-gray-400"
-                                        >Төлбөрийн мөчлөг:</span
-                                    >
-                                    <span class="font-medium">
-                                        {{
-                                            subscription.billing_cycle === 'monthly'
-                                                ? 'Сар бүр'
-                                                : 'Жил бүр'
-                                        }}
+                    <!-- Usage -->
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
+                        <h3 class="text-sm font-bold text-[var(--text-heading)] mb-4">Хэрэглээ</h3>
+                        <div class="space-y-3.5">
+                            <div v-for="item in usageItems" :key="item.label">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-sm text-[var(--text-body)]">{{ item.label }}</span>
+                                    <span class="text-xs text-[var(--text-muted)]">
+                                        <template v-if="item.isStorage">{{ formatStorage(item.current) }} / {{ formatStorage(item.max) }}</template>
+                                        <template v-else>{{ item.current.toLocaleString() }} / {{ formatLimit(item.max) }}</template>
                                     </span>
                                 </div>
-
-                                <div class="flex items-center gap-2 text-sm">
-                                    <span class="text-gray-600 dark:text-gray-400">Үнэ:</span>
-                                    <span class="font-semibold text-lg">
-                                        {{
-                                            subscription.billing_cycle === 'monthly'
-                                                ? subscription.plan?.monthly_price?.toLocaleString()
-                                                : subscription.plan?.yearly_price?.toLocaleString()
-                                        }}₮
-                                        <span class="text-sm font-normal text-gray-500">
-                                            /
-                                            {{
-                                                subscription.billing_cycle === 'monthly'
-                                                    ? 'сар'
-                                                    : 'жил'
-                                            }}
-                                        </span>
-                                    </span>
-                                </div>
+                                <UProgress :model-value="item.percent" :color="progressColor(item.percent)" size="xs" />
                             </div>
+                        </div>
+                    </div>
 
-                            <template #footer>
-                                <div class="flex gap-2 flex-wrap">
-                                    <UButton
-                                        label="Багц өөрчлөх"
-                                        color="primary"
-                                        to="/dashboard/plans"
-                                    />
-                                    <UButton
-                                        label="Төлбөрийн түүх"
-                                        color="neutral"
-                                        variant="outline"
-                                        icon="i-lucide-history"
-                                        to="/dashboard/history"
-                                    />
-                                    <UButton
-                                        v-if="isActive && subscription.plan?.slug !== 'free'"
-                                        label="Цуцлах"
-                                        color="error"
-                                        variant="outline"
-                                        @click="showCancelModal = true"
-                                    />
-                                </div>
-                            </template>
-                        </UPageCard>
-
-                        <!-- Usage Statistics -->
-                        <UPageCard
-                            title="Хэрэглээ"
-                            description="Таны одоогийн хэрэглээний статистик"
-                            variant="subtle"
-                        >
-                            <div class="space-y-4">
-                                <div
-                                    v-for="item in usageItems"
-                                    :key="item.label"
-                                    class="flex flex-col gap-2 p-3 rounded-lg transition-colors"
-                                    :class="
-                                        item.percent >= 80 ? 'bg-amber-50 dark:bg-amber-900/20' : ''
-                                    "
-                                >
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <UIcon
-                                                :name="item.icon"
-                                                class="w-4 h-4"
-                                                :class="
-                                                    item.percent >= 80
-                                                        ? 'text-amber-600'
-                                                        : 'text-gray-500'
-                                                "
-                                            />
-                                            <span class="text-sm font-medium">{{
-                                                item.label
-                                            }}</span>
-                                            <UBadge
-                                                v-if="item.percent >= 80"
-                                                color="warning"
-                                                variant="subtle"
-                                                size="xs"
-                                            >
-                                                {{ Math.round(item.percent) }}%
-                                            </UBadge>
-                                        </div>
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">
-                                            <template v-if="item.isStorage">
-                                                {{ formatStorage(item.current) }} /
-                                                {{ formatStorage(item.max) }}
-                                            </template>
-                                            <template v-else>
-                                                {{ item.current.toLocaleString() }} /
-                                                {{ formatLimit(item.max) }}
-                                            </template>
-                                        </span>
-                                    </div>
-                                    <UProgress
-                                        :model-value="item.percent"
-                                        :color="
-                                            item.percent >= 90
-                                                ? 'error'
-                                                : item.percent >= 70
-                                                  ? 'warning'
-                                                  : 'primary'
-                                        "
-                                        size="sm"
-                                    />
-                                </div>
-                            </div>
-                        </UPageCard>
-
-                        <!-- Features -->
-                        <UPageCard
-                            title="Боломжууд"
-                            description="Таны багцад орсон боломжууд"
-                            variant="subtle"
-                        >
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div
-                                    v-for="item in featureItems"
-                                    :key="item.label"
-                                    class="flex items-center gap-2"
-                                >
-                                    <UIcon
-                                        :name="
-                                            item.enabled
-                                                ? 'i-lucide-check-circle'
-                                                : 'i-lucide-x-circle'
-                                        "
-                                        :class="item.enabled ? 'text-success-500' : 'text-gray-400'"
-                                        class="w-5 h-5"
-                                    />
-                                    <span :class="item.enabled ? '' : 'text-gray-400'">
-                                        {{ item.label }}
-                                    </span>
-                                </div>
-                            </div>
-                        </UPageCard>
-
-                        <!-- Cancel Subscription Modal -->
-                        <UModal v-model:open="showCancelModal">
-                            <template #content>
-                                <UCard>
-                                    <template #header>
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="p-2 rounded-full bg-error-100 dark:bg-error-900"
-                                            >
-                                                <UIcon
-                                                    name="i-lucide-alert-triangle"
-                                                    class="w-6 h-6 text-error-600"
-                                                />
-                                            </div>
-                                            <div>
-                                                <h3 class="text-lg font-semibold">
-                                                    Захиалга цуцлах
-                                                </h3>
-                                                <p class="text-sm text-gray-500">
-                                                    Энэ үйлдлийг буцаах боломжгүй
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </template>
-
-                                    <p class="text-gray-600 dark:text-gray-400">
-                                        Та захиалгаа цуцлахдаа итгэлтэй байна уу? Таны одоогийн
-                                        хугацааны төгсгөл хүртэл үйлчилгээг ашиглах боломжтой хэвээр
-                                        байна.
-                                    </p>
-
-                                    <template #footer>
-                                        <div class="flex justify-end gap-2">
-                                            <UButton
-                                                label="Болих"
-                                                color="neutral"
-                                                variant="outline"
-                                                @click="showCancelModal = false"
-                                            />
-                                            <UButton
-                                                label="Цуцлах"
-                                                color="error"
-                                                :loading="canceling"
-                                                @click="handleCancel"
-                                            />
-                                        </div>
-                                    </template>
-                                </UCard>
-                            </template>
-                        </UModal>
-                    </template>
-
-                    <!-- No Subscription -->
-                    <template v-else>
-                        <UPageCard
-                            title="Захиалга байхгүй"
-                            description="Та одоогоор ямар нэгэн багц захиалаагүй байна."
-                            variant="subtle"
-                        >
-                            <div class="flex flex-col items-center justify-center py-8 gap-4">
+                    <!-- Features -->
+                    <div class="rounded-xl border border-[var(--border-primary)] bg-[var(--surface-card)] p-5">
+                        <h3 class="text-sm font-bold text-[var(--text-heading)] mb-3">Багцын боломжууд</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div v-for="item in featureItems" :key="item.label" class="flex items-center gap-2 text-sm">
                                 <UIcon
-                                    name="i-lucide-credit-card"
-                                    class="w-16 h-16 text-gray-300"
+                                    :name="item.on ? 'i-lucide-check' : 'i-lucide-minus'"
+                                    class="size-3.5"
+                                    :class="item.on ? 'text-[var(--accent-green)]' : 'text-[var(--text-placeholder)]'"
                                 />
-                                <p class="text-gray-500 text-center">
-                                    Бүх боломжуудыг ашиглахын тулд багц сонгоно уу.
-                                </p>
-                                <UButton
-                                    label="Багц сонгох"
-                                    color="primary"
-                                    to="/dashboard/plans"
-                                />
+                                <span :class="item.on ? 'text-[var(--text-body)]' : 'text-[var(--text-placeholder)]'">{{ item.label }}</span>
                             </div>
-                        </UPageCard>
-                    </template>
-                </div>
-            </template>
-        </UDashboardPanel>
+                        </div>
+                    </div>
+
+                    <!-- Cancel modal -->
+                    <UModal v-model:open="showCancelModal">
+                        <template #content>
+                            <div class="p-6">
+                                <h3 class="text-lg font-bold text-[var(--text-heading)] mb-2">Захиалга цуцлах</h3>
+                                <p class="text-sm text-[var(--text-muted)] mb-6">
+                                    Цуцалсан ч одоогийн хугацааны төгсгөл хүртэл ашиглах боломжтой.
+                                </p>
+                                <div class="flex justify-end gap-2">
+                                    <UButton label="Болих" color="neutral" variant="outline" @click="showCancelModal = false" />
+                                    <UButton label="Цуцлах" color="error" :loading="canceling" @click="handleCancel" />
+                                </div>
+                            </div>
+                        </template>
+                    </UModal>
+                </template>
+            </div>
+        </div>
     </div>
 </template>

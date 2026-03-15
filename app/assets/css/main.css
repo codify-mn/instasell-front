@@ -5,58 +5,58 @@
 @theme static {
     --font-sans: 'Poppins', sans-serif;
 
-    /* Emerald primary (#059669 base) */
-    --color-primary-50: #ecfdf5;
-    --color-primary-100: #d1fae5;
-    --color-primary-200: #a7f3d0;
-    --color-primary-300: #6ee7b7;
-    --color-primary-400: #34d399;
-    --color-primary-500: #10b981;
-    --color-primary-600: #059669; /* Base */
-    --color-primary-700: #047857;
-    --color-primary-800: #065f46;
-    --color-primary-900: #064e3b;
-    --color-primary-950: #022c22;
+    /* Purple-blue primary (#3D4283 base) */
+    --color-primary-50: #eef0f9;
+    --color-primary-100: #d5d9f0;
+    --color-primary-200: #b3b9e2;
+    --color-primary-300: #8f97d1;
+    --color-primary-400: #6b73c0;
+    --color-primary-500: #4f57ab;
+    --color-primary-600: #3D4283; /* Base */
+    --color-primary-700: #333873;
+    --color-primary-800: #282d5e;
+    --color-primary-900: #1e2249;
+    --color-primary-950: #121430;
 
-    /* Charcoal/slate secondary (mockup palette) */
-    --color-secondary-50: #f6f9fc;
-    --color-secondary-100: #f0f4f8;
-    --color-secondary-200: #e3e8ee;
-    --color-secondary-300: #c4cdd8;
-    --color-secondary-400: #9baacf;
-    --color-secondary-500: #697386;
-    --color-secondary-600: #4f566b;
-    --color-secondary-700: #1a1f36;
-    --color-secondary-800: #121826;
-    --color-secondary-900: #0d1117;
-    --color-secondary-950: #050810;
+    /* Cool neutral secondary */
+    --color-secondary-50: #f8f9fc;
+    --color-secondary-100: #f3f4f8;
+    --color-secondary-200: #e2e4eb;
+    --color-secondary-300: #d0d3dc;
+    --color-secondary-400: #9da1b3;
+    --color-secondary-500: #6b7086;
+    --color-secondary-600: #4f5570;
+    --color-secondary-700: #1a1d36;
+    --color-secondary-800: #121526;
+    --color-secondary-900: #0d0f17;
+    --color-secondary-950: #060710;
 }
 
 /* ── Semantic tokens ── */
 :root {
     /* Surfaces */
-    --surface-page: #f6f9fc;
+    --surface-page: #f8f9fc;
     --surface-card: #ffffff;
-    --surface-inset: #f6f9fc;
-    --surface-overlay: #1a1f36;
+    --surface-inset: #f3f4f8;
+    --surface-overlay: #1a1d36;
 
     /* Borders */
-    --border-primary: #e3e8ee;
-    --border-subtle: #f0f4f8;
-    --border-strong: #c4cdd8;
+    --border-primary: #e2e4eb;
+    --border-subtle: #eceef3;
+    --border-strong: #d0d3dc;
 
     /* Text */
-    --text-heading: #1a1f36;
-    --text-body: #4f566b;
-    --text-muted: #697386;
-    --text-placeholder: #9baacf;
-    --text-dimmed: #c4cdd8;
+    --text-heading: #1a1d36;
+    --text-body: #4f5570;
+    --text-muted: #7c7f8e;
+    --text-placeholder: #a5a8b5;
+    --text-dimmed: #d0d3dc;
 
-    /* Accent — green (sparse: revenue, conversion, paid) */
-    --accent-green: #059669;
-    --accent-green-hover: #047857;
-    --accent-green-light: #ecfdf5;
-    --accent-green-border: #a7f3d0;
+    /* Accent — primary (sparse: revenue, conversion, paid) */
+    --accent-green: #3D4283;
+    --accent-green-hover: #333873;
+    --accent-green-light: #eef0f9;
+    --accent-green-border: #b3b9e2;
 
     /* Accent — warning */
     --accent-warn: #e47a00;
@@ -72,12 +72,12 @@
     --accent-info-light: #eff6ff;
 
     /* Misc */
-    --bar-neutral: #e3e8ee;
+    --bar-neutral: #e2e4eb;
 
     /* Gradients (marketing pages) */
-    --gradient-start: #059669;
-    --gradient-mid: #047857;
-    --gradient-end: #065f46;
+    --gradient-start: #4f57ab;
+    --gradient-mid: #3D4283;
+    --gradient-end: #282d5e;
 
     /* Shadows */
     --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
@@ -87,38 +87,46 @@
 
 /* Dark mode */
 .dark {
-    --surface-page: #0f172a;
-    --surface-card: #1e293b;
-    --surface-inset: #1e293b;
-    --surface-overlay: #0f172a;
+    --surface-page: #0f1019;
+    --surface-card: #1a1d30;
+    --surface-inset: #1a1d30;
+    --surface-overlay: #0f1019;
 
-    --border-primary: #334155;
-    --border-subtle: #1e293b;
-    --border-strong: #475569;
+    --border-primary: #2a2d45;
+    --border-subtle: #1a1d30;
+    --border-strong: #3d4160;
 
-    --text-heading: #e2e8f0;
-    --text-body: #cbd5e1;
-    --text-muted: #94a3b8;
-    --text-placeholder: #64748b;
-    --text-dimmed: #475569;
+    --text-heading: #e2e4f0;
+    --text-body: #c5c8d9;
+    --text-muted: #8f93ab;
+    --text-placeholder: #5c6080;
+    --text-dimmed: #3d4160;
 
-    --accent-green: #34d399;
-    --accent-green-hover: #6ee7b7;
-    --accent-green-light: rgba(6, 78, 59, 0.3);
-    --accent-green-border: #064e3b;
+    --accent-green: #8f97d1;
+    --accent-green-hover: #b3b9e2;
+    --accent-green-light: rgba(30, 34, 73, 0.3);
+    --accent-green-border: #1e2249;
 
     --accent-warn-light: rgba(69, 26, 3, 0.3);
     --accent-error-light: rgba(69, 10, 10, 0.3);
     --accent-info-light: rgba(30, 58, 95, 0.3);
 
-    --bar-neutral: #334155;
+    --bar-neutral: #2a2d45;
 
-    --gradient-start: #34d399;
-    --gradient-mid: #059669;
-    --gradient-end: #047857;
+    --gradient-start: #8f97d1;
+    --gradient-mid: #4f57ab;
+    --gradient-end: #3D4283;
 
     --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
     --shadow-elevated: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Override Nuxt UI elevated bg to match project theme */
+:root {
+    --ui-bg-elevated: var(--surface-card);
+    --ui-bg-accented: var(--surface-inset);
+    --ui-border: var(--border-primary);
+    --ui-border-accented: var(--border-subtle);
 }
 
 /* Base styles */
@@ -303,14 +311,14 @@ h1, h2, h3 {
 .card-hover:hover {
     @apply -translate-y-1;
     box-shadow:
-        0 20px 40px -15px rgba(39, 216, 94, 0.15),
-        0 10px 20px -10px rgba(39, 216, 94, 0.08);
+        0 20px 40px -15px rgba(61, 66, 131, 0.15),
+        0 10px 20px -10px rgba(61, 66, 131, 0.08);
 }
 
 .dark .card-hover:hover {
     box-shadow:
-        0 20px 40px -15px rgba(77, 224, 134, 0.2),
-        0 10px 20px -10px rgba(39, 216, 94, 0.15);
+        0 20px 40px -15px rgba(143, 151, 209, 0.2),
+        0 10px 20px -10px rgba(79, 87, 171, 0.15);
 }
 
 /* Clean card */
@@ -324,11 +332,11 @@ h1, h2, h3 {
 .glass-card-elevated {
     background: var(--surface-card);
     border: 1px solid var(--border-primary);
-    box-shadow: 0 2px 8px rgba(16, 42, 50, 0.06), 0 1px 2px rgba(16, 42, 50, 0.04);
+    box-shadow: 0 2px 8px rgba(26, 29, 54, 0.06), 0 1px 2px rgba(26, 29, 54, 0.04);
 }
 
 .glass-card-elevated:hover {
-    box-shadow: 0 4px 16px rgba(16, 42, 50, 0.1), 0 2px 4px rgba(16, 42, 50, 0.06);
+    box-shadow: 0 4px 16px rgba(26, 29, 54, 0.1), 0 2px 4px rgba(26, 29, 54, 0.06);
 }
 
 /* Clean solid card (no blur) */
@@ -345,36 +353,36 @@ h1, h2, h3 {
     color: var(--text-heading);
 }
 
-/* Hero green radial mesh background */
+/* Hero radial mesh background */
 .hero-mesh-bg {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,197,94,0.13) 0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(34,197,94,0.09) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(74,222,128,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(61,66,131,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(61,66,131,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(79,87,171,0.07) 0%, transparent 55%),
         #ffffff;
 }
 
 .dark .hero-mesh-bg {
     background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,197,94,0.10) 0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(34,197,94,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(74,222,128,0.05) 0%, transparent 55%),
-        #0f172a;
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,87,171,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(79,87,171,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 30%, rgba(143,151,209,0.05) 0%, transparent 55%),
+        #0f1019;
 }
 
-/* Stats section — light green-tinted background */
+/* Stats section — light primary-tinted background */
 .stats-section-bg {
-    background: linear-gradient(135deg, #f0fdf4, #f8fafc, #f0fdf4);
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #eef0f9, #f8f9fc, #eef0f9);
+    border-top: 1px solid #e2e4eb;
+    border-bottom: 1px solid #e2e4eb;
 }
 
 .dark .stats-section-bg {
-    background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
-    border-top-color: #334155;
-    border-bottom-color: #334155;
+    background: linear-gradient(135deg, #0f1019, #1a1d30, #0f1019);
+    border-top-color: #2a2d45;
+    border-bottom-color: #2a2d45;
 }
 
 /* Sidebar nav active indicator */
@@ -413,7 +421,7 @@ h1, h2, h3 {
 /* Icon container with gradient border */
 .icon-container {
     @apply relative p-4 rounded-2xl;
-    background: linear-gradient(135deg, rgba(39, 216, 94, 0.1), rgba(26, 184, 78, 0.08));
+    background: linear-gradient(135deg, rgba(61, 66, 131, 0.1), rgba(79, 87, 171, 0.08));
 }
 
 .icon-container::before {
@@ -456,7 +464,7 @@ h1, h2, h3 {
 /* Pricing card popular highlight */
 .pricing-popular {
     @apply relative;
-    background: linear-gradient(135deg, rgba(39, 216, 94, 0.06), rgba(16, 42, 50, 0.04));
+    background: linear-gradient(135deg, rgba(61, 66, 131, 0.06), rgba(40, 45, 94, 0.04));
 }
 
 .pricing-popular::before {
@@ -495,32 +503,6 @@ h1, h2, h3 {
     background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
 }
 
-/* Smooth page transitions */
-.page-enter-active,
-.page-leave-active {
-    transition: all 0.3s ease-out;
-}
-
-.page-enter-from {
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-.page-leave-to {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-/* Layout transitions */
-.layout-enter-active,
-.layout-leave-active {
-    transition: all 0.3s ease-out;
-}
-
-.layout-enter-from,
-.layout-leave-to {
-    opacity: 0;
-}
 
 /* Noise texture overlay (subtle) */
 .noise-overlay::after {
@@ -554,7 +536,7 @@ h1, h2, h3 {
 
 /* Gradient border button */
 .btn-gradient-border {
-    @apply relative bg-white dark:bg-gray-900;
+    @apply relative bg-[var(--surface-card)];
 }
 
 .btn-gradient-border::before {

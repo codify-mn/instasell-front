@@ -27,7 +27,7 @@ function getInitial(name: string): string {
 }
 
 const avatarColors = [
-    'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500',
+    'bg-blue-500', 'bg-primary-500', 'bg-purple-500', 'bg-pink-500',
     'bg-amber-500', 'bg-cyan-500', 'bg-rose-500', 'bg-indigo-500'
 ]
 
@@ -43,7 +43,7 @@ function getAvatarColor(senderId: string): string {
 <template>
     <div
         ref="scrollContainer"
-        class="flex-1 overflow-y-auto p-2 border border-gray-200 dark:border-gray-800 mx-2 rounded-lg"
+        class="flex-1 overflow-y-auto p-2 border border-[var(--border-primary)] mx-2 rounded-lg"
     >
         <template v-if="comments.length === 0">
             <div class="flex flex-col items-center justify-center h-full gap-2">

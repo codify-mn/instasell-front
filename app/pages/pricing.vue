@@ -155,7 +155,7 @@ async function handleCheckPayment() {
                 title: 'Амжилттай!',
                 description: 'Төлбөр баталгаажлаа. Таны багц идэвхжлээ.',
                 icon: 'i-lucide-check',
-                color: 'success'
+                color: 'primary'
             })
             router.push('/dashboard')
         } else {
@@ -240,7 +240,7 @@ const trustPoints = [
                     </div>
 
                     <h1
-                        class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6"
+                        class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-heading)] mb-6"
                     >
                         Энгийн, <span class="text-gradient">ил тод</span> үнэ
                     </h1>
@@ -259,7 +259,7 @@ const trustPoints = [
                             class="relative px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300"
                             :class="
                                 !isYearly
-                                    ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md'
+                                    ? 'bg-[var(--surface-card)] text-[var(--text-heading)] shadow-md'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                             "
                             @click="isYearly = false"
@@ -270,14 +270,14 @@ const trustPoints = [
                             class="relative px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2"
                             :class="
                                 isYearly
-                                    ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md'
+                                    ? 'bg-[var(--surface-card)] text-[var(--text-heading)] shadow-md'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                             "
                             @click="isYearly = true"
                         >
                             Жилээр
                             <span
-                                class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
+                                class="bg-gradient-to-r from-primary-500 to-primary-500 text-white text-xs font-bold px-2 py-0.5 rounded-full"
                             >
                                 -20%
                             </span>
@@ -291,7 +291,7 @@ const trustPoints = [
                             :key="point.label"
                             class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
                         >
-                            <UIcon :name="point.icon" class="w-5 h-5 text-green-500" />
+                            <UIcon :name="point.icon" class="w-5 h-5 text-primary-500" />
                             <span>{{ point.label }}</span>
                         </div>
                     </div>
@@ -321,10 +321,10 @@ const trustPoints = [
                         class="relative flex flex-col rounded-2xl transition-all duration-300"
                         :class="[
                             isPopularPlan(plan)
-                                ? 'pricing-popular bg-white dark:bg-gray-900 scale-[1.02] z-10 shadow-xl'
-                                : 'bg-white dark:bg-gray-900/80 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
+                                ? 'pricing-popular bg-[var(--surface-card)] scale-[1.02] z-10 shadow-xl'
+                                : 'bg-[var(--surface-card)] border border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
                             isCurrentPlan(plan)
-                                ? 'ring-2 ring-green-500 ring-offset-2 dark:ring-offset-gray-950'
+                                ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-950'
                                 : ''
                         ]"
                     >
@@ -344,7 +344,7 @@ const trustPoints = [
                         <!-- Current Plan Badge -->
                         <div v-if="isCurrentPlan(plan)" class="absolute -top-4 right-4">
                             <span
-                                class="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                                class="inline-flex items-center gap-1.5 bg-primary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
                             >
                                 <UIcon name="i-lucide-check" class="w-3.5 h-3.5" />
                                 Одоогийн
@@ -355,7 +355,7 @@ const trustPoints = [
                         <div class="p-8 flex-1 flex flex-col">
                             <!-- Plan Name & Description -->
                             <div class="mb-6">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                <h3 class="text-xl font-bold text-[var(--text-heading)] mb-2">
                                     {{ plan.name }}
                                 </h3>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -367,7 +367,7 @@ const trustPoints = [
                             <div class="mb-8">
                                 <div class="flex items-baseline gap-1">
                                     <span
-                                        class="text-4xl font-extrabold text-gray-900 dark:text-white"
+                                        class="text-4xl font-extrabold text-[var(--text-heading)]"
                                     >
                                         ₮{{
                                             formatPrice(
@@ -392,7 +392,7 @@ const trustPoints = [
                                             ₮{{ formatPrice(plan.monthly_price * 12) }}/жил
                                         </span>
                                         <span
-                                            class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full"
+                                            class="text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/30 px-2 py-0.5 rounded-full"
                                         >
                                             -{{ getYearlyDiscount(plan) }}%
                                         </span>
@@ -416,7 +416,7 @@ const trustPoints = [
                                         class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                                         :class="
                                             feature.included
-                                                ? 'bg-green-100 dark:bg-green-900/30'
+                                                ? 'bg-primary-100 dark:bg-primary-900/30'
                                                 : 'bg-gray-100 dark:bg-gray-800'
                                         "
                                     >
@@ -429,7 +429,7 @@ const trustPoints = [
                                             class="w-3 h-3"
                                             :class="
                                                 feature.included
-                                                    ? 'text-green-600 dark:text-green-400'
+                                                    ? 'text-primary-600 dark:text-primary-400'
                                                     : 'text-gray-400 dark:text-gray-600'
                                             "
                                         />
@@ -492,7 +492,7 @@ const trustPoints = [
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="py-24 bg-gray-50 dark:bg-gray-900/50">
+        <section id="faq" class="py-24 bg-[var(--surface-inset)]">
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-16">
                     <div
@@ -503,7 +503,7 @@ const trustPoints = [
                             >Түгээмэл асуултууд</span
                         >
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                         Асуулт байна уу?
                     </h2>
                     <p class="text-lg text-gray-600 dark:text-gray-400">
@@ -515,9 +515,9 @@ const trustPoints = [
                     <UAccordion
                         :items="faq"
                         :ui="{
-                            item: 'bg-white dark:bg-gray-900/80 rounded-xl border border-gray-200 dark:border-gray-800 px-6',
+                            item: 'bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] px-6',
                             trigger:
-                                'py-5 font-semibold text-gray-900 dark:text-white hover:text-primary-500 transition-colors',
+                                'py-5 font-semibold text-[var(--text-heading)] hover:text-primary-500 transition-colors',
                             content: 'pb-5 text-gray-600 dark:text-gray-400'
                         }"
                     />

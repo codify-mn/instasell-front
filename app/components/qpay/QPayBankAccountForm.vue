@@ -54,7 +54,7 @@ function getBankLabel(code: string) {
 <template>
     <div class="space-y-4">
         <div class="flex items-center justify-between">
-            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Банкны данс</label>
+            <label class="text-sm font-medium text-[var(--text-body)]">Банкны данс</label>
             <UButton size="xs" variant="ghost" icon="i-lucide-plus" @click="addAccount">
                 Данс нэмэх
             </UButton>
@@ -64,8 +64,8 @@ function getBankLabel(code: string) {
             v-if="accounts.length === 0"
             class="text-center py-6 border-2 border-dashed rounded-lg"
         >
-            <UIcon name="i-lucide-credit-card" class="w-8 h-8 text-gray-400 mx-auto mb-2" />
-            <p class="text-sm text-gray-500">Банкны данс оруулна уу</p>
+            <UIcon name="i-lucide-credit-card" class="w-8 h-8 text-[var(--text-placeholder)] mx-auto mb-2" />
+            <p class="text-sm text-[var(--text-muted)]">Банкны данс оруулна уу</p>
             <UButton size="sm" variant="soft" class="mt-3" @click="addAccount">
                 Данс нэмэх
             </UButton>
@@ -77,7 +77,7 @@ function getBankLabel(code: string) {
             class="border rounded-lg p-4 space-y-3"
         >
             <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="text-sm font-medium text-[var(--text-body)]">
                     Данс #{{ index + 1 }}
                 </span>
                 <div class="flex items-center gap-2">

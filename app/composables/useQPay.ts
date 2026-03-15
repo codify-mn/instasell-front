@@ -112,7 +112,7 @@ const _useQPay = () => {
                 title: 'Амжилттай',
                 description: 'QPay компани мерчант бүртгэгдлээ.',
                 icon: 'i-lucide-check',
-                color: 'success'
+                color: 'primary'
             })
             await fetchStatus()
             return data
@@ -144,7 +144,7 @@ const _useQPay = () => {
                 title: 'Амжилттай',
                 description: 'QPay хувь хүн мерчант бүртгэгдлээ.',
                 icon: 'i-lucide-check',
-                color: 'success'
+                color: 'primary'
             })
             await fetchStatus()
             return data
@@ -219,7 +219,7 @@ const _useQPay = () => {
                     title: 'Төлбөр баталгаажлаа',
                     description: `${data.paid_amount.toLocaleString()}₮ төлбөр хүлээн авлаа.`,
                     icon: 'i-lucide-check-circle',
-                    color: 'success'
+                    color: 'primary'
                 })
             }
             return data

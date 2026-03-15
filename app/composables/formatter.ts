@@ -1,17 +1,25 @@
-// Helper function to format date
-export const formatDate = (dateString: string) => {
+// Helper function to format date — YYYY/MM/DD HH:mm
+export const formatDate = (dateString?: string): string => {
+    if (!dateString) return '-'
     const dt = new Date(dateString)
-    return (
-        dt.getFullYear() +
-        '-' +
-        (dt.getMonth() + 1 < 10 ? '0' + (dt.getMonth() + 1) : dt.getMonth() + 1) +
-        '-' +
-        (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) +
-        ' ' +
-        (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) +
-        ':' +
-        (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-    )
+    if (isNaN(dt.getTime())) return '-'
+    const y = dt.getFullYear()
+    const m = String(dt.getMonth() + 1).padStart(2, '0')
+    const d = String(dt.getDate()).padStart(2, '0')
+    const h = String(dt.getHours()).padStart(2, '0')
+    const min = String(dt.getMinutes()).padStart(2, '0')
+    return `${y}/${m}/${d} ${h}:${min}`
+}
+
+// Format date only — YYYY/MM/DD (no time)
+export const formatDateShort = (dateString?: string): string => {
+    if (!dateString) return '-'
+    const dt = new Date(dateString)
+    if (isNaN(dt.getTime())) return '-'
+    const y = dt.getFullYear()
+    const m = String(dt.getMonth() + 1).padStart(2, '0')
+    const d = String(dt.getDate()).padStart(2, '0')
+    return `${y}/${m}/${d}`
 }
 
 // Helper function to format currency

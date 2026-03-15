@@ -98,7 +98,7 @@ const _useShopSettings = () => {
                 title: 'Амжилттай',
                 description: 'Тохиргоо хадгалагдлаа.',
                 icon: 'i-lucide-check',
-                color: 'success'
+                color: 'primary'
             })
             return data
         } catch (err: any) {

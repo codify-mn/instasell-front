@@ -54,7 +54,7 @@ const handleFiles = async (fileList: FileList) => {
         const urls = await uploadFiles(validFiles)
         if (urls.length > 0) {
             emit('update:modelValue', [...props.modelValue, ...urls])
-            toast.add({ title: 'Амжилттай', description: `${urls.length} зураг оруулагдлаа`, color: 'success' })
+            toast.add({ title: 'Амжилттай', description: `${urls.length} зураг оруулагдлаа`, color: 'primary' })
         }
     } catch (err: any) {
         toast.add({ title: 'Алдаа', description: err.data?.message || 'Зураг оруулахад алдаа гарлаа', color: 'error' })
@@ -134,8 +134,8 @@ const openFilePicker = () => {
 
             <!-- Upload progress -->
             <div v-if="progress.length > 0" class="space-y-1">
-                <div v-for="(item, index) in progress" :key="index" class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                    <UIcon v-if="item.status === 'done'" name="i-lucide-check" class="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
+                <div v-for="(item, index) in progress" :key="index" class="flex items-center gap-2 p-2 bg-[var(--surface-inset)] rounded-lg">
+                    <UIcon v-if="item.status === 'done'" name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
                     <UIcon v-else-if="item.status === 'error'" name="i-lucide-x" class="w-3.5 h-3.5 text-red-500 flex-shrink-0" />
                     <UIcon v-else name="i-lucide-loader-2" class="w-3.5 h-3.5 text-gray-500 animate-spin flex-shrink-0" />
                     <div class="flex-1 min-w-0">

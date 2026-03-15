@@ -24,7 +24,7 @@ watch(
     <div class="min-h-screen bg-white dark:bg-gray-950">
         <!-- Top Navigation -->
         <header
-            class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-800"
+            class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-gray-950/80 border-b border-[var(--border-primary)]"
         >
             <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
@@ -113,7 +113,7 @@ watch(
                 />
 
                 <nav
-                    class="bg-white dark:bg-gray-950 lg:bg-transparent h-full p-6 border-r border-gray-200 dark:border-gray-800 lg:border-0"
+                    class="bg-white dark:bg-gray-950 lg:bg-transparent h-full p-6 border-r border-[var(--border-primary)] lg:border-0"
                 >
                     <!-- Quick links -->
                     <div class="mb-8">
@@ -170,7 +170,7 @@ watch(
 
                         <!-- Feedback section -->
                         <template #bottom>
-                            <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+                            <div class="mt-16 pt-8 border-t border-[var(--border-primary)]">
                                 <div
                                     class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
                                 >
@@ -217,7 +217,7 @@ watch(
 
         <!-- Footer -->
         <footer
-            class="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50"
+            class="border-t border-[var(--border-primary)] bg-[var(--surface-inset)]"
         >
             <div class="max-w-[90rem] mx-auto px-6 py-8">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -228,7 +228,7 @@ watch(
                             >
                                 <UIcon name="i-lucide-zap" class="w-3.5 h-3.5 text-white" />
                             </div>
-                            <span class="font-semibold text-sm text-gray-900 dark:text-white"
+                            <span class="font-semibold text-sm text-[var(--text-heading)]"
                                 >Instasell</span
                             >
                         </NuxtLink>

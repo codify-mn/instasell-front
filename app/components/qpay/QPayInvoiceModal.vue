@@ -80,18 +80,18 @@ function formatAmount(amount?: number) {
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"
+                                class="w-10 h-10 rounded-full bg-primary-500/10 flex items-center justify-center"
                             >
                                 <UIcon
                                     name="i-lucide-qr-code"
-                                    class="w-5 h-5 text-primary-600 dark:text-primary-400"
+                                    class="w-5 h-5 text-primary-500"
                                 />
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-900 dark:text-white">
+                                <h3 class="font-semibold text-[var(--text-heading)]">
                                     QPay төлбөр
                                 </h3>
-                                <p v-if="orderNumber" class="text-sm text-gray-500">
+                                <p v-if="orderNumber" class="text-sm text-[var(--text-muted)]">
                                     Захиалга #{{ orderNumber }}
                                 </p>
                             </div>
@@ -108,9 +108,9 @@ function formatAmount(amount?: number) {
 
                 <div v-if="invoice" class="space-y-6">
                     <!-- Amount -->
-                    <div class="text-center py-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                        <p class="text-sm text-gray-500 mb-1">Нийт төлбөр</p>
-                        <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                    <div class="text-center py-4 bg-[var(--surface-inset)] rounded-lg">
+                        <p class="text-sm text-[var(--text-muted)] mb-1">Нийт төлбөр</p>
+                        <p class="text-3xl font-bold text-primary-500">
                             {{ formatAmount(totalAmount) }}
                         </p>
                     </div>
@@ -126,19 +126,19 @@ function formatAmount(amount?: number) {
                             >
                             <div
                                 v-else
-                                class="w-48 h-48 flex items-center justify-center bg-gray-100 rounded"
+                                class="w-48 h-48 flex items-center justify-center bg-[var(--surface-inset)] rounded"
                             >
-                                <UIcon name="i-lucide-qr-code" class="w-16 h-16 text-gray-300" />
+                                <UIcon name="i-lucide-qr-code" class="w-16 h-16 text-[var(--text-placeholder)]" />
                             </div>
                         </div>
-                        <p class="text-sm text-gray-500 text-center">
+                        <p class="text-sm text-[var(--text-muted)] text-center">
                             QR кодыг банкны апп-аар уншуулна уу
                         </p>
                     </div>
 
                     <!-- Bank Apps -->
                     <div v-if="invoice.deep_links?.length" class="space-y-3">
-                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p class="text-sm font-medium text-[var(--text-body)]">
                             Банкны апп-аар нээх
                         </p>
                         <div class="grid grid-cols-4 gap-2">
@@ -147,7 +147,7 @@ function formatAmount(amount?: number) {
                                 :key="link.name"
                                 :href="link.link"
                                 target="_blank"
-                                class="flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                class="flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-[var(--surface-inset)] transition-colors"
                             >
                                 <img
                                     v-if="link.logo"
@@ -155,7 +155,7 @@ function formatAmount(amount?: number) {
                                     :alt="link.name"
                                     class="w-10 h-10 rounded-lg object-cover"
                                 >
-                                <span class="text-[10px] text-gray-500 text-center line-clamp-1">{{
+                                <span class="text-[10px] text-[var(--text-muted)] text-center line-clamp-1">{{
                                     link.name
                                 }}</span>
                             </a>
@@ -164,11 +164,11 @@ function formatAmount(amount?: number) {
 
                     <!-- Status -->
                     <div
-                        class="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg"
+                        class="flex items-center justify-between p-3 bg-[var(--accent-warn-light)] rounded-lg"
                     >
                         <div class="flex items-center gap-2">
                             <UIcon name="i-lucide-clock" class="w-4 h-4 text-amber-600" />
-                            <span class="text-sm text-amber-700 dark:text-amber-400"
+                            <span class="text-sm text-[var(--accent-warn-dark)]"
                                 >Төлбөр хүлээж байна...</span
                             >
                         </div>
@@ -183,7 +183,7 @@ function formatAmount(amount?: number) {
                         </UButton>
                     </div>
 
-                    <p v-if="lastChecked" class="text-xs text-gray-400 text-center">
+                    <p v-if="lastChecked" class="text-xs text-[var(--text-placeholder)] text-center">
                         Сүүлд шалгасан: {{ lastChecked.toLocaleTimeString() }}
                     </p>
                 </div>
@@ -191,9 +191,9 @@ function formatAmount(amount?: number) {
                 <div v-else class="py-12 text-center">
                     <UIcon
                         name="i-lucide-loader-2"
-                        class="w-8 h-8 animate-spin text-gray-400 mx-auto mb-3"
+                        class="w-8 h-8 animate-spin text-[var(--text-placeholder)] mx-auto mb-3"
                     />
-                    <p class="text-sm text-gray-500">Нэхэмжлэх ачаалж байна...</p>
+                    <p class="text-sm text-[var(--text-muted)]">Нэхэмжлэх ачаалж байна...</p>
                 </div>
             </UCard>
         </template>

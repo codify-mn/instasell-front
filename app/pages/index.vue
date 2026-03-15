@@ -139,11 +139,11 @@ onMounted(() => {
                     <!-- Left: Copy -->
                     <div class="text-center lg:text-left">
                         <div
-                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f0fdf4] border border-[#bbf7d0] dark:bg-green-900/20 dark:border-green-800/40 mb-8 fade-in-up"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#eef0f9] border border-[#b3b9e2] dark:bg-primary-900/20 dark:border-primary-800/40 mb-8 fade-in-up"
                         >
                             <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500" />
                             </span>
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Live худалдааны #1 платформ</span>
                         </div>
@@ -151,9 +151,9 @@ onMounted(() => {
                         <h1
                             class="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight leading-[1.1] mb-6 fade-in-up fade-in-up-delay-1"
                         >
-                            <span class="text-gray-900 dark:text-white">Facebook Live</span>
+                            <span class="text-[var(--text-heading)]">Facebook Live</span>
                             <br>
-                            <span class="text-gray-900 dark:text-white">захиалгыг </span>
+                            <span class="text-[var(--text-heading)]">захиалгыг </span>
                             <span class="text-gradient">автоматжуул</span>
                         </h1>
 
@@ -161,7 +161,7 @@ onMounted(() => {
                             class="text-lg text-gray-500 dark:text-gray-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed fade-in-up fade-in-up-delay-2"
                         >
                             Коммент дээрх захиалгыг автоматаар хүлээн авч, өдөрт
-                            <strong class="text-gray-900 dark:text-white font-semibold">3+ цаг хэмнээрэй</strong>.
+                            <strong class="text-[var(--text-heading)] font-semibold">3+ цаг хэмнээрэй</strong>.
                             Ганц ч захиалга алдахгүй.
                         </p>
 
@@ -196,15 +196,15 @@ onMounted(() => {
                             class="flex flex-wrap gap-6 justify-center lg:justify-start mt-10 text-sm text-gray-400 fade-in-up fade-in-up-delay-4"
                         >
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>Үнэгүй туршилт</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>Карт шаардлагагүй</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                 <span>5 минутад бэлэн</span>
                             </div>
                         </div>
@@ -226,7 +226,7 @@ onMounted(() => {
                                         <div class="flex gap-1.5">
                                             <div class="w-3 h-3 rounded-full bg-red-500/80" />
                                             <div class="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                            <div class="w-3 h-3 rounded-full bg-green-500/80" />
+                                            <div class="w-3 h-3 rounded-full bg-primary-500/80" />
                                         </div>
                                         <div class="flex-1 mx-8">
                                             <div class="bg-gray-700/60 rounded-lg px-3 py-1.5 text-xs text-gray-400 text-center max-w-xs mx-auto">
@@ -242,12 +242,12 @@ onMounted(() => {
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Өнөөдөр</div>
                                                 <div class="text-xl font-bold text-white">₮2.4M</div>
-                                                <div class="text-xs text-green-400 mt-0.5">+12%</div>
+                                                <div class="text-xs text-primary-400 mt-0.5">+12%</div>
                                             </div>
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Захиалга</div>
                                                 <div class="text-xl font-bold text-white">156</div>
-                                                <div class="text-xs text-green-400 mt-0.5">+8%</div>
+                                                <div class="text-xs text-primary-400 mt-0.5">+8%</div>
                                             </div>
                                             <div class="bg-gray-800/60 rounded-xl p-3.5">
                                                 <div class="text-[11px] text-gray-500 mb-1">Live үзэгч</div>
@@ -291,11 +291,11 @@ onMounted(() => {
                             <!-- Floating cards -->
                             <div class="absolute -right-6 top-16 float-delay-1">
                                 <div class="glass-card rounded-xl px-4 py-3 shadow-lg flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-                                        <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
+                                    <div class="w-9 h-9 rounded-full bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+                                        <UIcon name="i-lucide-check" class="w-4 h-4 text-primary-500" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Шинэ захиалга!</div>
+                                        <div class="text-sm font-medium text-[var(--text-heading)] whitespace-nowrap">Шинэ захиалга!</div>
                                         <div class="text-xs text-gray-500">₮45,000 · Болормаа</div>
                                     </div>
                                 </div>
@@ -309,7 +309,7 @@ onMounted(() => {
                                         </div>
                                         <div>
                                             <div class="text-xs text-gray-500">Өнөөдрийн өсөлт</div>
-                                            <div class="text-lg font-bold text-green-500">+24%</div>
+                                            <div class="text-lg font-bold text-primary-500">+24%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -336,8 +336,8 @@ onMounted(() => {
                             [`fade-in-up-delay-${index + 1}`]: statsVisible
                         }"
                     >
-                        <div class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-1">
-                            {{ stat.value }}<span class="text-[#16a34a] text-2xl md:text-3xl">{{ stat.unit }}</span>
+                        <div class="text-4xl md:text-5xl font-extrabold text-[var(--text-heading)] mb-1">
+                            {{ stat.value }}<span class="text-[#4f57ab] text-2xl md:text-3xl">{{ stat.unit }}</span>
                         </div>
                         <div class="text-sm text-[#64748b] dark:text-gray-400">
                             {{ stat.label }}
@@ -351,7 +351,7 @@ onMounted(() => {
         <section class="py-20 lg:py-24">
             <UContainer class="max-w-5xl">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                         Танил асуудлууд уу?
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -362,7 +362,7 @@ onMounted(() => {
                     <div
                         v-for="pain in painPoints"
                         :key="pain.problem"
-                        class="p-5 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800/50"
+                        class="p-5 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)] transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-800/50"
                     >
                         <div class="flex items-center gap-3">
                             <div class="w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
@@ -372,10 +372,10 @@ onMounted(() => {
                         </div>
                         <div class="w-px h-3 bg-gray-200 dark:bg-gray-700 ml-3.5" />
                         <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                                <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-green-500" />
+                            <div class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+                                <UIcon name="i-lucide-check" class="w-3.5 h-3.5 text-primary-500" />
                             </div>
-                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ pain.solution }}</p>
+                            <p class="text-sm font-semibold text-[var(--text-heading)]">{{ pain.solution }}</p>
                         </div>
                     </div>
                 </div>
@@ -383,11 +383,11 @@ onMounted(() => {
         </section>
 
         <!-- Features -->
-        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
+        <section id="features" ref="featuresRef" class="py-20 lg:py-24 bg-[var(--surface-inset)]">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Боломжууд</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                         Яагаад Instasell?
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -399,7 +399,7 @@ onMounted(() => {
                     <div
                         v-for="(feature, index) in features"
                         :key="feature.title"
-                        class="group relative p-6 rounded-2xl bg-white dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-primary-500/10"
+                        class="group relative p-6 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-primary-500/10"
                         :class="{
                             'fade-in-up': featuresVisible,
                             [`fade-in-up-delay-${index + 1}`]: featuresVisible
@@ -415,7 +415,7 @@ onMounted(() => {
                                 {{ feature.stat }}
                             </span>
                         </div>
-                        <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-base font-semibold text-[var(--text-heading)] mb-2">
                             {{ feature.title }}
                         </h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -442,7 +442,7 @@ onMounted(() => {
                     <!-- Right: Copy -->
                     <div>
                         <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Мульти стриминг</p>
-                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                        <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                             Нэг дороос бүх платформд Live хийгээрэй
                         </h2>
                         <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
@@ -455,7 +455,7 @@ onMounted(() => {
                                     <UIcon name="i-lucide-radio" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Нэг товчоор бүгдэд Live</p>
+                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Нэг товчоор бүгдэд Live</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Facebook, Instagram-д нэгэн зэрэг дамжуулна</p>
                                 </div>
                             </div>
@@ -464,7 +464,7 @@ onMounted(() => {
                                     <UIcon name="i-lucide-layers" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Бараа мэдээлэл overlay</p>
+                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Бараа мэдээлэл overlay</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Live дээр барааны нэр, үнэ автомат харагдана</p>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@ onMounted(() => {
                                     <UIcon name="i-lucide-message-square" class="w-4 h-4 text-primary-500" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-sm text-gray-900 dark:text-white">Коммент автомат уншина</p>
+                                    <p class="font-semibold text-sm text-[var(--text-heading)]">Коммент автомат уншина</p>
                                     <p class="text-sm text-gray-500 dark:text-gray-400">Бүх платформын коммент захиалгыг нэг дороос удирдана</p>
                                 </div>
                             </div>
@@ -484,11 +484,11 @@ onMounted(() => {
         </section>
 
         <!-- How It Works -->
-        <section ref="stepsRef" class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
+        <section ref="stepsRef" class="py-20 lg:py-24 bg-[var(--surface-inset)]">
             <UContainer class="max-w-4xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Хэрхэн ажилладаг</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                         3 алхамаар эхлээрэй
                     </h2>
                     <p class="text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
@@ -518,7 +518,7 @@ onMounted(() => {
 
                         <!-- Content -->
                         <div class="pb-2 pt-1">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-1">
                                 {{ step.title }}
                             </h3>
                             <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
@@ -542,11 +542,11 @@ onMounted(() => {
         </section>
 
         <!-- Testimonials -->
-        <section class="py-20 lg:py-24 bg-[#f8fafc] dark:bg-gray-900/30">
+        <section class="py-20 lg:py-24 bg-[var(--surface-inset)]">
             <UContainer class="max-w-7xl">
                 <div class="text-center mb-14">
                     <p class="text-sm font-semibold text-primary-500 mb-3 tracking-wide uppercase">Сэтгэгдэл</p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-heading)] mb-4">
                         Худалдаачдын туршлага
                     </h2>
                 </div>
@@ -555,7 +555,7 @@ onMounted(() => {
                     <div
                         v-for="testimonial in testimonials"
                         :key="testimonial.author"
-                        class="p-6 rounded-2xl bg-white dark:bg-gray-900/60 border border-gray-100 dark:border-gray-800"
+                        class="p-6 rounded-2xl bg-[var(--surface-card)] border border-[var(--border-primary)]"
                     >
                         <div class="flex items-center gap-1 mb-4">
                             <UIcon v-for="n in 5" :key="n" name="i-lucide-star" class="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -567,7 +567,7 @@ onMounted(() => {
 
                         <div class="flex items-center justify-between">
                             <div>
-                                <div class="font-semibold text-sm text-gray-900 dark:text-white">
+                                <div class="font-semibold text-sm text-[var(--text-heading)]">
                                     {{ testimonial.author }}
                                 </div>
                                 <div class="text-xs text-gray-500">

@@ -229,7 +229,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         }
 
         const order = await createOrder(orderData)
-        toast.add({ title: 'Амжилттай', description: 'Захиалга үүсгэгдлээ', color: 'success' })
+        toast.add({ title: 'Амжилттай', description: 'Захиалга үүсгэгдлээ', color: 'primary' })
         router.push(`/dashboard/orders/${order.id}`)
     } finally {
         loading.value = false
@@ -264,7 +264,7 @@ const generateCheckoutLink = async () => {
         const host = window.location.origin
         checkoutLink.value = `${host}/checkout/${order.checkout_token}`
         checkoutModalOpen.value = true
-        toast.add({ title: 'Амжилттай', description: 'Checkout линк үүсгэгдлээ', color: 'success' })
+        toast.add({ title: 'Амжилттай', description: 'Checkout линк үүсгэгдлээ', color: 'primary' })
     } catch (err: any) {
         toast.add({
             title: 'Алдаа',
@@ -278,7 +278,7 @@ const generateCheckoutLink = async () => {
 
 const copyCheckoutLink = () => {
     navigator.clipboard.writeText(checkoutLink.value)
-    toast.add({ title: 'Хуулагдлаа', description: 'Линк санах ойд хадгалагдлаа', color: 'success' })
+    toast.add({ title: 'Хуулагдлаа', description: 'Линк санах ойд хадгалагдлаа', color: 'primary' })
 }
 </script>
 
@@ -286,7 +286,7 @@ const copyCheckoutLink = () => {
     <div class="w-full h-full flex flex-col overflow-hidden">
         <UDashboardPanel id="new-order">
             <template #header>
-                <UDashboardNavbar class="border-b border-gray-200 dark:border-gray-800">
+                <UDashboardNavbar class="border-b border-[var(--border-primary)]">
                     <template #leading>
                         <div class="flex items-center gap-3">
                             <UButton
@@ -298,7 +298,7 @@ const copyCheckoutLink = () => {
                             />
                             <div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Захиалга</p>
-                                <h1 class="text-sm font-semibold text-gray-900 dark:text-white leading-tight">Шинэ захиалга</h1>
+                                <h1 class="text-sm font-semibold text-[var(--text-heading)] leading-tight">Шинэ захиалга</h1>
                             </div>
                         </div>
                     </template>
@@ -336,19 +336,19 @@ const copyCheckoutLink = () => {
                         <!-- Left: Products -->
                         <div class="flex-1 overflow-y-auto p-5 lg:p-7 space-y-2">
                             <div class="flex items-center justify-between mb-1">
-                                <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Бараа</h2>
+                                <h2 class="text-sm font-semibold text-[var(--text-heading)]">Бараа</h2>
                                 <span v-if="cartItems.length" class="text-xs text-primary font-medium">{{ cartItems.length }} нэмэгдсэн</span>
                             </div>
                             <OrderProductGrid @select="handleProductSelect" />
                         </div>
 
                         <!-- Right: Sidebar -->
-                        <div class="w-full lg:w-[380px] xl:w-[400px] shrink-0 lg:border-l border-gray-200 dark:border-gray-800 overflow-y-auto">
+                        <div class="w-full lg:w-[380px] xl:w-[400px] shrink-0 lg:border-l border-[var(--border-primary)] overflow-y-auto">
                             <div class="divide-y divide-gray-200 dark:divide-gray-800">
 
                                 <!-- Customer -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Харилцагч</h2>
+                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Харилцагч</h2>
                                     <UFormField name="customer_phone">
                                         <UInput
                                             v-model="state.customer_phone"
@@ -357,15 +357,15 @@ const copyCheckoutLink = () => {
                                             :loading="phoneSearching"
                                         >
                                             <template v-if="foundCustomer" #trailing>
-                                                <UIcon name="i-lucide-check-circle-2" class="text-green-500 w-4 h-4" />
+                                                <UIcon name="i-lucide-check-circle-2" class="text-primary-500 w-4 h-4" />
                                             </template>
                                         </UInput>
                                     </UFormField>
 
                                     <!-- Found customer -->
-                                    <div v-if="foundCustomer && !showCustomerForm" class="mt-3 flex items-start justify-between gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900">
+                                    <div v-if="foundCustomer && !showCustomerForm" class="mt-3 flex items-start justify-between gap-2 p-3 rounded-lg bg-primary-50 dark:bg-primary-950/20 border border-primary-200 dark:border-primary-900">
                                         <div class="min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ foundCustomer.name }}</p>
+                                            <p class="text-sm font-medium text-[var(--text-heading)]">{{ foundCustomer.name }}</p>
                                             <p class="text-xs text-gray-500 mt-0.5 truncate">{{ customerSummary }}</p>
                                         </div>
                                         <UButton icon="i-lucide-pencil" color="neutral" variant="ghost" size="xs" @click="showCustomerForm = true" />
@@ -413,7 +413,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Cart -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Захиалга</h2>
+                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Захиалга</h2>
                                     <OrderCartCard
                                         :items="cartItems"
                                         :shipping-fee="shippingFee"
@@ -425,7 +425,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Shipping & Discount -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Нэмэлт</h2>
+                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Нэмэлт</h2>
                                     <div class="grid grid-cols-2 gap-3">
                                         <UFormField label="Хүргэлтийн төлбөр">
                                             <UInput v-model.number="shippingFee" type="number" min="0" placeholder="0">
@@ -442,7 +442,7 @@ const copyCheckoutLink = () => {
 
                                 <!-- Payment Method -->
                                 <div class="p-5">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Төлбөрийн арга</h2>
+                                    <h2 class="text-sm font-semibold text-[var(--text-heading)] mb-4">Төлбөрийн арга</h2>
                                     <div class="grid grid-cols-2 gap-2">
                                         <button
                                             v-for="option in paymentMethodOptions"
@@ -505,8 +505,8 @@ const copyCheckoutLink = () => {
                             <template #header>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-9 h-9 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                            <UIcon name="i-lucide-link-2" class="w-4 h-4 text-green-600 dark:text-green-400" />
+                                        <div class="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                            <UIcon name="i-lucide-link-2" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                         </div>
                                         <div>
                                             <h3 class="text-sm font-semibold">Линк бэлэн боллоо</h3>

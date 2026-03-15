@@ -70,7 +70,7 @@ const createTestOrder = async () => {
             toast.add({
                 title: 'Амжилттай',
                 description: 'Туршилтын захиалга үүсгэгдлээ.',
-                color: 'success'
+                color: 'primary'
             })
         }
     } catch (err) {
@@ -101,7 +101,7 @@ const createTestOrder = async () => {
         <UButton
             icon="i-lucide-plus"
             variant="soft"
-            color="success"
+            color="primary"
             :loading="generatingTest"
             class="rounded-xl shadow-sm"
             @click="createTestOrder"

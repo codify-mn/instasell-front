@@ -6,7 +6,7 @@ import type {
 } from '~/composables/useQPay'
 
 const props = defineProps<{
-    inline?: boolean // For embedding in onboarding
+    inline?: boolean
     defaultBankAccount?: {
         bank_name: string
         bank_code: string
@@ -31,6 +31,11 @@ const {
 const { user } = useAuth()
 const { shop, fetchShop } = useShopSettings()
 
+// Step state
+const step = ref(1)
+const totalSteps = 4
+
+// Merchant type
 const merchantType = ref<'company' | 'person'>('person')
 
 // Common fields
@@ -39,9 +44,9 @@ const email = ref('')
 const city = ref('')
 const district = ref('')
 const address = ref('')
-const mccCode = ref('5999') // Default: Miscellaneous retail
+const mccCode = ref('5999')
 
-// Single bank account
+// Bank
 const bankCode = ref('')
 const bankAccountNumber = ref('')
 const bankAccountName = ref('')
@@ -58,140 +63,74 @@ const companyOwnerLastName = ref('')
 const companyRegisterNo = ref('')
 const companyName = ref('')
 
-// Dynamic location data
+// Location data
 const cities = ref<{ label: string; value: string }[]>([])
 const districts = ref<{ label: string; value: string }[]>([])
 const isLoadingCities = ref(false)
 const isLoadingDistricts = ref(false)
 
-// Accordion state - track which sections are expanded
-const expandedSections = ref<string[]>(['personal-info'])
-
-// Section completion status
-const isPersonalInfoComplete = computed(() => {
+// Step validation
+const isStep1Valid = computed(() => {
     if (merchantType.value === 'person') {
         return !!(personRegisterNo.value && personFirstName.value && personLastName.value)
-    } else {
-        return !!(
-            companyOwnerRegisterNo.value &&
-            companyOwnerFirstName.value &&
-            companyOwnerLastName.value &&
-            companyRegisterNo.value &&
-            companyName.value
-        )
     }
+    return !!(companyOwnerRegisterNo.value && companyOwnerFirstName.value && companyOwnerLastName.value && companyRegisterNo.value && companyName.value)
 })
 
-const isContactComplete = computed(() => !!(phone.value && email.value))
+const isStep2Valid = computed(() => !!(phone.value && email.value))
 
-const isAddressComplete = computed(() => !!(city.value && district.value && address.value))
+const isStep3Valid = computed(() => !!(city.value && district.value && address.value))
 
-const isBankComplete = computed(
-    () => !!(bankCode.value && bankAccountNumber.value && bankAccountName.value)
-)
+const isStep4Valid = computed(() => !!(bankCode.value && bankAccountNumber.value && bankAccountName.value))
 
-// Count completed sections
-const completedSectionsCount = computed(() => {
-    let count = 0
-    if (isPersonalInfoComplete.value) count++
-    if (isContactComplete.value) count++
-    if (isAddressComplete.value) count++
-    if (isBankComplete.value) count++
-    return count
+const canNext = computed(() => {
+    if (step.value === 1) return isStep1Valid.value
+    if (step.value === 2) return isStep2Valid.value
+    if (step.value === 3) return isStep3Valid.value
+    if (step.value === 4) return isStep4Valid.value
+    return false
 })
 
-// Load cities and autofill data on mount
+const stepLabels = ['Мэдээлэл', 'Холбоо барих', 'Хаяг', 'Банк']
+
+function next() {
+    if (step.value < totalSteps && canNext.value) step.value++
+}
+
+function back() {
+    if (step.value > 1) step.value--
+}
+
+// Load data
 onMounted(async () => {
-    // Fetch shop data if not already loaded
-    if (!shop.value) {
-        await fetchShop()
-    }
+    if (!shop.value) await fetchShop()
 
-    // Autofill email from user
-    if (user.value?.email) {
-        email.value = user.value.email
-    }
+    if (user.value?.email) email.value = user.value.email
+    if (shop.value?.phone_number) phone.value = shop.value.phone_number
+    if (user.value?.first_name) personFirstName.value = user.value.first_name
+    if (user.value?.last_name) personLastName.value = user.value.last_name
 
-    // Autofill phone from shop
-    if (shop.value?.phone_number) {
-        phone.value = shop.value.phone_number
-    }
+    if (props.defaultBankAccount?.account_number) bankAccountNumber.value = props.defaultBankAccount.account_number
+    if (props.defaultBankAccount?.account_name) bankAccountName.value = props.defaultBankAccount.account_name
+    if (props.defaultBankAccount?.bank_code) bankCode.value = props.defaultBankAccount.bank_code
 
-    // Autofill person name from user
-    if (user.value?.first_name) {
-        personFirstName.value = user.value.first_name
-    }
-    if (user.value?.last_name) {
-        personLastName.value = user.value.last_name
-    }
-
-    // Pre-fill bank account from defaultBankAccount prop
-    if (props.defaultBankAccount?.account_number && !bankAccountNumber.value) {
-        bankAccountNumber.value = props.defaultBankAccount.account_number
-    }
-    if (props.defaultBankAccount?.account_name && !bankAccountName.value) {
-        bankAccountName.value = props.defaultBankAccount.account_name
-    }
-    if (props.defaultBankAccount?.bank_code && !bankCode.value) {
-        bankCode.value = props.defaultBankAccount.bank_code
-    }
-
-    // Load cities
     isLoadingCities.value = true
     const citiesData = await fetchCities()
     cities.value = citiesData.map((c: QPayLocation) => ({ label: c.name, value: c.code }))
     isLoadingCities.value = false
 
-    // Set default city if available
     if (cities.value.length > 0) {
-        const ulaanbaatar = cities.value.find((c) => c.label.includes('Улаанбаатар'))
-        city.value = ulaanbaatar?.value || cities.value[0]!.value
+        const ub = cities.value.find(c => c.label.includes('Улаанбаатар'))
+        city.value = ub?.value || cities.value[0]!.value
     }
-
-    // Auto-expand incomplete sections on initial load only
-    initializeExpandedSections()
 })
 
-function initializeExpandedSections() {
-    const sections: string[] = []
-
-    // Always show personal info if incomplete
-    if (!isPersonalInfoComplete.value) {
-        sections.push('personal-info')
-    }
-    // Show contact if personal is done but contact is not
-    if (isPersonalInfoComplete.value && !isContactComplete.value) {
-        sections.push('contact')
-    }
-    // Show address if contact is done but address is not
-    if (isContactComplete.value && !isAddressComplete.value) {
-        sections.push('address')
-    }
-    // Show bank if address is done but bank is not
-    if (isAddressComplete.value && !isBankComplete.value) {
-        sections.push('bank')
-    }
-
-    // If nothing is expanded, expand personal-info
-    if (sections.length === 0) {
-        sections.push('personal-info')
-    }
-
-    expandedSections.value = sections
-}
-
-// Load districts when city changes
 watch(city, async (newCity) => {
-    if (!newCity) {
-        districts.value = []
-        district.value = ''
-        return
-    }
-
+    if (!newCity) { districts.value = []; district.value = ''; return }
     isLoadingDistricts.value = true
-    district.value = '' // Reset district when city changes
-    const districtsData = await fetchDistricts(newCity)
-    districts.value = districtsData.map((d: QPayLocation) => ({ label: d.name, value: d.code }))
+    district.value = ''
+    const data = await fetchDistricts(newCity)
+    districts.value = data.map((d: QPayLocation) => ({ label: d.name, value: d.code }))
     isLoadingDistricts.value = false
 })
 
@@ -207,38 +146,18 @@ const banks = [
     { label: 'М банк', value: '210000' }
 ]
 
-// MCC codes
 const mccCodes = [
-    { label: '5411 - Хүнсний дэлгүүр', value: '5411' },
-    { label: '5691 - Хувцас/Гоёл чимэглэл', value: '5691' },
-    { label: '5311 - Их дэлгүүр', value: '5311' },
-    { label: '5712 - Тавилга/Гэр ахуй', value: '5712' },
-    { label: '5999 - Бусад жижиглэн худалдаа', value: '5999' },
-    { label: '5812 - Хоол/Ресторан', value: '5812' },
-    { label: '5813 - Бар/Цайны газар', value: '5813' },
-    { label: '7299 - Үйлчилгээ', value: '7299' }
+    { label: 'Хүнсний дэлгүүр', value: '5411' },
+    { label: 'Хувцас / Гоёл чимэглэл', value: '5691' },
+    { label: 'Их дэлгүүр', value: '5311' },
+    { label: 'Тавилга / Гэр ахуй', value: '5712' },
+    { label: 'Бусад жижиглэн худалдаа', value: '5999' },
+    { label: 'Хоол / Ресторан', value: '5812' },
+    { label: 'Үйлчилгээ', value: '7299' }
 ]
 
-const isValid = computed(() => {
-    // Bank account required
-    if (!bankCode.value || !bankAccountNumber.value || !bankAccountName.value) return false
-    if (!phone.value || !city.value || !district.value || !address.value) return false
-
-    if (merchantType.value === 'person') {
-        return personRegisterNo.value && personFirstName.value && personLastName.value
-    } else {
-        return (
-            companyOwnerRegisterNo.value &&
-            companyOwnerFirstName.value &&
-            companyOwnerLastName.value &&
-            companyRegisterNo.value &&
-            companyName.value
-        )
-    }
-})
-
 async function submit() {
-    if (!isValid.value) return
+    if (!isStep4Valid.value) return
 
     const bankAccount = {
         account_bank_code: bankCode.value,
@@ -249,7 +168,7 @@ async function submit() {
 
     try {
         if (merchantType.value === 'person') {
-            const request: RegisterPersonRequest = {
+            await registerPersonMerchant({
                 register_number: personRegisterNo.value,
                 first_name: personFirstName.value,
                 last_name: personLastName.value,
@@ -260,10 +179,9 @@ async function submit() {
                 phone: phone.value,
                 email: email.value,
                 bank_account: bankAccount
-            }
-            await registerPersonMerchant(request)
+            } as RegisterPersonRequest)
         } else {
-            const request: RegisterCompanyRequest = {
+            await registerCompanyMerchant({
                 owner_register_no: companyOwnerRegisterNo.value,
                 owner_first_name: companyOwnerFirstName.value,
                 owner_last_name: companyOwnerLastName.value,
@@ -276,287 +194,218 @@ async function submit() {
                 phone: phone.value,
                 email: email.value,
                 bank_account: bankAccount
-            }
-            await registerCompanyMerchant(request)
+            } as RegisterCompanyRequest)
         }
         emit('success')
     } catch {
-        // Error is handled in composable
+        // Error handled in composable
     }
 }
 </script>
 
 <template>
-    <div class="space-y-4">
-        <!-- Progress indicator -->
-        <div class="flex items-center justify-between px-1 py-2">
-            <span class="text-sm text-gray-500 dark:text-gray-400">
-                {{ completedSectionsCount }}/4 бүлэг бөглөсөн
-            </span>
-            <div class="flex gap-1">
+    <div class="space-y-5">
+        <!-- Step indicator -->
+        <div class="flex items-center gap-1">
+            <template v-for="s in totalSteps" :key="s">
                 <div
-                    v-for="i in 4"
-                    :key="i"
-                    class="w-8 h-1.5 rounded-full transition-colors"
-                    :class="
-                        i <= completedSectionsCount
-                            ? 'bg-primary-500'
-                            : 'bg-gray-200 dark:bg-gray-700'
-                    "
-                />
-            </div>
-        </div>
-
-        <!-- Merchant Type Selection -->
-        <div
-            class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50"
-        >
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                Мерчант төрөл <span class="text-red-500">*</span>
-            </label>
-            <div class="flex gap-3">
-                <label
-                    class="flex-1 flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all bg-white dark:bg-gray-800"
-                    :class="[
-                        merchantType === 'person'
-                            ? 'border-primary-500 ring-1 ring-primary-500/20'
-                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
-                    ]"
+                    class="flex items-center gap-1.5 text-xs font-medium transition-colors"
+                    :class="s === step ? 'text-primary-500' : s < step ? 'text-[var(--accent-green)]' : 'text-[var(--text-placeholder)]'"
                 >
-                    <input v-model="merchantType" type="radio" value="person" class="sr-only" >
-                    <UIcon
-                        name="i-lucide-user"
-                        class="w-5 h-5"
-                        :class="merchantType === 'person' ? 'text-primary-500' : 'text-gray-400'"
-                    />
-                    <div>
-                        <p class="font-medium text-sm">Хувь хүн</p>
+                    <div
+                        class="size-6 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all"
+                        :class="s < step
+                            ? 'bg-[var(--accent-green)] border-[var(--accent-green)] text-white'
+                            : s === step
+                                ? 'border-primary-500 text-primary-500 bg-primary-500/10'
+                                : 'border-[var(--border-primary)] text-[var(--text-placeholder)]'"
+                    >
+                        <UIcon v-if="s < step" name="i-lucide-check" class="size-3" />
+                        <span v-else>{{ s }}</span>
                     </div>
-                    <UIcon
-                        v-if="merchantType === 'person'"
-                        name="i-lucide-check-circle-2"
-                        class="w-4 h-4 text-primary-500 ml-auto"
-                    />
-                </label>
-                <label
-                    class="flex-1 flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all bg-white dark:bg-gray-800"
-                    :class="[
-                        merchantType === 'company'
-                            ? 'border-primary-500 ring-1 ring-primary-500/20'
-                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
-                    ]"
-                >
-                    <input v-model="merchantType" type="radio" value="company" class="sr-only" >
-                    <UIcon
-                        name="i-lucide-building-2"
-                        class="w-5 h-5"
-                        :class="merchantType === 'company' ? 'text-primary-500' : 'text-gray-400'"
-                    />
-                    <div>
-                        <p class="font-medium text-sm">Компани</p>
-                    </div>
-                    <UIcon
-                        v-if="merchantType === 'company'"
-                        name="i-lucide-check-circle-2"
-                        class="w-4 h-4 text-primary-500 ml-auto"
-                    />
-                </label>
+                    <span class="hidden sm:inline">{{ stepLabels[s - 1] }}</span>
+                </div>
+                <div v-if="s < totalSteps" class="flex-1 h-px mx-1" :class="s < step ? 'bg-[var(--accent-green)]' : 'bg-[var(--border-primary)]'" />
+            </template>
+        </div>
+
+        <!-- Step 1: Personal / Company Info -->
+        <div v-if="step === 1" class="space-y-4">
+            <div>
+                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">
+                    {{ merchantType === 'person' ? 'Хувийн мэдээлэл' : 'Компанийн мэдээлэл' }}
+                </h3>
+                <p class="text-xs text-[var(--text-muted)]">QPay бүртгэлд шаардлагатай мэдээлэл</p>
             </div>
+
+            <!-- Type toggle -->
+            <div class="flex gap-2">
+                <button
+                    v-for="t in [{ val: 'person' as const, label: 'Хувь хүн', icon: 'i-lucide-user' }, { val: 'company' as const, label: 'Компани', icon: 'i-lucide-building-2' }]"
+                    :key="t.val"
+                    type="button"
+                    class="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all cursor-pointer"
+                    :class="merchantType === t.val
+                        ? 'border-primary-500 bg-primary-500/10 text-primary-500'
+                        : 'border-[var(--border-primary)] text-[var(--text-muted)] hover:border-[var(--border-strong)]'"
+                    @click="merchantType = t.val"
+                >
+                    <UIcon :name="t.icon" class="size-4" />
+                    {{ t.label }}
+                </button>
+            </div>
+
+            <!-- Person fields -->
+            <template v-if="merchantType === 'person'">
+                <UFormField label="Регистрийн дугаар" required>
+                    <UInput v-model="personRegisterNo" placeholder="АА12345678" />
+                </UFormField>
+                <div class="grid grid-cols-2 gap-3">
+                    <UFormField label="Овог" required>
+                        <UInput v-model="personLastName" placeholder="Бат" />
+                    </UFormField>
+                    <UFormField label="Нэр" required>
+                        <UInput v-model="personFirstName" placeholder="Дорж" />
+                    </UFormField>
+                </div>
+            </template>
+
+            <!-- Company fields -->
+            <template v-else>
+                <UFormField label="Компанийн нэр" required>
+                    <UInput v-model="companyName" placeholder="Компанийн нэр" />
+                </UFormField>
+                <UFormField label="Компанийн регистр" required>
+                    <UInput v-model="companyRegisterNo" placeholder="1234567" />
+                </UFormField>
+                <UFormField label="Эзэмшигчийн регистр" required>
+                    <UInput v-model="companyOwnerRegisterNo" placeholder="АА12345678" />
+                </UFormField>
+                <div class="grid grid-cols-2 gap-3">
+                    <UFormField label="Эзэмшигчийн овог" required>
+                        <UInput v-model="companyOwnerLastName" placeholder="Бат" />
+                    </UFormField>
+                    <UFormField label="Эзэмшигчийн нэр" required>
+                        <UInput v-model="companyOwnerFirstName" placeholder="Дорж" />
+                    </UFormField>
+                </div>
+            </template>
+
+            <UFormField label="Үйл ажиллагааны төрөл" required>
+                <USelect v-model="mccCode" :items="mccCodes" value-key="value" placeholder="Сонгох" />
+            </UFormField>
         </div>
 
-        <!-- Accordion Sections -->
-        <UAccordion
-            v-model="expandedSections"
-            type="multiple"
-            :items="[
-                {
-                    value: 'personal-info',
-                    label: merchantType === 'person' ? 'Хувийн мэдээлэл' : 'Компанийн мэдээлэл',
-                    icon: merchantType === 'person' ? 'i-lucide-user' : 'i-lucide-building-2',
-                    slot: 'personal-info' as const
-                },
-                {
-                    value: 'contact',
-                    label: 'Холбоо барих',
-                    icon: 'i-lucide-phone',
-                    slot: 'contact' as const
-                },
-                {
-                    value: 'address',
-                    label: 'Хаяг',
-                    icon: 'i-lucide-map-pin',
-                    slot: 'address' as const
-                },
-                {
-                    value: 'bank',
-                    label: 'Банкны данс',
-                    icon: 'i-lucide-credit-card',
-                    slot: 'bank' as const
-                }
-            ]"
-            class="space-y-2"
-        >
-            <template #leading="{ item }">
-                <div class="flex items-center gap-2">
-                    <UIcon :name="item.icon" class="w-4 h-4" />
-                </div>
-            </template>
-
-            <template #trailing="{ item }">
-                <UIcon
-                    v-if="
-                        (item.value === 'personal-info' && isPersonalInfoComplete) ||
-                        (item.value === 'contact' && isContactComplete) ||
-                        (item.value === 'address' && isAddressComplete) ||
-                        (item.value === 'bank' && isBankComplete)
-                    "
-                    name="i-lucide-check-circle-2"
-                    class="w-4 h-4 text-green-500"
-                />
-            </template>
-
-            <!-- Personal/Company Info Section -->
-            <template #personal-info-body>
-                <div class="space-y-4 pt-2">
-                    <!-- Person Fields -->
-                    <template v-if="merchantType === 'person'">
-                        <UFormField label="Регистрийн дугаар" required hint="Жишээ: АА12345678">
-                            <UInput v-model="personRegisterNo" placeholder="АА12345678" />
-                        </UFormField>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <UFormField label="Овог" required>
-                                <UInput v-model="personLastName" placeholder="Бат" />
-                            </UFormField>
-                            <UFormField label="Нэр" required>
-                                <UInput v-model="personFirstName" placeholder="Дорж" />
-                            </UFormField>
-                        </div>
-                    </template>
-
-                    <!-- Company Fields -->
-                    <template v-else>
-                        <UFormField label="Компанийн нэр" required>
-                            <UInput v-model="companyName" placeholder="Компанийн нэр" />
-                        </UFormField>
-
-                        <UFormField label="Компанийн регистр" required hint="7 оронтой тоо">
-                            <UInput v-model="companyRegisterNo" placeholder="1234567" />
-                        </UFormField>
-
-                        <UFormField label="Эзэмшигчийн регистр" required hint="Жишээ: АА12345678">
-                            <UInput v-model="companyOwnerRegisterNo" placeholder="АА12345678" />
-                        </UFormField>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <UFormField label="Эзэмшигчийн овог" required>
-                                <UInput v-model="companyOwnerLastName" placeholder="Бат" />
-                            </UFormField>
-                            <UFormField label="Эзэмшигчийн нэр" required>
-                                <UInput v-model="companyOwnerFirstName" placeholder="Дорж" />
-                            </UFormField>
-                        </div>
-                    </template>
-
-                    <UFormField label="Үйл ажиллагааны төрөл" required>
-                        <USelect
-                            v-model="mccCode"
-                            :items="mccCodes"
-                            value-key="value"
-                            placeholder="Сонгох"
-                        />
-                    </UFormField>
-                </div>
-            </template>
-
-            <!-- Contact Section -->
-            <template #contact-body>
-                <div class="space-y-4 pt-2">
-                    <div class="grid grid-cols-2 gap-3">
-                        <UFormField label="Утас" required>
-                            <UInput v-model="phone" placeholder="99001122" />
-                        </UFormField>
-                        <UFormField label="И-мэйл">
-                            <UInput v-model="email" type="email" placeholder="email@example.com" />
-                        </UFormField>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Address Section -->
-            <template #address-body>
-                <div class="space-y-4 pt-2">
-                    <div class="grid grid-cols-2 gap-3">
-                        <UFormField label="Хот/Аймаг" required>
-                            <USelect
-                                v-model="city"
-                                :items="cities"
-                                value-key="value"
-                                :placeholder="isLoadingCities ? 'Ачаалж байна...' : 'Сонгох'"
-                                :loading="isLoadingCities"
-                                :disabled="isLoadingCities"
-                            />
-                        </UFormField>
-                        <UFormField label="Дүүрэг/Сум" required>
-                            <USelect
-                                v-model="district"
-                                :items="districts"
-                                value-key="value"
-                                :placeholder="isLoadingDistricts ? 'Ачаалж байна...' : 'Сонгох'"
-                                :loading="isLoadingDistricts"
-                                :disabled="isLoadingDistricts || !city"
-                            />
-                        </UFormField>
-                    </div>
-
-                    <UFormField label="Дэлгэрэнгүй хаяг" required>
-                        <UInput v-model="address" placeholder="Байр, орц, тоот..." />
-                    </UFormField>
-                </div>
-            </template>
-
-            <!-- Bank Account Section -->
-            <template #bank-body>
-                <div class="space-y-4 pt-2">
-                    <UFormField label="Банк" required>
-                        <USelect
-                            v-model="bankCode"
-                            :items="banks"
-                            value-key="value"
-                            placeholder="Банк сонгох"
-                        />
-                    </UFormField>
-
-                    <UFormField label="Дансны дугаар" required>
-                        <UInput v-model="bankAccountNumber" placeholder="1234567890" />
-                    </UFormField>
-
-                    <UFormField label="Дансны нэр" required hint="Данс эзэмшигчийн нэр">
-                        <UInput v-model="bankAccountName" placeholder="Эзэмшигчийн нэр" />
-                    </UFormField>
-                </div>
-            </template>
-        </UAccordion>
-
-        <!-- Actions -->
-        <div v-if="!inline" class="flex justify-end gap-3">
-            <UButton variant="ghost" color="neutral" @click="emit('cancel')"> Цуцлах </UButton>
-            <UButton :loading="isRegistering" :disabled="!isValid" @click="submit">
-                QPay бүртгүүлэх
-            </UButton>
+        <!-- Step 2: Contact -->
+        <div v-if="step === 2" class="space-y-4">
+            <div>
+                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Холбоо барих</h3>
+                <p class="text-xs text-[var(--text-muted)]">Утас болон и-мэйл хаяг</p>
+            </div>
+            <UFormField label="Утас" required>
+                <UInput v-model="phone" placeholder="99001122" />
+            </UFormField>
+            <UFormField label="И-мэйл" required>
+                <UInput v-model="email" type="email" placeholder="email@example.com" />
+            </UFormField>
         </div>
 
-        <!-- Inline submit button for onboarding -->
-        <div v-else>
+        <!-- Step 3: Address -->
+        <div v-if="step === 3" class="space-y-4">
+            <div>
+                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Хаяг</h3>
+                <p class="text-xs text-[var(--text-muted)]">Бүртгэлийн хаягийн мэдээлэл</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <UFormField label="Хот / Аймаг" required>
+                    <USelect
+                        v-model="city"
+                        :items="cities"
+                        value-key="value"
+                        :placeholder="isLoadingCities ? 'Ачаалж байна...' : 'Сонгох'"
+                        :loading="isLoadingCities"
+                    />
+                </UFormField>
+                <UFormField label="Дүүрэг / Сум" required>
+                    <USelect
+                        v-model="district"
+                        :items="districts"
+                        value-key="value"
+                        :placeholder="isLoadingDistricts ? 'Ачаалж байна...' : 'Сонгох'"
+                        :loading="isLoadingDistricts"
+                        :disabled="!city"
+                    />
+                </UFormField>
+            </div>
+            <UFormField label="Дэлгэрэнгүй хаяг" required>
+                <UInput v-model="address" placeholder="Байр, орц, тоот..." />
+            </UFormField>
+        </div>
+
+        <!-- Step 4: Bank -->
+        <div v-if="step === 4" class="space-y-4">
+            <div>
+                <h3 class="text-sm font-bold text-[var(--text-heading)] mb-1">Банкны данс</h3>
+                <p class="text-xs text-[var(--text-muted)]">Төлбөр хүлээн авах дансны мэдээлэл</p>
+            </div>
+            <UFormField label="Банк" required>
+                <USelect v-model="bankCode" :items="banks" value-key="value" placeholder="Банк сонгох" />
+            </UFormField>
+            <UFormField label="Дансны дугаар" required>
+                <UInput v-model="bankAccountNumber" placeholder="1234567890" />
+            </UFormField>
+            <UFormField label="Дансны нэр" required>
+                <UInput v-model="bankAccountName" placeholder="Эзэмшигчийн нэр" />
+            </UFormField>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)]">
             <UButton
-                class="w-full"
-                size="lg"
-                :loading="isRegistering"
-                :disabled="!isValid"
-                @click="submit"
+                v-if="step > 1"
+                variant="ghost"
+                color="neutral"
+                size="sm"
+                icon="i-lucide-arrow-left"
+                @click="back"
             >
-                QPay бүртгүүлэх
+                Буцах
             </UButton>
+            <div v-else />
+
+            <div class="flex items-center gap-2">
+                <UButton
+                    v-if="!inline && step === 1"
+                    variant="ghost"
+                    color="neutral"
+                    size="sm"
+                    @click="emit('cancel')"
+                >
+                    Цуцлах
+                </UButton>
+
+                <UButton
+                    v-if="step < totalSteps"
+                    color="primary"
+                    size="sm"
+                    :disabled="!canNext"
+                    @click="next"
+                >
+                    Дараах
+                    <UIcon name="i-lucide-arrow-right" class="size-3.5" />
+                </UButton>
+
+                <UButton
+                    v-else
+                    color="primary"
+                    size="sm"
+                    :loading="isRegistering"
+                    :disabled="!isStep4Valid"
+                    @click="submit"
+                >
+                    QPay бүртгүүлэх
+                </UButton>
+            </div>
         </div>
     </div>
 </template>

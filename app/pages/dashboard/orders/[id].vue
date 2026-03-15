@@ -42,18 +42,6 @@ const loadOrder = async () => {
     }
 }
 
-// Date formatting
-const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
-}
-
 const timeAgo = (dateStr: string): string => {
     const date = new Date(dateStr)
     const now = new Date()
@@ -66,7 +54,7 @@ const timeAgo = (dateStr: string): string => {
     if (diffMins < 60) return `${diffMins} мин өмнө`
     if (diffHours < 24) return `${diffHours} цаг өмнө`
     if (diffDays < 7) return `${diffDays} өдөр өмнө`
-    return date.toLocaleDateString('mn-MN', { month: 'short', day: 'numeric' })
+    return formatDateShort(dateStr)
 }
 
 // Status stepper
@@ -135,7 +123,7 @@ const handleStatusChange = async (newStatus: OrderStatus) => {
         toast.add({
             title: 'Амжилттай',
             description: `Төлөв ${getStatusLabel(newStatus)} болгож өөрчлөгдлөө`,
-            color: 'success'
+            color: 'primary'
         })
         await loadOrder()
     } catch (err: any) {
@@ -162,7 +150,7 @@ const confirmCancel = async () => {
         toast.add({
             title: 'Амжилттай',
             description: 'Захиалга цуцлагдлаа',
-            color: 'success'
+            color: 'primary'
         })
         cancelModalOpen.value = false
         await loadOrder()
@@ -187,7 +175,7 @@ const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text)
     toast.add({
         title: `${label} хуулагдлаа`,
-        color: 'success'
+        color: 'primary'
     })
 }
 
@@ -233,7 +221,7 @@ onMounted(async () => {
 
                     <template #title>
                         <div v-if="order">
-                            <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h1 class="text-lg font-semibold text-[var(--text-heading)]">
                                 Захиалга #{{ order.order_number }}
                             </h1>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -241,7 +229,7 @@ onMounted(async () => {
                             </p>
                         </div>
                         <div v-else>
-                            <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h1 class="text-lg font-semibold text-[var(--text-heading)]">
                                 Захиалга
                             </h1>
                         </div>
@@ -284,7 +272,7 @@ onMounted(async () => {
                             <!-- Status Progress Stepper -->
                             <div
                                 v-if="!isCancelledOrRefunded"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
                             >
                                 <div class="flex items-center justify-between">
                                     <div
@@ -299,7 +287,7 @@ onMounted(async () => {
                                                 class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
                                                 :class="
                                                     index < currentStepIndex
-                                                        ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                                                        ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
                                                         : index === currentStepIndex
                                                           ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 ring-2 ring-primary-500/30'
                                                           : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
@@ -320,7 +308,7 @@ onMounted(async () => {
                                                 class="text-xs mt-1.5 font-medium whitespace-nowrap"
                                                 :class="
                                                     index <= currentStepIndex
-                                                        ? 'text-gray-900 dark:text-white'
+                                                        ? 'text-[var(--text-heading)]'
                                                         : 'text-gray-400 dark:text-gray-500'
                                                 "
                                             >
@@ -334,7 +322,7 @@ onMounted(async () => {
                                             class="flex-1 h-0.5 mx-2 mt-[-1.25rem] rounded-full transition-all"
                                             :class="
                                                 index < currentStepIndex
-                                                    ? 'bg-green-400 dark:bg-green-500'
+                                                    ? 'bg-primary-400 dark:bg-primary-500'
                                                     : 'bg-gray-200 dark:bg-gray-700'
                                             "
                                         />
@@ -370,7 +358,7 @@ onMounted(async () => {
                             <!-- Next Action Card -->
                             <div
                                 v-if="nextAction"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
                             >
                                 <div
                                     class="border-l-4 border-primary-500 p-4 flex items-center justify-between gap-4"
@@ -384,7 +372,7 @@ onMounted(async () => {
                                             <p class="text-sm text-gray-500 dark:text-gray-400">
                                                 Дараагийн алхам
                                             </p>
-                                            <p class="font-medium text-gray-900 dark:text-white">
+                                            <p class="font-medium text-[var(--text-heading)]">
                                                 {{ nextAction.label }}
                                             </p>
                                         </div>
@@ -403,21 +391,21 @@ onMounted(async () => {
                             <!-- Delivered Success -->
                             <div
                                 v-else-if="order.status === 'delivered'"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
                             >
                                 <div
-                                    class="border-l-4 border-green-500 p-4 flex items-center gap-3"
+                                    class="border-l-4 border-primary-500 p-4 flex items-center gap-3"
                                 >
                                     <div
-                                        class="w-9 h-9 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
+                                        class="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"
                                     >
                                         <UIcon
                                             name="i-lucide-check"
-                                            class="w-5 h-5 text-green-600 dark:text-green-400"
+                                            class="w-5 h-5 text-primary-600 dark:text-primary-400"
                                         />
                                     </div>
                                     <div>
-                                        <p class="font-medium text-green-700 dark:text-green-400">
+                                        <p class="font-medium text-primary-700 dark:text-primary-400">
                                             Захиалга амжилттай хүргэгдсэн
                                         </p>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -429,9 +417,9 @@ onMounted(async () => {
 
                             <!-- Order Items Card -->
                             <div
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
                             >
-                                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-4">
+                                <h3 class="text-sm font-medium text-[var(--text-heading)] mb-4">
                                     Захиалсан бараа
                                 </h3>
 
@@ -452,7 +440,7 @@ onMounted(async () => {
                                             </div>
                                             <div>
                                                 <p
-                                                    class="font-medium text-gray-900 dark:text-white text-sm"
+                                                    class="font-medium text-[var(--text-heading)] text-sm"
                                                 >
                                                     {{ item.name }}
                                                 </p>
@@ -470,7 +458,7 @@ onMounted(async () => {
                                         </div>
                                         <div class="text-right flex-shrink-0">
                                             <p
-                                                class="font-medium text-gray-900 dark:text-white text-sm"
+                                                class="font-medium text-[var(--text-heading)] text-sm"
                                             >
                                                 {{ formatPrice(item.subtotal) }}
                                             </p>
@@ -484,7 +472,7 @@ onMounted(async () => {
                                 >
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-500 dark:text-gray-400">Дүн</span>
-                                        <span class="text-gray-900 dark:text-white">{{
+                                        <span class="text-[var(--text-heading)]">{{
                                             formatPrice(order.subtotal)
                                         }}</span>
                                     </div>
@@ -495,7 +483,7 @@ onMounted(async () => {
                                         <span class="text-gray-500 dark:text-gray-400"
                                             >Хүргэлт</span
                                         >
-                                        <span class="text-gray-900 dark:text-white">{{
+                                        <span class="text-[var(--text-heading)]">{{
                                             formatPrice(order.shipping_fee)
                                         }}</span>
                                     </div>
@@ -506,14 +494,14 @@ onMounted(async () => {
                                         <span class="text-gray-500 dark:text-gray-400"
                                             >Хөнгөлөлт</span
                                         >
-                                        <span class="text-green-600"
+                                        <span class="text-primary-600"
                                             >-{{ formatPrice(order.discount) }}</span
                                         >
                                     </div>
                                     <div
                                         class="flex justify-between text-base font-semibold pt-2 border-t border-gray-200 dark:border-gray-700"
                                     >
-                                        <span class="text-gray-900 dark:text-white">Нийт дүн</span>
+                                        <span class="text-[var(--text-heading)]">Нийт дүн</span>
                                         <span class="text-primary-600 dark:text-primary-400">{{
                                             formatPrice(order.total_amount)
                                         }}</span>
@@ -526,9 +514,9 @@ onMounted(async () => {
                         <div class="space-y-6">
                             <!-- Order Info Card -->
                             <div
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
                             >
-                                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-4">
+                                <h3 class="text-sm font-medium text-[var(--text-heading)] mb-4">
                                     Захиалгын мэдээлэл
                                 </h3>
 
@@ -540,7 +528,7 @@ onMounted(async () => {
                                         >
                                         <div class="flex items-center gap-1.5">
                                             <span
-                                                class="text-sm font-medium text-gray-900 dark:text-white"
+                                                class="text-sm font-medium text-[var(--text-heading)]"
                                                 >#{{ order.order_number }}</span
                                             >
                                             <UButton
@@ -565,7 +553,7 @@ onMounted(async () => {
                                         >
                                         <UTooltip :text="formatDate(order.created_at)">
                                             <span
-                                                class="text-sm font-medium text-gray-900 dark:text-white"
+                                                class="text-sm font-medium text-[var(--text-heading)]"
                                             >
                                                 {{ timeAgo(order.created_at) }}
                                             </span>
@@ -586,7 +574,7 @@ onMounted(async () => {
                                                 class="w-4 h-4 text-gray-400"
                                             />
                                             <span
-                                                class="text-sm font-medium text-gray-900 dark:text-white"
+                                                class="text-sm font-medium text-[var(--text-heading)]"
                                             >
                                                 {{ getPaymentMethodLabel(order.payment_method) }}
                                             </span>
@@ -624,9 +612,9 @@ onMounted(async () => {
 
                             <!-- Customer Card -->
                             <div
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
                             >
-                                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-4">
+                                <h3 class="text-sm font-medium text-[var(--text-heading)] mb-4">
                                     Худалдан авагч
                                 </h3>
 
@@ -642,7 +630,7 @@ onMounted(async () => {
                                                 {{ customerInitials }}
                                             </span>
                                         </div>
-                                        <p class="font-medium text-gray-900 dark:text-white">
+                                        <p class="font-medium text-[var(--text-heading)]">
                                             {{ order.customer?.name || '-' }}
                                         </p>
                                     </div>
@@ -657,7 +645,7 @@ onMounted(async () => {
                                                 name="i-lucide-phone"
                                                 class="w-4 h-4 text-gray-400"
                                             />
-                                            <span class="text-sm text-gray-900 dark:text-white">
+                                            <span class="text-sm text-[var(--text-heading)]">
                                                 {{ order.customer.phone_number }}
                                             </span>
                                         </div>
@@ -681,7 +669,7 @@ onMounted(async () => {
                                         class="flex items-center gap-2"
                                     >
                                         <UIcon name="i-lucide-mail" class="w-4 h-4 text-gray-400" />
-                                        <span class="text-sm text-gray-900 dark:text-white">
+                                        <span class="text-sm text-[var(--text-heading)]">
                                             {{ order.customer.email }}
                                         </span>
                                     </div>
@@ -705,7 +693,7 @@ onMounted(async () => {
                                             order.customer?.city ||
                                             order.customer?.district
                                         "
-                                        class="pt-2 border-t border-gray-100 dark:border-gray-800"
+                                        class="pt-2 border-t border-[var(--border-primary)]"
                                     >
                                         <div class="flex items-start gap-2">
                                             <UIcon
@@ -713,7 +701,7 @@ onMounted(async () => {
                                                 class="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0"
                                             />
                                             <div
-                                                class="text-sm text-gray-900 dark:text-white space-y-0.5"
+                                                class="text-sm text-[var(--text-heading)] space-y-0.5"
                                             >
                                                 <p
                                                     v-if="
@@ -746,7 +734,7 @@ onMounted(async () => {
                                     <!-- Customer description/notes -->
                                     <div
                                         v-if="order.customer?.description"
-                                        class="pt-2 border-t border-gray-100 dark:border-gray-800"
+                                        class="pt-2 border-t border-[var(--border-primary)]"
                                     >
                                         <p class="text-sm text-gray-500 dark:text-gray-400">
                                             {{ order.customer.description }}
@@ -758,9 +746,9 @@ onMounted(async () => {
                             <!-- Notes & Tracking Card -->
                             <div
                                 v-if="hasNotesOrTracking"
-                                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5"
+                                class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] p-5"
                             >
-                                <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-4">
+                                <h3 class="text-sm font-medium text-[var(--text-heading)] mb-4">
                                     Тэмдэглэл & Хүргэлт
                                 </h3>
 
@@ -775,7 +763,7 @@ onMounted(async () => {
                                                 name="i-lucide-truck"
                                                 class="w-4 h-4 text-gray-400"
                                             />
-                                            <span class="text-sm text-gray-900 dark:text-white">
+                                            <span class="text-sm text-[var(--text-heading)]">
                                                 {{ order.metadata.tracking_number }}
                                             </span>
                                         </div>

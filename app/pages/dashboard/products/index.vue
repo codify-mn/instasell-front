@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
-import type { Product, ImportResult } from '~/composables/useProducts'
+import type { Product } from '~/composables/useProducts'
 
 useSeoMeta({
     title: 'Бүтээгдэхүүн - Instasell'
 })
 
-const { fetchProducts, deleteProduct, updateProduct, fetchCategories } = useProducts()
+const { fetchProducts, deleteProduct, updateProduct, fetchCategories, exportProductsCSV, downloadImportTemplate, importProducts } = useProducts()
 const toast = useToast()
 const router = useRouter()
-
-// Bulk import modal
-const bulkImportModalOpen = ref(false)
 
 // Post to Facebook modal
 const postModalOpen = ref(false)
@@ -43,9 +40,26 @@ const filter = reactive({
     category: 'all',
     status: 'all',
     stock: 'all',
+    sort_by: '',
+    sort_dir: '',
     page: 1,
     size: 10
 })
+
+const toggleSort = (col: string) => {
+    if (filter.sort_by === col) {
+        filter.sort_dir = filter.sort_dir === 'asc' ? 'desc' : filter.sort_dir === 'desc' ? '' : 'asc'
+        if (!filter.sort_dir) filter.sort_by = ''
+    } else {
+        filter.sort_by = col
+        filter.sort_dir = 'desc'
+    }
+}
+
+const sortIcon = (col: string) => {
+    if (filter.sort_by !== col) return 'i-lucide-arrow-up-down'
+    return filter.sort_dir === 'asc' ? 'i-lucide-arrow-up' : 'i-lucide-arrow-down'
+}
 
 const statusOptions = [
     { label: 'Бүх төлөв', value: 'all' },
@@ -65,10 +79,10 @@ const stockOptions = [
 const columns: TableColumn<Product>[] = [
     { accessorKey: 'select', header: '' },
     { accessorKey: 'name', header: 'Бараа бүтээгдэхүүн' },
-    { accessorKey: 'status', header: 'Төлөв' },
     { accessorKey: 'base_price', header: 'Үнийн дүн' },
     { accessorKey: 'stock', header: 'Үлдэгдэл' },
     { accessorKey: 'category', header: 'Ангилал' },
+    { accessorKey: 'status', header: 'Төлөв' },
     { accessorKey: 'actions', header: '' }
 ]
 
@@ -138,18 +152,7 @@ const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('mn-MN').format(price) + '₮'
 }
 
-// Pagination helpers
-const startItem = computed(() => (filter.page - 1) * filter.size + 1)
-const endItem = computed(() => Math.min(filter.page * filter.size, total.value))
-const totalPages = computed(() => Math.ceil(total.value / filter.size))
-
-const prevPage = () => {
-    if (filter.page > 1) filter.page--
-}
-
-const nextPage = () => {
-    if (filter.page < totalPages.value) filter.page++
-}
+const setPage = (p: number) => { filter.page = p }
 
 // Selection helpers
 const isSelected = (product: Product) => {
@@ -204,7 +207,7 @@ const confirmDelete = async () => {
         toast.add({
             title: 'Амжилттай',
             description: 'Бүтээгдэхүүн устгагдлаа',
-            color: 'success'
+            color: 'primary'
         })
         deleteModalOpen.value = false
         await loadProducts()
@@ -231,7 +234,7 @@ const toggleStatus = async (product: Product) => {
         toast.add({
             title: 'Амжилттай',
             description: `Төлөв ${statusLabels[newStatus]} болгож өөрчлөгдлөө`,
-            color: 'success'
+            color: 'primary'
         })
         await loadProducts()
     } catch (err: any) {
@@ -254,7 +257,7 @@ const toggleFeatured = async (product: Product) => {
             description: newFeatured
                 ? 'Checkout-д санал болгох бараанд нэмэгдлээ'
                 : 'Санал болгох бараанаас хасагдлаа',
-            color: 'success'
+            color: 'primary'
         })
     } catch (err: any) {
         toast.add({
@@ -285,7 +288,7 @@ const bulkSetStatus = async (status: 'active' | 'draft' | 'archived') => {
         toast.add({
             title: 'Амжилттай',
             description: `${selectedRows.value.length} бүтээгдэхүүний төлөв ${statusLabels[status]} болгож өөрчлөгдлөө`,
-            color: 'success'
+            color: 'primary'
         })
         await loadProducts()
     } catch (err: any) {
@@ -311,7 +314,7 @@ const confirmBulkDelete = async () => {
         toast.add({
             title: 'Амжилттай',
             description: `${selectedRows.value.length} бүтээгдэхүүн устгагдлаа`,
-            color: 'success'
+            color: 'primary'
         })
         bulkDeleteModalOpen.value = false
         await loadProducts()
@@ -326,10 +329,79 @@ const confirmBulkDelete = async () => {
     }
 }
 
-// Bulk import handlers
-const onImportSuccess = (_result: ImportResult) => {
-    bulkImportModalOpen.value = false
-    loadProducts()
+// CSV Export
+const exporting = ref(false)
+
+const handleExportCSV = async (mode: 'filtered' | 'selected') => {
+    exporting.value = true
+    try {
+        const params: { status?: string; keyword?: string; category?: string; stock?: string; ids?: number[] } = {}
+        if (mode === 'selected') {
+            params.ids = selectedRows.value.map((p) => p.id)
+        } else {
+            if (filter.status !== 'all') params.status = filter.status
+            if (filter.keyword) params.keyword = filter.keyword
+            if (filter.category !== 'all') params.category = filter.category
+            if (filter.stock !== 'all') params.stock = filter.stock
+        }
+        await exportProductsCSV(params)
+        toast.add({ title: 'Амжилттай', description: 'CSV файл татагдлаа', color: 'primary' })
+    } catch {
+        toast.add({ title: 'Алдаа', description: 'CSV татахад алдаа гарлаа', color: 'error' })
+    } finally {
+        exporting.value = false
+    }
+}
+
+// CSV Import
+const importModalOpen = ref(false)
+const importFile = ref<File | null>(null)
+const importing = ref(false)
+const selectedImportStatus = ref('draft')
+
+const importStatusOptions = [
+    { label: 'Ноорог - Хэрэглэгчид харагдахгүй', value: 'draft' },
+    { label: 'Идэвхтэй - Шууд борлуулалтад орно', value: 'active' }
+]
+
+const handleImportFile = (event: Event) => {
+    const target = event.target as HTMLInputElement
+    if (target.files?.length) {
+        importFile.value = target.files[0] ?? null
+    }
+}
+
+const handleImport = async () => {
+    if (!importFile.value) return
+    importing.value = true
+    try {
+        const result = await importProducts(importFile.value, selectedImportStatus.value)
+        if (result.created > 0 || result.updated > 0) {
+            toast.add({
+                title: 'Амжилттай',
+                description: `${result.created} бараа нэмэгдлээ, ${result.updated} бараа шинэчлэгдлээ`,
+                color: 'primary'
+            })
+        }
+        if (result.errors?.length) {
+            toast.add({
+                title: 'Анхааруулга',
+                description: `${result.errors.length} мөрөнд алдаа гарлаа`,
+                color: 'warning'
+            })
+        }
+        importModalOpen.value = false
+        importFile.value = null
+        await loadProducts()
+    } catch (err: any) {
+        toast.add({
+            title: 'Алдаа',
+            description: err.data?.message || 'Импортлоход алдаа гарлаа',
+            color: 'error'
+        })
+    } finally {
+        importing.value = false
+    }
 }
 
 // Row click handler
@@ -368,7 +440,7 @@ const getActionItems = (product: Product) => [
 
 // Watch filters
 watch(
-    [() => filter.keyword, () => filter.category, () => filter.status, () => filter.stock],
+    [() => filter.keyword, () => filter.category, () => filter.status, () => filter.stock, () => filter.sort_by, () => filter.sort_dir],
     () => {
         filter.page = 1
         loadProducts()
@@ -387,29 +459,48 @@ onMounted(() => {
 <template>
     <div class="flex flex-col h-full w-full">
         <!-- Header -->
-        <div class="px-6 py-5 border-b border-[var(--border-primary)]">
-            <div class="flex items-start justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-[var(--text-heading)]">
-                        Бараа бүтээгдэхүүн
-                    </h1>
-                    <p class="mt-1 text-sm text-[var(--text-muted)]">
-                        Бараа бүтээгдэхүүний нийт жагсаалт
-                    </p>
-                </div>
-                <div class="flex items-center gap-3">
+        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+            <span class="text-base font-bold text-[var(--text-heading)]">Бараа бүтээгдэхүүн</span>
+            <div class="flex items-center gap-1.5">
                     <UButton
                         color="neutral"
-                        variant="outline"
-                        icon="i-lucide-file-spreadsheet"
-                        @click="bulkImportModalOpen = true"
+                        variant="ghost"
+                        icon="i-lucide-upload"
+                        size="sm"
+                        @click="importModalOpen = true"
                     >
-                        Excel-с оруулах
+                        Импорт
                     </UButton>
-                    <UButton to="/dashboard/products/new" color="primary" icon="i-lucide-plus">
-                        Бараа нэмэх
+                    <UDropdownMenu
+                        :items="[
+                            [
+                                {
+                                    label: 'Бүх бараа (шүүлтүүрээр)',
+                                    icon: 'i-lucide-filter',
+                                    onSelect: () => handleExportCSV('filtered')
+                                },
+                                {
+                                    label: `Сонгосон (${selectedRows.length})`,
+                                    icon: 'i-lucide-check-square',
+                                    disabled: selectedRows.length === 0,
+                                    onSelect: () => handleExportCSV('selected')
+                                }
+                            ]
+                        ]"
+                    >
+                        <UButton
+                            color="neutral"
+                            variant="ghost"
+                            icon="i-lucide-download"
+                            size="sm"
+                            :loading="exporting"
+                        >
+                            Экспорт
+                        </UButton>
+                    </UDropdownMenu>
+                    <UButton to="/dashboard/products/new" color="primary" size="sm" icon="i-lucide-plus">
+                        Нэмэх
                     </UButton>
-                </div>
             </div>
         </div>
 
@@ -424,7 +515,7 @@ onMounted(() => {
         >
             <div
                 v-if="selectedRows.length > 0"
-                class="px-6 py-3 bg-primary-50 dark:bg-primary-900/20 border-b border-primary-200 dark:border-primary-800 flex items-center justify-between"
+                class="px-4 sm:px-6 py-3 bg-primary-50 dark:bg-primary-900/20 border-b border-primary-200 dark:border-primary-800 hidden sm:flex items-center justify-between"
             >
                 <div class="flex items-center gap-3">
                     <span class="text-sm font-medium text-primary-700 dark:text-primary-300">
@@ -478,46 +569,69 @@ onMounted(() => {
             </div>
         </Transition>
 
-        <!-- Filters -->
-        <div class="px-6 py-4 border-b border-[var(--border-primary)]">
-            <div class="flex items-center justify-between gap-4">
-                <UInput
-                    v-model="filter.keyword"
-                    placeholder="Бараа нэрээр хайх..."
-                    icon="i-lucide-search"
-                    class="w-80"
-                />
+        <MobileActionBar :count="selectedRows.length" @clear="clearSelection">
+            <UButton size="sm" color="primary" variant="soft" icon="i-lucide-share-2" @click="openBulkPostModal">Facebook</UButton>
+            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-check-circle" :loading="bulkActionLoading" @click="bulkSetStatus('active')">Идэвхжүүлэх</UButton>
+            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-archive" :loading="bulkActionLoading" @click="bulkSetStatus('draft')">Ноорог</UButton>
+            <UButton size="sm" color="error" variant="outline" icon="i-lucide-trash-2" :loading="bulkActionLoading" @click="bulkDeleteModalOpen = true">Устгах</UButton>
+        </MobileActionBar>
 
-                <div class="flex items-center gap-2">
-                    <USelect v-model="filter.stock" :items="stockOptions" class="w-36" />
-                    <USelect v-model="filter.status" :items="statusOptions" class="w-32" />
-                    <USelect
-                        v-model="filter.category"
-                        :items="[
-                            { label: 'Бүх ангилал', value: 'all' },
-                            ...categories.map((c) => ({ label: c, value: c }))
-                        ]"
-                        class="w-36"
-                    />
+        <!-- Filters + Table Card -->
+        <div class="flex-1 overflow-auto p-4 sm:p-6">
+            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+                <!-- Filters -->
+                <div class="px-4 py-3 border-b border-[var(--border-primary)]">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <UInput
+                            v-model="filter.keyword"
+                            placeholder="Нэр, SKU-гаар хайх..."
+                            icon="i-lucide-search"
+                            class="w-full sm:w-64"
+                            size="sm"
+                        />
+                        <USelect v-model="filter.status" :items="statusOptions" class="w-full sm:w-32" size="sm" />
+                        <USelect v-model="filter.stock" :items="stockOptions" class="w-full sm:w-32" size="sm" />
+                        <USelect
+                            v-model="filter.category"
+                            :items="[
+                                { label: 'Бүх ангилал', value: 'all' },
+                                ...categories.map((c) => ({ label: c, value: c }))
+                            ]"
+                            class="w-full sm:w-32"
+                            size="sm"
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Table -->
-        <div class="flex-1 overflow-auto">
+                <!-- Table -->
             <UTable
                 :data="products"
                 :columns="columns"
                 :loading="loading"
                 class="w-full"
                 :ui="{
-                    thead: 'bg-[var(--surface-inset)]',
-                    th: 'text-left px-4 py-3 text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider',
-                    td: 'px-4 py-3',
-                    tbody: 'divide-y divide-[var(--border-primary)]',
-                    tr: 'group hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    base: 'min-w-full border-separate border-spacing-0',
+                    thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
+                    tbody: '[&>tr]:last:[&>td]:border-b-0',
+                    th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                    td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+                    tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150'
                 }"
             >
+                <template #base_price-header>
+                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('price')">
+                        Үнийн дүн
+                        <UIcon :name="sortIcon('price')" class="size-3" :class="filter.sort_by === 'price' ? 'text-primary-500' : 'opacity-40'" />
+                    </button>
+                </template>
+
+                <template #name-header>
+                    <button class="flex items-center gap-1 cursor-pointer hover:text-[var(--text-heading)] transition-colors" @click="toggleSort('name')">
+                        Бараа бүтээгдэхүүн
+                        <UIcon :name="sortIcon('name')" class="size-3" :class="filter.sort_by === 'name' ? 'text-primary-500' : 'opacity-40'" />
+                    </button>
+                </template>
+
                 <template #select-header>
                     <UCheckbox
                         :model-value="isAllSelected"
@@ -677,33 +791,8 @@ onMounted(() => {
                     </div>
                 </template>
             </UTable>
-        </div>
 
-        <!-- Pagination -->
-        <div
-            v-if="total > 0"
-            class="px-6 py-4 border-t border-[var(--border-primary)] flex items-center justify-between"
-        >
-            <p class="text-sm text-[var(--text-muted)]">
-                {{ startItem }}-с {{ endItem }} хүртэл. Нийт: {{ total }}
-            </p>
-            <div class="flex items-center gap-2">
-                <UButton
-                    color="neutral"
-                    variant="outline"
-                    :disabled="filter.page <= 1"
-                    @click="prevPage"
-                >
-                    Өмнөх
-                </UButton>
-                <UButton
-                    color="neutral"
-                    variant="outline"
-                    :disabled="filter.page >= totalPages"
-                    @click="nextPage"
-                >
-                    Дараах
-                </UButton>
+                <TablePagination :page="filter.page" :total="total" :page-size="filter.size" @update:page="setPage" />
             </div>
         </div>
 
@@ -782,7 +871,74 @@ onMounted(() => {
         </UModal>
 
         <!-- Bulk Import Modal -->
-        <ProductBulkImportModal v-model:open="bulkImportModalOpen" @success="onImportSuccess" />
+        <!-- CSV Import Modal -->
+        <UModal v-model:open="importModalOpen">
+            <template #content>
+                <UCard>
+                    <template #header>
+                        <div class="flex items-center gap-2">
+                            <UIcon name="i-lucide-upload" class="text-primary-500" />
+                            <span class="font-semibold">CSV-с бараа оруулах</span>
+                        </div>
+                    </template>
+
+                    <div class="space-y-4">
+                        <p class="text-sm text-[var(--text-muted)]">
+                            CSV файлаар бараа бөөнөөр оруулах. Загвар файлыг татаж форматыг харна уу.
+                        </p>
+
+                        <UButton
+                            variant="link"
+                            color="primary"
+                            icon="i-lucide-file-down"
+                            size="sm"
+                            @click="downloadImportTemplate"
+                        >
+                            Загвар файл татах
+                        </UButton>
+
+                        <div>
+                            <label class="block text-sm font-medium text-[var(--text-heading)] mb-2">
+                                CSV файл сонгох
+                            </label>
+                            <input
+                                type="file"
+                                accept=".csv"
+                                class="block w-full text-sm text-[var(--text-muted)] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 dark:file:bg-primary-900/20 dark:file:text-primary-300 cursor-pointer"
+                                @change="handleImportFile"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-[var(--text-heading)] mb-2">
+                                Импортлосон бараануудын эхний төлөв
+                            </label>
+                            <USelect v-model="selectedImportStatus" :items="importStatusOptions" class="w-full" />
+                        </div>
+                    </div>
+
+                    <template #footer>
+                        <div class="flex justify-end gap-2">
+                            <UButton
+                                color="neutral"
+                                variant="outline"
+                                @click="importModalOpen = false"
+                            >
+                                Болих
+                            </UButton>
+                            <UButton
+                                color="primary"
+                                :loading="importing"
+                                :disabled="!importFile"
+                                @click="handleImport"
+                            >
+                                Оруулах
+                            </UButton>
+                        </div>
+                    </template>
+                </UCard>
+            </template>
+        </UModal>
 
         <!-- Post to Facebook Modal -->
         <ProductPostModal v-model:open="postModalOpen" :product-id="postModalProductId" />

@@ -116,7 +116,7 @@ const isOutOfStock = (variant: ProductVariant): boolean => {
                 <template #header>
                     <div class="flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h3 class="text-lg font-semibold text-[var(--text-heading)]">
                                 {{ product?.name }}
                             </h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -159,7 +159,7 @@ const isOutOfStock = (variant: ProductVariant): boolean => {
 
                         <!-- Variant Info -->
                         <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-900 dark:text-white truncate">
+                            <p class="font-medium text-[var(--text-heading)] truncate">
                                 {{ variant.name }}
                             </p>
                             <div class="flex items-center gap-2 mt-1">
@@ -207,7 +207,7 @@ const isOutOfStock = (variant: ProductVariant): boolean => {
                                 min="0"
                                 :max="variant.stock_quantity"
                                 :disabled="isOutOfStock(variant)"
-                                class="w-12 h-8 text-center text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                                class="w-12 h-8 text-center text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-[var(--text-heading)]"
                                 @input="
                                     setQuantity(
                                         variant.id,

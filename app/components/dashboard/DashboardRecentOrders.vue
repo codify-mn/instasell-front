@@ -72,8 +72,8 @@ onMounted(() => { loadOrders() })
 
         <!-- Empty state -->
         <div v-else-if="!orders.length" class="flex flex-1 flex-col items-center justify-center gap-2 py-10">
-            <div class="text-2xl">🛒</div>
-            <p class="text-xs text-[var(--text-placeholder)]">Захиалга байхгүй байна</p>
+            <UIcon name="i-lucide-shopping-bag" class="size-6 text-[var(--text-placeholder)]" />
+            <p class="text-xs text-[var(--text-placeholder)]">Одоогоор захиалга байхгүй</p>
         </div>
 
         <!-- Order rows -->

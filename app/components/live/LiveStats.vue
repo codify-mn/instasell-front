@@ -60,7 +60,7 @@ onUnmounted(() => {
             prefix="₮"
             :value="stats.revenue"
             icon="i-lucide-piggy-bank"
-            icon-color="success"
+            icon-color="primary"
         />
         <LiveStatCard label="Үзэгч" :value="stats.viewers" icon="i-lucide-users" icon-color="info" />
         <LiveStatCard

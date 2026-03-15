@@ -114,7 +114,7 @@ function handleSelect(plan: Plan) {
                         ? 'pricing-popular bg-[var(--surface-card)] scale-[1.02] z-10 shadow-xl'
                         : 'bg-[var(--surface-card)] border border-[var(--border-primary)] hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-lg',
                     isCurrentPlan(plan)
-                        ? 'ring-2 ring-green-500 ring-offset-2 dark:ring-offset-gray-950'
+                        ? 'ring-2 ring-primary-500 ring-offset-2 dark:ring-offset-gray-950'
                         : ''
                 ]"
             >
@@ -131,7 +131,7 @@ function handleSelect(plan: Plan) {
                 <!-- Current Plan Badge -->
                 <div v-if="isCurrentPlan(plan)" class="absolute -top-4 right-4">
                     <span
-                        class="inline-flex items-center gap-1.5 bg-green-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                        class="inline-flex items-center gap-1.5 bg-primary-500 text-white text-xs font-bold px-3 py-1.5 rounded-full"
                     >
                         <UIcon name="i-lucide-check" class="w-3.5 h-3.5" />
                         Одоогийн
@@ -172,7 +172,7 @@ function handleSelect(plan: Plan) {
                                     ₮{{ formatPrice(plan.monthly_price * 12) }}/жил
                                 </span>
                                 <span
-                                    class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full"
+                                    class="text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-100 dark:bg-primary-900/30 px-2 py-0.5 rounded-full"
                                 >
                                     -{{ getYearlyDiscount(plan) }}%
                                 </span>
@@ -194,7 +194,7 @@ function handleSelect(plan: Plan) {
                                 class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                                 :class="
                                     feature.included
-                                        ? 'bg-green-100 dark:bg-green-900/30'
+                                        ? 'bg-primary-100 dark:bg-primary-900/30'
                                         : 'bg-[var(--surface-inset)]'
                                 "
                             >
@@ -203,7 +203,7 @@ function handleSelect(plan: Plan) {
                                     class="w-3 h-3"
                                     :class="
                                         feature.included
-                                            ? 'text-green-600 dark:text-green-400'
+                                            ? 'text-primary-600 dark:text-primary-400'
                                             : 'text-[var(--text-placeholder)]'
                                     "
                                 />

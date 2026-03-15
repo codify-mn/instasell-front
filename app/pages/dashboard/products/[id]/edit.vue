@@ -230,7 +230,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         toast.add({
             title: 'Амжилттай',
             description: 'Бүтээгдэхүүн шинэчлэгдлээ',
-            color: 'success'
+            color: 'primary'
         })
         router.push(`/dashboard/products/${productId.value}`)
     } catch (err: any) {
@@ -252,7 +252,7 @@ const statusOptions = [
 
 const statusDotColor = computed(() => {
     const map: Record<string, string> = {
-        active: 'bg-emerald-500',
+        active: 'bg-primary-500',
         draft: 'bg-gray-400',
         out_of_stock: 'bg-red-500'
     }
@@ -268,7 +268,7 @@ const confirmDelete = async () => {
     deleting.value = true
     try {
         await deleteProduct(productId.value)
-        toast.add({ title: 'Амжилттай', description: 'Бүтээгдэхүүн устгагдлаа', color: 'success' })
+        toast.add({ title: 'Амжилттай', description: 'Бүтээгдэхүүн устгагдлаа', color: 'primary' })
         router.push('/dashboard/products')
     } catch (err: any) {
         toast.add({
@@ -304,7 +304,7 @@ onMounted(async () => {
                         <div class="flex items-center gap-2.5">
                             <span :class="['w-2 h-2 rounded-full flex-shrink-0', statusDotColor]" />
                             <div>
-                                <h1 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                <h1 class="text-lg font-semibold text-[var(--text-heading)]">
                                     {{ product?.name || 'Бараа засах' }}
                                 </h1>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
@@ -350,12 +350,12 @@ onMounted(async () => {
                             <div class="flex-1 min-w-0 space-y-5">
 
                                 <!-- Image + Product Info Card -->
-                                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5">
                                     <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
 
                                         <!-- Column 1: Image Gallery -->
                                         <div>
-                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Зураг</h3>
+                                            <h3 class="text-sm font-semibold text-[var(--text-heading)] mb-3">Зураг</h3>
                                             <ProductImageUpload v-model="images" />
                                         </div>
 
@@ -416,7 +416,7 @@ onMounted(async () => {
                                                         <div
                                                             class="flex items-center gap-2 px-3 py-2 h-10 rounded-lg border cursor-pointer transition-colors select-none text-sm"
                                                             :class="{
-                                                                'bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900/60 text-emerald-700 dark:text-emerald-300': state.status === 'active',
+                                                                'bg-primary-50 border-primary-200 dark:bg-primary-950/30 dark:border-primary-900/60 text-primary-700 dark:text-primary-300': state.status === 'active',
                                                                 'bg-gray-50 border-gray-200 dark:bg-gray-800/40 dark:border-gray-700 text-gray-600 dark:text-gray-400': state.status === 'draft',
                                                                 'bg-red-50 border-red-200 dark:bg-red-950/30 dark:border-red-900/60 text-red-700 dark:text-red-300': state.status === 'out_of_stock'
                                                             }"
@@ -433,10 +433,10 @@ onMounted(async () => {
                                 </div>
 
                                 <!-- Variants Card -->
-                                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5">
                                     <div class="flex items-center justify-between mb-4">
                                         <div class="flex items-center gap-2">
-                                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Хэмжээ / Сонголтууд</h3>
+                                            <h3 class="text-sm font-semibold text-[var(--text-heading)]">Хэмжээ / Сонголтууд</h3>
                                             <UTooltip text="Барааны хэмжээ, өнгө эсвэл бусад ялгааг нэм. Сонголт нэмсэн үед тус бүрд үлдэгдэл тохируулна." :popper="{ placement: 'top' }">
                                                 <UIcon name="i-lucide-help-circle" class="w-3.5 h-3.5 text-gray-400 cursor-help" />
                                             </UTooltip>
@@ -455,17 +455,17 @@ onMounted(async () => {
 
                                     <!-- Variant rows -->
                                     <div v-if="options.length > 0" class="mb-4">
-                                        <table class="w-full text-sm">
+                                        <table class="w-full text-sm border-separate border-spacing-0">
                                             <thead>
-                                                <tr class="border-b border-gray-100 dark:border-gray-800">
-                                                    <th class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-4">Нэр / Хэмжээ</th>
-                                                    <th class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 pb-2 pr-4 w-28">Үлдэгдэл</th>
-                                                    <th class="w-8" />
+                                                <tr class="bg-[var(--surface-inset)]/60">
+                                                    <th class="text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider py-2.5 px-3 rounded-l-lg border-y border-l border-[var(--border-primary)]">Нэр / Хэмжээ</th>
+                                                    <th class="text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider py-2.5 px-3 w-28 border-y border-[var(--border-primary)]">Үлдэгдэл</th>
+                                                    <th class="w-10 rounded-r-lg border-y border-r border-[var(--border-primary)]" />
                                                 </tr>
                                             </thead>
-                                            <tbody class="divide-y divide-gray-50 dark:divide-gray-800/50">
-                                                <tr v-for="(option, index) in options" :key="index">
-                                                    <td class="py-2 pr-4">
+                                            <tbody>
+                                                <tr v-for="(option, index) in options" :key="index" class="hover:bg-[var(--surface-inset)]/40 transition-colors duration-150">
+                                                    <td class="py-2 px-3 border-b border-[var(--border-primary)]">
                                                         <UInput
                                                             v-model="option.name"
                                                             placeholder="жишээ нь: S, M, XL, Улаан"
@@ -473,12 +473,12 @@ onMounted(async () => {
                                                             :ui="{ base: !option.name.trim() ? 'ring-red-500' : '' }"
                                                         />
                                                     </td>
-                                                    <td class="py-2 pr-4">
+                                                    <td class="py-2 px-3 border-b border-[var(--border-primary)]">
                                                         <UInput v-model.number="option.stock" type="number" placeholder="0" size="sm">
-                                                            <template #trailing><span class="text-gray-400 text-xs">ш</span></template>
+                                                            <template #trailing><span class="text-[var(--text-placeholder)] text-xs">ш</span></template>
                                                         </UInput>
                                                     </td>
-                                                    <td class="py-2">
+                                                    <td class="py-2 px-1 border-b border-[var(--border-primary)]">
                                                         <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs" @click="removeOption(index)" />
                                                     </td>
                                                 </tr>
@@ -590,7 +590,7 @@ onMounted(async () => {
                                         <span>Харилцагчид харагдах байдал</span>
                                     </template>
 
-                                    <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm">
+                                    <div class="rounded-xl overflow-hidden border border-[var(--border-primary)] shadow-sm">
                                         <div class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center relative overflow-hidden">
                                             <img v-if="images.length > 0" :src="images[0]" class="w-full h-full object-cover absolute inset-0" alt="" />
                                             <UIcon v-else name="i-lucide-image" class="w-12 h-12 text-gray-300 dark:text-gray-600" />
@@ -601,15 +601,15 @@ onMounted(async () => {
                                             </div>
                                         </div>
 
-                                        <div class="p-3.5 bg-white dark:bg-gray-900">
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 mb-2 leading-snug">
+                                        <div class="p-3.5 bg-[var(--surface-card)]">
+                                            <p class="text-sm font-semibold text-[var(--text-heading)] line-clamp-2 mb-2 leading-snug">
                                                 {{ state.name || 'Барааны нэр...' }}
                                             </p>
 
                                             <div class="flex items-baseline gap-2 flex-wrap mb-2">
                                                 <span
                                                     class="text-xl font-bold"
-                                                    :class="state.timed_sale_enabled && state.timed_sale_price ? 'text-rose-600 dark:text-rose-400' : 'text-gray-900 dark:text-white'"
+                                                    :class="state.timed_sale_enabled && state.timed_sale_price ? 'text-rose-600 dark:text-rose-400' : 'text-[var(--text-heading)]'"
                                                 >
                                                     {{ (state.timed_sale_enabled && state.timed_sale_price ? state.timed_sale_price : state.price || 0).toLocaleString() }}₮
                                                 </span>
@@ -633,7 +633,7 @@ onMounted(async () => {
                                 </ProductFormCard>
 
                                 <!-- Settings Card -->
-                                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 space-y-1">
+                                <div class="bg-[var(--surface-card)] rounded-2xl border border-[var(--border-primary)] p-5 space-y-1">
                                     <ProductSettingToggle
                                         v-model="state.track_inventory"
                                         label="Үлдэгдэл автоматаар тооцох"

@@ -54,21 +54,13 @@ const onSearch = () => {
     }, 300)
 }
 
-const totalPages = computed(() => Math.ceil(total.value / size.value))
-
-const goToPage = (p: number) => {
+const setPage = (p: number) => {
     page.value = p
     loadCustomers()
 }
 
-const formatDate = (dateStr?: string): string => {
-    if (!dateStr) return '-'
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('mn-MN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    })
+const onRowClick = (customer: CustomerWithStats) => {
+    router.push(`/dashboard/customers/${customer.id}`)
 }
 
 onMounted(() => {
@@ -77,114 +69,125 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-full h-full overflow-y-auto">
-        <UDashboardPanel id="customers">
-            <UDashboardNavbar>
-                <template #title>
-                    <div class="flex items-center gap-2">
-                        <UIcon name="i-lucide-users" class="w-5 h-5" />
-                        <span>Хэрэглэгчид</span>
-                    </div>
-                </template>
-                <template #right>
-                    <UInput
-                        v-model="search"
-                        placeholder="Нэр, утас, имэйлээр хайх..."
-                        icon="i-lucide-search"
-                        size="sm"
-                        class="w-64"
-                        @input="onSearch"
-                    />
-                </template>
-            </UDashboardNavbar>
+    <div class="flex flex-col h-full w-full">
+        <!-- Header -->
+        <div class="flex h-14 flex-shrink-0 items-center justify-between border-b border-[var(--border-primary)] bg-[var(--surface-card)] px-4 sm:px-7">
+            <span class="text-base font-bold text-[var(--text-heading)]">Хэрэглэгчид</span>
+            <span class="text-sm text-[var(--text-muted)]">Нийт {{ total }}</span>
+        </div>
 
-            <div class="p-4 space-y-4">
-                <!-- Stats -->
-                <div class="flex items-center gap-4 text-sm text-[var(--text-muted)]">
-                    <span>Нийт {{ total }} хэрэглэгч</span>
+        <!-- Filters + Table Card -->
+        <div class="flex-1 overflow-auto p-4 sm:p-6">
+            <div class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden">
+                <!-- Search -->
+                <div class="px-4 py-3 border-b border-[var(--border-primary)]">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <UInput
+                            v-model="search"
+                            placeholder="Нэр, утас, имэйлээр хайх..."
+                            icon="i-lucide-search"
+                            class="w-full sm:w-64"
+                            size="sm"
+                            @input="onSearch"
+                        />
+                    </div>
                 </div>
 
                 <!-- Table -->
-                <div
-                    class="bg-[var(--surface-card)] rounded-xl border border-[var(--border-primary)] overflow-hidden"
+                <UTable
+                    :data="customers"
+                    :columns="columns"
+                    :loading="loading"
+                    :ui="{
+                        base: 'min-w-full border-separate border-spacing-0',
+                        thead: '[&>tr]:bg-[var(--surface-inset)]/60 [&>tr]:after:content-none',
+                        tbody: '[&>tr]:last:[&>td]:border-b-0',
+                        th: 'first:rounded-l-lg last:rounded-r-lg border-y border-[var(--border-primary)] first:border-l last:border-r px-4 py-3 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider',
+                        td: 'px-4 py-3 border-b border-[var(--border-primary)]',
+                        tr: 'group hover:bg-[var(--surface-inset)]/40 transition-colors duration-150 cursor-pointer'
+                    }"
                 >
-                    <UTable :data="customers" :columns="columns" :loading="loading">
-                        <template #name-cell="{ row }">
-                            <div class="flex items-center gap-2">
-                                <UAvatar :alt="row.original.name" size="sm" />
-                                <div>
-                                    <p class="font-medium text-[var(--text-heading)]">
-                                        {{ row.original.name }}
-                                    </p>
-                                    <p v-if="row.original.email" class="text-xs text-[var(--text-placeholder)]">
-                                        {{ row.original.email }}
-                                    </p>
-                                </div>
+                    <template #name-cell="{ row }">
+                        <div class="flex items-center gap-3" @click="onRowClick(row.original)">
+                            <UAvatar :alt="row.original.name" size="sm" />
+                            <div>
+                                <p class="font-medium text-[var(--text-heading)]">
+                                    {{ row.original.name }}
+                                </p>
+                                <p v-if="row.original.email" class="text-xs text-[var(--text-placeholder)]">
+                                    {{ row.original.email }}
+                                </p>
                             </div>
-                        </template>
+                        </div>
+                    </template>
 
-                        <template #phone_number-cell="{ row }">
-                            <span class="text-sm text-[var(--text-muted)]">
-                                {{ row.original.phone_number || '-' }}
-                            </span>
-                        </template>
+                    <template #phone_number-cell="{ row }">
+                        <span class="text-sm text-[var(--text-body)]">
+                            {{ row.original.phone_number || '-' }}
+                        </span>
+                    </template>
 
-                        <template #facebook_id-cell="{ row }">
-                            <a
-                                v-if="row.original.facebook_id"
-                                :href="`https://facebook.com/${row.original.facebook_id}`"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                @click.stop
-                            >
-                                <UBadge color="info" variant="subtle" size="xs" class="cursor-pointer hover:opacity-80 transition-opacity">
-                                    <UIcon name="i-lucide-facebook" class="w-3 h-3 mr-1" />
-                                    Профайл
-                                </UBadge>
-                            </a>
-                            <span v-else class="text-xs text-[var(--text-placeholder)]">-</span>
-                        </template>
+                    <template #facebook_id-cell="{ row }">
+                        <a
+                            v-if="row.original.facebook_id"
+                            :href="`https://facebook.com/${row.original.facebook_id}`"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            @click.stop
+                        >
+                            <UBadge color="info" variant="subtle" size="xs" class="cursor-pointer hover:opacity-80 transition-opacity">
+                                <UIcon name="i-lucide-facebook" class="w-3 h-3 mr-1" />
+                                Профайл
+                            </UBadge>
+                        </a>
+                        <span v-else class="text-xs text-[var(--text-placeholder)]">-</span>
+                    </template>
 
-                        <template #order_count-cell="{ row }">
-                            <span class="font-medium text-[var(--text-heading)]">
-                                {{ row.original.order_count }}
-                            </span>
-                        </template>
+                    <template #order_count-cell="{ row }">
+                        <span class="font-medium text-[var(--text-heading)]">
+                            {{ row.original.order_count }}
+                        </span>
+                    </template>
 
-                        <template #total_spent-cell="{ row }">
-                            <span class="font-medium text-[var(--text-heading)]">
-                                {{ formatPrice(row.original.total_spent) }}
-                            </span>
-                        </template>
+                    <template #total_spent-cell="{ row }">
+                        <span class="font-medium text-[var(--text-heading)]">
+                            {{ formatPrice(row.original.total_spent) }}
+                        </span>
+                    </template>
 
-                        <template #last_order_at-cell="{ row }">
-                            <span class="text-sm text-[var(--text-muted)]">
-                                {{ formatDate(row.original.last_order_at) }}
-                            </span>
-                        </template>
+                    <template #last_order_at-cell="{ row }">
+                        <span class="text-sm text-[var(--text-muted)]">
+                            {{ formatDateShort(row.original.last_order_at) }}
+                        </span>
+                    </template>
 
-                        <template #actions-cell="{ row }">
-                            <UButton
-                                icon="i-lucide-eye"
-                                variant="ghost"
-                                color="neutral"
-                                size="xs"
-                                @click="router.push(`/dashboard/customers/${row.original.id}`)"
-                            />
-                        </template>
-                    </UTable>
-                </div>
+                    <template #actions-cell="{ row }">
+                        <UButton
+                            icon="i-lucide-chevron-right"
+                            variant="ghost"
+                            color="neutral"
+                            size="xs"
+                            @click="onRowClick(row.original)"
+                        />
+                    </template>
 
-                <!-- Pagination -->
-                <div v-if="totalPages > 1" class="flex justify-center">
-                    <UPagination
-                        v-model="page"
-                        :total="total"
-                        :items-per-page="size"
-                        @update:model-value="goToPage"
-                    />
-                </div>
+                    <template #empty>
+                        <div class="flex flex-col items-center justify-center py-20 text-center">
+                            <div class="w-20 h-20 rounded-full bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mb-6">
+                                <UIcon name="i-lucide-users" class="w-10 h-10 text-primary-500" />
+                            </div>
+                            <h3 class="text-lg font-semibold text-[var(--text-heading)] mb-2">
+                                Хэрэглэгч олдсонгүй
+                            </h3>
+                            <p class="text-[var(--text-muted)] max-w-sm">
+                                Одоогоор ямар ч хэрэглэгч байхгүй байна.
+                            </p>
+                        </div>
+                    </template>
+                </UTable>
+
+                <TablePagination :page="page" :total="total" :page-size="size" @update:page="setPage" />
             </div>
-        </UDashboardPanel>
+        </div>
     </div>
 </template>

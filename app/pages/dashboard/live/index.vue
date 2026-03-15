@@ -86,16 +86,7 @@ const createLive = async () => {
     }
 }
 
-const formatDate = (dateStr: string) => {
-    if (!dateStr) return ''
-    const date = new Date(dateStr)
-    return new Intl.DateTimeFormat('mn-MN', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    }).format(date)
-}
+// uses auto-imported formatDate from composables/formatter.ts
 </script>
 
 <template>

@@ -88,7 +88,7 @@ const isAdded = computed(() => {
         >
             <UButton
                 v-if="isAdded"
-                color="success"
+                color="primary"
                 icon="i-lucide-check"
                 size="lg"
                 class="rounded-lg cursor-pointer"
